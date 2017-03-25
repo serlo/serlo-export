@@ -1,1 +1,0 @@
-"""A script which parses the sitemap of „Mathe für Nicht-Freaks“ into JSON"""
