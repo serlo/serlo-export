@@ -6,6 +6,44 @@ import requests
 
 from api import MediaWikiSession, MediaWikiAPI
 
+class SitemapTransformer(object):
+    """Transforms a JSON by changing its dictionaries."""
+
+    def __call__(self, node):
+        """Replacing all nodes in a sitemap tree."""
+        result = self.replace_node(node)
+        result["children"] = [self(x) for x in node["children"]]
+
+        return result
+
+    def replace_node(self, oldnode):
+        pass
+
+class ParseNodeCodes(SitemapTransformer):
+    """Parses the specification of each node in a tree."""
+
+    def replace_node(self, node):
+        if "code" not in node:
+            return {}
+
+        code = node["code"].strip()
+
+        match = re.match(r"(.*)\{\{Symbol\|\d+%\}}", code)
+
+        if match:
+            code = match.group(1).strip()
+
+        match = re.match(r"\[\[([^|\]]+)\|([^|\]]+)\]\]", code)
+
+        if match:
+            link = match.group(1)
+            name = match.group(2)
+        else:
+            name = code
+            link = None
+
+        return {"link": link, "name": name}
+
 class Sitemap:
     """Functions for parsing sitemap."""
 
@@ -56,6 +94,8 @@ class Sitemap:
 
         for node in Sitemap.yield_nodes(sitemap):
             Sitemap.insert_node(root, node)
+
+        root = ParseNodeCodes()(root)
 
         return root
 
