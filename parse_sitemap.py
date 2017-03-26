@@ -6,6 +6,12 @@ import requests
 from api import MediaWikiSession, MediaWikiAPI
 
 class Sitemap:
+    """Functions for parsing sitemap."""
+
+    @staticmethod
+    def create_node(code, depth):
+        """Returns a sitemap node with no children"""
+        return {"code": code, "depth": depth, "children": []}
 
     @staticmethod
     def compute_tokens(sitemap):
@@ -24,8 +30,10 @@ class Sitemap:
                 match = re.match(regex, line)
 
                 if match:
-                    yield (match.group(2).strip(),
-                           depth_start + len(match.group(1)))
+                    code = match.group(2).strip()
+                    depth = depth_start + len(match.group(1))
+
+                    yield Sitemap.create_node(code, depth)
 
     @staticmethod
     def parse(sitemap):
@@ -34,8 +42,8 @@ class Sitemap:
         Arguments:
             sitemap -- content of the sitemap (a string)
         """
-        for code, depth in Sitemap.compute_tokens(sitemap):
-            print("%2d - %s" % (depth, code))
+        for node in Sitemap.compute_tokens(sitemap):
+            print(node)
 
 
 def run_script():
