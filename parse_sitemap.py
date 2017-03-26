@@ -10,19 +10,25 @@ class SitemapTransformer(object):
     """Transforms a JSON by changing its dictionaries."""
 
     def __call__(self, node):
-        """Replacing all nodes in a sitemap tree."""
+        """Replacing all nodes in a sitemap tree.
+
+        Not the most generic solution for a JSON transformer! :-)"""
         result = self.replace_node(node)
         result["children"] = [self(x) for x in node["children"]]
 
         return result
 
     def replace_node(self, oldnode):
+        """Returns a new node."""
         pass
 
 class ParseNodeCodes(SitemapTransformer):
     """Parses the specification of each node in a tree."""
 
     def replace_node(self, node):
+        """Parses the code of the node and returns a new node with the parsed
+        link to the article and the node's name.
+        """
         if "code" not in node:
             return {}
 
