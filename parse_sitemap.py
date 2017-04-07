@@ -6,6 +6,7 @@ from gevent import monkey
 monkey.patch_all()
 
 from api import MediaWikiSession, MediaWikiAPI
+import config
 import sitemap as s
 
 def run_script(json_file_name):
@@ -18,4 +19,4 @@ def run_script(json_file_name):
         json.dump(s.parse(sitemap), json_file, sort_keys=True, indent=4)
 
 if __name__ == "__main__":
-    run_script("sitemap.json")
+    run_script(config.SITEMAP_FILE_NAME)
