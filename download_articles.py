@@ -2,6 +2,7 @@
 structure.
 """
 
+import functools
 import gevent
 import json
 import os
@@ -13,6 +14,12 @@ monkey.patch_all()
 from api import MediaWikiSession, MediaWikiAPI
 import config
 
+def remove_special_characters(word):
+    """Clear a word from special characters."""
+    return functools.reduce(lambda w, sc: w.replace(sc, ''),
+                            "()!?:\'",
+                            word.replace(' ', '_'))
+
 def download(node, storage_path, wikibook_api):
     """Download the article of a sitemap node and all of its children.
 
@@ -21,7 +28,7 @@ def download(node, storage_path, wikibook_api):
         storage_path -- directory for download (string)
         wikibook_api -- MediaWikiAPI object to perform the download
     """
-    name        = node["name"]
+    name        = remove_special_characters(node["name"])
     link        = node["link"]
     children    = node["children"]
     target_path = os.path.join(storage_path, name)
