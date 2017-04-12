@@ -19,9 +19,19 @@ class MediaWikiSession(object):
         """Returns the URL to the server's `index.php` file."""
         return "http://" + self.domain + "/w/index.php"
 
+    @property
+    def rest_api_url(self):
+        """Returns the URL to the server's REST API endpoints."""
+        return "https://en.wikipedia.org/api/rest_v1"
+
     def index_call(self, params):
         """Make an HTTP request to the server's `index.php` file."""
         return self.req.get(self.index_url, params=params).text
+
+    def api_call(self, endpoint, data):
+        """Call an REST API endpoint."""
+        endpoint_url = "/".join([self.rest_api_url] + endpoint)
+        return self.req.post(endpoint_url, data=data)
 
 class MediaWikiAPI(object):
     """Implements an API for content stored on a MediaWiki."""
@@ -37,3 +47,9 @@ class MediaWikiAPI(object):
     def get_content(self, title):
         """Returns the content of an article with title `title`."""
         return self.session.index_call({"action": "raw", "title": title})
+
+    def convert_text_to_html(self, text):
+        """Returns the markdown string `text` converted to HTML."""
+        endpoint = ["transform", "wikitext", "to", "html"]
+        data     = {"wikitext": text, "original": {}}
+        return self.session.api_call(endpoint, data).text

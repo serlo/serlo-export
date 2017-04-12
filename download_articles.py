@@ -39,7 +39,7 @@ def download(node, storage_path, wikibook_api):
         gevent.joinall(jobs)
     if link and not children:
         contents = wikibook_api.get_content(link)
-        with open(target_path, 'w') as f:
+        with open(target_path + ".txt", 'w') as f:
             f.write(contents)
 
 def run_script(sitemap_file_name):
