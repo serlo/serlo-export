@@ -9,4 +9,5 @@ HTML = $(patsubst $(RAW_DIR)/%.txt, $(HTML_DIR)/%.html, $(RAW))
 all: $(HTML)
 
 $(HTML_DIR)/%.html: $(RAW_DIR)/%.txt
-	python convert_to_html.py $< $@
+	mkdir -p $(dir $@)
+	python convert_to_html.py < $< > $@
