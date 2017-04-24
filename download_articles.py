@@ -1,5 +1,7 @@
 """Module for downloading all articles in a sitemap into a tree-like directory
 structure.
+
+Copyright 2017 Stephan Kulla
 """
 
 import functools

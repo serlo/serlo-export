@@ -1,4 +1,7 @@
-"""Module for parsing the sitemap of MFNF into a JSON file."""
+"""Module for parsing the sitemap of MFNF into a JSON file.
+
+Copyright 2017 Stephan Kulla
+"""
 
 import json
 import requests

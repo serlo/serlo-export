@@ -1,4 +1,7 @@
-"""Module for converting an article to HTML using the MediaWiki API."""
+"""Module for converting an article to HTML using the MediaWiki API.
+
+Copyright 2017 Richard Mörbitz
+"""
 
 import os
 import requests

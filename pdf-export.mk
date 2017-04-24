@@ -1,3 +1,5 @@
+# Copyright 2017 Richard Mörbitz
+
 RAW_DIR = raw
 HTML_DIR = html
 

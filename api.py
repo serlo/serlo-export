@@ -1,4 +1,7 @@
-"""Module with an API for MediaWikis."""
+"""Module with an API for MediaWikis.
+
+Copyright 2017 Stephan Kulla
+"""
 
 class MediaWikiSession(object):
     """Encapsulates a session for requests to a MediaWiki server. This class

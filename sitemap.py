@@ -1,4 +1,7 @@
-"""Functions for parsing sitemap."""
+"""Functions for parsing sitemap.
+
+Copyright 2017 Stephan Kulla
+"""
 
 
 import re
