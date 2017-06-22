@@ -27,14 +27,14 @@ class SitemapTransformer(object):
 class ParseNodeCodes(SitemapTransformer):
     """Parses the specification of each node in a tree."""
 
-    def replace_node(self, node):
+    def replace_node(self, oldnode):
         """Parses the code of the node and returns a new node with the parsed
         link to the article and the node's name.
         """
-        if "code" not in node:
+        if "code" not in oldnode:
             return {}
 
-        code = node["code"].strip()
+        code = oldnode["code"].strip()
 
         match = re.match(r"(.*)\{\{Symbol\|\d+%\}}", code)
 
@@ -69,7 +69,7 @@ def yield_nodes(sitemap):
 
     for line in sitemap.splitlines():
         for regex, depth_start in ((headline_re, 0),
-                (list_re, max_headline_depth)):
+                                   (list_re, max_headline_depth)):
             match = re.match(regex, line)
 
             if match:
@@ -80,8 +80,7 @@ def yield_nodes(sitemap):
 
 def insert_node(base, new_node):
     """Inserts a node at the right position."""
-    if (len(base["children"]) > 0 and
-            new_node["depth"] > base["children"][-1]["depth"]):
+    if base["children"] and new_node["depth"] > base["children"][-1]["depth"]:
         insert_node(base["children"][-1], new_node)
     else:
         base["children"].append(new_node)
@@ -100,4 +99,3 @@ def parse(sitemap):
     root = ParseNodeCodes()(root)
 
     return root
-
