@@ -52,11 +52,6 @@ class ParseNodeCodes(SitemapTransformer):
 
         return {"link": link, "name": name}
 
-
-def create_node(code, depth):
-    """Returns a sitemap node with no children"""
-    return {"code": code, "depth": depth, "children": []}
-
 def yield_nodes(sitemap):
     """Generator for all node specifications in a sitemap. It yields tuples
     `(code, depth)` whereas `code` is a string representation of the node
@@ -76,7 +71,11 @@ def yield_nodes(sitemap):
                 code = match.group(2).strip()
                 depth = depth_start + len(match.group(1))
 
-                yield create_node(code, depth)
+                yield {
+                    "code": code,
+                    "depth": depth,
+                    "children": []
+                }
 
 def insert_node(base, new_node):
     """Inserts a node at the right position."""
