@@ -86,12 +86,13 @@ def generate_sitemap_nodes(sitemap_text):
                     "children": []
                 }
 
-def insert_node(base, new_node):
-    """Inserts a node at the right position."""
-    if base["children"] and new_node["depth"] > base["children"][-1]["depth"]:
-        insert_node(base["children"][-1], new_node)
+def insert_node(node, new_node):
+    """Inserts the node `new_node` in the tree `node` at the right position
+    regarding to the attribute `depth` of `node`."""
+    if node["children"] and new_node["depth"] > node["children"][-1]["depth"]:
+        insert_node(node["children"][-1], new_node)
     else:
-        base["children"].append(new_node)
+        node["children"].append(new_node)
 
 def parse(sitemap):
     """Parse the sitemap and returns a JSON object of it.
