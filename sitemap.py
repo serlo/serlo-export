@@ -3,9 +3,7 @@
 Copyright 2017 Stephan Kulla
 """
 
-
 import re
-
 
 class SitemapTransformer(object):
     """Transforms a JSON by changing its dictionaries."""
@@ -52,28 +50,39 @@ class ParseNodeCodes(SitemapTransformer):
 
         return {"link": link, "name": name}
 
-def yield_nodes(sitemap):
-    """Generator for all node specifications in a sitemap. It yields tuples
-    `(code, depth)` whereas `code` is a string representation of the node
-    and `depth` is a number corresponding to the depth the node corresponds
-    to.
-    """
-    max_headline_depth = 6
-    headline_re = r"(={1,%s})(.*)\1" % max_headline_depth
-    list_re = r"([*]+)(.*)"
+def generate_sitemap_nodes(sitemap_text):
+    """Generator for all node specifications in a sitemap source code. It
+    yields dictionaries of the form:
 
-    for line in sitemap.splitlines():
+        { "code": code, "depth": depth, "children": [] }
+
+    Thereby `code` is a string representation of the node and `depth` is a
+    number corresponding to the node's depth. The higher the depth is, the
+    deeper the node need to be included in the final tree.
+    """
+    # In MediaWiki the maximal depth of a headline is 6 (as in HTML).
+    # For list elements this maximal header depth is added so that list
+    # elements will always be included under a headline node.
+    max_headline_depth = 6
+
+    headline_re = re.compile(r"""(={1,%s}) # Equal signs of the headline
+                                 (.*)      # code defining the node
+                                 \1        # Repeatation of the equal signs
+                              """ % max_headline_depth, re.X)
+
+    list_re = re.compile(r"""([*]+) # asteriks of a list element
+                             (.*)   # code defining a sitemap node
+                          """, re.X)
+
+    for line in sitemap_text.splitlines():
         for regex, depth_start in ((headline_re, 0),
                                    (list_re, max_headline_depth)):
-            match = re.match(regex, line)
+            match = regex.fullmatch(line.strip())
 
             if match:
-                code = match.group(2).strip()
-                depth = depth_start + len(match.group(1))
-
                 yield {
-                    "code": code,
-                    "depth": depth,
+                    "code": match.group(2).strip(),
+                    "depth": depth_start + len(match.group(1)),
                     "children": []
                 }
 
@@ -92,7 +101,7 @@ def parse(sitemap):
     """
     root = {"children":[], "depth":0}
 
-    for node in yield_nodes(sitemap):
+    for node in generate_sitemap_nodes(sitemap):
         insert_node(root, node)
 
     root = ParseNodeCodes()(root)
