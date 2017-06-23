@@ -84,15 +84,15 @@ def parse_sitemap_node_codes(node):
     }
 
 
-def parse(sitemap):
-    """Parse the sitemap and returns a JSON object of it.
+def parse_sitemap(sitemap_text):
+    """Parse the sitemap and returns a JSON object representing it.
 
     Arguments:
-        sitemap -- content of the sitemap (a string)
+        sitemap_text -- content of the sitemap (a string)
     """
     root = {"children":[], "depth":0, "code": "Mathe für Nicht-Freaks"}
 
-    for node in generate_sitemap_nodes(sitemap):
+    for node in generate_sitemap_nodes(sitemap_text):
         insert_node(root, node)
 
     return parse_sitemap_node_codes(root)
