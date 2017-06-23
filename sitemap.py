@@ -5,51 +5,6 @@ Copyright 2017 Stephan Kulla
 
 import re
 
-class SitemapTransformer(object):
-    """Transforms a JSON by changing its dictionaries."""
-
-    def __call__(self, node):
-        """Replacing all nodes in a sitemap tree.
-
-        Not the most generic solution for a JSON transformer! :-)"""
-        result = self.replace_node(node)
-        result["children"] = [self(x) for x in node["children"]]
-
-        return result
-
-    def replace_node(self, oldnode):
-        """Returns a new node."""
-        pass
-
-
-class ParseNodeCodes(SitemapTransformer):
-    """Parses the specification of each node in a tree."""
-
-    def replace_node(self, oldnode):
-        """Parses the code of the node and returns a new node with the parsed
-        link to the article and the node's name.
-        """
-        if "code" not in oldnode:
-            return {}
-
-        code = oldnode["code"].strip()
-
-        match = re.match(r"(.*)\{\{Symbol\|\d+%\}}", code)
-
-        if match:
-            code = match.group(1).strip()
-
-        match = re.match(r"\[\[([^|\]]+)\|([^|\]]+)\]\]", code)
-
-        if match:
-            link = match.group(1)
-            name = match.group(2)
-        else:
-            name = code
-            link = None
-
-        return {"link": link, "name": name}
-
 def generate_sitemap_nodes(sitemap_text):
     """Generator for all node specifications in a sitemap source code. It
     yields dictionaries of the form:
@@ -94,17 +49,50 @@ def insert_node(node, new_node):
     else:
         node["children"].append(new_node)
 
+def parse_sitemap_node_codes(node):
+    """Returns a new tree where the `code` attributes are parsed. The nodes of
+    the new tree contain a `name` and a `link` attribute. The `name` attribute
+    corresponds to the name of the node which shall be appear in the table of
+    contents. The `link` corresponds to the title of the Wikibooks page the
+    node points to. In case there is no article behind the node, the attribute
+    `link` is `None`.
+    """
+
+    # Delete `{{Symbol|..%}}` at the end of the code
+    code = re.sub(r"\s+\{Symbol\|\d+%\}\}\s+\Z", "", node["code"])
+
+    # Parse links of the form `[[<title>|<name>]]`
+    match = re.match(r"""
+        \[\[      # [[
+        ([^|\]]+) # title of the page on Wikibooks
+        \|        # |
+        ([^|\]]+) # name of the node in toc
+        \]\]      # ]]
+    """, code, re.X)
+
+    if match:
+        link = match.group(1)
+        name = match.group(2)
+    else:
+        name = code
+        link = None
+
+    return {
+        "link": link,
+        "name": name,
+        "children": [parse_sitemap_node_codes(x) for x in node["children"]]
+    }
+
+
 def parse(sitemap):
     """Parse the sitemap and returns a JSON object of it.
 
     Arguments:
         sitemap -- content of the sitemap (a string)
     """
-    root = {"children":[], "depth":0}
+    root = {"children":[], "depth":0, "code": "Mathe für Nicht-Freaks"}
 
     for node in generate_sitemap_nodes(sitemap):
         insert_node(root, node)
 
-    root = ParseNodeCodes()(root)
-
-    return root
+    return parse_sitemap_node_codes(root)
