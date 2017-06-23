@@ -3,7 +3,6 @@
 Copyright 2017 Richard Mörbitz
 """
 
-import os
 import sys
 
 from api import MediaWikiAPI
