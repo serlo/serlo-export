@@ -8,12 +8,11 @@ import functools
 import gevent
 import json
 import os
-import requests
 
 from gevent import monkey
 monkey.patch_all()
 
-from api import MediaWikiSession, MediaWikiAPI
+from api import MediaWikiAPI
 import config
 
 def remove_special_characters(word):
@@ -50,8 +49,7 @@ def run_script(sitemap_file_name):
     Arguments:
         sitemap_file_name -- name of the sitemap file (string)
     """
-    session = MediaWikiSession("de.wikibooks.org", requests.Session())
-    wikibooks = MediaWikiAPI(session)
+    wikibooks = MediaWikiAPI()
 
     with open(sitemap_file_name, 'r') as sitemap_file:
         sitemap = json.loads(sitemap_file.read())

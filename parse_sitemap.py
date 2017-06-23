@@ -6,9 +6,8 @@ Copyright 2017 Stephan Kulla
 import json
 import re
 import config
-import requests
 
-from api import MediaWikiSession, MediaWikiAPI
+from api import MediaWikiAPI
 
 def generate_sitemap_nodes(sitemap_text):
     """Generator for all node specifications in a sitemap source code. It
@@ -104,9 +103,7 @@ def parse_sitemap(sitemap_text):
 
 def run_script(json_file_name):
     """Parses the sitmap of MFNF and stores it into a JSON file."""
-    session = MediaWikiSession("de.wikibooks.org", requests.Session())
-    wikibooks = MediaWikiAPI(session)
-    sitemap = wikibooks.get_content(config.SITEMAP_ARTICLE_NAME)
+    sitemap = MediaWikiAPI().get_content(config.SITEMAP_ARTICLE_NAME)
 
     with open(json_file_name, "w") as json_file:
         json.dump(parse_sitemap(sitemap), json_file, sort_keys=True, indent=4)
