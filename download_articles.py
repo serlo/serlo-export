@@ -8,9 +8,9 @@ import json
 import os
 import functools
 import gevent
-import config
 
 from api import MediaWikiAPI
+from parse_sitemap import get_sitemap
 
 gevent.monkey.patch_all()
 
@@ -42,20 +42,15 @@ def download(node, storage_path, wikibook_api):
         with open(target_path + ".txt", 'w') as output_file:
             output_file.write(contents)
 
-def run_script(sitemap_file_name):
-    """Recursively download a sitemap.
-
-    Arguments:
-        sitemap_file_name -- name of the sitemap file (string)
-    """
+def run_script():
+    """Recursively download a sitemap."""
     wikibooks = MediaWikiAPI()
 
-    with open(sitemap_file_name, 'r') as sitemap_file:
-        sitemap = json.loads(sitemap_file.read())
+    sitemap = get_sitemap()
 
     books = sitemap["children"]
     jobs = [gevent.spawn(download, book, "raw", wikibooks) for book in books]
     gevent.joinall(jobs)
 
 if __name__ == "__main__":
-    run_script(config.SITEMAP_FILE_NAME)
+    run_script()

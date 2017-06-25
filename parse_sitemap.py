@@ -5,9 +5,11 @@ Copyright 2017 Stephan Kulla
 
 import json
 import re
-import config
 
 from api import MediaWikiAPI
+
+SITEMAP_ARTICLE_NAME = "Mathe für Nicht-Freaks: Sitemap"
+SITEMAP_FILE_NAME = "sitemap.json"
 
 def generate_sitemap_nodes(sitemap_text):
     """Generator for all node specifications in a sitemap source code. It
@@ -101,12 +103,14 @@ def parse_sitemap(sitemap_text):
 
     return parse_sitemap_node_codes(root)
 
+def get_sitemap():
+    """Returns the sitemap as a JSON object."""
+    return parse_sitemap(MediaWikiAPI().get_content(SITEMAP_ARTICLE_NAME))
+
 def run_script(json_file_name):
     """Parses the sitmap of MFNF and stores it into a JSON file."""
-    sitemap = MediaWikiAPI().get_content(config.SITEMAP_ARTICLE_NAME)
-
     with open(json_file_name, "w") as json_file:
-        json.dump(parse_sitemap(sitemap), json_file, sort_keys=True, indent=4)
+        json.dump(get_sitemap(), json_file, sort_keys=True, indent=4)
 
 if __name__ == "__main__":
-    run_script(config.SITEMAP_FILE_NAME)
+    run_script(SITEMAP_FILE_NAME)
