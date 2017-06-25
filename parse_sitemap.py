@@ -103,9 +103,9 @@ def parse_sitemap(sitemap_text):
 
     return parse_sitemap_node_codes(root)
 
-def get_sitemap():
+def get_sitemap(api=MediaWikiAPI()):
     """Returns the sitemap as a JSON object."""
-    return parse_sitemap(MediaWikiAPI().get_content(SITEMAP_ARTICLE_NAME))
+    return parse_sitemap(api.get_content(SITEMAP_ARTICLE_NAME))
 
 def run_script(json_file_name):
     """Parses the sitmap of MFNF and stores it into a JSON file."""
