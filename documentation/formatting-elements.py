@@ -49,12 +49,12 @@ plain_text = {"type": Format.PlainText, "contents": ""}
 # It was terminated either by a double line break (end of paragraph) or in the
 # means of a semantic block
 # contents:List[Dict]   all contained text elements
-text_line = {"type": Format.TextLine, "contents": {}}
+text_line = {"type": Format.TextLine, "contents": []}
 
 # A paragraph (a logical line of text separated by a double line break, but
 # also containing semantic elements)
 # contents:List[Dict]   a list of the text objects and semantic elements the
-# paragraph is made of
+#                       paragraph is made of
 paragraph = {"type": Format.Paragraph, "contents": []} 
 
 # A heading
@@ -88,7 +88,7 @@ unordered_list = {"type": Format.OrderedList, "contents": []}
 unordered_list = {"type": Format.OrderedList, "ordered": True, "contents": []}
 
 # A definition list
-# contents:List[Dict]   the list elements, each as a dict of:
+# contents:List[Dict]   the list elements, each as a Dict of:
 #   term:str                defined term as plain text
 #   definition:Dict         definition of the term as a TextLine
 complex_list = {"type": Format.DefinitionList, "contents": []}
@@ -122,7 +122,7 @@ file = {"type": Format.File, "file": "", "description": "", "thumbnail":
 # afterwards
 # widths:int            width for each single image
 # heights:int           height for each single image
-# contents:List[Dict]   elements of the gallery, each as a dict of:
+# contents:List[Dict]   elements of the gallery, each as a Dict of:
 #   file:str                name of the image file
 #   description:str         descriptive text (plain)
 file = {"type": Format.Gallery, "widhts": 500, "heights": 500, "contents": []}
@@ -170,3 +170,62 @@ warning = {"type": Format.Warning, "contents": {}}
 # title:Dict    the title of the proof as a TextLine
 # contents:Dict the proof as a TextLine
 proof = {"type": Format.Proof, "contents": {}}
+
+# An alternative proof
+# Must this be a separate template?
+# title:str     the title of the proof
+# contents:Dict the proof as a TextLine
+alternative_proof = {"type": Format.AlternativeProof, "title": {},
+                     "contents": {}}
+
+# A proof summary
+# title:str     the title of the proof
+# contents:Dict the proof as a TextLine
+proof_summary = {"type": Format.ProofSummary, "title": {},
+                 "contents": {}}
+
+# A solution to an exercise
+# title:str     the title of the solution
+# contents:Dict the solution as a TextLine
+solution = {"type": Format.Solution, "title": {},
+            "contents": {}}
+
+# A detailed explanation of a solution
+# title:str     the title of the solution explanation
+# contents:Dict the solution explanation as a TextLine
+solution_explanation = {"type": Format.SolutionExplanation, "title": {},
+                        "contents": {}}
+
+# A question
+# type:str      the question type ("Verständnisfrage") (optional)
+# answer:Dict   the answer as a TextLine
+# indent:bool   whether list answers should be indented
+question = {"type": Format.Question, "type": "", "answer": {}, "indent": True}
+
+# A step in a proof
+# name:str      the name of the proof step
+# target:Dict   what is proved in this step as a TextLine
+# contents:Dict the proof step as a TextLine
+proof_step = {"type": Format.ProofStep, "name": "", "target": {}, "contents": {}}
+
+# A case discrimination (e.g. in a proof)
+# contents:List[Dict]   the individual cases, each as Dict of
+#   case:Dict   what the case is as a TextLine
+#   proof:Dict  proof of the case as a TextLine
+case_discrimination = {"type": Format.CaseDiscrimination, "contents": []}
+
+# Inline math code (Tex)
+# contents:str  the Tex code
+math_inline = {"type": Format.MathInline, "contents": ""}
+
+# A piece of math code in its own paragraph
+# contents:str  the Tex code
+formula = {"type": Format.Formula, "contents": ""}
+
+# A reference to an anchor (e.g. next to a heading) or an exercise
+# page: str     the page to which is linked
+# anchor:str    the referenced anchor at the page
+# contents:str  the text displayed in place of the hyperlink
+#               for the print version, we might want to skip this and display a
+#               number, e.g. "Exercise 1.2.3"
+reference = {"type": Format.Reference, "page": "", "anchor": "", "contents": ""}
