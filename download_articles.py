@@ -8,6 +8,7 @@ import json
 import os
 import functools
 import gevent
+import gevent.monkey
 
 from api import MediaWikiAPI
 from parse_sitemap import get_sitemap
