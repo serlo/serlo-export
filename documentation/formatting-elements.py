@@ -72,7 +72,7 @@ bold = {"type": Format.Bold, "contents": ""}
 
 # Italic text
 # contents:str    text that should be displayed in italic
-bold = {"type": Format.Italic, "contents": ""}
+italic = {"type": Format.Italic, "contents": ""}
 
 # An unordered list
 # contents:List[Dict]   the list elements, each as a TextLine
@@ -80,18 +80,18 @@ unordered_list = {"type": Format.UnorderedList, "contents": []}
 
 # An ordered list
 # contents:List[Dict]   the list elements, each as a TextLine
-unordered_list = {"type": Format.OrderedList, "contents": []}
+ordered_list = {"type": Format.OrderedList, "contents": []}
 
 # A complex list (Vorlage)
 # ordererd:bool         Ordered list or not
 # contents:List[Dict]   the list elements, each as a TextLine
-unordered_list = {"type": Format.OrderedList, "ordered": True, "contents": []}
+complex_list = {"type": Format.ComplexList, "ordered": True, "contents": []}
 
 # A definition list
 # contents:List[Dict]   the list elements, each as a Dict of:
 #   term:str                defined term as plain text
 #   definition:Dict         definition of the term as a TextLine
-complex_list = {"type": Format.DefinitionList, "contents": []}
+definition_list = {"type": Format.DefinitionList, "contents": []}
 
 # An emphasized paragraph
 # OMITTED AS I COULD NOT FIND ANY IN THE WHOLE BOOK
