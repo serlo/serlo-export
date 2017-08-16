@@ -55,7 +55,7 @@ text_line = {"type": Format.TextLine, "contents": []}
 # also containing semantic elements)
 # contents:List[Dict]   a list of the text objects and semantic elements the
 #                       paragraph is made of
-paragraph = {"type": Format.Paragraph, "contents": []} 
+paragraph = {"type": Format.Paragraph, "contents": []}
 
 # A heading
 # Although it may only be at the start of a paragraph, we do not treat is
@@ -75,16 +75,16 @@ bold = {"type": Format.Bold, "contents": ""}
 bold = {"type": Format.Italic, "contents": ""}
 
 # An unordered list
-# contents:List[Dict]   the list elements, each as a TextLine 
+# contents:List[Dict]   the list elements, each as a TextLine
 unordered_list = {"type": Format.UnorderedList, "contents": []}
 
 # An ordered list
-# contents:List[Dict]   the list elements, each as a TextLine 
+# contents:List[Dict]   the list elements, each as a TextLine
 unordered_list = {"type": Format.OrderedList, "contents": []}
 
 # A complex list (Vorlage)
 # ordererd:bool         Ordered list or not
-# contents:List[Dict]   the list elements, each as a TextLine 
+# contents:List[Dict]   the list elements, each as a TextLine
 unordered_list = {"type": Format.OrderedList, "ordered": True, "contents": []}
 
 # A definition list
