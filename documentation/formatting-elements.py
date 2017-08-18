@@ -125,7 +125,7 @@ file = {"type": Format.File, "file": "", "description": "", "thumbnail":
 # contents:List[Dict]   elements of the gallery, each as a Dict of:
 #   file:str                name of the image file
 #   description:str         descriptive text (plain)
-file = {"type": Format.Gallery, "widhts": 500, "heights": 500, "contents": []}
+gallery = {"type": Format.Gallery, "widhts": 500, "heights": 500, "contents": []}
 
 # A definition
 # title:Dict    the defined term as a TextLine
