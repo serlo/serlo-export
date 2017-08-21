@@ -1,5 +1,5 @@
 from unittest import TestCase
-from mfnf.utils import remove_prefix, add_dict
+from mfnf.utils import add_dict, lookup, remove_prefix
 
 class TestUtilsFunctions(TestCase):
 
@@ -24,3 +24,18 @@ class TestUtilsFunctions(TestCase):
             # dict1 and dict2 didn't change during execution of add_dict()
             self.assertDictEqual(dict1, dict1_before)
             self.assertDictEqual(dict2, dict2_before)
+
+    def test_lookup(self):
+        obj = {"a": [23, 42], "b": { "e": [74] }, "c": True}
+
+        self.assertEqual(lookup(obj, "a", 0), 23)
+        self.assertEqual(lookup(obj, "b", "e", 0), 74)
+        self.assertEqual(lookup(obj, "c"), True)
+
+        self.assertDictEqual(lookup(obj), obj)
+        self.assertListEqual(lookup(obj, "a"), [23, 42])
+
+        self.assertIsNone(lookup(obj, 42))
+        self.assertIsNone(lookup(obj, "a", 42))
+        self.assertIsNone(lookup(obj, "c", "c"))
+        self.assertIsNone(lookup(obj, "b", "e", 0, 0))
