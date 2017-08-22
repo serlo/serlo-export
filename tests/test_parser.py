@@ -5,7 +5,7 @@ from mfnf.parser import HTML2JSONParser
 
 class TestHTML2JSONParser(TestCase):
     def test_html2json_parser(self):
-        with open("tests/html.spec.yml") as spec_file:
+        with open("docs/html.spec.yml") as spec_file:
             html_spec = yaml.load(spec_file)
 
         for spec in html_spec:
