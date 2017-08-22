@@ -24,7 +24,8 @@ class HTML2JSONParser(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         node = {"type": "element", "name": tag,
-                "attrs": dict(attrs), "children": []}
+                "attrs": add_dict(dict(attrs), {"type": "attrs"}),
+                "children": []}
 
         if self.__node_stack:
             self.__node_stack[-1]["children"].append(node)
