@@ -5,7 +5,7 @@ Copyright 2017 Stephan Kulla
 
 from abc import ABCMeta, abstractmethod
 from urllib.parse import quote
-from parser.utils import cached_function, stablehash
+from parser.utils import stablehash
 
 class MediaWikiAPI(metaclass=ABCMeta):
     """Interface for accessing content of a MediaWiki project."""
@@ -55,11 +55,9 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
         endpoint_url = "/".join([self._rest_api_url] + endpoint)
         return self.req.post(endpoint_url, data=data)
 
-    @cached_function
     def get_content(self, title):
         return self._index_call({"action": "raw", "title": title})
 
-    @cached_function
     def convert_text_to_html(self, title, text):
         endpoint = ["transform", "wikitext", "to", "html", quote(title)]
         data = {"title": title, "wikitext": text, "body_only": True}

@@ -2,7 +2,6 @@
 
 import hashlib
 import collections
-import shelve
 
 def lookup(obj, *path):
     """Lookups repeatedly the items in the list `path` of the object `obj`. In
@@ -51,9 +50,8 @@ def stablehash(obj):
             raise NotImplementedError()
 
 class CachedFunction:
-
-    def __init__(self, file_name):
-        self.db = shelve.open(file_name, "c", writeback=True)
+    def __init__(self, db):
+        self.db = db
 
     def __call__(self, func):
         def new_func(*args, **kwargs):
@@ -65,10 +63,7 @@ class CachedFunction:
                 result = func(*args, **kwargs)
 
                 self.db[key] = result
-                self.db.sync()
 
                 return result
 
         return new_func
-
-cached_function = CachedFunction(".cache.db")
