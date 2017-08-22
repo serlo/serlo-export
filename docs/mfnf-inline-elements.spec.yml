@@ -1,0 +1,2 @@
+- in: "Hello World"
+  out: { type: text, data: "Hello World" }
