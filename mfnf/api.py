@@ -13,12 +13,12 @@ class MediaWikiAPI(metaclass=ABCMeta):
     @abstractmethod
     def get_content(self, title):
         """Returns the content of the article with title `title`."""
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @abstractmethod
     def convert_text_to_html(self, title, text):
         """Converts MediaWiki code `text` into HTML representing it."""
-        raise NotImplementedError
+        raise NotImplementedError()
 
 class HTTPMediaWikiAPI(MediaWikiAPI):
     """Implements an API for content stored on a MediaWiki."""
