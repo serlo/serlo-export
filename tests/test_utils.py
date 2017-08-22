@@ -1,5 +1,5 @@
 from unittest import TestCase
-from mfnf.utils import add_dict, lookup, remove_prefix
+from parser.utils import add_dict, lookup, remove_prefix
 
 class TestUtilsFunctions(TestCase):
 
