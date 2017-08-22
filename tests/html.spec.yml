@@ -1,0 +1,56 @@
+- in: "abc"
+  out:
+    - type: text
+      data: abc
+
+- in: "<a></a>"
+  out:
+    - type: element
+      name: a
+      attrs: { type: attrs }
+      children: []
+
+- in: ""
+  out: []
+
+- in: "<b d1='42' d2='foo'></b>"
+  out:
+    - type: element
+      name: b
+      attrs:
+        type: attrs
+        d1: "42"
+        d2: foo
+      children: []
+
+- in: "<foo><bar a1='a2'/></foo>"
+  out:
+    - type: element
+      name: foo
+      attrs: { type: attrs }
+      children:
+        - type: element
+          name: bar
+          attrs: { type: attrs, a1: a2 }
+          children: []
+
+- in: "<foo a='1'>hello \n<bar>world</bar>.</foo><p>Test</p>"
+  out:
+    - type: element
+      name: foo
+      attrs:
+        type: attrs
+        a: "1"
+      children:
+        - { type: text, data: "hello" }
+        - type: element
+          attrs: { type: attrs }
+          name: bar
+          children:
+            - { type: text, data: "world" }
+        - { type: text, data: "." }
+    - type: element
+      name: p
+      attrs: { type: attrs }
+      children:
+        - { type: "text", data: "Test" }

@@ -22,16 +22,18 @@ class HTML2JSONParser(HTMLParser):
         self.__node_stack = []
         self.content = []
 
-    def handle_starttag(self, tag, attrs):
-        node = {"type": "element", "name": tag,
-                "attrs": add_dict(dict(attrs), {"type": "attrs"}),
-                "children": []}
-
+    def _append(self, node):
         if self.__node_stack:
             self.__node_stack[-1]["children"].append(node)
         else:
             self.content.append(node)
 
+    def handle_starttag(self, tag, attrs):
+        node = {"type": "element", "name": tag,
+                "attrs": add_dict(dict(attrs), {"type": "attrs"}),
+                "children": []}
+
+        self._append(node)
         self.__node_stack.append(node)
 
     def handle_endtag(self, tag):
@@ -44,11 +46,7 @@ class HTML2JSONParser(HTMLParser):
         data = data.strip()
 
         if data:
-            assert self.__node_stack, "HTML shall not start with text."
-
-            node = {"type": "text", "data": data}
-
-            self.__node_stack[-1]["children"].append(node)
+            self._append({"type": "text", "data": data})
 
     def error(self, message):
         raise AssertionError(message)
