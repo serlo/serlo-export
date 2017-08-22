@@ -7,10 +7,11 @@ import requests
 
 from parser.api import HTTPMediaWikiAPI
 from parser.parser import ArticleParser
-from parser.utils import CachedFunction, stablehash
+from parser.utils import CachedFunction
+from parser.sitemap import parse_sitemap
 
 # title of article which shall be converted to PDF
-ARTICLE = "Mathe für Nicht-Freaks: Ableitung und Differenzierbarkeit"
+SITEMAP_ARTICLE_NAME = "Mathe für Nicht-Freaks: Projekte/LMU Buchprojekte"
 
 def run_script():
     """Runs this script."""
@@ -27,14 +28,12 @@ def run_script():
                 return super().convert_text_to_html(title, text)
 
         api = CachedMediaWikiAPI(requests.Session())
-
         parser = ArticleParser(api=api)
 
-        article = {"type": "article", "title": ARTICLE}
+        sitemap = parse_sitemap(api.get_content(SITEMAP_ARTICLE_NAME))
+        sitemap = parser(sitemap)
 
-        article = parser(article)
-
-        print(json.dumps(article, indent=2))
+        print(json.dumps(sitemap, indent=2))
 
 if __name__ == "__main__":
     run_script()

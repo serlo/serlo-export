@@ -3,14 +3,9 @@
 Copyright 2017 Stephan Kulla
 """
 
-import json
 import re
 
-from api import MediaWikiAPI
-
-SITEMAP_ARTICLE_NAME = "Mathe für Nicht-Freaks: Projekte/LMU Buchprojekte"
-SITEMAP_FILE_NAME = "sitemap.json"
-SITEMAP_NODE_TYPES = ["mfnf_sitemap", "book", "chapter", "section"]
+SITEMAP_NODE_TYPES = ["mfnf_sitemap", "book", "chapter", "article"]
 SITEMAP_DELIMITER = "= Bücher ="
 
 def generate_sitemap_nodes(sitemap_text):
@@ -120,15 +115,3 @@ def parse_sitemap(sitemap_text):
         insert_node(root, node)
 
     return parse_sitemap_node_codes(root)
-
-def get_sitemap(api=MediaWikiAPI()):
-    """Returns the sitemap as a JSON object."""
-    return parse_sitemap(api.get_content(SITEMAP_ARTICLE_NAME))
-
-def run_script(json_file_name):
-    """Parses the sitmap of MFNF and stores it into a JSON file."""
-    with open(json_file_name, "w") as json_file:
-        json.dump(get_sitemap(), json_file, sort_keys=True, indent=4)
-
-if __name__ == "__main__":
-    run_script(SITEMAP_FILE_NAME)
