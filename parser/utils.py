@@ -15,7 +15,7 @@ def lookup(obj, *path):
             result = result[key]
 
         return result
-    except (IndexError, KeyError):
+    except (IndexError, KeyError, TypeError):
         return None
 
 def remove_prefix(text, prefix):
