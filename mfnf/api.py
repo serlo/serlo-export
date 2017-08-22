@@ -5,7 +5,7 @@ Copyright 2017 Stephan Kulla
 
 from abc import ABCMeta, abstractmethod
 from urllib.parse import quote
-from parser.utils import stablehash
+from mfnf.utils import stablehash
 
 class MediaWikiAPI(metaclass=ABCMeta):
     """Interface for accessing content of a MediaWiki project."""

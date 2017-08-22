@@ -3,9 +3,9 @@
 import json
 
 from html.parser import HTMLParser
-from parser.transformations import NodeTransformation, ChainedAction, Action, \
+from mfnf.transformations import NodeTransformation, ChainedAction, Action, \
     NodeTypeTransformation, DeleteTransformation, check
-from parser.utils import lookup, remove_prefix, add_dict
+from mfnf.utils import lookup, remove_prefix, add_dict
 
 TEMPLATE_SPEC = {
     "Definition": lambda x: x in ["definition"],

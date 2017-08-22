@@ -5,12 +5,11 @@ import shelve
 
 import requests
 
-from parser.api import HTTPMediaWikiAPI
-from parser.parser import ArticleParser
-from parser.utils import CachedFunction
-from parser.sitemap import parse_sitemap
-
-from export.latex import LatexExporter
+from mfnf.api import HTTPMediaWikiAPI
+from mfnf.parser import ArticleParser
+from mfnf.utils import CachedFunction
+from mfnf.sitemap import parse_sitemap
+from mfnf.latex import LatexExporter
 
 # title of article which shall be converted to PDF
 SITEMAP_ARTICLE_NAME = "Mathe für Nicht-Freaks: Projekte/LMU Buchprojekte"
