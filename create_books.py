@@ -1,7 +1,6 @@
 """Creates a PDF from an article of the project „Mathe für Nicht-Freaks“."""
 
 import os
-import json
 import shelve
 
 import requests
@@ -17,6 +16,7 @@ from export.latex import LatexExporter
 SITEMAP_ARTICLE_NAME = "Mathe für Nicht-Freaks: Projekte/LMU Buchprojekte"
 
 def create_book(book):
+    """Creates the LaTeX file of a book."""
     target = os.path.join("out", book["name"], book["name"] + ".tex")
 
     try:
@@ -33,6 +33,9 @@ def run_script():
         cached_function = CachedFunction(database)
 
         class CachedMediaWikiAPI(HTTPMediaWikiAPI):
+            """A version of the API where the main function calls are
+            cached."""
+
             @cached_function
             def get_content(self, title):
                 return super().get_content(title)
