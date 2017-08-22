@@ -1,0 +1,18 @@
+- in: hello world!
+  out:
+    - type: paragraph
+      children: [{ type: text, data: "hello world!" }]
+
+- in: |
+    foo bar
+
+    hello world
+
+    123 123 123
+  out:
+    - type: paragraph
+      children: [{ type: text, data: "foo bar" }]
+    - type: paragraph
+      children: [{ type: text, data: "hello world" }]
+    - type: paragraph
+      children: [{ type: text, data: "123 123 123" }]

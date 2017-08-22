@@ -101,17 +101,10 @@ class MediaWikiCodeParser(ChainedAction):
 
             return {"type": "template", "name": name, "params": params}
 
-class ArticleParser(ChainedAction):
-
-    class LoadArticleContent(NodeTypeTransformation):
-        """Loads the content of an article."""
-
-        def transform_article(self, article):
-            parser = MediaWikiCodeParser(api=self.api, title=article["title"])
-
-            content = parser(self.api.get_content(article["title"]))
-
-            return add_dict(article, {"content": content})
+class ArticleContentParser(ChainedAction):
+    class MediaWikiCode2HTML(Action):
+        def __call__(self, text):
+            return MediaWikiCodeParser(api=self.api, title=self.title)(text)
 
     class HandleLists(NodeTransformation):
         def transform_dict(self, obj):
@@ -195,3 +188,14 @@ class ArticleParser(ChainedAction):
             else:
                 return {"type": "notimplemnted",
                         "target": obj}
+
+class ArticleParser(ChainedAction):
+    class LoadArticleContent(NodeTypeTransformation):
+        """Loads the content of an article."""
+
+        def transform_article(self, article):
+            parser = ArticleContentParser(api=self.api, title=article["title"])
+
+            content = parser(self.api.get_content(article["title"]))
+
+            return add_dict(article, {"content": content})
