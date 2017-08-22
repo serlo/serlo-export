@@ -33,7 +33,7 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
         self.domain = domain
         self.req = req
 
-    def _stablehash_(self):
+    def _stablehash(self):
         return stablehash((self.__class__.__name__, self.domain))
 
     @property

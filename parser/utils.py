@@ -37,7 +37,7 @@ def sha256(text):
 def stablehash(obj):
     """Returns an unique hash of object `obj`."""
     try:
-        return obj._stablehash_()
+        return obj._stablehash()
     except AttributeError:
         if isinstance(obj, str):
             return sha256(obj)
