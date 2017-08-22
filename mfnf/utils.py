@@ -64,3 +64,12 @@ class CachedFunction:
                 return result
 
         return new_func
+
+def intersperse(elem, lst):
+    """Returns all elements of `lst` with `elem` inserted between each two of
+    them."""
+    it = iter(lst)
+    yield next(it)
+    for i in it:
+        yield(elem)
+        yield(i)

@@ -3,6 +3,8 @@
 Copyright 2017 Stephan Kulla
 """
 
+import urllib.request
+
 from abc import ABCMeta, abstractmethod
 from urllib.parse import quote
 from mfnf.utils import stablehash
@@ -19,6 +21,11 @@ class MediaWikiAPI(metaclass=ABCMeta):
     def convert_text_to_html(self, title, text):
         """Converts MediaWiki code `text` into HTML representing it."""
         raise NotImplementedError()
+
+    @abstractmethod
+    def download_image(self, image_url, image_path):
+        """Downloads image from `image_url` and stores it to `image_path`"""
+        raise NotImplementedError
 
 class HTTPMediaWikiAPI(MediaWikiAPI):
     """Implements an API for content stored on a MediaWiki."""
@@ -63,3 +70,6 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
         data = {"title": title, "wikitext": text, "body_only": True}
 
         return self._api_call(endpoint, data).text
+
+    def download_image(self, image_url, image_path):
+        urllib.request.urlretrieve(image_url, image_path)
