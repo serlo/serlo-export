@@ -191,7 +191,8 @@ class ArticleParser(ChainedAction):
                 return {"type": obj["name"], "children": self(obj["children"])}
             elif obj["name"] in ("h1", "h2", "h3", "h4"):
                 return {"type": "header",
-                        "depth": int(obj["name"][-1]),
+                        # Header begin with h2 in our project -> subtract 1
+                        "depth": int(obj["name"][-1])-1,
                         "children": self(obj["children"])}
             else:
                 return {"type": "notimplemnted",
