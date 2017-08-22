@@ -12,15 +12,12 @@ class TestHTML2JSONParser(TestCase):
 
     def test_html2json_parser(self):
         with open("docs/html.spec.yml") as spec_file:
-            html_spec = yaml.load(spec_file)
+            spec = yaml.load(spec_file)
 
-        for spec in html_spec:
-            html_text = spec["in"]
-            target_json = spec["out"]
-
-            with self.subTest(html_text=html_text):
+        for html, target_json in ((x["in"], x["out"]) for x in spec):
+            with self.subTest(html=html):
                 parser = HTML2JSONParser()
-                parser.feed(html_text)
+                parser.feed(html)
 
                 self.assertListEqual(parser.content, target_json)
 
