@@ -8,8 +8,10 @@ import re
 
 from api import MediaWikiAPI
 
-SITEMAP_ARTICLE_NAME = "Mathe für Nicht-Freaks: Sitemap"
+SITEMAP_ARTICLE_NAME = "Mathe für Nicht-Freaks: Projekte/LMU Buchprojekte"
 SITEMAP_FILE_NAME = "sitemap.json"
+SITEMAP_NODE_TYPES = ["mfnf_sitemap", "book", "chapter", "section"]
+SITEMAP_DELIMITER = "= Bücher ="
 
 def generate_sitemap_nodes(sitemap_text):
     """Generator for all node specifications in a sitemap source code. It
@@ -57,11 +59,11 @@ def insert_node(node, new_node):
 
 def parse_sitemap_node_codes(node):
     """Returns a new tree where the `code` attributes are parsed. The nodes of
-    the new tree contain a `name` and a `link` attribute. The `name` attribute
+    the new tree contain a `name` and a `title` attribute. The `name` attribute
     corresponds to the name of the node which shall be appear in the table of
-    contents. The `link` corresponds to the title of the Wikibooks page the
+    contents. The `title` corresponds to the title of the Wikibooks page the
     node points to. In case there is no article behind the node, the attribute
-    `link` is `None`.
+    `title` is `None`.
     """
 
     # Delete `{{Symbol|..%}}` at the end of the code
@@ -77,18 +79,32 @@ def parse_sitemap_node_codes(node):
     """, code, re.X)
 
     if match:
-        link = match.group(1)
+        title = match.group(1)
         name = match.group(2)
     else:
         name = code
-        link = None
+        title = None
 
-    return {
-        "link": link,
+    parsed_node = {
+        "title": title,
         "name": name,
         "children": [parse_sitemap_node_codes(x) for x in node["children"]]
     }
+    return add_sitemap_node_type(parsed_node)
 
+def add_sitemap_node_type(node, depth=0):
+    """Returns a new tree where each node is enriched by a `type` attribute,
+    which depends on its depth in the tree."""
+    title = node["title"]
+    name = node["name"]
+    children = node["children"]
+
+    return {
+        "title": title,
+        "name": name,
+        "type": SITEMAP_NODE_TYPES[depth],
+        "children": [add_sitemap_node_type(x, depth + 1) for x in children]
+    }
 
 def parse_sitemap(sitemap_text):
     """Parse the sitemap and returns a JSON object representing it.
@@ -98,7 +114,9 @@ def parse_sitemap(sitemap_text):
     """
     root = {"children":[], "depth":0, "code": "Mathe für Nicht-Freaks"}
 
-    for node in generate_sitemap_nodes(sitemap_text):
+    (introduction, separator, stripped_sitemap_text) = sitemap_text.partition(SITEMAP_DELIMITER)
+
+    for node in generate_sitemap_nodes(stripped_sitemap_text):
         insert_node(root, node)
 
     return parse_sitemap_node_codes(root)
