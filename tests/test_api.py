@@ -12,3 +12,8 @@ class TestHTTPMediaWikiAPI(TestCase):
         content = self.api.get_content("Mathe für Nicht-Freaks: Epsilon-Delta-Kriterium der Stetigkeit")
 
         self.assertTrue(content.startswith("{{#invoke:Mathe für Nicht-Freaks"))
+
+    def test_convert_text_to_html(self):
+        html = self.api.convert_text_to_html("Analysis", "Hello ''World''")
+
+        self.assertEqual(html, '<p id="mwAQ">Hello <i id="mwAg">World</i></p>')
