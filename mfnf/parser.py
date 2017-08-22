@@ -19,12 +19,12 @@ class HTML2JSONParser(HTMLParser):
     def __init__(self):
         super(HTML2JSONParser, self).__init__()
 
-        self.__node_stack = []
+        self._node_stack = []
         self.content = []
 
     def _append(self, node):
-        if self.__node_stack:
-            self.__node_stack[-1]["children"].append(node)
+        if self._node_stack:
+            self._node_stack[-1]["children"].append(node)
         else:
             self.content.append(node)
 
@@ -34,13 +34,13 @@ class HTML2JSONParser(HTMLParser):
                 "children": []}
 
         self._append(node)
-        self.__node_stack.append(node)
+        self._node_stack.append(node)
 
     def handle_endtag(self, tag):
-        assert self.__node_stack
-        assert self.__node_stack[-1]["name"] == tag
+        assert self._node_stack
+        assert self._node_stack[-1]["name"] == tag
 
-        self.__node_stack.pop()
+        self._node_stack.pop()
 
     def handle_data(self, data):
         data = data.strip()
