@@ -1,2 +1,15 @@
 - in: "Hello World"
   out: { type: text, data: "Hello World" }
+
+- in: "''Hello World''"
+  out:
+    type: i
+    children: [{ type: text, data: "Hello World" }]
+
+- in: "'''Hello World'''"
+  out:
+    type: b
+    children: [{ type: text, data: "Hello World" }]
+
+- in: "<math>x^2</math>"
+  out: { type: inlinemath, formula: "x^2" }
