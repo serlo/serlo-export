@@ -14,6 +14,16 @@
 - in: "<math>x^2</math>"
   out: { type: inlinemath, formula: "x^2" }
 
+- in: "<dfn>Hello World</dfn>"
+  out:
+    type: i
+    children: [{ type: text, data: "Hello World" }]
+
+- in: "<dfn title='bar'>Hello World</dfn>"
+  out:
+    type: i
+    children: [{ type: text, data: "Hello World" }]
+
 # === Invalid formating ===
 # The following MediaWiki code is invalid in the project
 # „Mathe für Nicht-Freaks“.
