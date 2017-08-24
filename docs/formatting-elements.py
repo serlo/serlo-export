@@ -5,12 +5,6 @@ from typing import List, Dict
 #   reuse chapter contents  -> task of parser
 #   CC-BY 4.0               -> no editing/hyperlinks on print pages
 #   review                  -> also impractible on print pages ;)
-
-# Plain text without format modifiers stored in attribute `data`
-TEXT = {"type": "text", "data": str}
-
-PARAGRAPH = {"type": "paragraph", "children": List[Dict]}
-
 HEADING = {
     "type": "header",
     "depth": int,
@@ -42,12 +36,6 @@ TABLE_CELL = {"type": "td", "children": List[Dict]}
 TABLE_HEADER_CELL = {"type": "th", "children": List[Dict]}
 
 TABLE = {"type": "table", "children": List[TABLE_ROW]}
-
-BOLD_TEXT = {"type": "b", "children": List[Dict]}
-
-ITALIC_TEXT = {"type": "i", "children": List[Dict]}
-
-INLINE_MATH = {"type": "inlinemath", "formula": str}
 
 DEFINITION_LIST = {...}
 
