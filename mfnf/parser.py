@@ -98,6 +98,7 @@ class MediaWikiCodeParser(ChainedAction):
             params = {k: v["wt"] for k, v in params.items()}
             params = {key: self.parse_parameter_value(name, key, value) \
                         for key, value in params.items()}
+            params["type"] = "template_parameters"
 
             return {"type": "template", "name": name, "params": params}
 
