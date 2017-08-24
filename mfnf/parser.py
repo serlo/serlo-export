@@ -1,12 +1,13 @@
 """Module defining a parser for MediaWiki code."""
 
 import json
+import re
 
 from itertools import count
 from html.parser import HTMLParser
 from mfnf.transformations import NodeTransformation, ChainedAction, Action, \
     NodeTypeTransformation, DeleteTransformation, check, NotInterested
-from mfnf.utils import lookup, remove_prefix, add_dict
+from mfnf.utils import lookup, remove_prefix, remove_suffix, add_dict
 
 TEMPLATE_SPEC = {
     "Definition": lambda x: x in ["definition"],
@@ -215,6 +216,17 @@ class ArticleContentParser(ChainedAction):
                 return {"type": "list",
                         "ordered": obj["params"].get("type", "") == "ol",
                         "children": obj["params"]["item_list"]}
+            if obj["name"] == "Formel":
+                formula = obj["params"]["1"].strip()
+                formula = re.match("<math>(.*)</math>", formula).group(1)
+                formula = formula.strip()
+
+                formula = remove_prefix(formula, "\\begin{align}")
+                formula = remove_suffix(formula, "\\end{align}")
+                formula = formula.strip()
+
+                return {"type": "equation",
+                        "formula": formula}
             else:
                 raise NotInterested()
 

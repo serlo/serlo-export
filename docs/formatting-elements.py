@@ -6,9 +6,6 @@ from typing import List, Dict
 #   CC-BY 4.0               -> no editing/hyperlinks on print pages
 #   review                  -> also impractible on print pages ;)
 
-# \begin{align} ... \end{align} in LaTeX
-EQUATION = {"type": "equation", "formula": str}
-
 DEFINITION_LIST = {...}
 
 GALLERY = {"type": "gallery", "widhts": int, "heights": int, "children": []}
