@@ -6,14 +6,6 @@ from typing import List, Dict
 #   CC-BY 4.0               -> no editing/hyperlinks on print pages
 #   review                  -> also impractible on print pages ;)
 
-IMAGE = {
-    "type": "image",
-    "caption": List[Dict],
-    "name": str,           # Name of image on Wikimedia Commons
-    "url": str,
-    "thumbnail": bool      # wether the image is included in thumbnail mode
-}
-
 # \begin{align} ... \end{align} in LaTeX
 EQUATION = {"type": "equation", "formula": str}
 

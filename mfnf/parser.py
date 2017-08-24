@@ -158,9 +158,10 @@ class ArticleContentParser(ChainedAction):
                 caption = []
 
             img = obj["children"][0]["children"][0]["attrs"]
+            name = remove_prefix(img["resource"], "./Datei:")
 
             return {"type": "image", "caption": self(caption),
-                    "name": img["resource"], "url": img["src"],
+                    "name": name, "url": img["src"],
                     "thumbnail": obj["attrs"]["typeof"] == "mw:Image/Thumb"}
 
     class HandleTable(NodeTransformation):

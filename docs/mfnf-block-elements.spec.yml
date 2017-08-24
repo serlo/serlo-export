@@ -167,3 +167,41 @@
         - - type: paragraph
             children: [{ type: text, data: "text3" }]
 
+# --- Images ---
+
+- in: "[[File:Foo.jpg|center|bar]]"
+  out:
+    - type: image
+      caption:
+        - { type: text, data: bar }
+      name: Foo.jpg
+      url: "//upload.wikimedia.org/wikipedia/commons/0/06/Foo.jpg"
+      thumbnail: False
+
+- in: "[[File:Foo.jpg|thumb|bar]]"
+  out:
+    - type: image
+      caption:
+        - { type: text, data: bar }
+      name: Foo.jpg
+      url: "//upload.wikimedia.org/wikipedia/commons/thumb/0/06/Foo.jpg/220px-Foo.jpg"
+      thumbnail: True
+
+- in: "[[File:Foo.jpg|thumb|50px|bar]]"
+  out:
+    - type: image
+      caption:
+        - { type: text, data: bar }
+      name: Foo.jpg
+      url: "//upload.wikimedia.org/wikipedia/commons/thumb/0/06/Foo.jpg/50px-Foo.jpg"
+      thumbnail: True
+
+
+- in: "[[File:Foo.jpg|center|50px|bar]]"
+  out:
+    - type: image
+      caption:
+        - { type: text, data: bar }
+      name: Foo.jpg
+      url: "//upload.wikimedia.org/wikipedia/commons/thumb/0/06/Foo.jpg/50px-Foo.jpg"
+      thumbnail: False
