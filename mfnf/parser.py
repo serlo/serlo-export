@@ -193,6 +193,14 @@ class ArticleContentParser(ChainedAction):
 
             return {"type": "inlinemath", "formula": formula}
 
+    class HandleWrongInlineMath(NodeTypeTransformation):
+        def transform_inlinemath(self, obj):
+            if "\\begin{align}" in obj["formula"]:
+                return {"type": "error",
+                        "message": "\\begin{align} not allowed in inline math"}
+            else:
+                raise NotInterested()
+
     class CleanupTemplateInclusion(DeleteTransformation):
         """The restoring of template definitions only replaces the top level
         HTML element. This step deletes the other ones."""
