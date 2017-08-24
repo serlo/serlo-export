@@ -231,13 +231,11 @@ class ArticleContentParser(ChainedAction):
                 raise NotInterested()
 
     class DeleteHeaderAndFooter(DeleteTransformation):
-
         def shall_delete_dict(self, obj):
             return lookup(obj, "type") == "template" \
                     and obj["name"].startswith("#invoke:")
 
     class FixNodeTypes(NodeTypeTransformation):
-
         def transform_element(self, obj):
             if obj["name"] == "p":
                 return {"type": "paragraph", "children": self(obj["children"])}
