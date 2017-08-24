@@ -1,5 +1,5 @@
 from unittest import TestCase
-from mfnf.utils import add_dict, lookup, remove_prefix
+from mfnf.utils import add_dict, lookup, remove_prefix, remove_suffix
 
 class TestUtilsFunctions(TestCase):
 
@@ -9,6 +9,13 @@ class TestUtilsFunctions(TestCase):
         self.assertEqual(remove_prefix("aa", "aaa"), "aa")
         self.assertEqual(remove_prefix("a 4 2", "a 4"), " 2")
         self.assertEqual(remove_prefix("", "a 4"), "")
+
+    def test_remove_suffix(self):
+        self.assertEqual(remove_suffix("aa", "a"), "a")
+        self.assertEqual(remove_suffix("aa", ""), "aa")
+        self.assertEqual(remove_suffix("aa", "aaa"), "aa")
+        self.assertEqual(remove_suffix("a 4 2", "4 2"), "a ")
+        self.assertEqual(remove_suffix("", "a 4"), "")
 
     def test_add_dict(self):
         for dict1, dict2, output in [
