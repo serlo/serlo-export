@@ -164,6 +164,15 @@ class ArticleContentParser(ChainedAction):
                     "name": name, "url": img["src"],
                     "thumbnail": obj["attrs"]["typeof"] == "mw:Image/Thumb"}
 
+    class HandleInlineFigures(NodeTransformation):
+        def transform_dict(self, obj):
+            check(obj, "type") == "element"
+            check(obj, "name") == "span"
+            check(obj, "attrs", "typeof") == "mw:Image"
+
+            return {"type": "error",
+                    "message": "Inline images are not allowed"}
+
     class HandleTable(NodeTransformation):
         def transform_dict(self, obj):
             check(obj, "type") == "element"

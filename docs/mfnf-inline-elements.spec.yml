@@ -13,3 +13,22 @@
 
 - in: "<math>x^2</math>"
   out: { type: inlinemath, formula: "x^2" }
+
+# === Invalid formating ===
+# The following MediaWiki code is invalid in the project
+# „Mathe für Nicht-Freaks“.
+
+- in: "[[File:Foo.jpg]]"
+  out:
+    type: error
+    message: "Inline images are not allowed"
+
+- in: "[[File:Foo.jpg|bar]]"
+  out:
+    type: error
+    message: "Inline images are not allowed"
+
+- in: "[[File:Foo.jpg|50px]]"
+  out:
+    type: error
+    message: "Inline images are not allowed"
