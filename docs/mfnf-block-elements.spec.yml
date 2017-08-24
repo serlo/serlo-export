@@ -40,26 +40,6 @@
       depth: 1
       children: [{ type: text, data: Heading }]
 
-- in: "==== Heading ===="
-  out:
-    - type: error
-      message: "Heading of depth 4 is not allowed"
-
-- in: "= Heading ="
-  out:
-    - type: error
-      message: "Heading of depth 1 is not allowed"
-
-- in: "===== Heading ====="
-  out:
-    - type: error
-      message: "Heading of depth 5 is not allowed"
-
-- in: "====== Heading ======"
-  out:
-    - type: error
-      message: "Heading of depth 6 is not allowed"
-
 # --- Tables ---
 
 - in: |
@@ -205,3 +185,29 @@
       name: Foo.jpg
       url: "//upload.wikimedia.org/wikipedia/commons/thumb/0/06/Foo.jpg/50px-Foo.jpg"
       thumbnail: False
+
+# === Invalid formats ===
+# The following formats are valid MediaWiki code but are forbidden in the
+# project „Mathe für Nicht-Freaks“.
+
+# --- Headings ---
+
+- in: "==== Heading ===="
+  out:
+    - type: error
+      message: "Heading of depth 4 is not allowed"
+
+- in: "= Heading ="
+  out:
+    - type: error
+      message: "Heading of depth 1 is not allowed"
+
+- in: "===== Heading ====="
+  out:
+    - type: error
+      message: "Heading of depth 5 is not allowed"
+
+- in: "====== Heading ======"
+  out:
+    - type: error
+      message: "Heading of depth 6 is not allowed"
