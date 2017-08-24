@@ -2,15 +2,21 @@
 
 import json
 
+from itertools import count
 from html.parser import HTMLParser
 from mfnf.transformations import NodeTransformation, ChainedAction, Action, \
-    NodeTypeTransformation, DeleteTransformation, check
+    NodeTypeTransformation, DeleteTransformation, check, NotInterested
 from mfnf.utils import lookup, remove_prefix, add_dict
 
 TEMPLATE_SPEC = {
     "Definition": lambda x: x in ["definition"],
     "Warnung": lambda x: x in ["1"],
-    "Aufgabe": lambda x: x in ["aufgabe", "lösung", "beweis"]
+    "Aufgabe": lambda x: x in ["aufgabe", "lösung", "beweis"],
+    "Liste": lambda x: x.startswith("item")
+}
+
+TEMPLATE_LIST_PARAMS = {
+    "Liste": ["item"]
 }
 
 class HTML2JSONParser(HTMLParser):
@@ -106,6 +112,26 @@ class ArticleContentParser(ChainedAction):
         def __call__(self, text):
             return MediaWikiCodeParser(api=self.api, title=self.title)(text)
 
+    class MergeListParametersInTemplates(NodeTypeTransformation):
+        def transform_template(self, obj):
+            if obj["name"] in TEMPLATE_LIST_PARAMS:
+                params = obj["params"].copy()
+
+                for param_prefix in TEMPLATE_LIST_PARAMS[obj["name"]]:
+                    result = []
+
+                    for n in count(1):
+                        try:
+                            result.append(params.pop(param_prefix + str(n)))
+                        except KeyError:
+                            break
+
+                    params[param_prefix + "_list"] = result
+
+                return add_dict(obj, {"params": params})
+            else:
+                raise NotInterested()
+
     class HandleLists(NodeTransformation):
         def transform_dict(self, obj):
             check(obj, "type") == "element"
@@ -164,6 +190,15 @@ class ArticleContentParser(ChainedAction):
         #def shall_delete_dict(self, obj):
         #    return lookup(obj, "type") == "element" \
         #            and lookup(obj, "attrs", "about") != None
+
+    class HandleTemplates(NodeTypeTransformation):
+        def transform_template(self, obj):
+            if obj["name"] == "Liste":
+                return {"type": "list",
+                        "ordered": obj["params"].get("type", "") == "ol",
+                        "children": obj["params"]["item_list"]}
+            else:
+                raise NotInterested()
 
     class DeleteHeaderAndFooter(DeleteTransformation):
 

@@ -6,12 +6,6 @@ from typing import List, Dict
 #   CC-BY 4.0               -> no editing/hyperlinks on print pages
 #   review                  -> also impractible on print pages ;)
 
-LIST = {
-    "type": "list",
-    "ordered": bool,
-    "children": List[Dict]
-}
-
 IMAGE = {
     "type": "image",
     "caption": List[Dict],

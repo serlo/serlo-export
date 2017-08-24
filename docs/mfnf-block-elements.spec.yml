@@ -131,3 +131,39 @@
         - [{ type: text, data: "item1" }]
         - [{ type: text, data: "item2" }]
         - [{ type: text, data: "item3" }]
+
+- in: |
+    {{Liste
+     |item1=text1
+     |item2=text2
+     |item3=text3
+    }}
+  out:
+    - type: list
+      ordered: false
+      children:
+        - - type: paragraph
+            children: [{ type: text, data: "text1" }]
+        - - type: paragraph
+            children: [{ type: text, data: "text2" }]
+        - - type: paragraph
+            children: [{ type: text, data: "text3" }]
+
+- in: |
+    {{Liste
+     |type=ol
+     |item1=text1
+     |item2=text2
+     |item3=text3
+    }}
+  out:
+    - type: list
+      ordered: true
+      children:
+        - - type: paragraph
+            children: [{ type: text, data: "text1" }]
+        - - type: paragraph
+            children: [{ type: text, data: "text2" }]
+        - - type: paragraph
+            children: [{ type: text, data: "text3" }]
+
