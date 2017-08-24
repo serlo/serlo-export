@@ -19,7 +19,7 @@ class TestHTML2JSONParser(TestCase):
                 parser = HTML2JSONParser()
                 parser.feed(html)
 
-                self.assertListEqual(parser.content, target_json)
+                self.assertListEqual(parser.content, target_json, msg=html)
 
     def test_parsing_block_elements(self):
         with open("docs/mfnf-block-elements.spec.yml") as spec_file:
@@ -29,7 +29,7 @@ class TestHTML2JSONParser(TestCase):
             with self.subTest(text=text):
                 parser = ArticleContentParser(api=self.api, title="Foo")
 
-                self.assertListEqual(parser(text), target)
+                self.assertListEqual(parser(text), target, msg=text)
 
     def test_parsing_inline_elements(self):
         with open("docs/mfnf-inline-elements.spec.yml") as spec_file:
@@ -41,4 +41,4 @@ class TestHTML2JSONParser(TestCase):
 
                 target = [{"type": "paragraph", "children": [target]}]
 
-                self.assertListEqual(parser(text), target)
+                self.assertListEqual(parser(text), target, msg=text)
