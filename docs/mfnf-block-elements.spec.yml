@@ -21,12 +21,6 @@
 
 # --- Headings ---
 
-- in: "= Heading ="
-  out:
-    - type: header
-      depth: 0
-      children: [{ type: text, data: Heading }]
-
 - in: "== Heading =="
   out:
     - type: header
@@ -43,6 +37,11 @@
   out:
     - type: error
       message: "Heading of depth 4 is not allowed"
+
+- in: "= Heading ="
+  out:
+    - type: error
+      message: "Heading of depth 1 is not allowed"
 
 - in: "===== Heading ====="
   out:
