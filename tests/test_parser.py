@@ -26,17 +26,19 @@ class TestHTML2JSONParser(TestCase):
             spec = yaml.load(spec_file)
 
         for text, target in ((x["in"], x["out"]) for x in spec):
-            parser = ArticleContentParser(api=self.api, title="Foo")
+            with self.subTest(text=text):
+                parser = ArticleContentParser(api=self.api, title="Foo")
 
-            self.assertListEqual(parser(text), target)
+                self.assertListEqual(parser(text), target)
 
     def test_parsing_inline_elements(self):
         with open("docs/mfnf-inline-elements.spec.yml") as spec_file:
             spec = yaml.load(spec_file)
 
         for text, target in ((x["in"], x["out"]) for x in spec):
-            parser = ArticleContentParser(api=self.api, title="Foo")
+            with self.subTest(text=text):
+                parser = ArticleContentParser(api=self.api, title="Foo")
 
-            target = [{"type": "paragraph", "children": [target]}]
+                target = [{"type": "paragraph", "children": [target]}]
 
-            self.assertListEqual(parser(text), target)
+                self.assertListEqual(parser(text), target)
