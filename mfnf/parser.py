@@ -180,11 +180,16 @@ class ArticleContentParser(ChainedAction):
                 return {"type": "i", "children": self(obj["children"])}
             elif obj["name"] in ("i", "b", "th", "tr", "td"):
                 return {"type": obj["name"], "children": self(obj["children"])}
-            elif obj["name"] in ("h1", "h2", "h3", "h4"):
+            elif obj["name"] in ("h1", "h2", "h3"):
                 return {"type": "header",
                         # Header begin with h2 in our project -> subtract 1
                         "depth": int(obj["name"][-1])-1,
                         "children": self(obj["children"])}
+            elif obj["name"] in ("h4", "h5", "h6"):
+                message = "Heading of depth {} is not allowed"
+
+                return {"type": "error",
+                        "message": message.format(int(obj["name"][-1]))}
             else:
                 return {"type": "notimplemnted",
                         "target": obj}

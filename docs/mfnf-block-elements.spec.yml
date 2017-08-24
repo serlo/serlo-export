@@ -19,6 +19,41 @@
     - type: paragraph
       children: [{ type: text, data: "123 123 123" }]
 
+# --- Headings ---
+
+- in: "= Heading ="
+  out:
+    - type: header
+      depth: 0
+      children: [{ type: text, data: Heading }]
+
+- in: "== Heading =="
+  out:
+    - type: header
+      depth: 1
+      children: [{ type: text, data: Heading }]
+
+- in: "=== Heading ==="
+  out:
+    - type: header
+      depth: 2
+      children: [{ type: text, data: Heading }]
+
+- in: "==== Heading ===="
+  out:
+    - type: error
+      message: "Heading of depth 4 is not allowed"
+
+- in: "===== Heading ====="
+  out:
+    - type: error
+      message: "Heading of depth 5 is not allowed"
+
+- in: "====== Heading ======"
+  out:
+    - type: error
+      message: "Heading of depth 6 is not allowed"
+
 # --- Tables ---
 
 - in: |

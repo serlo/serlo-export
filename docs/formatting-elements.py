@@ -5,12 +5,6 @@ from typing import List, Dict
 #   reuse chapter contents  -> task of parser
 #   CC-BY 4.0               -> no editing/hyperlinks on print pages
 #   review                  -> also impractible on print pages ;)
-HEADING = {
-    "type": "header",
-    "depth": int,
-    "anchor": str,
-    "children": List[Dict] # title of heading
-}
 
 LIST = {
     "type": "list",
