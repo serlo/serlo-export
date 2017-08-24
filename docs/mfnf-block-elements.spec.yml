@@ -105,3 +105,29 @@
               children: [{ type: text, data: "Bread" }]
             - type: td
               children: [{ type: text, data: "Pie" }]
+
+# --- Lists ---
+
+- in: |
+    * item1
+    * item2
+    * item3
+  out:
+    - type: list
+      ordered: false
+      children:
+        - [{ type: text, data: "item1" }]
+        - [{ type: text, data: "item2" }]
+        - [{ type: text, data: "item3" }]
+
+- in: |
+    # item1
+    # item2
+    # item3
+  out:
+    - type: list
+      ordered: true
+      children:
+        - [{ type: text, data: "item1" }]
+        - [{ type: text, data: "item2" }]
+        - [{ type: text, data: "item3" }]
