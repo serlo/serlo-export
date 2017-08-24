@@ -33,6 +33,13 @@
       depth: 2
       children: [{ type: text, data: Heading }]
 
+- in: "== Heading {{Anker|foo}} =="
+  out:
+    - type: header
+      anchor: foo
+      depth: 1
+      children: [{ type: text, data: Heading }]
+
 - in: "==== Heading ===="
   out:
     - type: error

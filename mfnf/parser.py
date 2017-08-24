@@ -194,6 +194,16 @@ class ArticleContentParser(ChainedAction):
                 return {"type": "notimplemnted",
                         "target": obj}
 
+    class HandleHeadingAnchors(NodeTypeTransformation):
+        def transform_header(self, obj):
+            check(obj, "children", -1, "type") == "template"
+            check(obj, "children", -1, "name") == "Anker"
+
+            heading = obj["children"][:-1]
+            anchor = obj["children"][-1]["params"]["1"]
+
+            return add_dict(obj, {"children": heading, "anchor": anchor})
+
 class ArticleParser(ChainedAction):
     class LoadArticleContent(NodeTypeTransformation):
         """Loads the content of an article."""
