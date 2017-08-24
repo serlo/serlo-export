@@ -1,3 +1,5 @@
+# --- Paragraphs ---
+
 - in: hello world!
   out:
     - type: paragraph
@@ -16,3 +18,49 @@
       children: [{ type: text, data: "hello world" }]
     - type: paragraph
       children: [{ type: text, data: "123 123 123" }]
+
+# --- Tables ---
+
+- in: |
+    {|
+    |  Orange || Apple
+    |-
+    |  Bread  || Pie
+    |}
+  out:
+    - type: table
+      children:
+        - type: tr
+          children:
+            - type: td
+              children: [{ type: text, data: "Orange" }]
+            - type: td
+              children: [{ type: text, data: "Apple" }]
+        - type: tr
+          children:
+            - type: td
+              children: [{ type: text, data: "Bread" }]
+            - type: td
+              children: [{ type: text, data: "Pie" }]
+
+- in: |
+    {|
+    !  Orange !! Apple
+    |-
+    |  Bread  || Pie
+    |}
+  out:
+    - type: table
+      children:
+        - type: tr
+          children:
+            - type: th
+              children: [{ type: text, data: "Orange" }]
+            - type: th
+              children: [{ type: text, data: "Apple" }]
+        - type: tr
+          children:
+            - type: td
+              children: [{ type: text, data: "Bread" }]
+            - type: td
+              children: [{ type: text, data: "Pie" }]

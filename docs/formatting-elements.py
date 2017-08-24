@@ -29,14 +29,6 @@ IMAGE = {
 # \begin{align} ... \end{align} in LaTeX
 EQUATION = {"type": "equation", "formula": str}
 
-TABLE_ROW = {"type": "tr", "children": List[Dict]}
-
-TABLE_CELL = {"type": "td", "children": List[Dict]}
-
-TABLE_HEADER_CELL = {"type": "th", "children": List[Dict]}
-
-TABLE = {"type": "table", "children": List[TABLE_ROW]}
-
 DEFINITION_LIST = {...}
 
 GALLERY = {"type": "gallery", "widhts": int, "heights": int, "children": []}
