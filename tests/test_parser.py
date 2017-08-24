@@ -9,6 +9,7 @@ class TestHTML2JSONParser(TestCase):
 
     def setUp(self):
         self.api = HTTPMediaWikiAPI(requests.Session())
+        self.maxDiff = None
 
     def test_html2json_parser(self):
         with open("docs/html.spec.yml") as spec_file:
