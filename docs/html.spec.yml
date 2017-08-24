@@ -7,7 +7,7 @@
   out:
     - type: element
       name: a
-      attrs: { type: attrs }
+      attrs: {}
       children: []
 
 - in: ""
@@ -18,7 +18,6 @@
     - type: element
       name: b
       attrs:
-        type: attrs
         d1: "42"
         d2: foo
       children: []
@@ -27,11 +26,11 @@
   out:
     - type: element
       name: foo
-      attrs: { type: attrs }
+      attrs: {}
       children:
         - type: element
           name: bar
-          attrs: { type: attrs, a1: a2 }
+          attrs: {a1: a2}
           children: []
 
 - in: "<foo a='1'>hello \n<bar>world</bar>.</foo><p>Test</p>"
@@ -39,18 +38,17 @@
     - type: element
       name: foo
       attrs:
-        type: attrs
         a: "1"
       children:
         - { type: text, data: "hello" }
         - type: element
-          attrs: { type: attrs }
+          attrs: {}
           name: bar
           children:
             - { type: text, data: "world" }
         - { type: text, data: "." }
     - type: element
       name: p
-      attrs: { type: attrs }
+      attrs: {}
       children:
         - { type: "text", data: "Test" }
