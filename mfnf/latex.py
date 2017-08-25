@@ -38,49 +38,49 @@ class LatexExporter:
         with open("mfnf/latex_template.tex", "r") as template:
             out.write(template.read())
 
-        out.write("\\title{" + book["name"].strip() + "}\n")
-        out.write("\\begin{document}")
+        out.write("\n\\title{" + book["name"].strip() + "}")
+        out.write("\n\n\\begin{document}")
 
         self(book["children"], out)
 
-        out.write("\\end{document}")
+        out.write("\n\\end{document}")
 
     def export_chapter(self, chapter, out):
         # TODO chapter -> part in all functions and dicts
-        out.write("\\part{" + chapter["name"] +"}\n")
+        out.write("\n\n\\part{" + chapter["name"] +"}")
         self(chapter["children"], out)
 
     def export_article(self, article, out):
-        out.write("\\chapter{" + article["name"] +"}\n")
+        out.write("\n\n\\chapter{" + article["name"] +"}")
         self(article["content"], out)
 
     def export_paragraph(self, paragraph, out):
-        self(paragraph["children"], out)
         out.write("\n\n")
+        self(paragraph["children"], out)
 
     def export_text(self, text, out):
         self(text["data"], out)
 
     def export_inlinemath(self, inlinemath, out):
-        out.write(" $")
+        out.write("$")
         self(inlinemath["formula"], out)
-        out.write("$ ")
+        out.write("$")
 
     def export_header(self, header, out):
         header_types = ["section", "subsection", "subsubsection", "paragraph"]
-        out.write("\\" + header_types[header["depth"]] + "{")
+        out.write("\n\n\\" + header_types[header["depth"]] + "{")
         self(header["children"], out)
-        out.write("}\n")
+        out.write("}")
 
     def export_i(self, i, out):
         out.write("\\textit{")
         self(i["children"], out)
-        out.write("}\n")
+        out.write("}")
 
     def export_b(self, b, out):
         out.write("\\textbf{")
         self(b["children"], out)
-        out.write("}\n")
+        out.write("}")
 
     def export_image(self, image, out):
         if image["name"].endswith(".gif"):
@@ -89,7 +89,9 @@ class LatexExporter:
             return
 
         if image["thumbnail"]:
-            out.write("\\begin{figure}\n")
+            out.write("\n\n\\begin{figure}\n")
+        else:
+            out.write("\n\n")
 
         image_name = image["name"].replace(".svg", ".png")
         image_file = os.path.join(self.directory, image_name)
@@ -97,27 +99,27 @@ class LatexExporter:
 
         self.api.download_image(image_url, image_file)
 
-        out.write("\\begin{center}\n")
-        out.write("\\includegraphics[width=0.5\\textwidth]{")
+        out.write("\\begin{center}")
+        out.write("\n\\includegraphics[width=0.5\\textwidth]{")
         out.write(os.path.basename(image_file))
-        out.write("}\n")
-        out.write("\\end{center}\n")
+        out.write("}")
+        out.write("\n\\end{center}")
 
         if image["thumbnail"]:
             out.write("\\caption{")
             self(image["caption"], out)
-            out.write("}\n")
-            out.write("\\end{figure}\n")
+            out.write("}")
+            out.write("\n\\end{figure}")
 
     def export_table(self, table, out):
         # TODO intermediate conversion
         ncolumns = len(table["children"][0]["children"])
-        out.write("\n\\begin{tabular}{" + ncolumns * 'c' + "} \\\\ \\toprule \n")
+        out.write("\n\n\\begin{tabular}{" + ncolumns * 'c' + "} \\\\ \\toprule \n")
         self(table["children"][0], out)
         out.write("\\midrule\n")
         self(table["children"][1:], out)
         out.write("\\bottomrule\n")
-        out.write("\\end{tabular}\n")
+        out.write("\\end{tabular}")
 
     def export_tr(self, tr, out):
         columns_with_delimiters = list(intersperse(" & ", tr["children"]))
