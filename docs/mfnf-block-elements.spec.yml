@@ -304,6 +304,66 @@
         - type: paragraph
           content: [{ type: text, data: "bar"}]
 
+- in: |
+    {{:Mathe für Nicht-Freaks: Vorlage:Beweis
+     |titel=foo
+     |beweis=bar
+    }}
+  out:
+    - type: proof
+      title: foo
+      proof:
+        - type: paragraph
+          content: [{ type: text, data: "bar"}]
+
+- in: |
+    {{:Mathe für Nicht-Freaks: Vorlage:Alternativer Beweis
+     |titel=foo
+     |beweis=bar
+    }}
+  out:
+    - type: alternative_proof
+      title: foo
+      alternative_proof:
+        - type: paragraph
+          content: [{ type: text, data: "bar"}]
+
+- in: |
+    {{:Mathe für Nicht-Freaks: Vorlage:Beweiszusammenfassung
+     |titel=foo
+     |zusammenfassung=bar
+    }}
+  out:
+    - type: proof_summary
+      title: foo
+      proof_summary:
+        - type: paragraph
+          content: [{ type: text, data: "bar"}]
+
+- in: |
+    {{:Mathe für Nicht-Freaks: Vorlage:Lösungsweg
+     |titel=foo
+     |lösungsweg=bar
+    }}
+  out:
+    - type: solution_process
+      title: foo
+      solution_process:
+        - type: paragraph
+          content: [{ type: text, data: "bar"}]
+
+- in: |
+    {{:Mathe für Nicht-Freaks: Vorlage:Lösung
+     |titel=foo
+     |lösung=bar
+    }}
+  out:
+    - type: solution
+      title: foo
+      solution:
+        - type: paragraph
+          content: [{ type: text, data: "bar"}]
+
 # --- Handling of Header and Footer ---
 
 - in: |

@@ -20,36 +20,6 @@ THEOREM = {
     "alternative_proof": List[Dict]
 }
 
-PROOF = {
-    "type": "proof",
-    "title": str,
-    "proof": List[Dict]
-}
-
-ALTERNATIVE_PROOF = {
-    "type": "alternative_proof",
-    "title": str,
-    "alternative_proof": List[Dict]
-}
-
-PROOF_SUMMARY = {
-    "type": "proof_summary",
-    "title": str,
-    "proof_summary": List[Dict]
-}
-
-SOLUTION_PROCESS = {
-    "type": "solution_process",
-    "title": str,
-    "solution_process": List[Dict]
-}
-
-SOLUTION = {
-    "type": "solution",
-    "title": str,
-    "solution": List[Dict]
-}
-
 EXERCISE = {
     "type": "exercise",
     "title": str,

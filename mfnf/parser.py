@@ -12,6 +12,11 @@ from mfnf.utils import lookup, remove_prefix, remove_suffix, add_dict
 TEMPLATE_SPEC = {
     "Definition": lambda x: x in ["definition"],
     "Beispiel": lambda x: x in ["beispiel"],
+    "Beweis": lambda x: x in ["beweis"],
+    "Alternativer Beweis": lambda x: x in ["beweis"],
+    "Beweiszusammenfassung": lambda x: x in ["zusammenfassung"],
+    "Lösungsweg": lambda x: x in ["lösungsweg"],
+    "Lösung": lambda x: x in ["lösung"],
     "Warnung": lambda x: x in ["1"],
     "Aufgabe": lambda x: x in ["aufgabe", "lösung", "beweis"],
     "Liste": lambda x: x.startswith("item")
@@ -22,10 +27,23 @@ TEMPLATE_LIST_PARAMS = {
 }
 
 BOXSPEC = [
-    ("definition", "Definition", {"title": "titel",
-                                  "definition": "definition"}),
-    ("example", "Beispiel", {"title": "titel",
-                             "example": "beispiel"}),
+    ("definition", "Definition",
+     {"title": "titel", "definition": "definition"}),
+
+    ("example", "Beispiel", {"title": "titel", "example": "beispiel"}),
+
+    ("solution", "Lösung", {"title": "titel", "solution": "lösung"}),
+
+    ("solution_process", "Lösungsweg",
+     {"title": "titel", "solution_process": "lösungsweg"}),
+
+    ("proof_summary", "Beweiszusammenfassung",
+     {"title": "titel", "proof_summary": "zusammenfassung"}),
+
+    ("alternative_proof", "Alternativer Beweis",
+     {"title": "titel", "alternative_proof": "beweis"}),
+
+    ("proof", "Beweis", {"title": "titel", "proof": "beweis"}),
 ]
 
 def parse_content(api, title, text):
