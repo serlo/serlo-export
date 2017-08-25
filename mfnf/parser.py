@@ -28,9 +28,9 @@ def parse_inline_content(api, title, text):
     """Parse MediaWiki code `text` in inline mode."""
     content = MediaWikiCodeParser(api=api, title=title)(text)
 
-    assert len(content) == 1
-    assert content[0]["type"] == "element"
-    assert content[0]["name"] == "p"
+    assert len(content) == 1, text
+    assert content[0]["type"] == "element", text
+    assert content[0]["name"] == "p", text
 
     return content[0]["children"]
 
