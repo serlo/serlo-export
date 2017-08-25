@@ -8,10 +8,6 @@ from typing import List, Dict
 
 DEFINITION_LIST = {...}
 
-GALLERY = {"type": "gallery", "widhts": int, "heights": int, "children": []}
-
-GALLERY_ITEM = {"type": "galleryitem" ...}
-
 DEFINITION = {"type": "defintion", "title": str, "definition": List[Dict]}
 
 EXAMPLE = {"type": "example", "title": str, "example": List[Dict]}
