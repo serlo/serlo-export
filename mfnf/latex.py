@@ -14,16 +14,13 @@ class LatexExporter:
         if isinstance(obj, str):
             self.export_str(obj, out)
         elif isinstance(obj, collections.abc.Sequence):
-            self.export_list(obj, out)
+            for element in obj:
+                self(element, out)
         elif isinstance(obj, collections.abc.Mapping):
             self.export_dict(obj, out)
 
     def export_str(self, text, out):
         out.write(text)
-
-    def export_list(self, lst, out):
-        for element in lst:
-            self(element, out)
 
     def export_dict(self, obj, out):
         try:
