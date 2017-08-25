@@ -6,19 +6,44 @@ from textwrap import dedent
 from mfnf.utils import intersperse
 
 class LatexExporter:
+    def __init__(self, api, directory):
+        self.api = api
+        self.directory = directory
+
+    def __call__(self, obj, out):
+        if isinstance(obj, str):
+            self.export_str(obj, out)
+        elif isinstance(obj, collections.abc.Sequence):
+            self.export_list(obj, out)
+        elif isinstance(obj, collections.abc.Mapping):
+            self.export_dict(obj, out)
+
+    def export_str(self, text, out):
+        out.write(text)
+
+    def export_list(self, lst, out):
+        for element in lst:
+            self(element, out)
+
+    def export_dict(self, obj, out):
+        try:
+            getattr(self, "export_" + obj["type"])(obj, out)
+        except AttributeError:
+            self.notimplemented(obj, out)
+
+    def notimplemented(self, obj, out):
+        print("Not Implemented:", obj["type"])
 
     def export_book(self, book, out):
         with open("mfnf/latex_template.tex", "r") as template:
             out.write(template.read())
 
         out.write("\\title{" + book["name"].strip() + "}\n")
-        out.write(dedent("""\
-            \\begin{document}
-        """))
+        out.write("\\begin{document}")
+
         self(book["children"], out)
-        out.write(dedent("""\
-            \\end{document}
-        """))
+
+        out.write("\\end{document}")
 
     def export_chapter(self, chapter, out):
         # TODO chapter -> part in all functions and dicts
@@ -100,31 +125,3 @@ class LatexExporter:
 
     def export_th(self, th, out):
         self(th["children"], out)
-
-    def export_str(self, text, out):
-        out.write(text)
-
-    def export_list(self, lst, out):
-        for element in lst:
-            self(element, out)
-
-    def notimplemented(self, obj, out):
-        print("Not Implemented:", obj["type"])
-
-    def export_dict(self, obj, out):
-        try:
-            getattr(self, "export_" + obj["type"])(obj, out)
-        except AttributeError:
-            self.notimplemented(obj, out)
-
-    def __call__(self, obj, out):
-        if isinstance(obj, str):
-            self.export_str(obj, out)
-        elif isinstance(obj, collections.abc.Sequence):
-            self.export_list(obj, out)
-        elif isinstance(obj, collections.abc.Mapping):
-            self.export_dict(obj, out)
-
-    def __init__(self, api, directory):
-        self.api = api
-        self.directory = directory
