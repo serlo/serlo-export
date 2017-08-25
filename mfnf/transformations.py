@@ -94,13 +94,27 @@ class Transformation(Action):
     the identity transformation. It returns a new copy of the given JSON
     object."""
 
+    def shall_delete(self, obj):
+        if isinstance(obj, Mapping):
+            return self.shall_delete_dict(obj)
+        elif isinstance(obj, Sequence):
+            return self.shall_delete_list(obj)
+        else:
+            return False
+
+    def shall_delete_dict(self, obj):
+        return False
+
+    def shall_delete_list(self, lst):
+        return False
+
     def act_on_dict(self, obj):
         """Transforms the dictionary `obj`."""
-        return {name: self(value) for name, value in obj.items()}
+        return {k: self(v) for k, v in obj.items() if not self.shall_delete(v)}
 
     def act_on_list(self, lst):
         """Transforms the list `lst`."""
-        return [self(element) for element in lst]
+        return [self(x) for x in lst if not self.shall_delete(x)]
 
     def __call__(self, obj):
         """Transforms the JSON object `obj`."""
@@ -144,25 +158,3 @@ class NodeTypeTransformation(NodeTransformation):
         """Default transformation for the case no suitable transformation was
         found."""
         raise NotInterested()
-
-class DeleteTransformation(Transformation):
-
-    def shall_delete(self, obj):
-        if isinstance(obj, Mapping):
-            return self.shall_delete_dict(obj)
-        elif isinstance(obj, Sequence):
-            return self.shall_delete_list(obj)
-        else:
-            return False
-
-    def shall_delete_dict(self, obj):
-        return False
-
-    def shall_delete_list(self, lst):
-        return False
-
-    def act_on_dict(self, obj):
-        return {k: self(v) for k, v in obj.items() if not self.shall_delete(v)}
-
-    def act_on_list(self, lst):
-        return [self(x) for x in lst if not self.shall_delete(x)]

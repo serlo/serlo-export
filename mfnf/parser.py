@@ -6,7 +6,7 @@ import re
 from itertools import count
 from html.parser import HTMLParser
 from mfnf.transformations import NodeTransformation, ChainedAction, Action, \
-    NodeTypeTransformation, DeleteTransformation, check, NotInterested
+    NodeTypeTransformation, check, NotInterested, Transformation
 from mfnf.utils import lookup, remove_prefix, remove_suffix, add_dict
 
 TEMPLATE_SPEC = {
@@ -269,7 +269,7 @@ class ArticleContentParser(ChainedAction):
             else:
                 raise NotInterested()
 
-    class CleanupTemplateInclusion(DeleteTransformation):
+    class CleanupTemplateInclusion(Transformation):
         """The restoring of template definitions only replaces the top level
         HTML element. This step deletes the other ones."""
 
@@ -297,7 +297,7 @@ class ArticleContentParser(ChainedAction):
             else:
                 raise NotInterested()
 
-    class DeleteHeaderAndFooter(DeleteTransformation):
+    class DeleteHeaderAndFooter(Transformation):
         def shall_delete_dict(self, obj):
             return lookup(obj, "type") == "template" \
                     and obj["name"].startswith("#invoke:")
