@@ -6,7 +6,7 @@ import re
 from itertools import count
 from html.parser import HTMLParser
 from mfnf.transformations import NodeTransformation, ChainedAction, Action, \
-    NodeTypeTransformation, check, NotInterested, Transformation
+    NodeTypeTransformation, check, NotInterested
 from mfnf.utils import lookup, remove_prefix, remove_suffix, add_dict
 
 TEMPLATE_SPEC = {
@@ -289,10 +289,12 @@ class ArticleContentParser(ChainedAction):
             else:
                 raise NotInterested()
 
-    class DeleteHeaderAndFooter(Transformation):
-        def shall_delete_dict(self, obj):
-            return lookup(obj, "type") == "template" \
-                    and obj["name"].startswith("#invoke:")
+    class DeleteHeaderAndFooter(NodeTypeTransformation):
+        def transform_template(self, obj):
+            if obj["name"].startswith("#invoke:"):
+                return None
+            else:
+                raise NotInterested()
 
     class FixNodeTypes(NodeTypeTransformation):
         def transform_element(self, obj):

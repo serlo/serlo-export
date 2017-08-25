@@ -94,27 +94,14 @@ class Transformation(Action):
     the identity transformation. It returns a new copy of the given JSON
     object."""
 
-    def shall_delete(self, obj):
-        if isinstance(obj, Mapping):
-            return self.shall_delete_dict(obj)
-        elif isinstance(obj, Sequence):
-            return self.shall_delete_list(obj)
-        else:
-            return False
-
-    def shall_delete_dict(self, obj):
-        return False
-
-    def shall_delete_list(self, lst):
-        return False
-
     def act_on_dict(self, obj):
         """Transforms the dictionary `obj`."""
-        return {k: self(v) for k, v in obj.items() if not self.shall_delete(v)}
+        return {k:v for k, v in ((x, self(y)) for x, y in obj.items()) \
+                if v != None}
 
     def act_on_list(self, lst):
         """Transforms the list `lst`."""
-        return [self(x) for x in lst if not self.shall_delete(x)]
+        return [y for y in (self(x) for x in lst) if y != None]
 
     def __call__(self, obj):
         """Transforms the JSON object `obj`."""
