@@ -31,6 +31,11 @@ class LatexExporter:
         except AttributeError:
             self.export_notimplemented({"target": obj}, out)
 
+    def export_equation(self, obj, out):
+        out.write("\n\n\\begin{align*}\n  ")
+        self(obj["formula"], out)
+        out.write("\n\\end{align*}")
+
     def export_error(self, obj, out):
         print("ERROR:", obj["message"])
         out.write("\n\n\\error{" + obj["message"] + "}\n\n")
