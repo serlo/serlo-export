@@ -119,9 +119,14 @@ class MediaWikiCodeParser(ChainedAction):
 
             return parser.content
 
-    class TemplateDeinclusion(NodeTransformation):
+    class TemplateDeinclusion(NodeTypeTransformation):
         """Replaces included MediaWiki templates with template
         specification."""
+
+        def __init__(self, **options):
+            super().__init__(**options)
+
+            self._template_ids = set()
 
         def parse_parameter_value(self, name, param_key, param_value):
             """Parses `param_value` in case `param_key` is a content
@@ -131,9 +136,13 @@ class MediaWikiCodeParser(ChainedAction):
             else:
                 return param_value
 
-        def transform_dict(self, obj):
-            check(obj, "type") == "element"
+        def transform_element(self, obj):
+            if lookup(obj, "attrs", "about") in self._template_ids:
+                return None
+
             check(obj, "attrs", "typeof") == "mw:Transclusion"
+
+            self._template_ids.add(obj["attrs"]["about"])
 
             template = json.loads(obj["attrs"]["data-mw"])
             template = template["parts"][0]["template"]

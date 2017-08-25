@@ -9,6 +9,7 @@ class TestHTML2JSONParser(TestCase):
 
     def setUp(self):
         self.api = HTTPMediaWikiAPI(requests.Session())
+        self.title = "Mathe für Nicht-Freaks: Analysis 1"
         self.maxDiff = None
 
     def test_html2json_parser(self):
@@ -28,7 +29,7 @@ class TestHTML2JSONParser(TestCase):
 
         for text, target in ((x["in"], x["out"]) for x in spec):
             with self.subTest(text=text):
-                parser = ArticleContentParser(api=self.api, title="Foo")
+                parser = ArticleContentParser(api=self.api, title=self.title)
 
                 self.assertListEqual(parser(text), target, msg=text)
 
@@ -38,7 +39,7 @@ class TestHTML2JSONParser(TestCase):
 
         for text, target in ((x["in"], x["out"]) for x in spec):
             with self.subTest(text=text):
-                parser = ArticleContentParser(api=self.api, title="Foo")
+                parser = ArticleContentParser(api=self.api, title=self.title)
 
                 target = [{"type": "paragraph", "children": [target]}]
 

@@ -241,6 +241,20 @@
             - { type: text, data: "bar " }
             - { type: inlinemath, formula: "x^2" }
 
+# --- Handling of Header and Footer ---
+
+- in: |
+    {{#invoke:Mathe für Nicht-Freaks/Seite|oben}}
+
+    Hello World
+
+    {{#invoke:Mathe für Nicht-Freaks/Seite|unten}}
+  out:
+    - type: paragraph
+      children:
+        - type: text
+          data: "Hello World"
+
 # === Invalid formats ===
 # The following formats are valid MediaWiki code but are forbidden in the
 # project „Mathe für Nicht-Freaks“.
