@@ -269,14 +269,6 @@ class ArticleContentParser(ChainedAction):
             else:
                 raise NotInterested()
 
-    class CleanupTemplateInclusion(Transformation):
-        """The restoring of template definitions only replaces the top level
-        HTML element. This step deletes the other ones."""
-
-        #def shall_delete_dict(self, obj):
-        #    return lookup(obj, "type") == "element" \
-        #            and lookup(obj, "attrs", "about") != None
-
     class HandleTemplates(NodeTypeTransformation):
         def transform_template(self, obj):
             if obj["name"] == "Liste":
