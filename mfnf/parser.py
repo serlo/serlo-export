@@ -325,7 +325,7 @@ class ArticleContentParser(ChainedAction):
                 return {"type": "error",
                         "message": message.format(int(obj["name"][-1]))}
             else:
-                return {"type": "notimplemnted",
+                return {"type": "notimplemented",
                         "target": obj}
 
     class HandleHeadingAnchors(NodeTypeTransformation):

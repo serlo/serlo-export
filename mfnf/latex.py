@@ -29,10 +29,18 @@ class LatexExporter:
         try:
             getattr(self, "export_" + obj["type"])(obj, out)
         except AttributeError:
-            self.notimplemented(obj, out)
+            self.export_notimplemented({"target": obj}, out)
 
-    def notimplemented(self, obj, out):
-        print("Not Implemented:", obj["type"])
+    def export_error(self, obj, out):
+        print("ERROR:", obj["message"])
+        out.write("\n\n\\error{" + obj["message"] + "}\n\n")
+
+    def export_todo(self, todo, out):
+        print("TODO:", todo)
+        out.write("\n\n\\todo{" + todo + "}\n\n")
+
+    def export_notimplemented(self, obj, out):
+        self.export_todo("`{}` not implemented".format(obj["target"]["type"]), out)
 
     def export_book(self, book, out):
         with open("mfnf/latex_template.tex", "r") as template:
