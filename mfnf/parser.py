@@ -161,7 +161,8 @@ class MediaWikiCodeParser(ChainedAction):
         def parse_gallery_item(self, text):
             try:
                 name, caption = text.split("|", 1)
-                caption = parse_inline_content(self.api, self.title, caption)
+                caption = parse_inline_content(self.api, self.title,
+                                               caption.strip())
 
                 return {"type": "galleryitem",
                         "name": name,
