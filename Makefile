@@ -10,7 +10,7 @@ all:
 
 .PHONY: test
 test:
-	nosetest3
+	nosetests3
 
 .PHONY: watch
 watch:
