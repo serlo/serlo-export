@@ -34,6 +34,14 @@ def parse_inline_content(api, title, text):
 
     return content[0]["children"]
 
+def text_rstrip(content):
+    """Applies `rstrip()` to parsed MediaWiki content."""
+    try:
+        return content[:-1] + [{"type": "text",
+                                "data": content[-1]["data"].rstrip()}]
+    except (IndexError, KeyError):
+        return content
+
 class HTML2JSONParser(HTMLParser):
     """Parser for converting HTML to JSON."""
 
@@ -42,8 +50,12 @@ class HTML2JSONParser(HTMLParser):
 
         self._node_stack = []
         self.content = []
+        self._last_node = None
+        self._is_first_node = True
 
     def _append(self, node):
+        self._last_node = node
+
         if self._node_stack:
             self._node_stack[-1]["children"].append(node)
         else:
@@ -56,17 +68,33 @@ class HTML2JSONParser(HTMLParser):
 
         self._append(node)
         self._node_stack.append(node)
+        self._is_first_node = True
 
     def handle_endtag(self, tag):
+        assert self._last_node
+
+        try:
+            self._last_node["data"] = self._last_node["data"].rstrip()
+        except KeyError:
+            pass
+
+        self._is_first_node = False
+
         assert self._node_stack
         assert self._node_stack[-1]["name"] == tag
 
         self._node_stack.pop()
 
     def handle_data(self, data):
-        data = data.strip()
+        if re.search("\S", data):
+            data = re.sub(r"(?<=\S\s)\s+$", "", data)
+            data = re.sub(r"^\s+(?=\s\S)", "", data)
+            data = re.sub(r"\s", " ", data)
 
-        if data:
+            if self._is_first_node:
+                data = data.lstrip()
+                self._is_first_node = False
+
             self._append({"type": "text", "data": data})
 
     def error(self, message):
@@ -301,7 +329,7 @@ class ArticleContentParser(ChainedAction):
             check(obj, "children", -1, "type") == "template"
             check(obj, "children", -1, "name") == "Anker"
 
-            heading = obj["children"][:-1]
+            heading = text_rstrip(obj["children"][:-1])
             anchor = obj["children"][-1]["params"]["1"]
 
             return add_dict(obj, {"children": heading, "anchor": anchor})

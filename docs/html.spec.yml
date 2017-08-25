@@ -33,14 +33,14 @@
           attrs: {a1: a2}
           children: []
 
-- in: "<foo a='1'>hello \n<bar>world</bar>.</foo><p>Test</p>"
+- in: "<foo a='1'>hello \n<bar>world</bar>.</foo><p>Test </p>"
   out:
     - type: element
       name: foo
       attrs:
         a: "1"
       children:
-        - { type: text, data: "hello" }
+        - { type: text, data: "hello " }
         - type: element
           attrs: {}
           name: bar
@@ -52,3 +52,37 @@
       attrs: {}
       children:
         - { type: "text", data: "Test" }
+
+- in: |
+    <a>
+      <img />
+      hello
+      <b> world</b>!
+    </a>  42  <c>
+      apples
+    </c>
+  out:
+    - type: element
+      name: a
+      attrs: {}
+      children:
+        - type: element
+          name: img
+          attrs: {}
+          children: []
+        - type: text
+          data: " hello "
+        - type: element
+          name: b
+          attrs: {}
+          children:
+            - { type: text, data: "world" }
+        - type: text
+          data: "!"
+    - type: text
+      data: " 42 "
+    - type: element
+      name: c
+      attrs: {}
+      children:
+        - { type: text, data: "apples" }

@@ -238,7 +238,7 @@
         - type: galleryitem
           name: Bar.svg
           caption:
-            - { type: text, data: "bar" }
+            - { type: text, data: "bar " }
             - { type: inlinemath, formula: "x^2" }
 
 # === Invalid formats ===
@@ -283,5 +283,3 @@
           name: Bar.svg
           caption:
             - { type: text, data: bar }
-
-
