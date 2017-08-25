@@ -96,9 +96,12 @@
     - type: list
       ordered: false
       children:
-        - [{ type: text, data: "item1" }]
-        - [{ type: text, data: "item2" }]
-        - [{ type: text, data: "item3" }]
+        - type: listitem
+          content: [{ type: text, data: "item1" }]
+        - type: listitem
+          content: [{ type: text, data: "item2" }]
+        - type: listitem
+          content: [{ type: text, data: "item3" }]
 
 - in: |
     # item1
@@ -108,9 +111,12 @@
     - type: list
       ordered: true
       children:
-        - [{ type: text, data: "item1" }]
-        - [{ type: text, data: "item2" }]
-        - [{ type: text, data: "item3" }]
+        - type: listitem
+          content: [{ type: text, data: "item1" }]
+        - type: listitem
+          content: [{ type: text, data: "item2" }]
+        - type: listitem
+          content: [{ type: text, data: "item3" }]
 
 - in: |
     {{Liste
@@ -122,12 +128,18 @@
     - type: list
       ordered: false
       children:
-        - - type: paragraph
-            children: [{ type: text, data: "text1" }]
-        - - type: paragraph
-            children: [{ type: text, data: "text2" }]
-        - - type: paragraph
-            children: [{ type: text, data: "text3" }]
+        - type: itemlist
+          content:
+            - type: paragraph
+              children: [{ type: text, data: "text1" }]
+        - type: itemlist
+          content:
+            - type: paragraph
+              children: [{ type: text, data: "text2" }]
+        - type: itemlist
+          content:
+            - type: paragraph
+              children: [{ type: text, data: "text3" }]
 
 - in: |
     {{Liste
@@ -140,12 +152,18 @@
     - type: list
       ordered: true
       children:
-        - - type: paragraph
-            children: [{ type: text, data: "text1" }]
-        - - type: paragraph
-            children: [{ type: text, data: "text2" }]
-        - - type: paragraph
-            children: [{ type: text, data: "text3" }]
+        - type: itemlist
+          content:
+            - type: paragraph
+              children: [{ type: text, data: "text1" }]
+        - type: itemlist
+          content:
+            - type: paragraph
+              children: [{ type: text, data: "text2" }]
+        - type: itemlist
+          content:
+            - type: paragraph
+              children: [{ type: text, data: "text3" }]
 
 # --- Images ---
 

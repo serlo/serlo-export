@@ -22,6 +22,16 @@ class LatexExporter:
     def export_str(self, text, out):
         out.write(text)
 
+    def export_listitem(self, obj, out):
+        out.write("\n\\item ")
+        self(obj["content"], out)
+
+    def export_list(self, obj, out):
+        list_type = "enumerate" if obj["ordered"] else "itemize"
+        out.write("\n\n\\begin{" + list_type + "}")
+        self(obj["children"], out)
+        out.write("\n\\end{" + list_type + "}")
+
     def export_dict(self, obj, out):
         try:
             getattr(self, "export_" + obj["type"])(obj, out)

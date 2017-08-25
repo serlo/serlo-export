@@ -215,7 +215,9 @@ class ArticleContentParser(ChainedAction):
             check(obj, "type") == "element"
             check(obj, "name").of("ul", "ol")
 
-            children = [self(li["children"]) for li in obj["children"]]
+            children = [{"type": "listitem",
+                         "content": self(li["children"])}
+                         for li in obj["children"]]
 
             return {"type": "list",
                     "ordered": obj["name"] == "ol",
@@ -284,7 +286,9 @@ class ArticleContentParser(ChainedAction):
             if obj["name"] == "Liste":
                 return {"type": "list",
                         "ordered": obj["params"].get("type", "") == "ol",
-                        "children": obj["params"]["item_list"]}
+                        "children": [{"type": "itemlist",
+                                      "content": x}
+                                      for x in obj["params"]["item_list"]]}
             if obj["name"] == "Formel":
                 formula = obj["params"]["1"].strip()
                 formula = re.match("<math>(.*)</math>", formula).group(1)
