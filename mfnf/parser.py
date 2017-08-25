@@ -11,6 +11,7 @@ from mfnf.utils import lookup, remove_prefix, remove_suffix, add_dict
 
 TEMPLATE_SPEC = {
     "Definition": lambda x: x in ["definition"],
+    "Beispiel": lambda x: x in ["beispiel"],
     "Warnung": lambda x: x in ["1"],
     "Aufgabe": lambda x: x in ["aufgabe", "lösung", "beweis"],
     "Liste": lambda x: x.startswith("item")
@@ -19,6 +20,13 @@ TEMPLATE_SPEC = {
 TEMPLATE_LIST_PARAMS = {
     "Liste": ["item"]
 }
+
+BOXSPEC = [
+    ("definition", "Definition", {"title": "titel",
+                                  "definition": "definition"}),
+    ("example", "Beispiel", {"title": "titel",
+                             "example": "beispiel"}),
+]
 
 def parse_content(api, title, text):
     """Parse MediaWiki code `text`."""
@@ -283,6 +291,13 @@ class ArticleContentParser(ChainedAction):
 
     class HandleTemplates(NodeTypeTransformation):
         def transform_template(self, obj):
+            for bname, tname, params in BOXSPEC:
+                if obj["name"] == tname:
+                    params = {k: obj["params"].get(v, None)
+                              for k, v in params.items()}
+
+                    return add_dict(params, {"type": bname})
+
             if obj["name"] == "Liste":
                 return {"type": "list",
                         "ordered": obj["params"].get("type", "") == "ol",

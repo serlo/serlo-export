@@ -259,6 +259,51 @@
             - { type: text, data: "bar " }
             - { type: inlinemath, formula: "x^2" }
 
+# --- Boxes ---
+- in: |
+    {{:Mathe für Nicht-Freaks: Vorlage:Definition
+     |titel=foo
+     |definition=bar
+    }}
+  out:
+    - type: definition
+      title: foo
+      definition:
+        - type: paragraph
+          content: [{ type: text, data: "bar"}]
+
+- in: |
+    {{:Mathe für Nicht-Freaks: Vorlage:Definition
+     |definition=bar
+    }}
+  out:
+    - type: definition
+      definition:
+        - type: paragraph
+          content: [{ type: text, data: "bar"}]
+
+- in: |
+    {{:Mathe für Nicht-Freaks: Vorlage:Beispiel
+     |titel=foo
+     |beispiel=bar
+    }}
+  out:
+    - type: example
+      title: foo
+      example:
+        - type: paragraph
+          content: [{ type: text, data: "bar"}]
+
+- in: |
+    {{:Mathe für Nicht-Freaks: Vorlage:Beispiel
+     |beispiel=bar
+    }}
+  out:
+    - type: example
+      example:
+        - type: paragraph
+          content: [{ type: text, data: "bar"}]
+
 # --- Handling of Header and Footer ---
 
 - in: |

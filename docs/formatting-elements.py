@@ -8,10 +8,6 @@ from typing import List, Dict
 
 DEFINITION_LIST = {...}
 
-DEFINITION = {"type": "defintion", "title": str, "definition": List[Dict]}
-
-EXAMPLE = {"type": "example", "title": str, "example": List[Dict]}
-
 THEOREM = {
     "type": "theorem",
     "title": str,
