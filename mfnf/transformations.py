@@ -161,12 +161,8 @@ class DeleteTransformation(Transformation):
     def shall_delete_list(self, lst):
         return False
 
-    def shall_delete_property(self, key):
-        return False
-
     def act_on_dict(self, obj):
-        return {k: self(v) for k, v in obj.items() if not self.shall_delete(v)\
-                    and not self.shall_delete_property(k)}
+        return {k: self(v) for k, v in obj.items() if not self.shall_delete(v)}
 
     def act_on_list(self, lst):
         return [self(x) for x in lst if not self.shall_delete(x)]
