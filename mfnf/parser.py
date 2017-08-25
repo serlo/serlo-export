@@ -20,6 +20,20 @@ TEMPLATE_LIST_PARAMS = {
     "Liste": ["item"]
 }
 
+def parse_content(api, title, text):
+    """Parse MediaWiki code `text`."""
+    return MediaWikiCodeParser(api=api, title=title)(text)
+
+def parse_inline_content(api, title, text):
+    """Parse MediaWiki code `text` in inline mode."""
+    content = MediaWikiCodeParser(api=api, title=title)(text)
+
+    assert len(content) == 1
+    assert content[0]["type"] == "element"
+    assert content[0]["name"] == "p"
+
+    return content[0]["children"]
+
 class HTML2JSONParser(HTMLParser):
     """Parser for converting HTML to JSON."""
 
@@ -85,9 +99,7 @@ class MediaWikiCodeParser(ChainedAction):
             """Parses `param_value` in case `param_key` is a content
             parameter."""
             if name in TEMPLATE_SPEC and TEMPLATE_SPEC[name](param_key):
-                parser = MediaWikiCodeParser(api=self.api, title=self.title)
-
-                return parser(param_value)
+                return parse_content(self.api, self.title, param_value)
             else:
                 return param_value
 
@@ -112,11 +124,11 @@ class MediaWikiCodeParser(ChainedAction):
         def parse_gallery_item(self, text):
             try:
                 name, caption = text.split("|", 1)
-                parser = MediaWikiCodeParser(api=self.api, title=self.title)
+                caption = parse_inline_content(self.api, self.title, caption)
 
                 return {"type": "galleryitem",
                         "name": name,
-                        "caption": parser(caption)[0]["children"]}
+                        "caption": caption}
             except ValueError:
                 return {"type": "error",
                         "message": "Gallery item needs a caption"}
@@ -138,7 +150,7 @@ class MediaWikiCodeParser(ChainedAction):
 class ArticleContentParser(ChainedAction):
     class MediaWikiCode2HTML(Action):
         def __call__(self, text):
-            return MediaWikiCodeParser(api=self.api, title=self.title)(text)
+            return parse_content(self.api, self.title, text)
 
     class MergeListParametersInTemplates(NodeTypeTransformation):
         def transform_template(self, obj):
