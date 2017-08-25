@@ -87,18 +87,22 @@ class LatexExporter:
             if not image["thumbnail"]:
                 print("Warning: ignored GIF", image["name"])
             return
+
         if image["thumbnail"]:
             out.write("\\begin{figure}\n")
-        image_file = os.path.join(self.directory,
-                                  image["name"].replace("./Datei:",
-                                                        "").replace("_",
-                                                                    "").replace("svg",
-                                                                                "png"))
+
+        image_name = image["name"].replace(".svg", ".png")
+        image_file = os.path.join(self.directory, image_name)
         image_url = "http:" + image["url"]
+
         self.api.download_image(image_url, image_file)
+
         out.write("\\begin{center}\n")
-        out.write("\\includegraphics[width=0.7\\textwidth]{" + image_file + "}\n")
+        out.write("\\includegraphics[width=0.5\\textwidth]{")
+        out.write(os.path.basename(image_file))
+        out.write("}\n")
         out.write("\\end{center}\n")
+
         if image["thumbnail"]:
             out.write("\\caption{")
             self(image["caption"], out)
