@@ -40,6 +40,6 @@ class TestParser(TestCase):
 
         for text, target in ((x["in"], x["out"]) for x in spec):
             with self.subTest(text=text):
-                target = [{"type": "paragraph", "children": [target]}]
+                target = [{"type": "paragraph", "content": [target]}]
 
                 self.assertListEqual(self.parse(text), target, msg=text)

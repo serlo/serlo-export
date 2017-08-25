@@ -29,7 +29,7 @@ class LatexExporter:
     def export_list(self, obj, out):
         list_type = "enumerate" if obj["ordered"] else "itemize"
         out.write("\n\n\\begin{" + list_type + "}")
-        self(obj["children"], out)
+        self(obj["items"], out)
         out.write("\n\\end{" + list_type + "}")
 
     def export_dict(self, obj, out):
@@ -76,7 +76,7 @@ class LatexExporter:
 
     def export_paragraph(self, paragraph, out):
         out.write("\n\n")
-        self(paragraph["children"], out)
+        self(paragraph["content"], out)
 
     def export_text(self, text, out):
         self(text["data"], out)
@@ -89,17 +89,17 @@ class LatexExporter:
     def export_header(self, header, out):
         header_types = ["section", "subsection", "subsubsection", "paragraph"]
         out.write("\n\n\\" + header_types[header["depth"]] + "{")
-        self(header["children"], out)
+        self(header["content"], out)
         out.write("}")
 
     def export_i(self, i, out):
         out.write("\\textit{")
-        self(i["children"], out)
+        self(i["content"], out)
         out.write("}")
 
     def export_b(self, b, out):
         out.write("\\textbf{")
-        self(b["children"], out)
+        self(b["content"], out)
         out.write("}")
 
     def export_image(self, image, out):
@@ -133,21 +133,21 @@ class LatexExporter:
 
     def export_table(self, table, out):
         # TODO intermediate conversion
-        ncolumns = len(table["children"][0]["children"])
+        ncolumns = len(table["content"][0]["content"])
         out.write("\n\n\\begin{tabular}{" + ncolumns * 'c' + "} \\\\ \\toprule \n")
-        self(table["children"][0], out)
+        self(table["content"][0], out)
         out.write("\\midrule\n")
-        self(table["children"][1:], out)
+        self(table["content"][1:], out)
         out.write("\\bottomrule\n")
         out.write("\\end{tabular}")
 
     def export_tr(self, tr, out):
-        columns_with_delimiters = list(intersperse(" & ", tr["children"]))
+        columns_with_delimiters = list(intersperse(" & ", tr["content"]))
         self(columns_with_delimiters, out)
         out.write(" \\\\ \n")
 
     def export_td(self, td, out):
-        self(td["children"], out)
+        self(td["content"], out)
 
     def export_th(self, th, out):
-        self(th["children"], out)
+        self(th["content"], out)

@@ -3,7 +3,7 @@
 - in: hello world!
   out:
     - type: paragraph
-      children: [{ type: text, data: "hello world!" }]
+      content: [{ type: text, data: "hello world!" }]
 
 - in: |
     foo bar
@@ -13,11 +13,11 @@
     123 123 123
   out:
     - type: paragraph
-      children: [{ type: text, data: "foo bar" }]
+      content: [{ type: text, data: "foo bar" }]
     - type: paragraph
-      children: [{ type: text, data: "hello world" }]
+      content: [{ type: text, data: "hello world" }]
     - type: paragraph
-      children: [{ type: text, data: "123 123 123" }]
+      content: [{ type: text, data: "123 123 123" }]
 
 # --- Headings ---
 
@@ -25,20 +25,20 @@
   out:
     - type: header
       depth: 1
-      children: [{ type: text, data: Heading }]
+      content: [{ type: text, data: Heading }]
 
 - in: "=== Heading ==="
   out:
     - type: header
       depth: 2
-      children: [{ type: text, data: Heading }]
+      content: [{ type: text, data: Heading }]
 
 - in: "== Heading {{Anker|foo}} =="
   out:
     - type: header
       anchor: foo
       depth: 1
-      children: [{ type: text, data: Heading }]
+      content: [{ type: text, data: Heading }]
 
 # --- Tables ---
 
@@ -50,19 +50,19 @@
     |}
   out:
     - type: table
-      children:
+      content:
         - type: tr
-          children:
+          content:
             - type: td
-              children: [{ type: text, data: "Orange" }]
+              content: [{ type: text, data: "Orange" }]
             - type: td
-              children: [{ type: text, data: "Apple" }]
+              content: [{ type: text, data: "Apple" }]
         - type: tr
-          children:
+          content:
             - type: td
-              children: [{ type: text, data: "Bread" }]
+              content: [{ type: text, data: "Bread" }]
             - type: td
-              children: [{ type: text, data: "Pie" }]
+              content: [{ type: text, data: "Pie" }]
 
 - in: |
     {|
@@ -72,19 +72,19 @@
     |}
   out:
     - type: table
-      children:
+      content:
         - type: tr
-          children:
+          content:
             - type: th
-              children: [{ type: text, data: "Orange" }]
+              content: [{ type: text, data: "Orange" }]
             - type: th
-              children: [{ type: text, data: "Apple" }]
+              content: [{ type: text, data: "Apple" }]
         - type: tr
-          children:
+          content:
             - type: td
-              children: [{ type: text, data: "Bread" }]
+              content: [{ type: text, data: "Bread" }]
             - type: td
-              children: [{ type: text, data: "Pie" }]
+              content: [{ type: text, data: "Pie" }]
 
 # --- Lists ---
 
@@ -95,7 +95,7 @@
   out:
     - type: list
       ordered: false
-      children:
+      items:
         - type: listitem
           content: [{ type: text, data: "item1" }]
         - type: listitem
@@ -110,7 +110,7 @@
   out:
     - type: list
       ordered: true
-      children:
+      items:
         - type: listitem
           content: [{ type: text, data: "item1" }]
         - type: listitem
@@ -127,19 +127,19 @@
   out:
     - type: list
       ordered: false
-      children:
+      items:
         - type: itemlist
           content:
             - type: paragraph
-              children: [{ type: text, data: "text1" }]
+              content: [{ type: text, data: "text1" }]
         - type: itemlist
           content:
             - type: paragraph
-              children: [{ type: text, data: "text2" }]
+              content: [{ type: text, data: "text2" }]
         - type: itemlist
           content:
             - type: paragraph
-              children: [{ type: text, data: "text3" }]
+              content: [{ type: text, data: "text3" }]
 
 - in: |
     {{Liste
@@ -151,19 +151,19 @@
   out:
     - type: list
       ordered: true
-      children:
+      items:
         - type: itemlist
           content:
             - type: paragraph
-              children: [{ type: text, data: "text1" }]
+              content: [{ type: text, data: "text1" }]
         - type: itemlist
           content:
             - type: paragraph
-              children: [{ type: text, data: "text2" }]
+              content: [{ type: text, data: "text2" }]
         - type: itemlist
           content:
             - type: paragraph
-              children: [{ type: text, data: "text3" }]
+              content: [{ type: text, data: "text3" }]
 
 # --- Images ---
 
@@ -227,7 +227,7 @@
     - type: gallery
       widths: 120
       heights: 120
-      children:
+      items:
         - type: galleryitem
           name: Foo.jpg
           caption:
@@ -246,12 +246,12 @@
     - type: gallery
       widths: 200
       heights: 200
-      children:
+      items:
         - type: galleryitem
           name: Foo.jpg
           caption:
             - type: i
-              children:
+              content:
                 - { type: text, data: foo }
         - type: galleryitem
           name: Bar.svg
@@ -269,7 +269,7 @@
     {{#invoke:Mathe für Nicht-Freaks/Seite|unten}}
   out:
     - type: paragraph
-      children:
+      content:
         - type: text
           data: "Hello World"
 
@@ -308,7 +308,7 @@
     - type: gallery
       widths: 200
       heights: 120
-      children:
+      items:
         - type: error
           message: "Gallery item needs a caption"
         - type: galleryitem

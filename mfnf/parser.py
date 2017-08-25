@@ -183,7 +183,7 @@ class MediaWikiCodeParser(ChainedAction):
             return {"type": "gallery",
                     "widths": int(data_mw["attrs"].get("widths", 120)),
                     "heights": int(data_mw["attrs"].get("heights", 120)),
-                    "children": items}
+                    "items": items}
 
 class ArticleContentParser(ChainedAction):
     class MediaWikiCode2HTML(Action):
@@ -215,13 +215,13 @@ class ArticleContentParser(ChainedAction):
             check(obj, "type") == "element"
             check(obj, "name").of("ul", "ol")
 
-            children = [{"type": "listitem",
+            items = [{"type": "listitem",
                          "content": self(li["children"])}
                          for li in obj["children"]]
 
             return {"type": "list",
                     "ordered": obj["name"] == "ol",
-                    "children": children}
+                    "items": items}
 
     class HandleFigures(NodeTransformation):
         def transform_dict(self, obj):
@@ -263,7 +263,7 @@ class ArticleContentParser(ChainedAction):
             if lookup(content, 0, "name") == "tbody":
                 content = content[0]["children"]
 
-            return {"type": "table", "children": self(content)}
+            return {"type": "table", "content": self(content)}
 
     class ConvertInlineMath(NodeTransformation):
         def transform_dict(self, obj):
@@ -286,9 +286,8 @@ class ArticleContentParser(ChainedAction):
             if obj["name"] == "Liste":
                 return {"type": "list",
                         "ordered": obj["params"].get("type", "") == "ol",
-                        "children": [{"type": "itemlist",
-                                      "content": x}
-                                      for x in obj["params"]["item_list"]]}
+                        "items": [{"type": "itemlist", "content": x}
+                                  for x in obj["params"]["item_list"]]}
             if obj["name"] == "Formel":
                 formula = obj["params"]["1"].strip()
                 formula = re.match("<math>(.*)</math>", formula).group(1)
@@ -313,16 +312,16 @@ class ArticleContentParser(ChainedAction):
     class FixNodeTypes(NodeTypeTransformation):
         def transform_element(self, obj):
             if obj["name"] == "p":
-                return {"type": "paragraph", "children": self(obj["children"])}
+                return {"type": "paragraph", "content": self(obj["children"])}
             elif obj["name"] == "dfn":
-                return {"type": "i", "children": self(obj["children"])}
+                return {"type": "i", "content": self(obj["children"])}
             elif obj["name"] in ("i", "b", "th", "tr", "td"):
-                return {"type": obj["name"], "children": self(obj["children"])}
+                return {"type": obj["name"], "content": self(obj["children"])}
             elif obj["name"] in ("h2", "h3"):
                 return {"type": "header",
                         # Header begin with h2 in our project -> subtract 1
                         "depth": int(obj["name"][-1])-1,
-                        "children": self(obj["children"])}
+                        "content": self(obj["children"])}
             elif obj["name"] in ("h1", "h4", "h5", "h6"):
                 message = "Heading of depth {} is not allowed"
 
@@ -334,13 +333,13 @@ class ArticleContentParser(ChainedAction):
 
     class HandleHeadingAnchors(NodeTypeTransformation):
         def transform_header(self, obj):
-            check(obj, "children", -1, "type") == "template"
-            check(obj, "children", -1, "name") == "Anker"
+            check(obj, "content", -1, "type") == "template"
+            check(obj, "content", -1, "name") == "Anker"
 
-            heading = text_rstrip(obj["children"][:-1])
-            anchor = obj["children"][-1]["params"]["1"]
+            heading = text_rstrip(obj["content"][:-1])
+            anchor = obj["content"][-1]["params"]["1"]
 
-            return add_dict(obj, {"children": heading, "anchor": anchor})
+            return add_dict(obj, {"content": heading, "anchor": anchor})
 
 class ArticleParser(ChainedAction):
     class LoadArticleContent(NodeTypeTransformation):
