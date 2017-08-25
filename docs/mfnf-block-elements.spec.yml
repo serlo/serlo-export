@@ -198,6 +198,49 @@
     - type: equation
       formula: x^2
 
+# --- Galleries ---
+
+- in: |
+    <gallery>
+    Foo.jpg|foo
+    Bar.svg|bar
+    </gallery>
+  out:
+    - type: gallery
+      widths: 120
+      heights: 120
+      children:
+        - type: galleryitem
+          name: Foo.jpg
+          caption:
+            - { type: text, data: foo }
+        - type: galleryitem
+          name: Bar.svg
+          caption:
+            - { type: text, data: bar }
+
+- in: |
+    <gallery widths=200 heights=200>
+    Foo.jpg|''foo''
+    Bar.svg|bar <math>x^2</math>
+    </gallery>
+  out:
+    - type: gallery
+      widths: 200
+      heights: 200
+      children:
+        - type: galleryitem
+          name: Foo.jpg
+          caption:
+            - type: i
+              children:
+                - { type: text, data: foo }
+        - type: galleryitem
+          name: Bar.svg
+          caption:
+            - { type: text, data: "bar" }
+            - { type: inlinemath, formula: "x^2" }
+
 # === Invalid formats ===
 # The following formats are valid MediaWiki code but are forbidden in the
 # project „Mathe für Nicht-Freaks“.
@@ -223,3 +266,22 @@
   out:
     - type: error
       message: "Heading of depth 6 is not allowed"
+
+- in: |
+    <gallery widths=200>
+    Foo.jpg
+    Bar.svg|bar
+    </gallery>
+  out:
+    - type: gallery
+      widths: 200
+      heights: 120
+      children:
+        - type: error
+          message: "Gallery item needs a caption"
+        - type: galleryitem
+          name: Bar.svg
+          caption:
+            - { type: text, data: bar }
+
+

@@ -108,6 +108,33 @@ class MediaWikiCodeParser(ChainedAction):
 
             return {"type": "template", "name": name, "params": params}
 
+    class HandleGalleries(NodeTransformation):
+        def parse_gallery_item(self, text):
+            try:
+                name, caption = text.split("|", 1)
+                parser = MediaWikiCodeParser(api=self.api, title=self.title)
+
+                return {"type": "galleryitem",
+                        "name": name,
+                        "caption": parser(caption)[0]["children"]}
+            except ValueError:
+                return {"type": "error",
+                        "message": "Gallery item needs a caption"}
+
+        def transform_dict(self, obj):
+            check(obj, "type") == "element"
+            check(obj, "name") == "ul"
+            check(obj, "attrs", "typeof") == "mw:Extension/gallery"
+
+            data_mw = json.loads(obj["attrs"]["data-mw"])
+            spec = data_mw["body"]["extsrc"].strip()
+            items = [self.parse_gallery_item(x) for x in spec.splitlines()]
+
+            return {"type": "gallery",
+                    "widths": int(data_mw["attrs"].get("widths", 120)),
+                    "heights": int(data_mw["attrs"].get("heights", 120)),
+                    "children": items}
+
 class ArticleContentParser(ChainedAction):
     class MediaWikiCode2HTML(Action):
         def __call__(self, text):
