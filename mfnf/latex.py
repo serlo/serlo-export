@@ -93,7 +93,7 @@ class LatexExporter:
         out.write("}")
 
     def export_i(self, i, out):
-        out.write("\\textit{")
+        out.write("\\emph{")
         self(i["content"], out)
         out.write("}")
 
