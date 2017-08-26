@@ -318,19 +318,19 @@
       example:
         - type: paragraph
           content: [{ type: text, data: "beispiel"}]
-      proof_summary:
+      proofsummary:
         - type: paragraph
           content: [{ type: text, data: "zusammenfassung"}]
       solution:
         - type: paragraph
           content: [{ type: text, data: "lösung"}]
-      solution_process:
+      solutionprocess:
         - type: paragraph
           content: [{ type: text, data: "lösungsweg"}]
       proof:
         - type: paragraph
           content: [{ type: text, data: "beweis"}]
-      alternative_proof:
+      alternativeproof:
         - type: paragraph
           content: [{ type: text, data: "alternativer beweis"}]
 
@@ -358,19 +358,19 @@
       example:
         - type: paragraph
           content: [{ type: text, data: "beispiel"}]
-      proof_summary:
+      proofsummary:
         - type: paragraph
           content: [{ type: text, data: "zusammenfassung"}]
       solution:
         - type: paragraph
           content: [{ type: text, data: "lösung"}]
-      solution_process:
+      solutionprocess:
         - type: paragraph
           content: [{ type: text, data: "lösungsweg"}]
       proof:
         - type: paragraph
           content: [{ type: text, data: "beweis"}]
-      alternative_proof:
+      alternativeproof:
         - type: paragraph
           content: [{ type: text, data: "alternativer beweis"}]
 
@@ -402,9 +402,9 @@
      |beweis=bar
     }}
   out:
-    - type: alternative_proof
+    - type: alternativeproof
       title: foo
-      alternative_proof:
+      alternativeproof:
         - type: paragraph
           content: [{ type: text, data: "bar"}]
 
@@ -414,9 +414,9 @@
      |zusammenfassung=bar
     }}
   out:
-    - type: proof_summary
+    - type: proofsummary
       title: foo
-      proof_summary:
+      proofsummary:
         - type: paragraph
           content: [{ type: text, data: "bar"}]
 
@@ -426,9 +426,9 @@
      |lösungsweg=bar
     }}
   out:
-    - type: solution_process
+    - type: solutionprocess
       title: foo
-      solution_process:
+      solutionprocess:
         - type: paragraph
           content: [{ type: text, data: "bar"}]
 
@@ -469,8 +469,8 @@
      |bar
     }}
   out:
-    - type: main_article
-      main_article:
+    - type: mainarticle
+      mainarticle:
         - type: paragraph
           content: [{ type: text, data: "bar"}]
 
@@ -482,7 +482,7 @@
     }}
   out:
     - type: question
-      question_type: Verständnisfrage
+      questiontype: Verständnisfrage
       question:
         - type: paragraph
           content: [{ type: text, data: "foo"}]
@@ -497,7 +497,7 @@
      |beweisschritt=beweisschritt
     }}
   out:
-    - type: proof_step
+    - type: proofstep
       name: foo
       target: [{ type: text, data: "ziel"}]
       proof:

@@ -47,14 +47,14 @@ BOXSPEC = [
 
     ("solution", "Lösung", {"title": "titel", "solution": "lösung"}),
 
-    ("solution_process", "Lösungsweg",
-     {"title": "titel", "solution_process": "lösungsweg"}),
+    ("solutionprocess", "Lösungsweg",
+     {"title": "titel", "solutionprocess": "lösungsweg"}),
 
-    ("proof_summary", "Beweiszusammenfassung",
-     {"title": "titel", "proof_summary": "zusammenfassung"}),
+    ("proofsummary", "Beweiszusammenfassung",
+     {"title": "titel", "proofsummary": "zusammenfassung"}),
 
-    ("alternative_proof", "Alternativer Beweis",
-     {"title": "titel", "alternative_proof": "beweis"}),
+    ("alternativeproof", "Alternativer Beweis",
+     {"title": "titel", "alternativeproof": "beweis"}),
 
     ("proof", "Beweis", {"title": "titel", "proof": "beweis"}),
 
@@ -62,25 +62,25 @@ BOXSPEC = [
 
     ("hint", "Hinweis", {"hint": "1"}),
 
-    ("main_article", "Hauptartikel", {"main_article": "1"}),
+    ("mainarticle", "Hauptartikel", {"mainarticle": "1"}),
 
     ("question", "Frage",
-        {"question": "frage", "answer": "antwort", "question_type": "typ"}),
+        {"question": "frage", "answer": "antwort", "questiontype": "typ"}),
 
-    ("proof_step", "Beweisschritt",
+    ("proofstep", "Beweisschritt",
         {"name": "name", "target": "ziel", "proof": "beweisschritt"}),
 
     ("theorem", "Satz",
      {"title": "titel", "theorem": "satz", "explanation": "erklärung",
-      "example": "beispiel", "proof_summary": "zusammenfassung",
-      "solution": "lösung", "solution_process": "lösungsweg",
-      "proof": "beweis", "alternative_proof": "beweis2"}),
+      "example": "beispiel", "proofsummary": "zusammenfassung",
+      "solution": "lösung", "solutionprocess": "lösungsweg",
+      "proof": "beweis", "alternativeproof": "beweis2"}),
 
     ("exercise", "Aufgabe",
      {"title": "titel", "exercise": "aufgabe", "explanation": "erklärung",
-      "example": "beispiel", "proof_summary": "zusammenfassung",
-      "solution": "lösung", "solution_process": "lösungsweg",
-      "proof": "beweis", "alternative_proof": "beweis2"}),
+      "example": "beispiel", "proofsummary": "zusammenfassung",
+      "solution": "lösung", "solutionprocess": "lösungsweg",
+      "proof": "beweis", "alternativeproof": "beweis2"}),
 ]
 
 def parse_content(api, title, text):
