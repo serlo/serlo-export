@@ -19,12 +19,14 @@ TEMPLATE_SPEC = {
     "Lösung": lambda x: x in ["lösung"],
     "Warnung": lambda x: x in ["1"],
     "Hinweis": lambda x: x in ["1"],
+    "Hauptartikel": lambda x: x in ["1"],
+    "Frage": lambda x: x in ["frage", "antwort"],
     "Aufgabe": lambda x: x in ["aufgabe", "erklärung", "beispiel",
                                "zusammenfassung", "lösung", "lösungsweg",
-                               "beweis", "beweis2" ],
+                               "beweis", "beweis2"],
     "Satz": lambda x: x in ["satz", "erklärung", "beispiel",
                             "zusammenfassung", "lösung", "lösungsweg",
-                            "beweis", "beweis2" ],
+                            "beweis", "beweis2"],
     "Liste": lambda x: x.startswith("item")
 }
 
@@ -54,6 +56,11 @@ BOXSPEC = [
     ("warning", "Warnung", {"warning": "1"}),
 
     ("hint", "Hinweis", {"hint": "1"}),
+
+    ("main_article", "Hauptartikel", {"main_article": "1"}),
+
+    ("question", "Frage",
+        {"question": "frage", "answer": "antwort", "question_type": "typ"}),
 
     ("theorem", "Satz",
      {"title": "titel", "theorem": "satz", "explanation": "erklärung",

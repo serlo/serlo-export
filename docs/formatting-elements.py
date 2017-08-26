@@ -8,12 +8,6 @@ from typing import List, Dict
 
 DEFINITION_LIST = {...}
 
-QUESTION = {
-    "type": "question",
-    "question": List[Dict],
-    "answer": List[Dict]
-}
-
 PROOF_STEP = {
     "type": "proof_step",
     "target": List[Dict],

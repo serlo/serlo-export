@@ -464,6 +464,32 @@
         - type: paragraph
           content: [{ type: text, data: "bar"}]
 
+- in: |
+    {{:Mathe für Nicht-Freaks: Vorlage:Hauptartikel
+     |bar
+    }}
+  out:
+    - type: main_article
+      main_article:
+        - type: paragraph
+          content: [{ type: text, data: "bar"}]
+
+- in: |
+    {{:Mathe für Nicht-Freaks: Vorlage:Frage
+     |typ=Verständnisfrage
+     |frage=foo
+     |antwort=bar
+    }}
+  out:
+    - type: question
+      question_type: Verständnisfrage
+      question:
+        - type: paragraph
+          content: [{ type: text, data: "foo"}]
+      answer:
+        - type: paragraph
+          content: [{ type: text, data: "bar"}]
+
 # --- Handling of Header and Footer ---
 
 - in: |
