@@ -295,6 +295,86 @@
           content: [{ type: text, data: "bar"}]
 
 - in: |
+    {{:Mathe für Nicht-Freaks: Vorlage:Satz
+     |titel=foo
+     |satz=satz
+     |erklärung=erklärung
+     |beispiel=beispiel
+     |zusammenfassung=zusammenfassung
+     |lösung=lösung
+     |lösungsweg=lösungsweg
+     |beweis=beweis
+     |beweis2=alternativer beweis
+    }}
+  out:
+    - type: theorem
+      title: foo
+      theorem:
+        - type: paragraph
+          content: [{ type: text, data: "satz"}]
+      explanation:
+        - type: paragraph
+          content: [{ type: text, data: "erklärung"}]
+      example:
+        - type: paragraph
+          content: [{ type: text, data: "beispiel"}]
+      proof_summary:
+        - type: paragraph
+          content: [{ type: text, data: "zusammenfassung"}]
+      solution:
+        - type: paragraph
+          content: [{ type: text, data: "lösung"}]
+      solution_process:
+        - type: paragraph
+          content: [{ type: text, data: "lösungsweg"}]
+      proof:
+        - type: paragraph
+          content: [{ type: text, data: "beweis"}]
+      alternative_proof:
+        - type: paragraph
+          content: [{ type: text, data: "alternativer beweis"}]
+
+- in: |
+    {{:Mathe für Nicht-Freaks: Vorlage:Aufgabe
+     |titel=foo
+     |aufgabe=aufgabe
+     |erklärung=erklärung
+     |beispiel=beispiel
+     |zusammenfassung=zusammenfassung
+     |lösung=lösung
+     |lösungsweg=lösungsweg
+     |beweis=beweis
+     |beweis2=alternativer beweis
+    }}
+  out:
+    - type: exercise
+      title: foo
+      exercise:
+        - type: paragraph
+          content: [{ type: text, data: "aufgabe"}]
+      explanation:
+        - type: paragraph
+          content: [{ type: text, data: "erklärung"}]
+      example:
+        - type: paragraph
+          content: [{ type: text, data: "beispiel"}]
+      proof_summary:
+        - type: paragraph
+          content: [{ type: text, data: "zusammenfassung"}]
+      solution:
+        - type: paragraph
+          content: [{ type: text, data: "lösung"}]
+      solution_process:
+        - type: paragraph
+          content: [{ type: text, data: "lösungsweg"}]
+      proof:
+        - type: paragraph
+          content: [{ type: text, data: "beweis"}]
+      alternative_proof:
+        - type: paragraph
+          content: [{ type: text, data: "alternativer beweis"}]
+
+- in: |
     {{:Mathe für Nicht-Freaks: Vorlage:Beispiel
      |beispiel=bar
     }}

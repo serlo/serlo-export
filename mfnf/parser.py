@@ -19,7 +19,12 @@ TEMPLATE_SPEC = {
     "Lösung": lambda x: x in ["lösung"],
     "Warnung": lambda x: x in ["1"],
     "Hinweis": lambda x: x in ["1"],
-    "Aufgabe": lambda x: x in ["aufgabe", "lösung", "beweis"],
+    "Aufgabe": lambda x: x in ["aufgabe", "erklärung", "beispiel",
+                               "zusammenfassung", "lösung", "lösungsweg",
+                               "beweis", "beweis2" ],
+    "Satz": lambda x: x in ["satz", "erklärung", "beispiel",
+                            "zusammenfassung", "lösung", "lösungsweg",
+                            "beweis", "beweis2" ],
     "Liste": lambda x: x.startswith("item")
 }
 
@@ -49,6 +54,18 @@ BOXSPEC = [
     ("warning", "Warnung", {"warning": "1"}),
 
     ("hint", "Hinweis", {"hint": "1"}),
+
+    ("theorem", "Satz",
+     {"title": "titel", "theorem": "satz", "explanation": "erklärung",
+      "example": "beispiel", "proof_summary": "zusammenfassung",
+      "solution": "lösung", "solution_process": "lösungsweg",
+      "proof": "beweis", "alternative_proof": "beweis2"}),
+
+    ("exercise", "Aufgabe",
+     {"title": "titel", "exercise": "aufgabe", "explanation": "erklärung",
+      "example": "beispiel", "proof_summary": "zusammenfassung",
+      "solution": "lösung", "solution_process": "lösungsweg",
+      "proof": "beweis", "alternative_proof": "beweis2"}),
 ]
 
 def parse_content(api, title, text):

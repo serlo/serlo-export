@@ -8,30 +8,6 @@ from typing import List, Dict
 
 DEFINITION_LIST = {...}
 
-THEOREM = {
-    "type": "theorem",
-    "title": str,
-    "theorem": List[Dict],
-    "explanation": List[Dict],
-    "example": List[Dict],
-    "summary": List[Dict],
-    "solution_process": List[Dict]
-    "proof": List[Dict],
-    "alternative_proof": List[Dict]
-}
-
-EXERCISE = {
-    "type": "exercise",
-    "title": str,
-    "explanation": List[Dict],
-    "exercise": List[Dict],
-    "solution": List[Dict],
-    "summary": List[Dict],
-    "solution_process": List[Dict]
-    "proof": List[Dict],
-    "alternative_proof": List[Dict]
-}
-
 QUESTION = {
     "type": "question",
     "question": List[Dict],
