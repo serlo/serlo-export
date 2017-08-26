@@ -32,16 +32,6 @@ EXERCISE = {
     "alternative_proof": List[Dict]
 }
 
-HINT = {
-    "type": "hint",
-    "hint": List[Dict]
-}
-
-WARNING = {
-    "type": "warning",
-    "warning": List[Dict]
-}
-
 QUESTION = {
     "type": "question",
     "question": List[Dict],

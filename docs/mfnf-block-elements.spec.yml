@@ -364,6 +364,26 @@
         - type: paragraph
           content: [{ type: text, data: "bar"}]
 
+- in: |
+    {{:Mathe für Nicht-Freaks: Vorlage:Warnung
+     |bar
+    }}
+  out:
+    - type: warning
+      warning:
+        - type: paragraph
+          content: [{ type: text, data: "bar"}]
+
+- in: |
+    {{:Mathe für Nicht-Freaks: Vorlage:Hinweis
+     |bar
+    }}
+  out:
+    - type: hint
+      hint:
+        - type: paragraph
+          content: [{ type: text, data: "bar"}]
+
 # --- Handling of Header and Footer ---
 
 - in: |
