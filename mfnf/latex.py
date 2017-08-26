@@ -5,6 +5,11 @@ from textwrap import dedent
 
 from mfnf.utils import intersperse
 
+BOX_TEMPLATES = [
+    "definition", "theorem", "solution", "solutionprocess", "proof",
+    "proofsummary", "alternativeproof", "hint", "warning", "example"
+]
+
 class LatexExporter:
     def __init__(self, api, directory):
         self.api = api
@@ -34,7 +39,17 @@ class LatexExporter:
 
     def export_dict(self, obj, out):
         try:
-            getattr(self, "export_" + obj["type"])(obj, out)
+            node_type = obj["type"]
+
+            if node_type in BOX_TEMPLATES:
+                out.write("\n\n\\begin{" + node_type + "}")
+                if "title" in obj:
+                    out.write("[" + obj["title"] + "]")
+
+                self(obj[node_type], out)
+                out.write("\n\\end{" + node_type + "}")
+            else:
+                getattr(self, "export_" + node_type)(obj, out)
         except AttributeError:
             self.export_notimplemented({"target": obj}, out)
 

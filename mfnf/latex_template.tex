@@ -7,6 +7,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{amsthm}
 \usepackage{booktabs}
 \usepackage[space]{grffile}
 \usepackage[dvipsnames]{xcolor}
@@ -21,3 +22,17 @@
 
 \newcommand*{\todo}[1]{{\color{RedOrange} \footnotesize{TODO: #1}}}
 \newcommand*{\error}[1]{{\color{Red} \footnotesize{ERROR: #1}}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Satz}[chapter]
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{solution}{Lösung}[chapter]
+\newtheorem{solutionprocess}{Lösungsweg}[chapter]
+\newtheorem{proof}{Beweis}[chapter]
+\newtheorem{proofsummary}{Beweiszusammenfassung}[chapter]
+\newtheorem{alternativeproof}{Alternativer Beweis}[chapter]
+
+\theoremstyle{remark}
+\newtheorem{hint}{Hinweis}[chapter]
+\newtheorem{warning}{Warnung}[chapter]
+\newtheorem{example}{Beispiel}[chapter]
