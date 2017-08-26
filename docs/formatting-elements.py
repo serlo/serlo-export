@@ -8,13 +8,6 @@ from typing import List, Dict
 
 DEFINITION_LIST = {...}
 
-PROOF_STEP = {
-    "type": "proof_step",
-    "target": List[Dict],
-    "name": str,
-    "children": List[Dict]
-}
-
 CASE_DISCRIMINATION = {...}
 
 REFERENCE = {...}

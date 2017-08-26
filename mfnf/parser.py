@@ -17,6 +17,7 @@ TEMPLATE_SPEC = {
     "Beweiszusammenfassung": lambda x: x in ["zusammenfassung"],
     "Lösungsweg": lambda x: x in ["lösungsweg"],
     "Lösung": lambda x: x in ["lösung"],
+    "Beweisschritt": lambda x: x in ["beweisschritt"],
     "Warnung": lambda x: x in ["1"],
     "Hinweis": lambda x: x in ["1"],
     "Hauptartikel": lambda x: x in ["1"],
@@ -28,6 +29,10 @@ TEMPLATE_SPEC = {
                             "zusammenfassung", "lösung", "lösungsweg",
                             "beweis", "beweis2"],
     "Liste": lambda x: x.startswith("item")
+}
+
+TEMPLATE_INLINE_SPEC = {
+    "Beweisschritt": lambda x: x in ["ziel"],
 }
 
 TEMPLATE_LIST_PARAMS = {
@@ -61,6 +66,9 @@ BOXSPEC = [
 
     ("question", "Frage",
         {"question": "frage", "answer": "antwort", "question_type": "typ"}),
+
+    ("proof_step", "Beweisschritt",
+        {"name": "name", "target": "ziel", "proof": "beweisschritt"}),
 
     ("theorem", "Satz",
      {"title": "titel", "theorem": "satz", "explanation": "erklärung",
@@ -188,6 +196,9 @@ class MediaWikiCodeParser(ChainedAction):
             parameter."""
             if name in TEMPLATE_SPEC and TEMPLATE_SPEC[name](param_key):
                 return parse_content(self.api, self.title, param_value)
+            elif name in TEMPLATE_INLINE_SPEC \
+                    and TEMPLATE_INLINE_SPEC[name](param_key):
+                return parse_inline_content(self.api, self.title, param_value)
             else:
                 return param_value
 

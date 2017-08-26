@@ -490,6 +490,20 @@
         - type: paragraph
           content: [{ type: text, data: "bar"}]
 
+- in: |
+    {{:Mathe für Nicht-Freaks: Vorlage:Beweisschritt
+     |name=foo
+     |ziel=ziel
+     |beweisschritt=beweisschritt
+    }}
+  out:
+    - type: proof_step
+      name: foo
+      target: [{ type: text, data: "ziel"}]
+      proof:
+        - type: paragraph
+          content: [{ type: text, data: "beweisschritt"}]
+
 # --- Handling of Header and Footer ---
 
 - in: |
