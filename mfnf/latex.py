@@ -49,11 +49,16 @@ class MediaWiki2Latex(ChainedAction):
         def transform_mainarticle(self, obj):
             return None
 
-        def transform_figure(self, obj):
-            if obj["name"].endswith(".gif") or obj["name"].endswith(".webm"):
+        def transform_image(self, obj):
+            _, ext = os.path.splitext(obj["name"])
+
+            if ext in (".webm", ".gif"):
                 return None
-            else:
+            elif ext in (".jpg", ".svg", ".png"):
                 raise NotInterested()
+            else:
+                return {"type": "error",
+                        "message": "Unrecognized image with extension " + ext}
 
 class LatexExporter:
     def __init__(self, api, directory):
