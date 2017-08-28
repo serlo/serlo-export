@@ -9,7 +9,7 @@ from mfnf.api import HTTPMediaWikiAPI
 from mfnf.parser import ArticleParser
 from mfnf.utils import CachedFunction
 from mfnf.sitemap import parse_sitemap
-from mfnf.latex import LatexExporter
+from mfnf.latex import LatexExporter, MediaWiki2Latex
 
 # title of article which shall be converted to PDF
 SITEMAP_ARTICLE_NAME = "Mathe für Nicht-Freaks: Projekte/LMU Buchprojekte"
@@ -22,6 +22,8 @@ def create_book(book, api):
         os.makedirs(os.path.dirname(target))
     except FileExistsError:
         pass
+
+    book = MediaWiki2Latex()(book)
 
     with open(target, "w") as latex_file:
         LatexExporter(api, os.path.dirname(target))(book, latex_file)

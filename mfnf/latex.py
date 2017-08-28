@@ -6,6 +6,9 @@ import re
 from itertools import chain, repeat
 from textwrap import shorten
 
+from mfnf.transformations import ChainedAction, NotInterested, \
+                                 NodeTypeTransformation
+
 BOX_TEMPLATES = [
     "definition", "theorem", "solution", "solutionprocess", "proof",
     "proofsummary", "alternativeproof", "hint", "warning", "example"
@@ -40,6 +43,17 @@ def escape_latex_math(formula):
 def escape_latex_verbatim(code):
     code = re.sub(r"\\end\s*{\s*verbatim\s*}", "", code)
     return "\n".join((shorten(line, 70) for line in code.splitlines()))
+
+class MediaWiki2Latex(ChainedAction):
+    class DeleteNotPrintableContent(NodeTypeTransformation):
+        def transform_mainarticle(self, obj):
+            return None
+
+        def transform_figure(self, obj):
+            if obj["name"].endswith(".gif") or obj["name"].endswith(".webm"):
+                return None
+            else:
+                raise NotInterested()
 
 class LatexExporter:
     def __init__(self, api, directory):
@@ -165,11 +179,6 @@ class LatexExporter:
         out.write("}")
 
     def export_image(self, image, out):
-        if image["name"].endswith(".gif"):
-            if not image["thumbnail"]:
-                print("Warning: ignored GIF", image["name"])
-            return
-
         if image["thumbnail"]:
             out.write("\n\n\\begin{figure}\n")
         else:
