@@ -1,8 +1,10 @@
 import collections
 import json
 import os
+import re
 
 from itertools import chain, repeat
+from textwrap import shorten
 
 BOX_TEMPLATES = [
     "definition", "theorem", "solution", "solutionprocess", "proof",
@@ -30,10 +32,14 @@ LATEX_SPECIAL_CHARS = {
 }
 
 def escape_latex(text):
-    return "".join((LATEX_SPECIAL_CHARS.get(c,c) for c in text))
+    return "".join((LATEX_SPECIAL_CHARS.get(c, c) for c in text))
 
 def escape_latex_math(formula):
     return formula.replace("$", "\\$")
+
+def escape_latex_verbatim(code):
+    code = re.sub(r"\\end\s*{\s*verbatim\s*}", "", code)
+    return "\n".join((shorten(line, 70) for line in code.splitlines()))
 
 class LatexExporter:
     def __init__(self, api, directory):
@@ -70,7 +76,8 @@ class LatexExporter:
                 getattr(self, "export_" + node_type)(obj, out)
         except AttributeError:
             self.export_notimplemented({"target": obj,
-                "message": "LaTeX-Output of object"}, out)
+                                        "message": "LaTeX-Output of object"},
+                                       out)
 
     def export_error(self, obj, out):
         print("ERROR:", obj["message"])
@@ -81,9 +88,10 @@ class LatexExporter:
     def export_notimplemented(self, obj, out):
         out.write("\n\n{\\color{RedOrange} \\textbf{Not Implemented:} ")
         out.write(escape_latex(obj["message"]))
-        out.write("\n\\begin{verbatim}\n")
-        out.write(json.dumps(obj["target"], indent=1))
-        out.write("\n\\end{verbatim}\n}")
+        out.write("}\n")
+        out.write("{ \\footnotesize \\begin{verbatim}\n")
+        out.write(escape_latex_verbatim(json.dumps(obj["target"], indent=1)))
+        out.write("\n\\end{verbatim} }")
 
     def export_listitem(self, obj, out):
         out.write("\n\\item ")
