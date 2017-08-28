@@ -5,6 +5,7 @@ import inspect
 from abc import ABCMeta, abstractmethod
 from collections import OrderedDict
 from collections.abc import Sequence, Mapping
+from functools import reduce
 from mfnf.utils import lookup
 
 class NotInterested(Exception):
@@ -60,12 +61,7 @@ class ChainedAction(Action, metaclass=ChainedActionMetaclass):
         self.step_number = 1
 
     def __call__(self, arg):
-        result = arg
-
-        for action in self.actions:
-            result = action(result)
-
-        return result
+        return reduce(lambda x, y: y(x), self.actions, arg)
 
 class Transformation(Action):
     """Base class of a transformation of a JSON object. This class implements
