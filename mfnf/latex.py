@@ -1,4 +1,5 @@
 import collections
+import json
 import os
 
 from itertools import chain, repeat
@@ -77,14 +78,12 @@ class LatexExporter:
         out.write(escape_latex(obj["message"]))
         out.write("}")
 
-    def write_todo(self, todo_message, out):
-        print("TODO:", todo_message)
-        out.write("\n\n\\todo{")
-        out.write(escape_latex(todo_message))
-        out.write("}")
-
     def export_notimplemented(self, obj, out):
-        self.write_todo("`{}` not implemented".format(obj["target"]["type"]), out)
+        out.write("\n\n{\\color{RedOrange} \\textbf{Not Implemented:} ")
+        out.write(escape_latex(obj["message"]))
+        out.write("\n\\begin{verbatim}\n")
+        out.write(json.dumps(obj["target"], indent=1))
+        out.write("\n\\end{verbatim}\n}")
 
     def export_listitem(self, obj, out):
         out.write("\n\\item ")

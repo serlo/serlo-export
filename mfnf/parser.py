@@ -402,6 +402,7 @@ class ArticleContentParser(ChainedAction):
                         "message": message.format(int(obj["name"][-1]))}
             else:
                 return {"type": "notimplemented",
+                        "message": "Parsing of HTML element",
                         "target": obj}
 
     class HandleHeadingAnchors(NodeTypeTransformation):
