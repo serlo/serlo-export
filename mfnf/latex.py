@@ -1,14 +1,39 @@
 import collections
 import os
 
+from itertools import chain, repeat
 from textwrap import dedent
-
-from mfnf.utils import intersperse
 
 BOX_TEMPLATES = [
     "definition", "theorem", "solution", "solutionprocess", "proof",
     "proofsummary", "alternativeproof", "hint", "warning", "example"
 ]
+
+LATEX_SPECIAL_CHARS = {
+    '$':  '\\$',
+    '%':  '\\%',
+    '&':  '\\&',
+    '#':  '\\#',
+    '_':  '\\_',
+    '{':  '\\{',
+    '}':  '\\}',
+    '[':  '{[}',
+    ']':  '{]}',
+    '"':  "{''}",
+    '\\': '\\textbackslash{}',
+    '~':  '\\textasciitilde{}',
+    '<':  '\\textless{}',
+    '>':  '\\textgreater{}',
+    '^':  '\\textasciicircum{}',
+    '`':  '{}`',   # avoid ?` and !`
+    '\n': '\\\\',
+}
+
+def escape_latex(text):
+    return "".join((LATEX_SPECIAL_CHARS.get(c,c) for c in text))
+
+def escape_math_latex(formula):
+    return formula.replace("$", "\\$")
 
 class LatexExporter:
     def __init__(self, api, directory):
@@ -17,15 +42,30 @@ class LatexExporter:
 
     def __call__(self, obj, out):
         if isinstance(obj, str):
-            self.export_str(obj, out)
+            # There shouldn't be a case where self(obj) is called with obj
+            # beeing a string. String output should occur only in the
+            # export_... functions with the apporiate escaping function.
+            raise TypeError("obj is a string, value: {}".format(obj))
         elif isinstance(obj, collections.abc.Sequence):
             for element in obj:
                 self(element, out)
         elif isinstance(obj, collections.abc.Mapping):
             self.export_dict(obj, out)
 
-    def export_str(self, text, out):
-        out.write(text)
+    def export_error(self, obj, out):
+        print("ERROR:", obj["message"])
+        out.write("\n\n\\error{")
+        out.write(escape_latex(obj["message"]))
+        out.write("}")
+
+    def write_todo(self, todo_message, out):
+        print("TODO:", todo_message)
+        out.write("\n\n\\todo{")
+        out.write(escape_latex(todo_message))
+        out.write("}")
+
+    def export_notimplemented(self, obj, out):
+        self.write_todo("`{}` not implemented".format(obj["target"]["type"]), out)
 
     def export_listitem(self, obj, out):
         out.write("\n\\item ")
@@ -44,9 +84,12 @@ class LatexExporter:
             if node_type in BOX_TEMPLATES:
                 out.write("\n\n\\begin{" + node_type + "}")
                 if "title" in obj:
-                    out.write("[" + obj["title"] + "]")
+                    out.write("[")
+                    out.write(escape_latex(obj["title"]))
+                    out.write("]")
 
                 self(obj[node_type], out)
+
                 out.write("\n\\end{" + node_type + "}")
             else:
                 getattr(self, "export_" + node_type)(obj, out)
@@ -54,26 +97,17 @@ class LatexExporter:
             self.export_notimplemented({"target": obj}, out)
 
     def export_equation(self, obj, out):
-        out.write("\n\n\\begin{align*}\n  ")
-        self(obj["formula"], out)
+        out.write("\n\n\\begin{align*}\n")
+        out.write(escape_math_latex(obj["formula"]))
         out.write("\n\\end{align*}")
-
-    def export_error(self, obj, out):
-        print("ERROR:", obj["message"])
-        out.write("\n\n\\error{" + obj["message"] + "}\n\n")
-
-    def export_todo(self, todo, out):
-        print("TODO:", todo)
-        out.write("\n\n\\todo{" + todo + "}\n\n")
-
-    def export_notimplemented(self, obj, out):
-        self.export_todo("`{}` not implemented".format(obj["target"]["type"]), out)
 
     def export_book(self, book, out):
         with open("mfnf/latex_template.tex", "r") as template:
             out.write(template.read())
 
-        out.write("\n\\title{" + book["name"].strip() + "}")
+        out.write("\n\\title{")
+        out.write(escape_latex(book["name"]))
+        out.write("}")
         out.write("\n\n\\begin{document}")
 
         self(book["children"], out)
@@ -82,11 +116,16 @@ class LatexExporter:
 
     def export_chapter(self, chapter, out):
         # TODO chapter -> part in all functions and dicts
-        out.write("\n\n\\part{" + chapter["name"] +"}")
+        out.write("\n\n\\part{")
+        out.write(escape_latex(chapter["name"]))
+        out.write("}")
+
         self(chapter["children"], out)
 
     def export_article(self, article, out):
-        out.write("\n\n\\chapter{" + article["name"] +"}")
+        out.write("\n\n\\chapter{")
+        out.write(escape_latex(article["name"]))
+        out.write("}")
         self(article["content"], out)
 
     def export_paragraph(self, paragraph, out):
@@ -94,11 +133,11 @@ class LatexExporter:
         self(paragraph["content"], out)
 
     def export_text(self, text, out):
-        self(text["data"], out)
+        out.write(escape_latex(text["data"]))
 
     def export_inlinemath(self, inlinemath, out):
         out.write("$")
-        self(inlinemath["formula"], out)
+        out.write(escape_math_latex(inlinemath["formula"]))
         out.write("$")
 
     def export_header(self, header, out):
@@ -157,8 +196,9 @@ class LatexExporter:
         out.write("\\end{tabular}")
 
     def export_tr(self, tr, out):
-        columns_with_delimiters = list(intersperse(" & ", tr["content"]))
-        self(columns_with_delimiters, out)
+        for cell, delimiter in zip(tr["content"], chain([""], repeat(" & "))):
+            out.write(delimiter)
+            self(cell, out)
         out.write(" \\\\ \n")
 
     def export_td(self, td, out):
