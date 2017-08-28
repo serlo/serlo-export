@@ -6,7 +6,7 @@ import re
 from itertools import count
 from html.parser import HTMLParser
 from mfnf.transformations import NodeTransformation, ChainedAction, Action, \
-    NodeTypeTransformation, check, NotInterested
+     NodeTypeTransformation, check, NotInterested, Transformation
 from mfnf.utils import lookup, remove_prefix, remove_suffix, add_dict
 
 TEMPLATE_SPEC = {
@@ -412,6 +412,9 @@ class ArticleContentParser(ChainedAction):
                 return {"type": "notimplemented",
                         "target": obj,
                         "message": "Pasring of template"}
+
+    class DeleteEmptyNodes(Transformation):
+        pass
 
 class ArticleParser(ChainedAction):
     class LoadArticleContent(NodeTypeTransformation):

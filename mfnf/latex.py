@@ -64,7 +64,8 @@ class LatexExporter:
 
             if node_type in BOX_TEMPLATES:
                 out.write("\n\n\\begin{" + node_type + "}")
-                if "title" in obj:
+
+                if obj.get("title", None):
                     out.write("[")
                     out.write(escape_latex(obj["title"]))
                     out.write("]")
