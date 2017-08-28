@@ -32,7 +32,7 @@ LATEX_SPECIAL_CHARS = {
 def escape_latex(text):
     return "".join((LATEX_SPECIAL_CHARS.get(c,c) for c in text))
 
-def escape_math_latex(formula):
+def escape_latex_math(formula):
     return formula.replace("$", "\\$")
 
 class LatexExporter:
@@ -97,7 +97,7 @@ class LatexExporter:
 
     def export_equation(self, obj, out):
         out.write("\n\n\\begin{align*}\n")
-        out.write(escape_math_latex(obj["formula"]))
+        out.write(escape_latex_math(obj["formula"]))
         out.write("\n\\end{align*}")
 
     def export_book(self, book, out):
@@ -136,7 +136,7 @@ class LatexExporter:
 
     def export_inlinemath(self, inlinemath, out):
         out.write("$")
-        out.write(escape_math_latex(inlinemath["formula"]))
+        out.write(escape_latex_math(inlinemath["formula"]))
         out.write("$")
 
     def export_header(self, header, out):
