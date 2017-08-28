@@ -3,10 +3,10 @@
 Copyright 2017 Stephan Kulla
 """
 
-import urllib.request
-
 from abc import ABCMeta, abstractmethod
+import urllib.request
 from urllib.parse import quote
+
 from mfnf.utils import stablehash
 
 class MediaWikiAPI(metaclass=ABCMeta):

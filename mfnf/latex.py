@@ -2,7 +2,6 @@ import collections
 import os
 
 from itertools import chain, repeat
-from textwrap import dedent
 
 BOX_TEMPLATES = [
     "definition", "theorem", "solution", "solutionprocess", "proof",
