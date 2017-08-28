@@ -43,6 +43,10 @@ def run_script():
             def convert_text_to_html(self, title, text):
                 return super().convert_text_to_html(title, text)
 
+            @cached_function
+            def download_image(self, image_url, image_path):
+                return super().download_image(image_url, image_path)
+
         api = CachedMediaWikiAPI(requests.Session())
         parser = ArticleParser(api=api)
 
