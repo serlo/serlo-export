@@ -1,8 +1,6 @@
 """Module with utilities for transformations of JSON trees."""
 
 import inspect
-import json
-import os
 
 from abc import ABCMeta, abstractmethod
 from collections import OrderedDict
@@ -67,27 +65,7 @@ class ChainedAction(Action, metaclass=ChainedActionMetaclass):
         for action in self.actions:
             result = action(result)
 
-            if __debug__:
-                self.log_current_result(action, result)
-
         return result
-
-    def log_current_result(self, action, result):
-        # This code shall not be here! In future versions there need to be
-        # a better solution. :-)
-
-        fmt = "/tmp/mfnf-log/{}-{:03d}-after-{}.json"
-        file_name = fmt.format(self.__class__.__name__, self.step_number,
-                               action.__class__.__name__)
-        self.step_number += 1
-
-        try:
-            os.mkdir(os.path.dirname(file_name))
-        except FileExistsError:
-            pass
-
-        with open(file_name, "w") as fd:
-            fd.write(json.dumps(result, indent=1))
 
 class Transformation(Action):
     """Base class of a transformation of a JSON object. This class implements
