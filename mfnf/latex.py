@@ -34,6 +34,9 @@ LATEX_SPECIAL_CHARS = {
     '\n': '\\\\',
 }
 
+def quote_image_name(text):
+    return re.sub(r"[^a-zA-Z0-9]", lambda x: str(ord(x.group())), text)
+
 def escape_latex(text):
     return "".join((LATEX_SPECIAL_CHARS.get(c, c) for c in text))
 
@@ -189,7 +192,12 @@ class LatexExporter:
         else:
             out.write("\n\n")
 
-        image_name = image["name"].replace(".svg", ".png")
+        name, ext = os.path.splitext(image["name"])
+
+        if ext not in (".jpg",):
+            ext = ".png"
+
+        image_name = quote_image_name(name) + ext
         image_file = os.path.join(self.directory, image_name)
         image_url = "http:" + image["url"]
 
