@@ -109,9 +109,9 @@ class LatexExporter:
         out.write("\n\n{\\color{RedOrange} \\textbf{Not Implemented:} ")
         out.write(escape_latex(obj["message"]))
         out.write("}\n")
-        out.write("{ \\footnotesize \\begin{verbatim}\n")
+        out.write("\\begin{verbatim}\n")
         out.write(escape_latex_verbatim(json.dumps(obj["target"], indent=1)))
-        out.write("\n\\end{verbatim} }")
+        out.write("\n\\end{verbatim}")
 
     def export_listitem(self, obj, out):
         out.write("\n\\item ")
