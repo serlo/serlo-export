@@ -347,39 +347,6 @@ class ArticleContentParser(ChainedAction):
             else:
                 raise NotInterested()
 
-    class HandleTemplates(NodeTypeTransformation):
-        def transform_template(self, obj):
-            for bname, tname, params in BOXSPEC:
-                if obj["name"] == tname:
-                    params = {k: obj["params"].get(v, None)
-                              for k, v in params.items()}
-
-                    return add_dict(params, {"type": bname})
-
-            if obj["name"] == "Liste":
-                return {"type": "list",
-                        "ordered": obj["params"].get("type", "") == "ol",
-                        "items": [{"type": "itemlist", "content": x}
-                                  for x in obj["params"]["item_list"]]}
-            elif obj["name"] == "Formel":
-                formula = obj["params"]["1"].strip()
-                formula = re.match("<math>(.*)</math>", formula).group(1)
-                formula = formula.strip()
-
-                formula = remove_prefix(formula, "\\begin{align}")
-                formula = remove_suffix(formula, "\\end{align}")
-                formula = formula.strip()
-
-                return {"type": "equation",
-                        "formula": formula}
-            elif obj["name"].startswith("#invoke:"):
-                # Template is header or footer
-                return None
-            else:
-                return {"type": "notimplemented",
-                        "target": obj,
-                        "message": "Pasring of template"}
-
     class FixNodeTypes(NodeTypeTransformation):
         def transform_element(self, obj):
             if obj["name"] == "p":
@@ -412,6 +379,39 @@ class ArticleContentParser(ChainedAction):
             anchor = obj["content"][-1]["params"]["1"]
 
             return add_dict(obj, {"content": heading, "anchor": anchor})
+
+    class HandleTemplates(NodeTypeTransformation):
+        def transform_template(self, obj):
+            for bname, tname, params in BOXSPEC:
+                if obj["name"] == tname:
+                    params = {k: obj["params"].get(v, None)
+                              for k, v in params.items()}
+
+                    return add_dict(params, {"type": bname})
+
+            if obj["name"] == "Liste":
+                return {"type": "list",
+                        "ordered": obj["params"].get("type", "") == "ol",
+                        "items": [{"type": "itemlist", "content": x}
+                                  for x in obj["params"]["item_list"]]}
+            elif obj["name"] == "Formel":
+                formula = obj["params"]["1"].strip()
+                formula = re.match("<math>(.*)</math>", formula).group(1)
+                formula = formula.strip()
+
+                formula = remove_prefix(formula, "\\begin{align}")
+                formula = remove_suffix(formula, "\\end{align}")
+                formula = formula.strip()
+
+                return {"type": "equation",
+                        "formula": formula}
+            elif obj["name"].startswith("#invoke:"):
+                # Template is header or footer
+                return None
+            else:
+                return {"type": "notimplemented",
+                        "target": obj,
+                        "message": "Pasring of template"}
 
 class ArticleParser(ChainedAction):
     class LoadArticleContent(NodeTypeTransformation):
