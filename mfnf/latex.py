@@ -49,7 +49,27 @@ class LatexExporter:
             for element in obj:
                 self(element, out)
         elif isinstance(obj, collections.abc.Mapping):
-            self.export_dict(obj, out)
+            self.act_on_dict(obj, out)
+
+    def act_on_dict(self, obj, out):
+        try:
+            node_type = obj["type"]
+
+            if node_type in BOX_TEMPLATES:
+                out.write("\n\n\\begin{" + node_type + "}")
+                if "title" in obj:
+                    out.write("[")
+                    out.write(escape_latex(obj["title"]))
+                    out.write("]")
+
+                self(obj[node_type], out)
+
+                out.write("\n\\end{" + node_type + "}")
+            else:
+                getattr(self, "export_" + node_type)(obj, out)
+        except AttributeError:
+            self.export_notimplemented({"target": obj,
+                "message": "LaTeX-Output of object"}, out)
 
     def export_error(self, obj, out):
         print("ERROR:", obj["message"])
@@ -75,25 +95,6 @@ class LatexExporter:
         out.write("\n\n\\begin{" + list_type + "}")
         self(obj["items"], out)
         out.write("\n\\end{" + list_type + "}")
-
-    def export_dict(self, obj, out):
-        try:
-            node_type = obj["type"]
-
-            if node_type in BOX_TEMPLATES:
-                out.write("\n\n\\begin{" + node_type + "}")
-                if "title" in obj:
-                    out.write("[")
-                    out.write(escape_latex(obj["title"]))
-                    out.write("]")
-
-                self(obj[node_type], out)
-
-                out.write("\n\\end{" + node_type + "}")
-            else:
-                getattr(self, "export_" + node_type)(obj, out)
-        except AttributeError:
-            self.export_notimplemented({"target": obj}, out)
 
     def export_equation(self, obj, out):
         out.write("\n\n\\begin{align*}\n")
