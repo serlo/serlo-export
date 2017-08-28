@@ -5,7 +5,7 @@ all:
 	python create_books.py
 	for DIR in out/*; do \
 		( cd "$$DIR" && \
-		pdflatex -interaction nonstopmode -no-shell-escape *tex ); \
+		pdflatex -halt-on-error -no-shell-escape *tex ); \
 	done
 
 .PHONY: test
