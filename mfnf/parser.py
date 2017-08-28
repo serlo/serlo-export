@@ -361,7 +361,7 @@ class ArticleContentParser(ChainedAction):
                         "ordered": obj["params"].get("type", "") == "ol",
                         "items": [{"type": "itemlist", "content": x}
                                   for x in obj["params"]["item_list"]]}
-            if obj["name"] == "Formel":
+            elif obj["name"] == "Formel":
                 formula = obj["params"]["1"].strip()
                 formula = re.match("<math>(.*)</math>", formula).group(1)
                 formula = formula.strip()
@@ -372,15 +372,13 @@ class ArticleContentParser(ChainedAction):
 
                 return {"type": "equation",
                         "formula": formula}
-            else:
-                raise NotInterested()
-
-    class DeleteHeaderAndFooter(NodeTypeTransformation):
-        def transform_template(self, obj):
-            if obj["name"].startswith("#invoke:"):
+            elif obj["name"].startswith("#invoke:"):
+                # Template is header or footer
                 return None
             else:
-                raise NotInterested()
+                return {"type": "notimplemented",
+                        "target": obj,
+                        "message": "Pasring of template"}
 
     class FixNodeTypes(NodeTypeTransformation):
         def transform_element(self, obj):
