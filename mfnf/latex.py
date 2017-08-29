@@ -273,3 +273,21 @@ class LatexExporter:
 
     def export_th(self, th, out):
         self(th["content"], out)
+
+class LatexEnvironment:
+    def __init__(self, out, environment):
+        self.out = out
+        self.environment = environment
+    def __enter__(self):
+        self.out.write("\n\n\\begin{" + self.environment + "}\n")
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.out.write("\n\\end{" + self.environment + "}")
+
+class LatexMacro:
+    def __init__(self, out, macro):
+        self.out = out
+        self.macro = macro
+    def __enter__(self):
+        self.out.write("\n\\" + self.macro + "{")
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.out.write("}")
