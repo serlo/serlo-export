@@ -38,10 +38,6 @@ def run_script():
             cached."""
 
             @cached_function
-            def get_content(self, title):
-                return super().get_content(title)
-
-            @cached_function
             def convert_text_to_html(self, title, text):
                 return super().convert_text_to_html(title, text)
 
