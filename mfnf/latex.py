@@ -11,7 +11,8 @@ from mfnf.transformations import ChainedAction, NotInterested, \
 
 BOX_TEMPLATES = [
     "definition", "theorem", "solution", "solutionprocess", "proof",
-    "proofsummary", "alternativeproof", "hint", "warning", "example"
+    "proofsummary", "alternativeproof", "hint", "warning", "example",
+    "exercise"
 ]
 
 LATEX_SPECIAL_CHARS = {
