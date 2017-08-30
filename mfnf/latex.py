@@ -12,7 +12,7 @@ from mfnf.transformations import ChainedAction, NotInterested, \
 BOX_TEMPLATES = [
     "definition", "theorem", "solution", "solutionprocess", "proof",
     "proofsummary", "alternativeproof", "hint", "warning", "example",
-    "exercise", "importantparagraph",
+    "exercise", "importantparagraph", "explanation"
 ]
 
 BOX_SUBTEMPLATES = {
