@@ -174,17 +174,15 @@
     : Bar is another thing
   out:
       - type: definitionlist
-      - items:
+        items:
           - type: definitionlistitem
-            definition: { type: text, data: "Foo" }
+            definition: [{ type: text, data: "Foo" }]
             explanation:
-                - type: paragraph
-                  content: [{ type: text, data: "Foo is a thing" }]
+                - { type: text, data: "Foo is a thing" }
           - type: definitionlistitem
-            definition: { type: text, data: "Bar" }
+            definition: [{ type: text, data: "Bar" }]
             explanation:
-                - type: paragraph
-                  content: [{ type: text, data: "Bar is another thing" }]
+                - { type: text, data: "Bar is another thing" }
 
 # --- Images ---
 
