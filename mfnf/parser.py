@@ -366,8 +366,10 @@ class ArticleContentParser(ChainedAction):
                 return {"type": "error",
                         "message": message.format(int(obj["name"][-1]))}
             else:
+                message = "Parsing of HTML element `{}`".format(obj["name"])
+
                 return {"type": "notimplemented",
-                        "message": "Parsing of HTML element",
+                        "message": message,
                         "target": obj}
 
     class HandleHeadingAnchors(NodeTypeTransformation):
@@ -409,9 +411,11 @@ class ArticleContentParser(ChainedAction):
                 # Template is header or footer
                 return None
             else:
+                message = "Pasring of template `{}`".format(obj["name"])
+
                 return {"type": "notimplemented",
                         "target": obj,
-                        "message": "Pasring of template"}
+                        "message": message}
 
     class DeleteEmptyNodes(Transformation):
         pass

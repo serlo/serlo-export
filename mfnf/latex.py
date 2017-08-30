@@ -81,7 +81,7 @@ class LatexExporter:
     def __init__(self, api, directory):
         self.api = api
         self.directory = directory
-        self._inlinemode = False
+        self._notimplemented = []
 
     def __call__(self, obj, out):
         if isinstance(obj, str):
@@ -111,46 +111,46 @@ class LatexExporter:
 
 
     def act_on_dict(self, obj, out):
-        try:
-            node_type = obj["type"]
+        node_type = obj["type"]
 
-            if node_type in BOX_TEMPLATES:
-                self.print_box(node_type, obj, out)
+        if node_type in BOX_TEMPLATES:
+            self.print_box(node_type, obj, out)
 
-                for subbox in BOX_SUBTEMPLATES.get(node_type, []):
-                    if obj.get(subbox, None):
-                        self.print_box(subbox, obj, out)
-            else:
-                getattr(self, "export_" + node_type)(obj, out)
-        except AttributeError:
-            self.export_notimplemented({"message": "LaTeX-Output of object",
-                                        "target": obj}, out)
+            for subbox in BOX_SUBTEMPLATES.get(node_type, []):
+                if obj.get(subbox, None):
+                    self.print_box(subbox, obj, out)
+        else:
+            try:
+                    getattr(self, "export_" + node_type)(obj, out)
+            except AttributeError:
+                message = "LaTeX-Output of object `{}`".format(node_type)
 
-    def print_message(self, message_type, message, out, color="Red", target_obj=None):
+                self.export_notimplemented({"message": message,
+                                            "target": obj}, out)
+
+    def print_message(self, message_type, message, out, color="Red"):
         print(message_type + ":", message)
-
-        if self._inlinemode:
-            out.write("}")
 
         out.write("\n\n{\\color{" + escape_latex(color) + "} ")
         out.write("\\textbf{" + escape_latex(message_type) + ":} ")
         out.write(escape_latex(message))
         out.write("}")
 
-        if target_obj:
-            out.write("\n\\begin{verbatim}\n")
-            out.write(escape_latex_verbatim(json.dumps(target_obj, indent=1)))
-            out.write("\n\\end{verbatim}")
+    def print_notimplemented(self, out):
+        out.write("\n\n\chapter{Not implemented objects}")
 
-        if self._inlinemode:
-            out.write("\n\n{")
+        for obj in self._notimplemented:
+            out.write("\n\n\section{" + escape_latex(obj["message"]) + "}")
+            out.write("\n\\begin{verbatim}\n")
+            out.write(escape_latex_verbatim(json.dumps(obj["target"], indent=1)))
+            out.write("\n\\end{verbatim}")
 
     def export_error(self, obj, out):
         self.print_message("Error", obj["message"], out)
 
     def export_notimplemented(self, obj, out):
-        self.print_message("Not implemented", obj["message"], out, "RedOrange",
-                           obj["target"])
+        self.print_message("Not implemented", obj["message"], out, "RedOrange")
+        self._notimplemented.append(obj)
 
     def export_listitem(self, obj, out):
         out.write("\n\\item ")
@@ -177,6 +177,7 @@ class LatexExporter:
         out.write("\n\n\\begin{document}")
 
         self(book["children"], out)
+        self.print_notimplemented(out)
 
         out.write("\n\\end{document}")
 
@@ -209,23 +210,17 @@ class LatexExporter:
     def export_header(self, header, out):
         header_types = ["section", "subsection", "subsubsection", "paragraph"]
         out.write("\n\n\\" + header_types[header["depth"]] + "{")
-        self._inlinemode = True
         self(header["content"], out)
-        self._inlinemode = False
         out.write("}")
 
     def export_i(self, i, out):
         out.write("\\emph{")
-        self._inlinemode = True
         self(i["content"], out)
-        self._inlinemode = False
         out.write("}")
 
     def export_b(self, b, out):
         out.write("\\textbf{")
-        self._inlinemode = True
         self(b["content"], out)
-        self._inlinemode = False
         out.write("}")
 
     def export_image(self, image, out):
@@ -253,9 +248,7 @@ class LatexExporter:
 
         if image["thumbnail"]:
             out.write("\\caption{")
-            self._inlinemode = True
             self(image["caption"], out)
-            self._inlinemode = False
             out.write("}")
             out.write("\n\\end{figure}")
 
