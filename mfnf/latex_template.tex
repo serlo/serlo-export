@@ -12,6 +12,7 @@
 \usepackage[space]{grffile}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{verbatim}
+\usepackage{changepage} 
 
 \newcommand*{\R}{\mathbb{R}}
 \newcommand*{\N}{\mathbb{N}}
@@ -34,3 +35,5 @@
 \newtheorem{hint}{Hinweis}[chapter]
 \newtheorem{warning}{Warnung}[chapter]
 \newtheorem{example}{Beispiel}[chapter]
+
+\newenvironment{importantparagraph}{\begin{adjustwidth}{2cm}{}}{\end{adjustwidth}}

@@ -28,7 +28,9 @@ TEMPLATE_SPEC = {
     "Satz": lambda x: x in ["satz", "erklärung", "beispiel",
                             "zusammenfassung", "lösung", "lösungsweg",
                             "beweis", "beweis2"],
-    "Liste": lambda x: x.startswith("item")
+    "Liste": lambda x: x.startswith("item"),
+    # important paragraph
+     "-": lambda x: x in ["1"],
 }
 
 TEMPLATE_INLINE_SPEC = {
@@ -81,6 +83,9 @@ BOXSPEC = [
       "example": "beispiel", "proofsummary": "zusammenfassung",
       "solution": "lösung", "solutionprocess": "lösungsweg",
       "proof": "beweis", "alternativeproof": "beweis2"}),
+
+    ("importantparagraph", "-", {"importantparagraph": "1"}),
+
 ]
 
 def parse_content(api, title, text):
@@ -194,6 +199,7 @@ class MediaWikiCodeParser(ChainedAction):
         def parse_parameter_value(self, name, param_key, param_value):
             """Parses `param_value` in case `param_key` is a content
             parameter."""
+
             if name in TEMPLATE_SPEC and TEMPLATE_SPEC[name](param_key):
                 return parse_content(self.api, self.title, param_value)
             elif name in TEMPLATE_INLINE_SPEC \

@@ -12,7 +12,7 @@ from mfnf.transformations import ChainedAction, NotInterested, \
 BOX_TEMPLATES = [
     "definition", "theorem", "solution", "solutionprocess", "proof",
     "proofsummary", "alternativeproof", "hint", "warning", "example",
-    "exercise"
+    "exercise", "importantparagraph",
 ]
 
 BOX_SUBTEMPLATES = {
@@ -104,7 +104,7 @@ class LatexExporter:
             out.write("[")
             out.write(escape_latex(obj["title"]))
             out.write("]")
-
+        
         self(obj[box_type], out)
 
         out.write("\n\\end{" + box_type + "}")
