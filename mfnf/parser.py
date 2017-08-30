@@ -30,7 +30,8 @@ TEMPLATE_SPEC = {
                             "beweis", "beweis2"],
     "Liste": lambda x: x.startswith("item"),
     # important paragraph
-     "-": lambda x: x in ["1"],
+    "-": lambda x: x in ["1"],
+#    "Formel": lambda x: x in ["1"], 
 }
 
 TEMPLATE_INLINE_SPEC = {
@@ -85,7 +86,7 @@ BOXSPEC = [
       "proof": "beweis", "alternativeproof": "beweis2"}),
 
     ("importantparagraph", "-", {"importantparagraph": "1"}),
-
+#    ("formulablock", "Formel", {"formulablock", "1"}),
 ]
 
 def parse_content(api, title, text):
@@ -404,6 +405,7 @@ class ArticleContentParser(ChainedAction):
 
     class HandleTemplates(NodeTypeTransformation):
         def transform_template(self, obj):
+            
             for bname, tname, params in BOXSPEC:
                 if obj["name"] == tname:
                     params = {k: obj["params"].get(v, None)
@@ -417,16 +419,17 @@ class ArticleContentParser(ChainedAction):
                         "items": [{"type": "itemlist", "content": x}
                                   for x in obj["params"]["item_list"]]}
             elif obj["name"] == "Formel":
+                
                 formula = obj["params"]["1"].strip()
-                formula = re.match("<math>(.*)</math>", formula).group(1)
+                formula = re.match("<math>(.*)</math>", formula, re.DOTALL).group(1)
                 formula = formula.strip()
 
                 formula = remove_prefix(formula, "\\begin{align}")
                 formula = remove_suffix(formula, "\\end{align}")
                 formula = formula.strip()
+                
+                return {"type": "equation", "formula": formula}
 
-                return {"type": "equation",
-                        "formula": formula}
             elif obj["name"].startswith("#invoke:"):
                 # Template is header or footer
                 return None
