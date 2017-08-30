@@ -408,7 +408,7 @@ class ArticleContentParser(ChainedAction):
             
             for bname, tname, params in BOXSPEC:
                 if obj["name"] == tname:
-                    params = {k: obj["params"].get(v, None)
+                    params = {k: self(obj["params"].get(v, None))
                               for k, v in params.items()}
 
                     return add_dict(params, {"type": bname})
