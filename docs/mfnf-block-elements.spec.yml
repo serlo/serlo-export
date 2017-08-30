@@ -524,13 +524,12 @@
           content: [{ type: text, data: "beweisschritt"}]
 
 - in: |
-    {{-|}}
+    {{-|foo bar hello}}
   out:
     - type: importantparagraph
-    - importantparagraph: [ 
+      importantparagraph:
         - type: paragraph
-        - content: [{type: text, data: "Paragraph data"]
-      ]
+          content: [{type: text, data: "foo bar hello"}]
 
 # --- Handling of Header and Footer ---
 
