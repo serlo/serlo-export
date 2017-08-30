@@ -12,7 +12,7 @@ from mfnf.transformations import ChainedAction, NotInterested, \
 BOX_TEMPLATES = [
     "definition", "theorem", "solution", "solutionprocess", "proof",
     "proofsummary", "alternativeproof", "hint", "warning", "example",
-    "exercise"
+    "exercise", "importantparagraph", "explanation"
 ]
 
 BOX_SUBTEMPLATES = {
@@ -104,7 +104,7 @@ class LatexExporter:
             out.write("[")
             out.write(escape_latex(obj["title"]))
             out.write("]")
-
+        
         self(obj[box_type], out)
 
         out.write("\n\\end{" + box_type + "}")
@@ -273,3 +273,31 @@ class LatexExporter:
 
     def export_th(self, th, out):
         self(th["content"], out)
+
+    def export_definitionlist(self, definitionlist, out):
+        with LatexEnvironment(out, "description"):
+            self(definitionlist["items"], out)
+
+    def export_definitionlistitem(self, definitionlistitem, out):
+        out.write("\n\\item[")
+        self(definitionlistitem["definition"], out)
+        out.write("] ")
+        self(definitionlistitem["explanation"], out)
+
+class LatexEnvironment:
+    def __init__(self, out, environment):
+        self.out = out
+        self.environment = environment
+    def __enter__(self):
+        self.out.write("\n\n\\begin{" + self.environment + "}\n")
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.out.write("\n\\end{" + self.environment + "}")
+
+class LatexMacro:
+    def __init__(self, out, macro):
+        self.out = out
+        self.macro = macro
+    def __enter__(self):
+        self.out.write("\n\\" + self.macro + "{")
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.out.write("}")

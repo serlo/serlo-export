@@ -28,7 +28,10 @@ TEMPLATE_SPEC = {
     "Satz": lambda x: x in ["satz", "erklärung", "beispiel",
                             "zusammenfassung", "lösung", "lösungsweg",
                             "beweis", "beweis2"],
-    "Liste": lambda x: x.startswith("item")
+    "Liste": lambda x: x.startswith("item"),
+    # important paragraph
+    "-": lambda x: x in ["1"],
+#    "Formel": lambda x: x in ["1"], 
 }
 
 TEMPLATE_INLINE_SPEC = {
@@ -81,6 +84,9 @@ BOXSPEC = [
       "example": "beispiel", "proofsummary": "zusammenfassung",
       "solution": "lösung", "solutionprocess": "lösungsweg",
       "proof": "beweis", "alternativeproof": "beweis2"}),
+
+    ("importantparagraph", "-", {"importantparagraph": "1"}),
+#    ("formulablock", "Formel", {"formulablock", "1"}),
 ]
 
 def parse_content(api, title, text):
@@ -194,6 +200,7 @@ class MediaWikiCodeParser(ChainedAction):
         def parse_parameter_value(self, name, param_key, param_value):
             """Parses `param_value` in case `param_key` is a content
             parameter."""
+
             if name in TEMPLATE_SPEC and TEMPLATE_SPEC[name](param_key):
                 return parse_content(self.api, self.title, param_value)
             elif name in TEMPLATE_INLINE_SPEC \
@@ -287,6 +294,20 @@ class ArticleContentParser(ChainedAction):
 
             return {"type": "list",
                     "ordered": obj["name"] == "ol",
+                    "items": items}
+
+    class HandleDefinitionLists(NodeTransformation):
+        def transform_dict(self, obj):
+            check(obj, "type") == "element"
+            check(obj, "name") == "dl"
+
+            items = [{"type": "definitionlistitem",
+                      "definition": self(dt["children"]),
+                      "explanation": self(dd["children"])}
+                      for dt, dd in zip(obj["children"][::2],
+                                        obj["children"][1::2])]
+
+            return {"type": "definitionlist",
                     "items": items}
 
     class HandleFigures(NodeTransformation):
@@ -384,9 +405,10 @@ class ArticleContentParser(ChainedAction):
 
     class HandleTemplates(NodeTypeTransformation):
         def transform_template(self, obj):
+            
             for bname, tname, params in BOXSPEC:
                 if obj["name"] == tname:
-                    params = {k: obj["params"].get(v, None)
+                    params = {k: self(obj["params"].get(v, None))
                               for k, v in params.items()}
 
                     return add_dict(params, {"type": bname})
@@ -397,16 +419,17 @@ class ArticleContentParser(ChainedAction):
                         "items": [{"type": "itemlist", "content": x}
                                   for x in obj["params"]["item_list"]]}
             elif obj["name"] == "Formel":
+                
                 formula = obj["params"]["1"].strip()
-                formula = re.match("<math>(.*)</math>", formula).group(1)
+                formula = re.match("<math>(.*)</math>", formula, re.DOTALL).group(1)
                 formula = formula.strip()
 
                 formula = remove_prefix(formula, "\\begin{align}")
                 formula = remove_suffix(formula, "\\end{align}")
                 formula = formula.strip()
+                
+                return {"type": "equation", "formula": formula}
 
-                return {"type": "equation",
-                        "formula": formula}
             elif obj["name"].startswith("#invoke:"):
                 # Template is header or footer
                 return None

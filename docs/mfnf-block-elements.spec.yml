@@ -165,6 +165,27 @@
             - type: paragraph
               content: [{ type: text, data: "text3" }]
 
+# --- Definition Lists ---
+
+- in: |
+    ; Foo
+    : Foo is a thing
+    ; Bar
+    : Bar is another thing
+  out:
+      - type: definitionlist
+      - items:
+          - type: definitionlistitem
+            definition: { type: text, data: "Foo" }
+            explanation:
+                - type: paragraph
+                  content: [{ type: text, data: "Foo is a thing" }]
+          - type: definitionlistitem
+            definition: { type: text, data: "Bar" }
+            explanation:
+                - type: paragraph
+                  content: [{ type: text, data: "Bar is another thing" }]
+
 # --- Images ---
 
 - in: "[[File:Foo.jpg|center|bar]]"
@@ -503,6 +524,15 @@
       proof:
         - type: paragraph
           content: [{ type: text, data: "beweisschritt"}]
+
+- in: |
+    {{-|}}
+  out:
+    - type: importantparagraph
+    - importantparagraph: [ 
+        - type: paragraph
+        - content: [{type: text, data: "Paragraph data"]
+      ]
 
 # --- Handling of Header and Footer ---
 

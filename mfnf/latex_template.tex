@@ -1,4 +1,4 @@
-\documentclass[a4paper]{book}
+\documentclass[a4paper,xcolor=dvipsnames]{book}
 
 \usepackage[utf8]{inputenc}
 \usepackage{ngerman}
@@ -8,10 +8,12 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage[T1]{fontenc}
 \usepackage{booktabs}
 \usepackage[space]{grffile}
-\usepackage[dvipsnames]{xcolor}
 \usepackage{verbatim}
+\usepackage{changepage} 
+\usepackage[dvipsnames]{xcolor}
 
 \newcommand*{\R}{\mathbb{R}}
 \newcommand*{\N}{\mathbb{N}}
@@ -29,6 +31,7 @@
 \newtheorem{solutionprocess}{Lösungsweg}[chapter]
 \newtheorem{proofsummary}{Beweiszusammenfassung}[chapter]
 \newtheorem{alternativeproof}{Alternativer Beweis}[chapter]
+\newtheorem{explanation}{Erklärung}[chapter]
 
 \theoremstyle{remark}
 \newtheorem{hint}{Hinweis}[chapter]
@@ -36,3 +39,7 @@
 \newtheorem{example}{Beispiel}[chapter]
 
 \errorcontextlines 10000
+
+\newenvironment{importantparagraph}{\emph{Wichtig:}\begin{adjustwidth}{1.5cm}{}}{\end{adjustwidth}}
+
+\definecolor{forestgreen}{rgb}{0.13, 0.55, 0.13}
