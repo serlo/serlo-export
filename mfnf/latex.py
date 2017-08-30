@@ -15,6 +15,14 @@ BOX_TEMPLATES = [
     "exercise"
 ]
 
+BOX_SUBTEMPLATES = {
+    "theorem": ["explanation", "example", "proofsummary", "solution", "proof",
+                "solutionprocess", "alternativeproof"],
+
+    "exercise": ["explanation", "example", "proofsummary", "solution", "proof",
+                 "solutionprocess", "alternativeproof"],
+}
+
 LATEX_SPECIAL_CHARS = {
     '$':  '\\$',
     '%':  '\\%',
@@ -87,21 +95,31 @@ class LatexExporter:
         elif isinstance(obj, collections.abc.Mapping):
             self.act_on_dict(obj, out)
 
+    def print_box(self, box_type, obj, out):
+        assert box_type in BOX_TEMPLATES, box_type
+
+        out.write("\n\n\\begin{" + box_type + "}")
+
+        if obj.get("title", None):
+            out.write("[")
+            out.write(escape_latex(obj["title"]))
+            out.write("]")
+
+        self(obj[box_type], out)
+
+        out.write("\n\\end{" + box_type + "}")
+
+
     def act_on_dict(self, obj, out):
         try:
             node_type = obj["type"]
 
             if node_type in BOX_TEMPLATES:
-                out.write("\n\n\\begin{" + node_type + "}")
+                self.print_box(node_type, obj, out)
 
-                if obj.get("title", None):
-                    out.write("[")
-                    out.write(escape_latex(obj["title"]))
-                    out.write("]")
-
-                self(obj[node_type], out)
-
-                out.write("\n\\end{" + node_type + "}")
+                for subbox in BOX_SUBTEMPLATES.get(node_type, []):
+                    if obj.get(subbox, None):
+                        self.print_box(subbox, obj, out)
             else:
                 getattr(self, "export_" + node_type)(obj, out)
         except AttributeError:
