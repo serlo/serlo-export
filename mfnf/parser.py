@@ -295,6 +295,20 @@ class ArticleContentParser(ChainedAction):
                     "ordered": obj["name"] == "ol",
                     "items": items}
 
+    class HandleDefinitionLists(NodeTransformation):
+        def transform_dict(self, obj):
+            check(obj, "type") == "element"
+            check(obj, "name") == "dl"
+
+            items = [{"type": "definitionlistitem",
+                      "definition": self(dt["children"]),
+                      "explanation": self(dd["children"])}
+                      for dt, dd in zip(obj["children"][::2],
+                                        obj["children"][1::2])]
+
+            return {"type": "definitionlist",
+                    "items": items}
+
     class HandleFigures(NodeTransformation):
         def transform_dict(self, obj):
             check(obj, "type") == "element"

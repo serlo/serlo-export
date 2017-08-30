@@ -274,6 +274,16 @@ class LatexExporter:
     def export_th(self, th, out):
         self(th["content"], out)
 
+    def export_definitionlist(self, definitionlist, out):
+        with LatexEnvironment(out, "description"):
+            self(definitionlist["items"], out)
+
+    def export_definitionlistitem(self, definitionlistitem, out):
+        out.write("\n\\item[")
+        self(definitionlistitem["definition"], out)
+        out.write("] ")
+        self(definitionlistitem["explanation"], out)
+
 class LatexEnvironment:
     def __init__(self, out, environment):
         self.out = out
