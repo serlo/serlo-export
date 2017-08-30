@@ -504,6 +504,15 @@
         - type: paragraph
           content: [{ type: text, data: "beweisschritt"}]
 
+- in: |
+    {{-|}}
+  out:
+    - type: importantparagraph
+    - importantparagraph: [ 
+        - type: paragraph
+        - content: [{type: text, data: "Paragraph data"]
+      ]
+
 # --- Handling of Header and Footer ---
 
 - in: |
