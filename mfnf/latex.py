@@ -104,7 +104,7 @@ class LatexExporter:
             out.write("[")
             out.write(escape_latex(obj["title"]))
             out.write("]")
-        
+
         self(obj[box_type], out)
 
         out.write("\n\\end{" + box_type + "}")
