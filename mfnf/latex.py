@@ -2,9 +2,9 @@ import collections
 import json
 import os
 import re
+import textwrap
 
 from itertools import chain, repeat
-from textwrap import shorten
 
 from mfnf.transformations import ChainedAction, NotInterested, \
                                  NodeTypeTransformation
@@ -34,6 +34,11 @@ LATEX_SPECIAL_CHARS = {
     '\n': '\\\\',
 }
 
+def shorten(line):
+    indent = re.match(r"^\s*", line).group()
+
+    return indent + textwrap.shorten(line, 60)
+
 def quote_image_name(text):
     return re.sub(r"[^a-zA-Z0-9]", lambda x: str(ord(x.group())), text)
 
@@ -45,7 +50,7 @@ def escape_latex_math(formula):
 
 def escape_latex_verbatim(code):
     code = re.sub(r"\\end\s*{\s*verbatim\s*}", "", code)
-    return "\n".join((shorten(line, 70) for line in code.splitlines()))
+    return "\n".join((shorten(line) for line in code.splitlines()))
 
 class MediaWiki2Latex(ChainedAction):
     class DeleteNotPrintableContent(NodeTypeTransformation):
