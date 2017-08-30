@@ -31,7 +31,6 @@ TEMPLATE_SPEC = {
     "Liste": lambda x: x.startswith("item"),
     # important paragraph
     "-": lambda x: x in ["1"],
-#    "Formel": lambda x: x in ["1"], 
 }
 
 TEMPLATE_INLINE_SPEC = {
@@ -86,7 +85,6 @@ BOXSPEC = [
       "proof": "beweis", "alternativeproof": "beweis2"}),
 
     ("importantparagraph", "-", {"importantparagraph": "1"}),
-#    ("formulablock", "Formel", {"formulablock", "1"}),
 ]
 
 def parse_content(api, title, text):
