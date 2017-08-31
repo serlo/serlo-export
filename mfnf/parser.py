@@ -379,6 +379,9 @@ class ArticleContentParser(ChainedAction):
                         # Header begin with h2 in our project -> subtract 1
                         "depth": int(obj["name"][-1])-1,
                         "content": self(obj["children"])}
+            elif obj["name"] == "a" and "href" in obj.get("attrs", {}).keys():
+                return {"type": "href", "url": obj["attrs"]["href"], "content": self(obj["children"])}
+
             elif obj["name"] in ("h1", "h4", "h5", "h6"):
                 message = "Heading of depth {} is not allowed"
 

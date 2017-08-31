@@ -24,6 +24,12 @@
     type: i
     content: [{ type: text, data: "Hello World" }]
 
+#- in: "<a href='http://www.example.com/'>Example</a>"
+#  out:
+#    type: href
+#    url: 'http://www.example.com/'
+#    content: [{type: text, data: "Example"}]
+
 # === Invalid formating ===
 # The following MediaWiki code is invalid in the project
 # „Mathe für Nicht-Freaks“.
