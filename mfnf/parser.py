@@ -380,7 +380,9 @@ class ArticleContentParser(ChainedAction):
                         "depth": int(obj["name"][-1])-1,
                         "content": self(obj["children"])}
             elif obj["name"] == "a" and "href" in obj.get("attrs", {}).keys():
-                return {"type": "href", "url": obj["attrs"]["href"], "content": self(obj["children"])}
+                return {"type": "href",
+                        "url": obj["attrs"]["href"],
+                        "content": self(obj["children"])}
             # references: outer span with link information
             elif (obj["name"] == "span" and "class" in obj.get("attrs", {}) and
                     obj["attrs"]["class"] == "mw-ref"):
