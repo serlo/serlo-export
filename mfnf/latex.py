@@ -4,7 +4,7 @@ import os
 import re
 import textwrap
 
-from itertools import chain, repeat
+from itertools import chain, repeat, count
 
 from mfnf.transformations import ChainedAction, NotInterested, \
                                  NodeTypeTransformation
@@ -212,6 +212,14 @@ class LatexExporter:
         out.write("\n\n\\" + header_types[header["depth"]] + "{")
         self(header["content"], out)
         out.write("}")
+
+    def export_proofbycases(self, obj, out):
+        for n, case, proof in zip(count(1), obj["cases"], obj["proofs"]):
+            out.write("\n\n\\textbf{Fall " + str(n) + ":} ")
+            self(case, out)
+
+            with LatexEnvironment(out, "indentblock"):
+                self(proof, out)
 
     def export_i(self, i, out):
         out.write("\\emph{")

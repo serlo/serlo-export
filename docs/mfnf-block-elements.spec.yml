@@ -524,6 +524,24 @@
           content: [{ type: text, data: "beweisschritt"}]
 
 - in: |
+    {{:Mathe für Nicht-Freaks: Vorlage:Fallunterscheidung
+     |fall1=foo
+     |beweis1=42
+     |fall2=bar
+     |beweis2=24
+    }}
+  out:
+    - type: proofbycases
+      cases:
+        - [{ type: text, data: "foo"}]
+        - [{ type: text, data: "bar"}]
+      proofs:
+        - - type: paragraph
+            content: [{ type: text, data: "42"}]
+        - - type: paragraph
+            content: [{ type: text, data: "24"}]
+
+- in: |
     {{-|foo bar hello}}
   out:
     - type: importantparagraph

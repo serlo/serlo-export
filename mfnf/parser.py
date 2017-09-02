@@ -31,14 +31,17 @@ TEMPLATE_SPEC = {
     "Liste": lambda x: x.startswith("item"),
     # important paragraph
     "-": lambda x: x in ["1"],
+    "Fallunterscheidung": lambda x: x.startswith("beweis")
 }
 
 TEMPLATE_INLINE_SPEC = {
     "Beweisschritt": lambda x: x in ["ziel"],
+    "Fallunterscheidung": lambda x: x.startswith("fall")
 }
 
 TEMPLATE_LIST_PARAMS = {
-    "Liste": ["item"]
+    "Liste": ["item"],
+    "Fallunterscheidung": ["fall", "beweis"]
 }
 
 BOXSPEC = [
@@ -48,6 +51,9 @@ BOXSPEC = [
     ("example", "Beispiel", {"title": "titel", "example": "beispiel"}),
 
     ("solution", "Lösung", {"title": "titel", "solution": "lösung"}),
+
+    ("proofbycases", "Fallunterscheidung",
+     {"cases": "fall_list", "proofs": "beweis_list"}),
 
     ("solutionprocess", "Lösungsweg",
      {"title": "titel", "solutionprocess": "lösungsweg"}),
