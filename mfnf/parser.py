@@ -393,7 +393,6 @@ class ArticleContentParser(ChainedAction):
                     obj["attrs"]["class"] == "mw-reflink-text"):
                 return {"type": "citation-number",
                         "content": self(obj["children"])}
-
             elif obj["name"] in ("h1", "h4", "h5", "h6"):
                 message = "Heading of depth {} is not allowed"
 
@@ -418,7 +417,6 @@ class ArticleContentParser(ChainedAction):
 
     class HandleTemplates(NodeTypeTransformation):
         def transform_template(self, obj):
-            
             for bname, tname, params in BOXSPEC:
                 if obj["name"] == tname:
                     params = {k: self(obj["params"].get(v, None))
@@ -432,17 +430,16 @@ class ArticleContentParser(ChainedAction):
                         "items": [{"type": "itemlist", "content": x}
                                   for x in obj["params"]["item_list"]]}
             elif obj["name"] == "Formel":
-                
                 formula = obj["params"]["1"].strip()
-                formula = re.match("<math>(.*)</math>", formula, re.DOTALL).group(1)
+                formula = re.match("<math>(.*)</math>",
+                                   formula, re.DOTALL).group(1)
                 formula = formula.strip()
 
                 formula = remove_prefix(formula, "\\begin{align}")
                 formula = remove_suffix(formula, "\\end{align}")
                 formula = formula.strip()
-                
-                return {"type": "equation", "formula": formula}
 
+                return {"type": "equation", "formula": formula}
             elif obj["name"].startswith("#invoke:"):
                 # Template is header or footer
                 return None
