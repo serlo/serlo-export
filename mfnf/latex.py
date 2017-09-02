@@ -293,8 +293,8 @@ class LatexExporter:
             url = "https://de.wikibooks.org/wiki/%s" % href["url"][2:]
         else:
             print("Malformed url:", href["url"])
-            return 
-        
+            return
+
         self(href["content"], out)
         out.write(" (\\url{%s})" % url)
 
