@@ -285,8 +285,12 @@ class LatexExporter:
         self(definitionlistitem["explanation"], out)
 
     def export_href(self, href, out):
+        with LatexMacro(out, "href"):
+            out.write(escape_latex(href["url"]))
+
+        out.write("{")
         self(href["content"], out)
-        out.write(" (\\url{%s})" % escape_latex(href["url"]))
+        out.write("}")
 
 class LatexEnvironment:
     def __init__(self, out, environment):
