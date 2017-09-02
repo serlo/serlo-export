@@ -395,16 +395,10 @@ class ArticleContentParser(ChainedAction):
                 else:
                     return {"type": "error",
                             "message": "<a> tag without `href` url"}
-            # references: outer span with link information
-            elif (obj["name"] == "span" and "class" in obj.get("attrs", {}) and
-                    obj["attrs"]["class"] == "mw-ref"):
-                return {"type": "reference",
-                        "content": self(obj["children"])}
-            # references: inner span with citation number
-            elif (obj["name"] == "span" and "class" in obj.get("attrs", {}) and
-                    obj["attrs"]["class"] == "mw-reflink-text"):
-                return {"type": "citation-number",
-                        "content": self(obj["children"])}
+            elif obj["name"] == "span" and \
+                    lookup(obj, "attr", "typeof") == "mw:Extension/ref":
+                # TODO: Proper parsing of references
+                return None
             elif obj["name"] in ("h1", "h4", "h5", "h6"):
                 message = "Heading of depth {} is not allowed"
 
