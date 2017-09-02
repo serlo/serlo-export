@@ -379,10 +379,22 @@ class ArticleContentParser(ChainedAction):
                         # Header begin with h2 in our project -> subtract 1
                         "depth": int(obj["name"][-1])-1,
                         "content": self(obj["children"])}
-            elif obj["name"] == "a" and "href" in obj.get("attrs", {}).keys():
-                return {"type": "href",
-                        "url": obj["attrs"]["href"],
-                        "content": self(obj["children"])}
+            elif obj["name"] == "a":
+                url = obj["attrs"].get("href", "")
+
+                if url:
+                    if url.startswith("./"):
+                        # TODO: The URL prefix should not be hardcoded here
+                        url = "https://de.wikibooks.org/wiki/" + url[2:]
+
+                    assert url.startswith("http://") \
+                        or url.startswith("https://")
+
+                    return {"type": "href", "url": url,
+                            "content": self(obj["children"])}
+                else:
+                    return {"type": "error",
+                            "message": "<a> tag without `href` url"}
             # references: outer span with link information
             elif (obj["name"] == "span" and "class" in obj.get("attrs", {}) and
                     obj["attrs"]["class"] == "mw-ref"):

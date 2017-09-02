@@ -285,18 +285,8 @@ class LatexExporter:
         self(definitionlistitem["explanation"], out)
 
     def export_href(self, href, out):
-        url = ""
-        if href["url"].startswith("http"):
-            url = "%s" % href["url"]
-        # cross references to pdf or links to mfnf?
-        elif href["url"].startswith("./"):
-            url = "https://de.wikibooks.org/wiki/%s" % href["url"][2:]
-        else:
-            print("Malformed url:", href["url"])
-            return
-
         self(href["content"], out)
-        out.write(" (\\url{%s})" % url)
+        out.write(" (\\url{%s})" % escape_latex(href["url"]))
 
 class LatexEnvironment:
     def __init__(self, out, environment):
