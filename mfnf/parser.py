@@ -481,7 +481,7 @@ class ArticleContentParser(ChainedAction):
                 return {"type": "error",
                         "message": "Todo-Message in MediaWiki code."}
             else:
-                message = "Pasring of template `{}`".format(obj["name"])
+                message = "Parsing of template `{}`".format(obj["name"])
 
                 return {"type": "notimplemented",
                         "target": obj,
