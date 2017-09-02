@@ -455,6 +455,9 @@ class ArticleContentParser(ChainedAction):
             elif obj["name"].startswith("#invoke:"):
                 # Template is header or footer
                 return None
+            elif obj["name"] == "todo":
+                return {"type": "error",
+                        "message": "Todo-Message in MediaWiki code."}
             else:
                 message = "Pasring of template `{}`".format(obj["name"])
 
