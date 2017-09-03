@@ -250,7 +250,7 @@ class LatexExporter:
 
         out.write("\\begin{center}")
         if ext == ".svg":
-            image_file += ".eps"
+            image_file += ".pdf"
             
         out.write("\n\\includegraphics[width=0.5\\textwidth]{")
         out.write(os.path.basename(image_file))

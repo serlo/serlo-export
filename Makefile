@@ -5,8 +5,8 @@ all:
 	python create_books.py
 	for DIR in out/*; do \
 		(cd "$$DIR" && \
-        for f in $$(find -name "*.svg"); do (echo "converting $$f ..." && inkscape "$$f" -E "$$f".eps --export-ignore-filters --export-ps-level=3); done && \
-		pdflatex -halt-on-error *tex); \
+        for f in $$(find -name "*.svg"); do (echo "converting $$f ..." && inkscape "$$f" --export-pdf "$$f".pdf --export-ignore-filters); done && \
+		pdflatex -halt-on-error -no-shell-escape *tex); \
 	done
 
 .PHONY: test
