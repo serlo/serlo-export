@@ -239,11 +239,14 @@ class MediaWikiCodeParser(ChainedAction):
             try:
                 name, caption = text.split("|", 1)
                 caption = parse_inline_content(self.api, self.title,
-                                               caption.strip())
+                                               caption.strip()) 
+ 
+                gallery_img = parse_content(self.api, self.title, "[[%s|center]]" % name.strip())[0]
+                    
+                gallery_img["children"].append({"type": "element", "name": "figcaption", "children": caption})               
+                
+                return gallery_img
 
-                return {"type": "galleryitem",
-                        "name": name,
-                        "caption": caption}
             except ValueError:
                 return {"type": "error",
                         "message": "Gallery item needs a caption"}
