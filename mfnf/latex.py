@@ -239,7 +239,7 @@ class LatexExporter:
 
         name, ext = os.path.splitext(image["name"])
 
-        if ext not in (".jpg",):
+        if ext not in (".jpg", ".svg"):
             ext = ".png"
 
         image_name = quote_image_name(name) + ext
@@ -249,6 +249,9 @@ class LatexExporter:
         self.api.download_image(image_url, image_file)
 
         out.write("\\begin{center}")
+        if ext == ".svg":
+            image_file += ".eps"
+            
         out.write("\n\\includegraphics[width=0.5\\textwidth]{")
         out.write(os.path.basename(image_file))
         out.write("}")

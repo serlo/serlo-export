@@ -4,8 +4,9 @@ SOURCE = $(shell git ls-tree -r master --name-only)
 all:
 	python create_books.py
 	for DIR in out/*; do \
-		( cd "$$DIR" && \
-		pdflatex -halt-on-error -no-shell-escape *tex ); \
+		(cd "$$DIR" && \
+        for f in $$(find -name "*.svg"); do (echo "converting $$f ..." && inkscape "$$f" -E "$$f".eps --export-ignore-filters --export-ps-level=3); done && \
+		pdflatex -halt-on-error *tex); \
 	done
 
 .PHONY: test
