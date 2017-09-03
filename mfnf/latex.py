@@ -12,7 +12,7 @@ from mfnf.transformations import ChainedAction, NotInterested, \
 BOX_TEMPLATES = [
     "definition", "theorem", "solution", "solutionprocess", "proof",
     "proofsummary", "alternativeproof", "hint", "warning", "example",
-    "exercise", "importantparagraph", "explanation"
+    "exercise", "importantparagraph", "explanation", 
 ]
 
 BOX_SUBTEMPLATES = {
@@ -299,6 +299,12 @@ class LatexExporter:
         out.write("{")
         self(href["content"], out)
         out.write("}")
+
+    def export_question(self, question, out):
+        with LatexEnvironment(out, "question"):
+            self(question["question"], out)
+        with LatexEnvironment(out, "answer"):
+            self(question["answer"], out)
 
 class LatexEnvironment:
     def __init__(self, out, environment):
