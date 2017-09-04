@@ -1,13 +1,10 @@
+ROOT_DIR:=$(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 SOURCES = $(shell git ls-tree -r master --name-only)
 
 .PHONY: all
 all:
 	python create_books.py
-	for DIR in out/*; do \
-		(cd "$$DIR" && \
-        for f in $$(find -name "*.svg"); do (echo "converting $$f ..." && inkscape "$$f" --export-pdf "$$f".pdf --export-ignore-filters); done && \
-		pdflatex -halt-on-error -no-shell-escape *tex); \
-	done
+	for DIR in out/*; do $(MAKE) -C "$$DIR" -f "${ROOT_DIR}/pdflatex.mk" ; done
 
 .PHONY: test
 test:

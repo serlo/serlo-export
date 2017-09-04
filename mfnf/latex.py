@@ -237,23 +237,18 @@ class LatexExporter:
         else:
             out.write("\n\n")
 
-        name, ext = os.path.splitext(image["name"])
+        name, ext = os.path.splitext(image["name"].lower())
 
-        if ext not in (".jpg", ".svg"):
-            ext = ".png"
-
-        image_name = quote_image_name(name) + ext
+        target_image_name = quote_image_name(name)
+        image_name = target_image_name + ext
         image_file = os.path.join(self.directory, image_name)
         image_url = "http:" + image["url"]
 
         self.api.download_image(image_url, image_file)
 
         out.write("\\begin{center}")
-        if ext == ".svg":
-            image_file += ".pdf"
-
         out.write("\n\\includegraphics[width=0.5\\textwidth]{")
-        out.write(os.path.basename(image_file))
+        out.write(target_image_name)
         out.write("}")
         out.write("\n\\end{center}")
 
@@ -270,14 +265,15 @@ class LatexExporter:
             for image in gallery["items"]:
                 out.write("\\begin{subfigure}{%f\\textwidth}" % (.9/len(gallery["items"])))
                 name, ext = os.path.splitext(image["name"])
-                image_name = quote_image_name(name) + ext
+                target_image_name = quote_image_name(name)
+                image_name = target_image_name + ext
                 image_file = os.path.join(self.directory, image_name)
                 image_url = "http:" + image["url"]
 
                 self.api.download_image(image_url, image_file)
 
                 out.write("\n\\includegraphics[width=1.\\textwidth]{")
-                out.write(os.path.basename(image_file))
+                out.write(target_image_name)
                 out.write("}")
 
                 out.write("\\caption{")
