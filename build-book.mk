@@ -1,17 +1,17 @@
 # Makefile for creating a PDF from a LaTeX project
-
-TEX_FILE = $(shell basename $$(pwd)).tex
-PDF_FILE = $(patsubst %.tex,%.pdf,${TEX_FILE})
+LATEX = pdflatex
+LATEXFLAGS = -halt-on-error -no-shell-escape
+LATEXMK = latexmk
+LATEXMKFLAGS = -f
 
 FIGURES  = $(patsubst %.svg,%.pdf,$(wildcard *.svg)) \
            $(patsubst %.jpg,%.pdf,$(wildcard *.jpg)) \
            $(patsubst %.png,%.pdf,$(wildcard *.png))
 
 .PHONY: all
-all: ${PDF_FILE}
-
-${PDF_FILE}: ${TEX_FILE} ${FIGURES}
-	pdflatex -halt-on-error -no-shell-escape $<
+all: ${FIGURES}
+	$(LATEXMK) $(LATEXMKFLAGS) -pdflatex="$(LATEX) $(LATEXFLAGS) %O %S" \
+		-pdf "$(notdir $(CURDIR:%/=%))"
 
 %.pdf: %.svg
 	inkscape --export-area-drawing --export-text-to-path \

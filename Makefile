@@ -4,7 +4,9 @@ SOURCES = $(shell git ls-tree -r master --name-only)
 .PHONY: all
 all:
 	python create_books.py
-	for DIR in out/*; do $(MAKE) -C "$$DIR" -f "${ROOT_DIR}/pdflatex.mk" ; done
+	for BOOK_DIR in out/*; do \
+		make -C "$$BOOK_DIR" -f ${ROOT_DIR}/build-book.mk; \
+	done
 
 .PHONY: test
 test:
