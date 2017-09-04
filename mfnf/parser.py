@@ -451,7 +451,7 @@ class ArticleContentParser(ChainedAction):
                         "ordered": obj["params"].get("type", "") == "ol",
                         "items": [{"type": "itemlist", "content": x}
                                   for x in obj["params"]["item_list"]]}
-            elif obj["name"] == "Formel":
+            elif obj["name"].lower() == "formel":
                 formula = obj["params"]["1"].strip()
                 formula = re.match("<math>(.*)</math>",
                                    formula, re.DOTALL).group(1)
