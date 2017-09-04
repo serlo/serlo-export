@@ -332,6 +332,22 @@ class LatexExporter:
         with LatexEnvironment(out, "answer"):
             self(question["answer"], out)
 
+    def export_proofstep(self, proofstep, out):
+        out.write("\n\n\\begin{proofstep}")
+        out.write("[")
+        out.write(escape_latex(proofstep["name"]))
+        out.write("]")
+        if "target" in proofstep:
+            with LatexEnvironment(out, "indentblock"):
+                out.write("${}$\n") # hack to force new line, better ideas?
+                with LatexMacro(out, "textbf"):
+                    out.write("Ziel: ")
+                self(proofstep["target"], out)
+        with LatexEnvironment(out, "indentblock"):
+            out.write("${}$")   # hack to force new line, better ideas?
+            self(proofstep["proof"], out)
+        out.write("\n\\end{proofstep}")
+
 class LatexEnvironment:
     def __init__(self, out, environment):
         self.out = out
