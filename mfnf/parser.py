@@ -482,9 +482,34 @@ class ArticleParser(ChainedAction):
     class LoadArticleContent(NodeTypeTransformation):
         """Loads the content of an article."""
 
+        def get_article_authors(self, title):
+            revision_data = list(json.loads(self.api.get_authors(title))["query"]["pages"].values())[0]
+            if revision_data["title"] != title:
+                print("error when getting autors: title does not match revision title!")
+
+            author_data = {}
+            article_size = 0
+
+            ipv4 = re.compile(r"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")
+            ipv6 = re.compile(r"^([\w\d]{4}:){7}[\w\d]{4}$")
+
+            for rev in reversed(revision_data["revisions"]):
+                if ipv4.match(rev["user"]) or ipv6.match(rev["user"]):
+                    rev["user"] = "anonymous"
+
+                if not rev["user"] in author_data.keys():
+                    author_data[rev["user"]] = 0
+
+                author_data[rev["user"]] += rev["size"] - article_size
+                article_size = rev["size"]
+
+            return author_data
+
         def transform_article(self, article):
             parser = ArticleContentParser(api=self.api, title=article["title"])
 
             content = parser(self.api.get_content(article["title"]))
 
-            return add_dict(article, {"content": content})
+            authors = self.get_article_authors(article["title"])
+            print ("authors of", article["title"], authors)
+            return add_dict(article, {"content": content, "authors": authors})

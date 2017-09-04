@@ -49,6 +49,11 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
         return "http://" + self.domain + "/w/index.php"
 
     @property
+    def _api_url(self):
+        """Returns the URL to the server's `api.php` file."""
+        return "https://de.wikibooks.org/w/api.php"
+
+    @property
     def _rest_api_url(self):
         """Returns the URL to the server's REST API endpoints."""
         return "https://de.wikibooks.org/api/rest_v1"
@@ -70,6 +75,10 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
         data = {"title": title, "wikitext": text, "body_only": True}
 
         return self._api_call(endpoint, data).text
+
+    def get_authors(self, title):
+        params = {"action": "query", "prop": "revisions", "rvprop": "size|user", "titles": title, "rvlimit": "max", "format": "json"}
+        return self.req.get(self._api_url, params=params).text
 
     def download_image(self, image_url, image_path):
         urllib.request.urlretrieve(image_url, image_path)
