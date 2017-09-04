@@ -3,9 +3,8 @@ SOURCE = $(shell git ls-tree -r master --name-only)
 .PHONY: all
 all:
 	python create_books.py
-	for DIR in out/*; do \
-		( cd "$$DIR" && \
-		pdflatex -halt-on-error -no-shell-escape *tex ); \
+	for BOOK_DIR in out/*; do \
+		make -C "$$BOOK_DIR" -f $(CURDIR)/build-book.mk; \
 	done
 
 .PHONY: test
