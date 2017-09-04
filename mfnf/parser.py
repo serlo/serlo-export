@@ -241,9 +241,12 @@ class MediaWikiCodeParser(ChainedAction):
                 caption = parse_inline_content(self.api, self.title,
                                                caption.strip())
 
-                return {"type": "galleryitem",
-                        "name": name,
-                        "caption": caption}
+                gallery_img = parse_content(self.api, self.title, "[[%s|center]]" % name.strip())[0]
+
+                gallery_img["children"].append({"type": "element", "name": "figcaption", "children": caption})
+
+                return gallery_img
+
             except ValueError:
                 return {"type": "error",
                         "message": "Gallery item needs a caption"}
@@ -331,8 +334,15 @@ class ArticleContentParser(ChainedAction):
             img = obj["children"][0]["children"][0]["attrs"]
             name = remove_prefix(img["resource"], "./Datei:")
 
+            source = img["src"]
+
+            # extract original image, only for svg
+            if source.endswith(".svg.png"):
+                source = source.replace("/thumb", "", 1)
+                source = source[:source.rfind("/")]
+
             return {"type": "image", "caption": self(caption),
-                    "name": name, "url": img["src"],
+                    "name": name, "url": source,
                     "thumbnail": obj["attrs"]["typeof"] == "mw:Image/Thumb"}
 
     class HandleInlineFigures(NodeTransformation):

@@ -12,7 +12,7 @@ from mfnf.transformations import ChainedAction, NotInterested, \
 BOX_TEMPLATES = [
     "definition", "theorem", "solution", "solutionprocess", "proof",
     "proofsummary", "alternativeproof", "hint", "warning", "example",
-    "exercise", "importantparagraph", "explanation", 
+    "exercise", "importantparagraph", "explanation",
 ]
 
 BOX_SUBTEMPLATES = {
@@ -241,12 +241,10 @@ class LatexExporter:
         else:
             out.write("\n\n")
 
-        name, ext = os.path.splitext(image["name"])
+        name, ext = os.path.splitext(image["name"].lower())
 
-        if ext not in (".jpg",):
-            ext = ".png"
-
-        image_name = quote_image_name(name) + ext
+        target_image_name = quote_image_name(name)
+        image_name = target_image_name + ext
         image_file = os.path.join(self.directory, image_name)
         image_url = "http:" + image["url"]
 
@@ -254,7 +252,7 @@ class LatexExporter:
 
         out.write("\\begin{center}")
         out.write("\n\\includegraphics[width=0.5\\textwidth]{")
-        out.write(os.path.basename(image_file))
+        out.write(target_image_name)
         out.write("}")
         out.write("\n\\end{center}")
 
@@ -263,6 +261,30 @@ class LatexExporter:
             self(image["caption"], out)
             out.write("}")
             out.write("\n\\end{figure}")
+
+    def export_gallery(self, gallery, out):
+
+        with LatexEnvironment(out, "figure"):
+            out.write("\\hfill")
+            for image in gallery["items"]:
+                out.write("\\begin{subfigure}{%f\\textwidth}" % (.9/len(gallery["items"])))
+                name, ext = os.path.splitext(image["name"])
+                target_image_name = quote_image_name(name)
+                image_name = target_image_name + ext
+                image_file = os.path.join(self.directory, image_name)
+                image_url = "http:" + image["url"]
+
+                self.api.download_image(image_url, image_file)
+
+                out.write("\n\\includegraphics[width=1.\\textwidth]{")
+                out.write(target_image_name)
+                out.write("}")
+
+                out.write("\\caption{")
+                self(image["caption"], out)
+                out.write("}")
+                out.write("\\end{subfigure}")
+                out.write("\\hfill")
 
     def export_table(self, table, out):
         # TODO intermediate conversion

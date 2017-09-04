@@ -1,12 +1,10 @@
-SOURCE = $(shell git ls-tree -r master --name-only)
+ROOT_DIR:=$(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
+SOURCES = $(shell git ls-tree -r master --name-only)
 
 .PHONY: all
 all:
 	python create_books.py
-	for DIR in out/*; do \
-		( cd "$$DIR" && \
-		pdflatex -halt-on-error -no-shell-escape *tex ); \
-	done
+	for DIR in out/*; do $(MAKE) -C "$$DIR" -f "${ROOT_DIR}/pdflatex.mk" ; done
 
 .PHONY: test
 test:
@@ -14,12 +12,12 @@ test:
 
 .PHONY: watch
 watch:
-	while inotifywait -e modify ${SOURCE}; do \
+	while inotifywait -e modify ${SOURCES}; do \
 		make all ; \
 	done
 
 .PHONY: watch_test
 watch_test:
-	while inotifywait -e modify ${SOURCE}; do \
+	while inotifywait -e modify ${SOURCES}; do \
 		make test ; \
 	done
