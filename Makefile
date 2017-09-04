@@ -1,4 +1,4 @@
-SOURCE = $(shell git ls-tree -r master --name-only)
+SOURCES = $(shell git ls-tree -r master --name-only)
 
 .PHONY: all
 all:
@@ -15,12 +15,12 @@ test:
 
 .PHONY: watch
 watch:
-	while inotifywait -e modify ${SOURCE}; do \
+	while inotifywait -e modify ${SOURCES}; do \
 		make all ; \
 	done
 
 .PHONY: watch_test
 watch_test:
-	while inotifywait -e modify ${SOURCE}; do \
+	while inotifywait -e modify ${SOURCES}; do \
 		make test ; \
 	done
