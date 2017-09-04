@@ -8,10 +8,13 @@ Make sure you use **`python 3`** and have a bash, `pip` or `pipenv` ready to go.
 Clone this rep and inside the `mfnf-pdf-export` directory run
 
 ``` sh
-# install dependencies via pipenv or pip
+# install dependencies via pipenv
 pipenv install gevent
 pipenv install requests
 pipenv install PyYAML
+
+# install dependencies via pip
+pip install -r requirements.txt
 
 # run scripts 
 make
