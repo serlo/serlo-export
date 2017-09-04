@@ -1,6 +1,8 @@
 ROOT_DIR:=$(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 SOURCES = $(shell git ls-tree -r master --name-only)
 
+inotify = while inotifywait -e modify ${SOURCES}; do ${1} ; done
+
 .PHONY: all
 all:
 	python create_books.py
@@ -14,12 +16,8 @@ test:
 
 .PHONY: watch
 watch:
-	while inotifywait -e modify ${SOURCES}; do \
-		make all ; \
-	done
+	$(call inotify, make all)
 
 .PHONY: watch_test
 watch_test:
-	while inotifywait -e modify ${SOURCES}; do \
-		make test ; \
-	done
+	$(call inotify, make test)
