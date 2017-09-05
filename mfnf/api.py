@@ -87,6 +87,12 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
             else:
                 return result
 
+    def get_image_revisions(self, filename):
+        """Returns the history of the image `filename`."""
+        params = {"titles": filename, "prop": "imageinfo", "iiprop": "url"}
+
+        return self.query(params, ["pages", select_singleton, "imageinfo"])
+
     def get_content(self, title):
         return self._index_call({"action": "raw", "title": title})
 
