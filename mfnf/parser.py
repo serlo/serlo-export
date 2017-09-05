@@ -499,15 +499,13 @@ class ArticleParser(ChainedAction):
             for rev in reversed(revisions):
                 try:
                     socket.inet_aton(rev["user"])
-                    rev["user"] = "anonymous"
+                    # ignore edits by anonymous users
                 except socket.error:
-                    pass
+                    if not rev["user"] in author_data.keys():
+                        author_data[rev["user"]] = 0
 
-                if not rev["user"] in author_data.keys():
-                    author_data[rev["user"]] = 0
-
-                author_data[rev["user"]] += max(rev["size"] - article_size, 0)
-                article_size = rev["size"]
+                    author_data[rev["user"]] += max(rev["size"] - article_size, 0)
+                    article_size = rev["size"]
 
             return author_data
 
