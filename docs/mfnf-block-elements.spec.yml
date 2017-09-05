@@ -224,12 +224,21 @@
 - in: "{{Formel|<math>x^2 \\sgn</math>}}"
   out:
     - type: equation
-      formula: "x^{2}\\operatorname {sgn} "
+      formula: "{\\begin{aligned}x^{2}\\operatorname {sgn} \\end{aligned}}"
 
 - in: "{{Formel|<math>\\begin{align} x^2 \\end{align}</math>}}"
   out:
     - type: equation
-      formula: x^{2}
+      formula: "{\\begin{aligned}x^{2}\\end{aligned}}"
+
+- in: |
+    {{Formel|<math>\begin{align}
+    x^2 & = 1 \\[0.3em]
+    x & = 1
+    \end{align}</math>}}
+  out:
+    - type: equation
+      formula: "{\\begin{aligned}x^{2}&=1\\\\[0.3em]x&=1\\end{aligned}}"
 
 # --- Galleries ---
 

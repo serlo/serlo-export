@@ -463,7 +463,7 @@ class ArticleContentParser(ChainedAction):
                     formula = formula[0]["formula"]
                     formula = remove_prefix(formula, "\\begin{align}")
                     formula = remove_suffix(formula, "\\end{align}")
-                    formula = formula.strip()
+                    formula = "\\begin{align}" + formula + "\\end{align}"
 
                     return {"type": "equation", "formula": formula}
                 else:

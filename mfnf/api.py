@@ -6,6 +6,7 @@ Copyright 2017 Stephan Kulla
 from abc import ABCMeta, abstractmethod
 import urllib.request
 from urllib.parse import quote
+import re
 
 from mfnf.utils import stablehash, merge, query_path, select_singleton
 
@@ -126,7 +127,7 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
         assert mode in ["tex", "inline-tex"]
 
         endpoint = ["media", "math", "check"] + [mode]
-        params = {"type": mode, "q": formula}
+        params = {"type": mode, "q": re.sub(r"\s", " ", formula)}
         result = self._api_call(endpoint, params).json()
 
         if result.get("title", None) == "Bad Request":
