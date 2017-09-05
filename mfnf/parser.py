@@ -7,7 +7,7 @@ from itertools import count
 from html.parser import HTMLParser
 from mfnf.transformations import NodeTransformation, ChainedAction, Action, \
      NodeTypeTransformation, check, NotInterested, Transformation
-from mfnf.utils import lookup, remove_prefix, remove_suffix, add_dict
+from mfnf.utils import lookup, remove_prefix, remove_suffix, merge
 
 TEMPLATE_SPEC = {
     "definition": lambda x: x in ["definition"],
@@ -286,7 +286,7 @@ class ArticleContentParser(ChainedAction):
 
                     params[param_prefix + "_list"] = result
 
-                return add_dict(obj, {"params": params})
+                return merge(obj, {"params": params})
             else:
                 raise NotInterested()
 
@@ -435,7 +435,7 @@ class ArticleContentParser(ChainedAction):
             heading = text_rstrip(obj["content"][:-1])
             anchor = obj["content"][-1]["params"]["1"]
 
-            return add_dict(obj, {"content": heading, "anchor": anchor})
+            return merge(obj, {"content": heading, "anchor": anchor})
 
     class HandleTemplates(NodeTypeTransformation):
         def transform_template(self, obj):
@@ -444,7 +444,7 @@ class ArticleContentParser(ChainedAction):
                     params = {k: self(obj["params"].get(v, None))
                               for k, v in params.items()}
 
-                    return add_dict(params, {"type": bname})
+                    return merge(params, {"type": bname})
 
             if obj["name"] == "liste":
                 return {"type": "list",
@@ -512,4 +512,4 @@ class ArticleParser(ChainedAction):
 
             authors = self.get_article_authors(article["title"])
             print ("authors of", article["title"], authors)
-            return add_dict(article, {"content": content, "authors": authors})
+            return merge(article, {"content": content, "authors": authors})

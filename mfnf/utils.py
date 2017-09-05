@@ -23,13 +23,27 @@ def remove_suffix(text, suffix):
     """Removes the suffix `suffix` from string `text` in case it is present."""
     return text[:len(text)-len(suffix)] if text.endswith(suffix) else text
 
-def add_dict(dct1, dct2):
-    """Returns a new dictionaries where the content of the dictionaries `dct1`
-    and `dct2` are merged together."""
-    result = dct1.copy()
-    result.update(dct2)
+def merge(obj1, obj2):
+    """Merges two objects depending of the type of the first argument.
 
-    return result
+    >>> merge(None, 42)
+    42
+    >>> merge(None, None) is None
+    True
+    >>> merge([1, 2], [6, 7])
+    [1, 2, 6, 7]
+    >>> d = merge({ "a": 1, "b": 2}, {"b": 3, "c": 4})
+    >>> d == {"a": 1, "b": 3, "c": 4}
+    True
+    """
+    if obj1 is None:
+        return obj2
+    elif isinstance(obj1, list):
+        return obj1 + obj2
+    elif isinstance(obj2, dict):
+        return {**obj1, **obj2}
+    else:
+        raise NotImplementedError()
 
 def sha256(text):
     """Returns SHA256 of the string `text`."""
