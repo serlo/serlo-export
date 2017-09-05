@@ -97,7 +97,7 @@ BOXSPEC = [
 
 DEFAULT_VALUES = {
     "proofstep": {
-        "name": "Beweisschritt"
+        "name": [{"type": "text", "data": "Beweisschritt"}]
     },
 }
 
@@ -434,10 +434,19 @@ class ArticleContentParser(ChainedAction):
 
     class HandleTemplates(NodeTypeTransformation):
         def transform_template(self, obj):
-            for bname, tname, params in BOXSPEC:
+
+            parser = ArticleContentParser(api=self.api, title=self.title)
+
+            for bname, tname, param_names in BOXSPEC:
                 if obj["name"] == tname:
-                    params = {k: self(obj["params"].get(v, None))
-                              for k, v in params.items()}
+
+                    params = {}
+                    for k, v in param_names.items():
+                        param_value = obj["params"].get(v, None)
+                        if type(param_value) == str:
+                            params[k] = parser(param_value)[0]["content"]
+                        else:
+                            params[k] = self(param_value)
 
                     return merge(params, {"type": bname})
 

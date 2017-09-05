@@ -99,10 +99,9 @@ class LatexExporter:
         assert box_type in BOX_TEMPLATES, box_type
 
         out.write("\n\n\\begin{" + box_type + "}")
-
         if obj.get("title", None):
             out.write("[")
-            out.write(escape_latex(obj["title"]))
+            self(obj["title"], out)
             out.write("]")
 
         self(obj[box_type], out)
@@ -335,8 +334,9 @@ class LatexExporter:
             self(question["answer"], out)
 
     def export_proofstep(self, proofstep, out):
+
         with LatexMacro(out, "textbf"):
-            out.write(escape_latex(proofstep["name"]))
+            self(proofstep["name"], out)
             out.write(":")
 
         out.write(" ")
