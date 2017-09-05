@@ -225,7 +225,7 @@ class MediaWikiCodeParser(ChainedAction):
             template = template["parts"][0]["template"]
 
             name = template["target"]["wt"].strip().lower()
-            name = remove_prefix(name, ":Mathe für Nicht-Freaks: Vorlage:")
+            name = remove_prefix(name, ":mathe für nicht-freaks: vorlage:")
 
             params = template["params"]
             params = {k: v["wt"] for k, v in params.items()}
