@@ -486,7 +486,7 @@ class ArticleContentParser(ChainedAction):
         def transform_inlinemath(self, obj):
             return self.normalize(obj, "inline-tex")
 
-        def transform_formula(self, obj):
+        def transform_equation(self, obj):
             return self.normalize(obj, "tex")
 
     class DeleteEmptyNodes(Transformation):

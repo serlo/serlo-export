@@ -221,15 +221,15 @@
 
 # --- Equations ---
 
-- in: "{{Formel|<math>x^2</math>}}"
+- in: "{{Formel|<math>x^2 \\sgn</math>}}"
   out:
     - type: equation
-      formula: x^2
+      formula: "x^{2}\\operatorname {sgn} "
 
 - in: "{{Formel|<math>\\begin{align} x^2 \\end{align}</math>}}"
   out:
     - type: equation
-      formula: x^2
+      formula: x^{2}
 
 # --- Galleries ---
 
