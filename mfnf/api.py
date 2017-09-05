@@ -129,6 +129,10 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
         params = {"type": mode, "q": formula}
         result = self._api_call(endpoint, params).json()
 
+        if mode == "inline-tex" and "\\begin{align}" in formula:
+            # \begin{align} in inline-tex is considered an error
+            raise ValueError()
+
         if result.get("title", None) == "Bad Request":
             raise ValueError()
 
