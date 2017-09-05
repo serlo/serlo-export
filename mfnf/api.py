@@ -91,7 +91,7 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
 
         return self._api_call(endpoint, data).text
 
-    def get_authors(self, title):
+    def get_revisions(self, title):
         params = {"prop": "revisions", "rvprop": "size|user", "titles": title,
                   "rvlimit": "max"}
 

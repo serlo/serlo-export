@@ -483,7 +483,7 @@ class ArticleParser(ChainedAction):
         """Loads the content of an article."""
 
         def get_article_authors(self, title):
-            revisions = self.api.get_authors(title)
+            revisions = self.api.get_revisions(title)
 
             author_data = {}
             article_size = 0
