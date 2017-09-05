@@ -272,7 +272,7 @@
           name: File:Bar.svg
           caption:
             - { type: text, data: "bar " }
-            - { type: inlinemath, formula: "x^2" }
+            - { type: inlinemath, formula: "x^{2}" }
 
 # --- Boxes ---
 - in: |

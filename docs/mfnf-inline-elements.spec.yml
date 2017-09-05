@@ -12,7 +12,12 @@
     content: [{ type: text, data: "Hello World" }]
 
 - in: "<math>x^2</math>"
-  out: { type: inlinemath, formula: "x^2" }
+  out: { type: inlinemath, formula: "x^{2}" }
+
+- in: "<math>\\R $ \\or</math>"
+  out:
+    type: inlinemath
+    formula: "\\mathbb {R} \\$\\lor "
 
 - in: "<dfn>Hello World</dfn>"
   out:
@@ -64,4 +69,4 @@
 - in: "<math>\\begin{align} x^2 \\end{align}</math>"
   out:
     type: error
-    message: "\\begin{align} not allowed in inline math"
+    message: "Wrong formatted formula"

@@ -473,13 +473,21 @@ class ArticleContentParser(ChainedAction):
                         "target": obj,
                         "message": message}
 
-    class HandleWrongInlineMath(NodeTypeTransformation):
-        def transform_inlinemath(self, obj):
-            if "\\begin{align}" in obj["formula"]:
+    class NormalizeFormulas(NodeTypeTransformation):
+        def normalize(self, obj, mode):
+            try:
+                formula = self.api.normalize_formula(obj["formula"], mode)
+            except ValueError:
                 return {"type": "error",
-                        "message": "\\begin{align} not allowed in inline math"}
-            else:
-                raise NotInterested()
+                        "message": "Wrong formatted formula"}
+
+            return merge(obj, {"formula": formula})
+
+        def transform_inlinemath(self, obj):
+            return self.normalize(obj, "inline-tex")
+
+        def transform_formula(self, obj):
+            return self.normalize(obj, "tex")
 
     class DeleteEmptyNodes(Transformation):
         pass

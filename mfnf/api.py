@@ -131,6 +131,8 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
 
         if mode == "inline-tex" and "\\begin{align}" in formula:
             # \begin{align} in inline-tex is considered an error
+            # TODO: Delete this after implementing a check for this in the
+            # online linter
             raise ValueError()
 
         if result.get("title", None) == "Bad Request":
