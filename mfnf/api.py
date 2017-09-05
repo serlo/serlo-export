@@ -7,7 +7,7 @@ from abc import ABCMeta, abstractmethod
 import urllib.request
 from urllib.parse import quote
 
-from mfnf.utils import stablehash
+from mfnf.utils import stablehash, merge, query_path, select_singleton
 
 class MediaWikiAPI(metaclass=ABCMeta):
     """Interface for accessing content of a MediaWiki project."""
@@ -67,6 +67,21 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
         endpoint_url = "/".join([self._rest_api_url] + endpoint)
         return self.req.post(endpoint_url, data=data)
 
+    def query(self, params, path_to_result):
+        params["format"] = "json"
+        params["action"] = "query"
+        path_to_result = ["query"] + path_to_result
+        result = None
+
+        while True:
+            api_result = self.req.get(self._api_url, params=params).json()
+            result = merge(result, query_path(api_result, path_to_result))
+
+            if "continue" in api_result:
+                params.update(api_result["continue"])
+            else:
+                return result
+
     def get_content(self, title):
         return self._index_call({"action": "raw", "title": title})
 
@@ -77,8 +92,10 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
         return self._api_call(endpoint, data).text
 
     def get_authors(self, title):
-        params = {"action": "query", "prop": "revisions", "rvprop": "size|user", "titles": title, "rvlimit": "max", "format": "json"}
-        return self.req.get(self._api_url, params=params).text
+        params = {"prop": "revisions", "rvprop": "size|user", "titles": title,
+                  "rvlimit": "max"}
+
+        return self.query(params, ["pages", select_singleton, "revisions"])
 
     def download_image(self, image_url, image_path):
         urllib.request.urlretrieve(image_url, image_path)

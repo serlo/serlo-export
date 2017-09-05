@@ -483,9 +483,7 @@ class ArticleParser(ChainedAction):
         """Loads the content of an article."""
 
         def get_article_authors(self, title):
-            revision_data = list(json.loads(self.api.get_authors(title))["query"]["pages"].values())[0]
-            if revision_data["title"] != title:
-                print("error when getting autors: title does not match revision title!")
+            revisions = self.api.get_authors(title)
 
             author_data = {}
             article_size = 0
@@ -493,7 +491,7 @@ class ArticleParser(ChainedAction):
             ipv4 = re.compile(r"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")
             ipv6 = re.compile(r"^([\w\d]{4}:){7}[\w\d]{4}$")
 
-            for rev in reversed(revision_data["revisions"]):
+            for rev in reversed(revisions):
                 if ipv4.match(rev["user"]) or ipv6.match(rev["user"]):
                     rev["user"] = "anonymous"
 

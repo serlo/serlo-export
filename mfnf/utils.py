@@ -5,15 +5,23 @@ import collections
 
 from functools import reduce
 
+def query_path(obj, path):
+    # TODO: Tests and documentation
+    return reduce(lambda x, y: y(x) if callable(y) else x[y], path, obj)
+
 def lookup(obj, *path):
     """Lookups repeatedly the items in the list `path` of the object `obj`. In
     case any `IndexError` or `KeyError` is thrown, `None` is returned. For
     example the call `safe_lookup(obj, "a", 0, "b")` returns
     `obj["a"][0]["b"]` when it exists and `None` otherwise."""
     try:
-        return reduce(lambda x, y: x[y], path, obj)
+        return query_path(obj, path)
     except (IndexError, KeyError, TypeError):
         return None
+
+def select_singleton(x):
+    # TODO: Tests and documentation
+    return next(iter(x.values()))
 
 def remove_prefix(text, prefix):
     """Removes the prefix `prefix` from string `text` in case it is present."""
