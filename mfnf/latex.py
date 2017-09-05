@@ -140,9 +140,9 @@ class LatexExporter:
 
         for obj in self._notimplemented:
             out.write("\n\n\section{" + escape_latex(obj["message"]) + "}")
-            out.write("\n\\begin{verbatim}\n")
-            out.write(escape_latex_verbatim(json.dumps(obj["target"], indent=1)))
-            out.write("\n\\end{verbatim}")
+
+            with LatexEnvironment(out, "verbatim"):
+                out.write(escape_latex_verbatim(json.dumps(obj["target"], indent=1)))
 
     def export_error(self, obj, out):
         self.print_message("Error", obj["message"], out)
@@ -157,14 +157,14 @@ class LatexExporter:
 
     def export_list(self, obj, out):
         list_type = "enumerate" if obj["ordered"] else "itemize"
-        out.write("\n\n\\begin{" + list_type + "}")
-        self(obj["items"], out)
-        out.write("\n\\end{" + list_type + "}")
+
+        with LatexEnvironment(out, list_type):
+            self(obj["items"], out)
 
     def export_equation(self, obj, out):
-        out.write("\n\n\\begin{align*}\n")
-        out.write(escape_latex_math(obj["formula"]))
-        out.write("\n\\end{align*}")
+        with LatexEnvironment(out, "align*"):
+            out.write(escape_latex_math(obj["formula"]))
+
 
     def export_book(self, book, out):
         with open("mfnf/latex_template.tex", "r") as template:
@@ -252,11 +252,10 @@ class LatexExporter:
 
         self.api.download_image(image["name"], image_file)
 
-        out.write("\\begin{center}")
-        out.write("\n\\includegraphics[width=0.5\\textwidth]{")
-        out.write(image_name)
-        out.write("}")
-        out.write("\n\\end{center}")
+        with LatexEnvironment(out, "center"):
+            out.write("\n\\includegraphics[width=0.5\\textwidth]{")
+            out.write(image_name)
+            out.write("}")
 
         if image["thumbnail"]:
             out.write("\\caption{")
@@ -265,27 +264,26 @@ class LatexExporter:
             out.write("\n\\end{figure}")
 
     def export_gallery(self, gallery, out):
-        out.write("\\begin{figure}[H]")
-        out.write("\\hfill")
-        for image in gallery["items"]:
-            out.write("\\begin{subfigure}{%f\\textwidth}" % (.9/len(gallery["items"])))
-            name, ext = os.path.splitext(image["name"].lower())
-
-            image_name = quote_image_name(name)
-            image_file = os.path.join(self.directory, image_name + ext)
-
-            self.api.download_image(image["name"], image_file)
-
-            out.write("\n\\includegraphics[width=1.\\textwidth]{")
-            out.write(image_name)
-            out.write("}")
-
-            out.write("\\caption{")
-            self(image["caption"], out)
-            out.write("}")
-            out.write("\\end{subfigure}")
+        with LatexEnvironment(out, "figure", ["H"]):
             out.write("\\hfill")
-        out.write("\\end{figure}")
+            for image in gallery["items"]:
+                out.write("\\begin{subfigure}{%f\\textwidth}" % (.9/len(gallery["items"])))
+                name, ext = os.path.splitext(image["name"].lower())
+
+                image_name = quote_image_name(name)
+                image_file = os.path.join(self.directory, image_name + ext)
+
+                self.api.download_image(image["name"], image_file)
+
+                out.write("\n\\includegraphics[width=1.\\textwidth]{")
+                out.write(image_name)
+                out.write("}")
+
+                out.write("\\caption{")
+                self(image["caption"], out)
+                out.write("}")
+                out.write("\\end{subfigure}")
+                out.write("\\hfill")
 
     def export_table(self, table, out):
         # TODO intermediate conversion
@@ -346,11 +344,13 @@ class LatexExporter:
             self(proofstep["proof"], out)
 
 class LatexEnvironment:
-    def __init__(self, out, environment):
+    def __init__(self, out, environment, parameters=[]):
         self.out = out
         self.environment = environment
+        self.parameters = parameters
     def __enter__(self):
-        self.out.write("\n\n\\begin{" + self.environment + "}\n")
+        parameter_str = "[" + ",".join(self.parameters) + "]"
+        self.out.write("\n\n\\begin{" + self.environment + "}" + (parameter_str if self.parameters else "") + "\n")
     def __exit__(self, exc_type, exc_value, traceback):
         self.out.write("\n\\end{" + self.environment + "}")
 
