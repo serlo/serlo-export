@@ -17,6 +17,12 @@ class TestHTTPMediaWikiAPI(TestCase):
                 "https://upload.wikimedia.org/wikipedia/commons/4/43/"
                 "Hyperbola_one_over_x.svg")
 
+    def test_get_image_url(self):
+        # TODO: Test with a image and multiple revisions
+        self.assertEqual(self.api.get_image_url("File:Hyperbola one over x.svg"),
+                "https://upload.wikimedia.org/wikipedia/commons/4/43/"
+                "Hyperbola_one_over_x.svg")
+
     def test_get_content(self):
         content = self.api.get_content("Mathe für Nicht-Freaks: Epsilon-Delta-Kriterium der Stetigkeit")
 

@@ -93,6 +93,10 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
 
         return self.query(params, ["pages", select_singleton, "imageinfo"])
 
+    def get_image_url(self, filename):
+        """Returns the URL to the current version of the image `filename`."""
+        return self.get_image_revisions(filename)[-1]["url"]
+
     def get_content(self, title):
         return self._index_call({"action": "raw", "title": title})
 
