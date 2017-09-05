@@ -32,6 +32,13 @@ class MediaWikiAPI(metaclass=ABCMeta):
         """Returns the revisions of the article `title`."""
         raise NotImplementedError()
 
+    @abstractmethod
+    def normalize_formula(self, formula, mode):
+        """Normalizes the formula `formula`. In case the given formula is
+        ilformatted a `ValueError` is raised. `mode` can be either `"tex"`
+        or `inline-tex`."""
+        raise NotImplementedError()
+
 class HTTPMediaWikiAPI(MediaWikiAPI):
     """Implements an API for content stored on a MediaWiki."""
 
@@ -114,3 +121,15 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
 
     def download_image(self, image_name, image_path):
         urllib.request.urlretrieve(self.get_image_url(image_name), image_path)
+
+    def normalize_formula(self, formula, mode):
+        assert mode in ["tex", "inline-tex"]
+
+        endpoint = ["media", "math", "check"] + [mode]
+        params = {"type": mode, "q": formula}
+        result = self._api_call(endpoint, params).json()
+
+        if result.get("title", None) == "Bad Request":
+            raise ValueError()
+
+        return result["checked"]

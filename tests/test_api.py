@@ -32,3 +32,17 @@ class TestHTTPMediaWikiAPI(TestCase):
         html = self.api.convert_text_to_html("Analysis", "Hello ''World''")
 
         self.assertEqual(html, '<p id="mwAQ">Hello <i id="mwAg">World</i></p>')
+
+    def test_normalize_formula(self):
+        for arg, result in [ ("\\or", "\\lor "), ("\\R", "\\mathbb {R} ")]:
+            self.assertEqual(self.api.normalize_formula(arg, "tex"), result)
+            self.assertEqual(self.api.normalize_formula(arg, "inline-tex"),
+                             result)
+
+        for formula in ["\\notfunc", "\\begin{align}", "$ \\text{}"]:
+            with self.subTest(formula=formula):
+                with self.assertRaises(ValueError):
+                    self.api.normalize_formula(formula, "tex")
+
+        with self.assertRaises(ValueError):
+            self.api.normalize_formula(formula, "inline-tex")

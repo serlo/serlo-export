@@ -42,6 +42,10 @@ def run_script():
                 return super().convert_text_to_html(title, text)
 
             @cached_function
+            def normalize_formula(self, formula, mode):
+                return super().normalize_formula(formula, mode)
+
+            @cached_function
             def get_revisions(self, title):
                 # TODO: The list of revisions can change, thus this caching
                 # need to be implemented in a better way in the future.
