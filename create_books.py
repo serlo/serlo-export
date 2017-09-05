@@ -41,6 +41,12 @@ def run_script():
             def convert_text_to_html(self, title, text):
                 return super().convert_text_to_html(title, text)
 
+            @cached_function
+            def get_revisions(self, title):
+                # TODO: The list of revisions can change, thus this caching
+                # need to be implemented in a better way in the future.
+                return super().get_revisions(title)
+
         api = CachedMediaWikiAPI(requests.Session())
         parser = ArticleParser(api=api)
 
