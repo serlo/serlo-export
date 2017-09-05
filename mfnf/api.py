@@ -25,7 +25,7 @@ class MediaWikiAPI(metaclass=ABCMeta):
     @abstractmethod
     def download_image(self, image_url, image_path):
         """Downloads image from `image_url` and stores it to `image_path`"""
-        raise NotImplementedError
+        raise NotImplementedError()
 
 class HTTPMediaWikiAPI(MediaWikiAPI):
     """Implements an API for content stored on a MediaWiki."""
