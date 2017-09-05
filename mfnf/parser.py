@@ -512,7 +512,6 @@ class ArticleParser(ChainedAction):
             parser = ArticleContentParser(api=self.api, title=article["title"])
 
             content = parser(self.api.get_content(article["title"]))
-
             authors = self.get_article_authors(article["title"])
-            print ("authors of", article["title"], authors)
+
             return merge(article, {"content": content, "authors": authors})

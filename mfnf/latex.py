@@ -197,6 +197,11 @@ class LatexExporter:
         out.write("\n\n\\chapter{")
         out.write(escape_latex(article["name"]))
         out.write("}")
+
+        out.write("\n{\\small Autoren und Autorinnen: ")
+        out.write(", ".join((escape_latex(x) for x in article["authors"])))
+        out.write("}")
+
         self(article["content"], out)
 
     def export_paragraph(self, paragraph, out):
