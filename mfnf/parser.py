@@ -2,7 +2,6 @@
 
 import json
 import re
-import socket
 
 from collections import defaultdict
 from itertools import count
@@ -497,13 +496,9 @@ class ArticleParser(ChainedAction):
             authors = defaultdict(int)
             article_size = 0
 
-            for rev in reversed(revisions):
-                try:
-                    socket.inet_aton(rev["user"])
-                    # ignore edits by anonymous users
-                except socket.error:
-                    authors[rev["user"]] += max(rev["size"] - article_size, 0)
-                    article_size = rev["size"]
+            for rev in (x for x in reversed(revisions) if "anon" not in x):
+                authors[rev["user"]] += max(rev["size"] - article_size, 0)
+                article_size = rev["size"]
 
             return [x[0] for x in sorted(authors.items(), reverse=True,
                                          key=lambda x: x[1])]
