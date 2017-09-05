@@ -21,3 +21,7 @@ watch:
 .PHONY: watch_test
 watch_test:
 	$(call inotify, make test)
+
+.PHONY: upload
+upload:
+	rsync -v -r out/ -e ssh hp:~/mfnf-pdf-export
