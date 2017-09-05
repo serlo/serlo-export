@@ -13,7 +13,7 @@ TEMPLATE_SPEC = {
     "definition": lambda x: x in ["definition"],
     "beispiel": lambda x: x in ["beispiel"],
     "beweis": lambda x: x in ["beweis"],
-    "alternativer Beweis": lambda x: x in ["beweis"],
+    "alternativer beweis": lambda x: x in ["beweis"],
     "beweiszusammenfassung": lambda x: x in ["zusammenfassung"],
     "lösungsweg": lambda x: x in ["lösungsweg"],
     "lösung": lambda x: x in ["lösung"],
@@ -61,7 +61,7 @@ BOXSPEC = [
     ("proofsummary", "beweiszusammenfassung",
      {"title": "titel", "proofsummary": "zusammenfassung"}),
 
-    ("alternativeproof", "alternativer Beweis",
+    ("alternativeproof", "alternativer beweis",
      {"title": "titel", "alternativeproof": "beweis"}),
 
     ("proof", "beweis", {"title": "titel", "proof": "beweis"}),
