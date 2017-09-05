@@ -93,6 +93,13 @@ BOXSPEC = [
     ("importantparagraph", "-", {"importantparagraph": "1"}),
 ]
 
+def canonical_image_name(name):
+    name = remove_prefix(name, "./")
+    name = remove_prefix(name, "Datei:")
+    name = remove_prefix(name, "File:")
+
+    return "File:" + name
+
 def parse_content(api, title, text):
     """Parse MediaWiki code `text`."""
     return MediaWikiCodeParser(api=api, title=title)(text)
@@ -241,12 +248,8 @@ class MediaWikiCodeParser(ChainedAction):
                 caption = parse_inline_content(self.api, self.title,
                                                caption.strip())
 
-                gallery_img = parse_content(self.api, self.title, "[[%s|center]]" % name.strip())[0]
-
-                gallery_img["children"].append({"type": "element", "name": "figcaption", "children": caption})
-
-                return gallery_img
-
+                return {"type": "galleryitem", "caption": caption,
+                        "name": canonical_image_name(name)}
             except ValueError:
                 return {"type": "error",
                         "message": "Gallery item needs a caption"}
@@ -331,18 +334,10 @@ class ArticleContentParser(ChainedAction):
             except IndexError:
                 caption = []
 
-            img = obj["children"][0]["children"][0]["attrs"]
-            name = remove_prefix(img["resource"], "./Datei:")
+            img = obj["children"][0]["children"][0]
+            name = canonical_image_name(img["attrs"]["resource"])
 
-            source = img["src"]
-
-            # extract original image, only for svg
-            if source.endswith(".svg.png"):
-                source = source.replace("/thumb", "", 1)
-                source = source[:source.rfind("/")]
-
-            return {"type": "image", "caption": self(caption),
-                    "name": name, "url": source,
+            return {"type": "image", "caption": self(caption), "name": name,
                     "thumbnail": obj["attrs"]["typeof"] == "mw:Image/Thumb"}
 
     class HandleInlineFigures(NodeTransformation):

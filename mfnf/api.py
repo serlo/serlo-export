@@ -23,8 +23,8 @@ class MediaWikiAPI(metaclass=ABCMeta):
         raise NotImplementedError()
 
     @abstractmethod
-    def download_image(self, image_url, image_path):
-        """Downloads image from `image_url` and stores it to `image_path`."""
+    def download_image(self, image_name, image_path):
+        """Downloads image `image_name` and stores it to `image_path`."""
         raise NotImplementedError()
 
     @abstractmethod
@@ -112,5 +112,5 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
 
         return self.query(params, ["pages", select_singleton, "revisions"])
 
-    def download_image(self, image_url, image_path):
-        urllib.request.urlretrieve(image_url, image_path)
+    def download_image(self, image_name, image_path):
+        urllib.request.urlretrieve(self.get_image_url(image_name), image_path)

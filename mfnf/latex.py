@@ -243,16 +243,14 @@ class LatexExporter:
 
         name, ext = os.path.splitext(image["name"].lower())
 
-        target_image_name = quote_image_name(name)
-        image_name = target_image_name + ext
-        image_file = os.path.join(self.directory, image_name)
-        image_url = "http:" + image["url"]
+        image_name = quote_image_name(name)
+        image_file = os.path.join(self.directory, image_name + ext)
 
-        self.api.download_image(image_url, image_file)
+        self.api.download_image(image["name"], image_file)
 
         out.write("\\begin{center}")
         out.write("\n\\includegraphics[width=0.5\\textwidth]{")
-        out.write(target_image_name)
+        out.write(image_name)
         out.write("}")
         out.write("\n\\end{center}")
 
@@ -263,21 +261,19 @@ class LatexExporter:
             out.write("\n\\end{figure}")
 
     def export_gallery(self, gallery, out):
-
         with LatexEnvironment(out, "figure"):
             out.write("\\hfill")
             for image in gallery["items"]:
                 out.write("\\begin{subfigure}{%f\\textwidth}" % (.9/len(gallery["items"])))
-                name, ext = os.path.splitext(image["name"])
-                target_image_name = quote_image_name(name)
-                image_name = target_image_name + ext
-                image_file = os.path.join(self.directory, image_name)
-                image_url = "http:" + image["url"]
+                name, ext = os.path.splitext(image["name"].lower())
 
-                self.api.download_image(image_url, image_file)
+                image_name = quote_image_name(name)
+                image_file = os.path.join(self.directory, image_name + ext)
+
+                self.api.download_image(image["name"], image_file)
 
                 out.write("\n\\includegraphics[width=1.\\textwidth]{")
-                out.write(target_image_name)
+                out.write(image_name)
                 out.write("}")
 
                 out.write("\\caption{")
