@@ -296,7 +296,7 @@ class ArticleContentParser(ChainedAction):
     class HandleLists(NodeTransformation):
         def transform_dict(self, obj):
             check(obj, "type") == "element"
-            check(obj, "name").of("ul", "ol")
+            check(obj, "name").of(("ul", "ol"))
 
             items = [{"type": "listitem",
                          "content": self(li["children"])}
@@ -324,7 +324,7 @@ class ArticleContentParser(ChainedAction):
         def transform_dict(self, obj):
             check(obj, "type") == "element"
             check(obj, "name") == "figure"
-            check(obj, "attrs", "typeof").of("mw:Image", "mw:Image/Thumb")
+            check(obj, "attrs", "typeof").of(("mw:Image", "mw:Image/Thumb"))
 
             caption = [child
                        for child in obj["children"]
