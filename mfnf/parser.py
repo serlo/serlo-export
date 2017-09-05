@@ -505,7 +505,7 @@ class ArticleParser(ChainedAction):
                 if not rev["user"] in author_data.keys():
                     author_data[rev["user"]] = 0
 
-                author_data[rev["user"]] += rev["size"] - article_size
+                author_data[rev["user"]] += max(rev["size"] - article_size, 0)
                 article_size = rev["size"]
 
             return author_data
