@@ -601,3 +601,18 @@
           name: File:Bar.svg
           caption:
             - { type: text, data: bar }
+
+- in: "{{Formel|ABC <math>x^2</math>}}"
+  out:
+    - type: error
+      message: Wrong formatted equation
+
+- in: "{{Formel}}"
+  out:
+    - type: error
+      message: Wrong formatted equation
+
+- in: "{{Formel|Hello World}}"
+  out:
+    - type: error
+      message: Wrong formatted equation

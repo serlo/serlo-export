@@ -37,7 +37,8 @@ TEMPLATE_SPEC = {
 
 TEMPLATE_INLINE_SPEC = {
     "beweisschritt": lambda x: x in ["ziel"],
-    "fallunterscheidung": lambda x: x.startswith("fall")
+    "fallunterscheidung": lambda x: x.startswith("fall"),
+    "formel": lambda x: x in ["1"],
 }
 
 TEMPLATE_LIST_PARAMS = {
@@ -374,15 +375,7 @@ class ArticleContentParser(ChainedAction):
 
             formula = json.loads(obj["attrs"]["data-mw"])["body"]["extsrc"]
 
-            return {"type": "inlinemath", "formula": formula}
-
-    class HandleWrongInlineMath(NodeTypeTransformation):
-        def transform_inlinemath(self, obj):
-            if "\\begin{align}" in obj["formula"]:
-                return {"type": "error",
-                        "message": "\\begin{align} not allowed in inline math"}
-            else:
-                raise NotInterested()
+            return {"type": "inlinemath", "formula": formula.strip()}
 
     class FixNodeTypes(NodeTypeTransformation):
         def transform_element(self, obj):
@@ -454,16 +447,19 @@ class ArticleContentParser(ChainedAction):
                         "items": [{"type": "itemlist", "content": x}
                                   for x in obj["params"]["item_list"]]}
             elif obj["name"] == "formel":
-                formula = obj["params"]["1"].strip()
-                formula = re.match("<math>(.*)</math>",
-                                   formula, re.DOTALL).group(1)
-                formula = formula.strip()
+                formula = obj["params"].get("1", [])
 
-                formula = remove_prefix(formula, "\\begin{align}")
-                formula = remove_suffix(formula, "\\end{align}")
-                formula = formula.strip()
+                if len(formula) == 1 and \
+                        lookup(formula, 0, "type") == "inlinemath":
+                    formula = formula[0]["formula"]
+                    formula = remove_prefix(formula, "\\begin{align}")
+                    formula = remove_suffix(formula, "\\end{align}")
+                    formula = formula.strip()
 
-                return {"type": "equation", "formula": formula}
+                    return {"type": "equation", "formula": formula}
+                else:
+                    return {"type": "error",
+                            "message": "Wrong formatted equation"}
             elif obj["name"].startswith("#invoke:"):
                 # Template is header or footer
                 return None
@@ -476,6 +472,14 @@ class ArticleContentParser(ChainedAction):
                 return {"type": "notimplemented",
                         "target": obj,
                         "message": message}
+
+    class HandleWrongInlineMath(NodeTypeTransformation):
+        def transform_inlinemath(self, obj):
+            if "\\begin{align}" in obj["formula"]:
+                return {"type": "error",
+                        "message": "\\begin{align} not allowed in inline math"}
+            else:
+                raise NotInterested()
 
     class DeleteEmptyNodes(Transformation):
         pass
