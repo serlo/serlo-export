@@ -27,6 +27,11 @@ class MediaWikiAPI(metaclass=ABCMeta):
         """Downloads image from `image_url` and stores it to `image_path`"""
         raise NotImplementedError()
 
+    @abstractmethod
+    def get_revisions(self, title):
+        """Returns the revisions of the article `title`."""
+        raise NotImplementedError()
+
 class HTTPMediaWikiAPI(MediaWikiAPI):
     """Implements an API for content stored on a MediaWiki."""
 
