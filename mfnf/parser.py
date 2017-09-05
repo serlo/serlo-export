@@ -245,14 +245,14 @@ class MediaWikiCodeParser(ChainedAction):
         def parse_gallery_item(self, text):
             try:
                 name, caption = text.split("|", 1)
-                caption = parse_inline_content(self.api, self.title,
-                                               caption.strip())
-
-                return {"type": "galleryitem", "caption": caption,
-                        "name": canonical_image_name(name)}
             except ValueError:
                 return {"type": "error",
                         "message": "Gallery item needs a caption"}
+
+            caption = parse_inline_content(self.api, self.title, caption.strip())
+
+            return {"type": "galleryitem", "caption": caption,
+                    "name": canonical_image_name(name)}
 
         def transform_dict(self, obj):
             check(obj, "type") == "element"
