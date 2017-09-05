@@ -65,8 +65,3 @@
   out:
     type: error
     message: "Inline images are not allowed"
-
-- in: "<math>\\begin{align} x^2 \\end{align}</math>"
-  out:
-    type: error
-    message: "Wrong formatted formula"

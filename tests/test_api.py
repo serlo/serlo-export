@@ -43,7 +43,3 @@ class TestHTTPMediaWikiAPI(TestCase):
             with self.subTest(formula=formula):
                 with self.assertRaises(ValueError):
                     self.api.normalize_formula(formula, "tex")
-
-        with self.assertRaises(ValueError):
-            self.api.normalize_formula("\\begin{align} x^2 \\end{align}",
-                                       "inline-tex")

@@ -129,12 +129,6 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
         params = {"type": mode, "q": formula}
         result = self._api_call(endpoint, params).json()
 
-        if mode == "inline-tex" and "\\begin{align}" in formula:
-            # \begin{align} in inline-tex is considered an error
-            # TODO: Delete this after implementing a check for this in the
-            # online linter
-            raise ValueError()
-
         if result.get("title", None) == "Bad Request":
             raise ValueError()
 
