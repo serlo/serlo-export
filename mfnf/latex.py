@@ -266,26 +266,27 @@ class LatexExporter:
             out.write("\n\\end{figure}")
 
     def export_gallery(self, gallery, out):
-        with LatexEnvironment(out, "figure"):
+        out.write("\\begin{figure}[H]")
+        out.write("\\hfill")
+        for image in gallery["items"]:
+            out.write("\\begin{subfigure}{%f\\textwidth}" % (.9/len(gallery["items"])))
+            name, ext = os.path.splitext(image["name"].lower())
+
+            image_name = quote_image_name(name)
+            image_file = os.path.join(self.directory, image_name + ext)
+
+            self.api.download_image(image["name"], image_file)
+
+            out.write("\n\\includegraphics[width=1.\\textwidth]{")
+            out.write(image_name)
+            out.write("}")
+
+            out.write("\\caption{")
+            self(image["caption"], out)
+            out.write("}")
+            out.write("\\end{subfigure}")
             out.write("\\hfill")
-            for image in gallery["items"]:
-                out.write("\\begin{subfigure}{%f\\textwidth}" % (.9/len(gallery["items"])))
-                name, ext = os.path.splitext(image["name"].lower())
-
-                image_name = quote_image_name(name)
-                image_file = os.path.join(self.directory, image_name + ext)
-
-                self.api.download_image(image["name"], image_file)
-
-                out.write("\n\\includegraphics[width=1.\\textwidth]{")
-                out.write(image_name)
-                out.write("}")
-
-                out.write("\\caption{")
-                self(image["caption"], out)
-                out.write("}")
-                out.write("\\end{subfigure}")
-                out.write("\\hfill")
+        out.write("\\end{figure}")
 
     def export_table(self, table, out):
         # TODO intermediate conversion
