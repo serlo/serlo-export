@@ -4,6 +4,7 @@ import json
 import re
 import socket
 
+from collections import defaultdict
 from itertools import count
 from html.parser import HTMLParser
 from mfnf.transformations import NodeTransformation, ChainedAction, Action, \
@@ -493,7 +494,7 @@ class ArticleParser(ChainedAction):
         def get_article_authors(self, title):
             revisions = self.api.get_revisions(title)
 
-            author_data = {}
+            result = defaultdict(int)
             article_size = 0
 
             for rev in reversed(revisions):
@@ -501,13 +502,10 @@ class ArticleParser(ChainedAction):
                     socket.inet_aton(rev["user"])
                     # ignore edits by anonymous users
                 except socket.error:
-                    if not rev["user"] in author_data.keys():
-                        author_data[rev["user"]] = 0
-
-                    author_data[rev["user"]] += max(rev["size"] - article_size, 0)
+                    result[rev["user"]] += max(rev["size"] - article_size, 0)
                     article_size = rev["size"]
 
-            return author_data
+            return dict(result)
 
         def transform_article(self, article):
             parser = ArticleContentParser(api=self.api, title=article["title"])
