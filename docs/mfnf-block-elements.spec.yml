@@ -189,38 +189,34 @@
 - in: "[[File:Foo.jpg|center|bar]]"
   out:
     - type: image
+      name: File:Foo.jpg
       caption:
         - { type: text, data: bar }
-      name: Foo.jpg
-      url: "//upload.wikimedia.org/wikipedia/commons/0/06/Foo.jpg"
       thumbnail: False
 
-- in: "[[File:Foo.jpg|thumb|bar]]"
+- in: "[[Datei:Foo.jpg|thumb|bar]]"
   out:
     - type: image
+      name: File:Foo.jpg
       caption:
         - { type: text, data: bar }
-      name: Foo.jpg
-      url: "//upload.wikimedia.org/wikipedia/commons/thumb/0/06/Foo.jpg/220px-Foo.jpg"
       thumbnail: True
 
 - in: "[[File:Foo.jpg|thumb|50px|bar]]"
   out:
     - type: image
+      name: File:Foo.jpg
       caption:
         - { type: text, data: bar }
-      name: Foo.jpg
-      url: "//upload.wikimedia.org/wikipedia/commons/thumb/0/06/Foo.jpg/50px-Foo.jpg"
       thumbnail: True
 
 
 - in: "[[File:Foo.jpg|center|50px|bar]]"
   out:
     - type: image
+      name: File:Foo.jpg
       caption:
         - { type: text, data: bar }
-      name: Foo.jpg
-      url: "//upload.wikimedia.org/wikipedia/commons/thumb/0/06/Foo.jpg/50px-Foo.jpg"
       thumbnail: False
 
 # --- Equations ---
@@ -240,7 +236,7 @@
 - in: |
     <gallery>
     Foo.jpg|foo
-    Bar.svg|bar
+    File:Bar.svg|bar
     </gallery>
   out:
     - type: gallery
@@ -248,17 +244,17 @@
       heights: 120
       items:
         - type: galleryitem
-          name: Foo.jpg
+          name: File:Foo.jpg
           caption:
             - { type: text, data: foo }
         - type: galleryitem
-          name: Bar.svg
+          name: File:Bar.svg
           caption:
             - { type: text, data: bar }
 
 - in: |
     <gallery widths=200 heights=200>
-    Foo.jpg|''foo''
+    Datei:Foo.jpg|''foo''
     Bar.svg|bar <math>x^2</math>
     </gallery>
   out:
@@ -267,13 +263,13 @@
       heights: 200
       items:
         - type: galleryitem
-          name: Foo.jpg
+          name: File:Foo.jpg
           caption:
             - type: i
               content:
                 - { type: text, data: foo }
         - type: galleryitem
-          name: Bar.svg
+          name: File:Bar.svg
           caption:
             - { type: text, data: "bar " }
             - { type: inlinemath, formula: "x^2" }
@@ -602,6 +598,6 @@
         - type: error
           message: "Gallery item needs a caption"
         - type: galleryitem
-          name: Bar.svg
+          name: File:Bar.svg
           caption:
             - { type: text, data: bar }
