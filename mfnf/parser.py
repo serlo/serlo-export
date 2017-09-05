@@ -93,6 +93,12 @@ BOXSPEC = [
     ("importantparagraph", "-", {"importantparagraph": "1"}),
 ]
 
+DEFAULT_VALUES = {
+    "proofstep": {
+        "name": "Beweisschritt"
+    },
+}
+
 def canonical_image_name(name):
     name = remove_prefix(name, "./")
     name = remove_prefix(name, "Datei:")
@@ -472,6 +478,12 @@ class ArticleContentParser(ChainedAction):
 
     class DeleteEmptyNodes(Transformation):
         pass
+
+    class AddDefaultValues(NodeTransformation):
+        def transform_dict(self, obj):
+            check(obj, "type").of(DEFAULT_VALUES)
+
+            return merge(DEFAULT_VALUES[obj["type"]], obj)
 
 class ArticleParser(ChainedAction):
     class LoadArticleContent(NodeTypeTransformation):
