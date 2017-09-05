@@ -2,6 +2,7 @@
 
 import json
 import re
+import socket
 
 from itertools import count
 from html.parser import HTMLParser
@@ -495,12 +496,12 @@ class ArticleParser(ChainedAction):
             author_data = {}
             article_size = 0
 
-            ipv4 = re.compile(r"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")
-            ipv6 = re.compile(r"^([\w\d]{4}:){7}[\w\d]{4}$")
-
             for rev in reversed(revisions):
-                if ipv4.match(rev["user"]) or ipv6.match(rev["user"]):
+                try:
+                    socket.inet_aton(rev["user"])
                     rev["user"] = "anonymous"
+                except socket.error:
+                    pass
 
                 if not rev["user"] in author_data.keys():
                     author_data[rev["user"]] = 0
