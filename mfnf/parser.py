@@ -494,7 +494,7 @@ class ArticleParser(ChainedAction):
         def get_article_authors(self, title):
             revisions = self.api.get_revisions(title)
 
-            result = defaultdict(int)
+            authors = defaultdict(int)
             article_size = 0
 
             for rev in reversed(revisions):
@@ -502,10 +502,11 @@ class ArticleParser(ChainedAction):
                     socket.inet_aton(rev["user"])
                     # ignore edits by anonymous users
                 except socket.error:
-                    result[rev["user"]] += max(rev["size"] - article_size, 0)
+                    authors[rev["user"]] += max(rev["size"] - article_size, 0)
                     article_size = rev["size"]
 
-            return dict(result)
+            return [x[0] for x in sorted(authors.items(), reverse=True,
+                                         key=lambda x: x[1])]
 
         def transform_article(self, article):
             parser = ArticleContentParser(api=self.api, title=article["title"])
