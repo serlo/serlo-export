@@ -10,81 +10,81 @@ from mfnf.transformations import NodeTransformation, ChainedAction, Action, \
 from mfnf.utils import lookup, remove_prefix, remove_suffix, add_dict
 
 TEMPLATE_SPEC = {
-    "Definition": lambda x: x in ["definition"],
-    "Beispiel": lambda x: x in ["beispiel"],
-    "Beweis": lambda x: x in ["beweis"],
-    "Alternativer Beweis": lambda x: x in ["beweis"],
-    "Beweiszusammenfassung": lambda x: x in ["zusammenfassung"],
-    "Lösungsweg": lambda x: x in ["lösungsweg"],
-    "Lösung": lambda x: x in ["lösung"],
-    "Beweisschritt": lambda x: x in ["beweisschritt"],
-    "Warnung": lambda x: x in ["1"],
-    "Hinweis": lambda x: x in ["1"],
-    "Hauptartikel": lambda x: x in ["1"],
-    "Frage": lambda x: x in ["frage", "antwort"],
-    "Aufgabe": lambda x: x in ["aufgabe", "erklärung", "beispiel",
+    "definition": lambda x: x in ["definition"],
+    "beispiel": lambda x: x in ["beispiel"],
+    "beweis": lambda x: x in ["beweis"],
+    "alternativer Beweis": lambda x: x in ["beweis"],
+    "beweiszusammenfassung": lambda x: x in ["zusammenfassung"],
+    "lösungsweg": lambda x: x in ["lösungsweg"],
+    "lösung": lambda x: x in ["lösung"],
+    "beweisschritt": lambda x: x in ["beweisschritt"],
+    "warnung": lambda x: x in ["1"],
+    "hinweis": lambda x: x in ["1"],
+    "hauptartikel": lambda x: x in ["1"],
+    "frage": lambda x: x in ["frage", "antwort"],
+    "aufgabe": lambda x: x in ["aufgabe", "erklärung", "beispiel",
                                "zusammenfassung", "lösung", "lösungsweg",
                                "beweis", "beweis2"],
-    "Satz": lambda x: x in ["satz", "erklärung", "beispiel",
+    "satz": lambda x: x in ["satz", "erklärung", "beispiel",
                             "zusammenfassung", "lösung", "lösungsweg",
                             "beweis", "beweis2"],
-    "Liste": lambda x: x.startswith("item"),
+    "liste": lambda x: x.startswith("item"),
     # important paragraph
     "-": lambda x: x in ["1"],
-    "Fallunterscheidung": lambda x: x.startswith("beweis")
+    "fallunterscheidung": lambda x: x.startswith("beweis")
 }
 
 TEMPLATE_INLINE_SPEC = {
-    "Beweisschritt": lambda x: x in ["ziel"],
-    "Fallunterscheidung": lambda x: x.startswith("fall")
+    "beweisschritt": lambda x: x in ["ziel"],
+    "fallunterscheidung": lambda x: x.startswith("fall")
 }
 
 TEMPLATE_LIST_PARAMS = {
-    "Liste": ["item"],
-    "Fallunterscheidung": ["fall", "beweis"]
+    "liste": ["item"],
+    "fallunterscheidung": ["fall", "beweis"]
 }
 
 BOXSPEC = [
-    ("definition", "Definition",
+    ("definition", "definition",
      {"title": "titel", "definition": "definition"}),
 
-    ("example", "Beispiel", {"title": "titel", "example": "beispiel"}),
+    ("example", "beispiel", {"title": "titel", "example": "beispiel"}),
 
-    ("solution", "Lösung", {"title": "titel", "solution": "lösung"}),
+    ("solution", "lösung", {"title": "titel", "solution": "lösung"}),
 
-    ("proofbycases", "Fallunterscheidung",
+    ("proofbycases", "fallunterscheidung",
      {"cases": "fall_list", "proofs": "beweis_list"}),
 
-    ("solutionprocess", "Lösungsweg",
+    ("solutionprocess", "lösungsweg",
      {"title": "titel", "solutionprocess": "lösungsweg"}),
 
-    ("proofsummary", "Beweiszusammenfassung",
+    ("proofsummary", "beweiszusammenfassung",
      {"title": "titel", "proofsummary": "zusammenfassung"}),
 
-    ("alternativeproof", "Alternativer Beweis",
+    ("alternativeproof", "alternativer Beweis",
      {"title": "titel", "alternativeproof": "beweis"}),
 
-    ("proof", "Beweis", {"title": "titel", "proof": "beweis"}),
+    ("proof", "beweis", {"title": "titel", "proof": "beweis"}),
 
-    ("warning", "Warnung", {"warning": "1"}),
+    ("warning", "warnung", {"warning": "1"}),
 
-    ("hint", "Hinweis", {"hint": "1"}),
+    ("hint", "hinweis", {"hint": "1"}),
 
-    ("mainarticle", "Hauptartikel", {"mainarticle": "1"}),
+    ("mainarticle", "hauptartikel", {"mainarticle": "1"}),
 
-    ("question", "Frage",
+    ("question", "frage",
         {"question": "frage", "answer": "antwort", "questiontype": "typ"}),
 
-    ("proofstep", "Beweisschritt",
+    ("proofstep", "beweisschritt",
         {"name": "name", "target": "ziel", "proof": "beweisschritt"}),
 
-    ("theorem", "Satz",
+    ("theorem", "satz",
      {"title": "titel", "theorem": "satz", "explanation": "erklärung",
       "example": "beispiel", "proofsummary": "zusammenfassung",
       "solution": "lösung", "solutionprocess": "lösungsweg",
       "proof": "beweis", "alternativeproof": "beweis2"}),
 
-    ("exercise", "Aufgabe",
+    ("exercise", "aufgabe",
      {"title": "titel", "exercise": "aufgabe", "explanation": "erklärung",
       "example": "beispiel", "proofsummary": "zusammenfassung",
       "solution": "lösung", "solutionprocess": "lösungsweg",
@@ -224,7 +224,7 @@ class MediaWikiCodeParser(ChainedAction):
             template = json.loads(obj["attrs"]["data-mw"])
             template = template["parts"][0]["template"]
 
-            name = template["target"]["wt"].strip()
+            name = template["target"]["wt"].strip().lower()
             name = remove_prefix(name, ":Mathe für Nicht-Freaks: Vorlage:")
 
             params = template["params"]
@@ -430,7 +430,7 @@ class ArticleContentParser(ChainedAction):
     class HandleHeadingAnchors(NodeTypeTransformation):
         def transform_header(self, obj):
             check(obj, "content", -1, "type") == "template"
-            check(obj, "content", -1, "name") == "Anker"
+            check(obj, "content", -1, "name") == "anker"
 
             heading = text_rstrip(obj["content"][:-1])
             anchor = obj["content"][-1]["params"]["1"]
@@ -446,12 +446,12 @@ class ArticleContentParser(ChainedAction):
 
                     return add_dict(params, {"type": bname})
 
-            if obj["name"] == "Liste":
+            if obj["name"] == "liste":
                 return {"type": "list",
                         "ordered": obj["params"].get("type", "") == "ol",
                         "items": [{"type": "itemlist", "content": x}
                                   for x in obj["params"]["item_list"]]}
-            elif obj["name"].lower() == "formel":
+            elif obj["name"] == "formel":
                 formula = obj["params"]["1"].strip()
                 formula = re.match("<math>(.*)</math>",
                                    formula, re.DOTALL).group(1)
