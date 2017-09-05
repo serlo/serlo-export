@@ -497,7 +497,7 @@ class ArticleParser(ChainedAction):
             article_size = 0
 
             for rev in (x for x in reversed(revisions) if "anon" not in x):
-                authors[rev["user"]] += max(rev["size"] - article_size, 0)
+                authors[rev["user"]] += max(rev["size"] - article_size, 50)
                 article_size = rev["size"]
 
             return [x[0] for x in sorted(authors.items(), reverse=True,
