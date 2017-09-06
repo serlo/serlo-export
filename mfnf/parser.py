@@ -229,7 +229,10 @@ class MediaWikiCodeParser(ChainedAction):
             """Parses `param_value` in case `param_key` is a content
             parameter."""
 
-            if name in TEMPLATE_SPEC and TEMPLATE_SPEC[name](param_key):
+            if not param_value:
+                # Empty strings shall be interpreted as None
+                return None
+            elif name in TEMPLATE_SPEC and TEMPLATE_SPEC[name](param_key):
                 return parse_content(self.api, self.title, param_value)
             elif name in TEMPLATE_INLINE_SPEC \
                     and TEMPLATE_INLINE_SPEC[name](param_key):
