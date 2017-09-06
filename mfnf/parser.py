@@ -112,7 +112,7 @@ def parse_content(api, title, text):
     """Parse MediaWiki code `text`."""
     return MediaWikiCodeParser(api=api, title=title)(text)
 
-def parse_inline_content(api, title, text):
+def parse_inline(api, title, text):
     """Parse MediaWiki code `text` in inline mode."""
     content = MediaWikiCodeParser(api=api, title=title)(text)
 
@@ -224,7 +224,7 @@ class MediaWikiCodeParser(ChainedAction):
                 return parse_content(self.api, self.title, param_value)
             elif name in TEMPLATE_INLINE_SPEC \
                     and TEMPLATE_INLINE_SPEC[name](param_key):
-                return parse_inline_content(self.api, self.title, param_value)
+                return parse_inline(self.api, self.title, param_value)
             else:
                 return param_value
 
@@ -257,7 +257,7 @@ class MediaWikiCodeParser(ChainedAction):
                 return {"type": "error",
                         "message": "Gallery item needs a caption"}
 
-            caption = parse_inline_content(self.api, self.title, caption.strip())
+            caption = parse_inline(self.api, self.title, caption.strip())
 
             return {"type": "galleryitem", "caption": caption,
                     "name": canonical_image_name(name)}
