@@ -131,7 +131,7 @@ class LatexExporter:
     def print_message(self, message_type, message, out, color="Red"):
         print(message_type + ":", message)
 
-        out.write("\n\n{\\color{" + escape_latex(color) + "} ")
+        out.write("\n{\\color{" + escape_latex(color) + "} ")
         out.write("\\textbf{" + escape_latex(message_type) + ":} ")
         out.write(escape_latex(message))
         out.write("}")
