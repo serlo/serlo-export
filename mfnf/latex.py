@@ -193,6 +193,7 @@ class LatexExporter:
         self(chapter["children"], out)
 
     def export_article(self, article, out):
+        print("Export article:", article["name"])
         out.write("\n\n\\chapter{")
         out.write(escape_latex(article["name"]))
         out.write("}")
