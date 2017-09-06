@@ -25,3 +25,7 @@ watch_test:
 .PHONY: upload
 upload:
 	rsync -v -r out/ -e ssh hp:~/mfnf-pdf-export
+
+.PHONY: clean
+clean:
+	git clean -ffdx
