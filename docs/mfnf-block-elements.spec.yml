@@ -128,15 +128,15 @@
     - type: list
       ordered: false
       items:
-        - type: itemlist
+        - type: listitem
           content:
             - type: paragraph
               content: [{ type: text, data: "text1" }]
-        - type: itemlist
+        - type: listitem
           content:
             - type: paragraph
               content: [{ type: text, data: "text2" }]
-        - type: itemlist
+        - type: listitem
           content:
             - type: paragraph
               content: [{ type: text, data: "text3" }]
@@ -152,15 +152,15 @@
     - type: list
       ordered: true
       items:
-        - type: itemlist
+        - type: listitem
           content:
             - type: paragraph
               content: [{ type: text, data: "text1" }]
-        - type: itemlist
+        - type: listitem
           content:
             - type: paragraph
               content: [{ type: text, data: "text2" }]
-        - type: itemlist
+        - type: listitem
           content:
             - type: paragraph
               content: [{ type: text, data: "text3" }]
