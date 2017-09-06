@@ -2,13 +2,20 @@ ROOT_DIR:=$(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 SOURCES = $(shell git ls-tree -r master --name-only)
 
 inotify = while inotifywait -e modify ${SOURCES}; do ${1} ; done
+create_book = make -C "${1}" -f ${ROOT_DIR}/build-book.mk
 
 .PHONY: all
-all:
-	python create_books.py
+all: out
 	for BOOK_DIR in out/*; do \
-		make -C "$$BOOK_DIR" -f ${ROOT_DIR}/build-book.mk; \
+		$(call create_book, $$BOOK_DIR); \
 	done
+
+% :: out/% out
+	$(call create_book,$<)
+
+.PHONY: out
+out:
+	python create_books.py
 
 .PHONY: test
 test:
