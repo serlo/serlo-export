@@ -529,6 +529,26 @@
           content: [{ type: text, data: "beweisschritt"}]
 
 - in: |
+    {{:Mathe für Nicht-Freaks: Vorlage:Beweisschritt
+     |ziel=ziel1
+     |beweisschritt=
+    {{:Mathe für Nicht-Freaks: Vorlage:Beweisschritt
+     |ziel=ziel2
+     |beweisschritt=foo
+    }}}}
+  out:
+    - type: proofstep
+      name: Beweisschritt
+      target: [{ type: text, data: "ziel1"}]
+      proof:
+        - type: proofstep
+          name: Beweisschritt
+          target: [{ type: text, data: "ziel2"}]
+          proof:
+            - type: paragraph
+              content: [{ type: text, data: "foo"}]
+
+- in: |
     {{:Mathe für Nicht-Freaks: Vorlage:Fallunterscheidung
      |fall1=foo
      |beweis1=42

@@ -507,7 +507,8 @@ class ArticleContentParser(ChainedAction):
         def transform_dict(self, obj):
             check(obj, "type").of(DEFAULT_VALUES)
 
-            return merge(DEFAULT_VALUES[obj["type"]], obj)
+            return merge(DEFAULT_VALUES[obj["type"]],
+                         super(NodeTransformation, self).act_on_dict(obj))
 
 class ArticleParser(ChainedAction):
     class LoadArticleContent(NodeTypeTransformation):
