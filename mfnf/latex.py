@@ -121,7 +121,7 @@ class LatexExporter:
                     self.print_box(subbox, obj, out)
         else:
             try:
-                    getattr(self, "export_" + node_type)(obj, out)
+                getattr(self, "export_" + node_type)(obj, out)
             except AttributeError:
                 message = "LaTeX-Output of object `{}`".format(node_type)
 
