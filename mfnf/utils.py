@@ -2,6 +2,7 @@
 
 import hashlib
 import collections
+import re
 
 from functools import reduce
 
@@ -18,6 +19,16 @@ def lookup(obj, *path):
         return query_path(obj, path)
     except (IndexError, KeyError, TypeError):
         return None
+
+def to_snake_case(text):
+    """Converts `text` to snake_case.
+
+    >>> to_snake_case("Analysis 1")
+    'analysis1'
+    >>> to_snake_case("Mathe für Nicht-Freaks 2")
+    'mathe_für_nicht-freaks2'
+    """
+    return re.sub(r"\s", "_", re.sub(r"\s+(?=\d)", "", text.lower()))
 
 def select_singleton(x):
     # TODO: Tests and documentation
