@@ -10,13 +10,15 @@ from mfnf.parser import ArticleParser
 from mfnf.utils import CachedFunction
 from mfnf.sitemap import parse_sitemap
 from mfnf.latex import LatexExporter, MediaWiki2Latex
+from mfnf.utils import to_snake_case
 
 # title of article which shall be converted to PDF
 SITEMAP_ARTICLE_NAME = "Mathe für Nicht-Freaks: Projekte/LMU Buchprojekte"
 
 def create_book(book, api):
     """Creates the LaTeX file of a book."""
-    target = os.path.join("out", book["name"], book["name"] + ".tex")
+    book_name = to_snake_case(book["name"])
+    target = os.path.join("out", book_name, book_name + ".tex")
 
     try:
         os.makedirs(os.path.dirname(target))
