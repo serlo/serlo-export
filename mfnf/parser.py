@@ -458,7 +458,7 @@ class ArticleContentParser(ChainedAction):
             if obj["name"] == "liste":
                 return {"type": "list",
                         "ordered": obj["params"].get("type", "") == "ol",
-                        "items": [{"type": "listitem", "content": x}
+                        "items": [{"type": "listitem", "content": self(x)}
                                   for x in obj["params"]["item_list"]]}
             elif obj["name"] == "formel":
                 formula = obj["params"].get("1", [])
