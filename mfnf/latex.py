@@ -41,6 +41,7 @@ LATEX_SPECIAL_CHARS = {
     '^':  '\\textasciicircum{}',
     '`':  '{}`',   # avoid ?` and !`
     '\n': '\\\\',
+    '↯':  '\\Lightning{}',
 }
 
 def shorten(line):
