@@ -7,7 +7,7 @@ create_book = make -C "${1}" -f ${ROOT_DIR}/build-book.mk
 .PHONY: all
 all: out
 	for BOOK_DIR in out/*; do \
-		$(call create_book, $$BOOK_DIR); \
+		$(call create_book,$$BOOK_DIR); \
 	done
 
 % :: out/% out
@@ -23,11 +23,11 @@ test:
 
 .PHONY: watch
 watch:
-	$(call inotify, make all)
+	$(call inotify,make all)
 
 .PHONY: watch_test
 watch_test:
-	$(call inotify, make test)
+	$(call inotify,make test)
 
 .PHONY: upload
 upload:
