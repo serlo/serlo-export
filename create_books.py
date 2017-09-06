@@ -2,6 +2,7 @@
 
 import os
 import shelve
+import sys
 
 import requests
 
@@ -57,6 +58,12 @@ def run_script():
         parser = ArticleParser(api=api)
 
         sitemap = parse_sitemap(api.get_content(SITEMAP_ARTICLE_NAME))
+
+        if len(sys.argv) >= 2:
+            sitemap["children"] = [x for x in sitemap["children"]
+                                   if to_snake_case(x["name"]) ==
+                                   to_snake_case(sys.argv[1])]
+
         sitemap = parser(sitemap)
 
         for book in sitemap["children"]:

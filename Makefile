@@ -5,17 +5,15 @@ inotify = while inotifywait -e modify ${SOURCES}; do ${1} ; done
 create_book = make -C "${1}" -f ${ROOT_DIR}/build-book.mk
 
 .PHONY: all
-all: out
+all:
+	python create_books.py
 	for BOOK_DIR in out/*; do \
 		$(call create_book,$$BOOK_DIR); \
 	done
 
 % :: out/% out
+	python create_books.py "$@"
 	$(call create_book,$<)
-
-.PHONY: out
-out:
-	python create_books.py
 
 .PHONY: test
 test:
