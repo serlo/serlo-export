@@ -12,7 +12,7 @@ all:
 
 .PHONY: test
 test:
-	nosetests3
+	nosetests3 --with-doctest
 
 .PHONY: watch
 watch:
