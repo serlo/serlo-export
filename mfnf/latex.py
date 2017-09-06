@@ -332,10 +332,8 @@ class LatexExporter:
             self(question["answer"], out)
 
     def export_proofstep(self, proofstep, out):
-
         with LatexMacro(out, "textbf"):
-            self(proofstep["name"], out)
-            out.write(":")
+            out.write(escape_latex(proofstep["name"]) + ":")
 
         out.write(" ")
         self(proofstep.get("target", []), out)

@@ -39,6 +39,15 @@ TEMPLATE_INLINE_SPEC = {
     "beweisschritt": lambda x: x in ["ziel"],
     "fallunterscheidung": lambda x: x.startswith("fall"),
     "formel": lambda x: x in ["1"],
+    "definition": lambda x: x in ["titel"],
+    "beispiel": lambda x: x in ["titel"],
+    "lösungsweg": lambda x: x in ["titel"],
+    "lösung": lambda x: x in ["titel"],
+    "beweiszusammenfassung": lambda x: x in ["titel"],
+    "alternativer beweis": lambda x: x in ["titel"],
+    "beweis": lambda x: x in ["titel"],
+    "satz": lambda x: x in ["titel"],
+    "aufgabe": lambda x: x in ["titel"],
 }
 
 TEMPLATE_LIST_PARAMS = {
@@ -97,7 +106,7 @@ BOXSPEC = [
 
 DEFAULT_VALUES = {
     "proofstep": {
-        "name": [{"type": "text", "data": "Beweisschritt"}]
+        "name": "Beweisschritt"
     },
 }
 
@@ -436,19 +445,10 @@ class ArticleContentParser(ChainedAction):
 
     class HandleTemplates(NodeTypeTransformation):
         def transform_template(self, obj):
-
-            parser = ArticleContentParser(api=self.api, title=self.title)
-
             for bname, tname, param_names in BOXSPEC:
                 if obj["name"] == tname:
-
-                    params = {}
-                    for k, v in param_names.items():
-                        param_value = obj["params"].get(v, None)
-                        if type(param_value) == str:
-                            params[k] = parser(param_value)[0]["content"]
-                        else:
-                            params[k] = self(param_value)
+                    params = {k: self(obj["params"].get(v, None))
+                              for k, v in param_names.items()}
 
                     return merge(params, {"type": bname})
 
