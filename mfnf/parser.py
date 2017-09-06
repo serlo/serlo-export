@@ -406,8 +406,7 @@ class ArticleContentParser(ChainedAction):
                 else:
                     return {"type": "error",
                             "message": "<a> tag without `href` url"}
-            elif obj["name"] == "span" and \
-                    lookup(obj, "attrs", "typeof") == "mw:Extension/ref":
+            elif lookup(obj, "attrs", "typeof") == "mw:Extension/ref":
                 # TODO: Proper parsing of references
                 return None
             elif obj["name"] in ("h1", "h4", "h5", "h6"):
