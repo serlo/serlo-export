@@ -9,7 +9,6 @@ Clone this rep and inside the `mfnf-pdf-export` directory run
 
 ``` sh
 # install dependencies via pipenv
-pipenv install gevent
 pipenv install requests
 pipenv install PyYAML
 
