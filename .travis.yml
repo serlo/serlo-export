@@ -1,5 +1,6 @@
 language: python
 
+# Python versions for which we want to run Travis.
 python:
   - "3.5"
   - "3.6"
@@ -7,12 +8,14 @@ python:
 # Caching setup for Travis.
 # See https://docs.travis-ci.com/user/caching/ for more details.
 cache:
+  # Timeout for cache is set to one day.
+  timeout: 86400
   pip: true
   directories:
     - .cache
 
-# command to install dependencies
+# Command for installing dependencies
 install: make init
 
-# command to run tests
+# Command for running the tests
 script: make test
