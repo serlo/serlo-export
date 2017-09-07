@@ -15,6 +15,10 @@ all:
 	python create_books.py "$@"
 	$(call create_book,$<)
 
+.PHONY: init
+init:
+	pip install -r requirements.txt
+
 .PHONY: test
 test:
 	python -m nose --with-doctest
