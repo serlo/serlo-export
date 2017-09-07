@@ -15,6 +15,7 @@ from mfnf.utils import to_snake_case
 
 # title of article which shall be converted to PDF
 SITEMAP_ARTICLE_NAME = "Mathe für Nicht-Freaks: Projekte/LMU Buchprojekte"
+CACHE = ".cache/cache.db"
 
 def create_book(book, api):
     """Creates the LaTeX file of a book."""
@@ -33,7 +34,12 @@ def create_book(book, api):
 
 def run_script():
     """Runs this script."""
-    with shelve.open(".cache.db", "c", writeback=True) as database:
+    try:
+        os.mkdir(os.path.dirname(CACHE))
+    except FileExistsError:
+        pass
+
+    with shelve.open(CACHE, "c", writeback=True) as database:
         cached_function = CachedFunction(database)
 
         class CachedMediaWikiAPI(HTTPMediaWikiAPI):
