@@ -17,7 +17,7 @@ all:
 
 .PHONY: test
 test:
-	nosetests3 --with-doctest
+	python -m nose --with-doctest
 
 .PHONY: watch
 watch:
