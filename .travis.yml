@@ -4,6 +4,13 @@ python:
   - "3.5"
   - "3.6"
 
+# Caching setup for Travis.
+# See https://docs.travis-ci.com/user/caching/ for more details.
+cache:
+  pip: true
+  directories:
+    - .cache
+
 # command to install dependencies
 install: make init
 
