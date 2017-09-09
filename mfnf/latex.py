@@ -67,6 +67,13 @@ class MediaWiki2Latex(ChainedAction):
         def transform_mainarticle(self, obj):
             return None
 
+        def transform_list(self, obj):
+            if obj["items"]:
+                raise NotInterested()
+            else:
+                return {"type": "error",
+                        "message": "Empty list"}
+
         def transform_image(self, obj):
             _, ext = os.path.splitext(obj["name"])
 
