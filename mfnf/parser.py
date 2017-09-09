@@ -126,8 +126,8 @@ def parse_inline(api, title, text):
     content = MediaWikiCodeParser(api=api, title=title)(text)
 
     assert len(content) == 1, text
-    assert content[0]["type"] == "element", text
-    assert content[0]["name"] == "p", text
+    assert content[0]["type"] == "element", "{} in {} yields {}".format(text, title, content)
+    assert content[0]["name"] == "p", "{} in {} yields {}".format(text, title, content)
 
     return content[0]["children"]
 
