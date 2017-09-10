@@ -9,7 +9,7 @@ from itertools import count
 from html.parser import HTMLParser
 from mfnf.transformations import NodeTransformation, ChainedAction, Action, \
      NodeTypeTransformation, check, NotInterested, Transformation
-from mfnf.utils import lookup, remove_prefix, remove_suffix, merge
+from mfnf.utils import lookup, remove_prefix, remove_suffix, merge, log_parser_error
 
 report_logger = logging.getLogger("report_logger")
 
@@ -112,10 +112,6 @@ DEFAULT_VALUES = {
         "name": "Beweisschritt"
     },
 }
-
-def log_parser_error(message, obj):
-    report_logger.error("=== ERROR: {} ===".format(message))
-    report_logger.debug(json.dumps(obj, indent=4, sort_keys=True))
 
 def canonical_image_name(name):
     name = remove_prefix(name, "./")
@@ -613,8 +609,8 @@ class ArticleParser(ChainedAction):
         def transform_article(self, article):
             parser = ArticleContentParser(api=self.api, title=article["title"])
 
-            article_link = self.api._index_url + "?title=" + article["title"]
-            report_logger.info("== Parsing of Article {} ==".format(article_link))
+            article_link = self.api._index_url + "?title=" + article["title"].replace(" ", "+")
+            report_logger.info("== Parsing of Article [{} {}] ==".format(article_link, article["title"]))
 
             content = parser(self.api.get_content(article["title"]))
             authors = self.get_article_authors(article["title"])

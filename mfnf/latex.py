@@ -6,7 +6,7 @@ import textwrap
 import logging
 
 from itertools import chain, repeat, count
-
+from mfnf.utils import log_parser_error
 from mfnf.transformations import ChainedAction, NotInterested, \
                                  NodeTypeTransformation
 
@@ -46,10 +46,6 @@ LATEX_SPECIAL_CHARS = {
     '\n': '\\\\',
     '↯':  '\\Lightning{}',
 }
-
-def log_parser_error(message, obj):
-    report_logger.error("=== ERROR: {} ===".format(message))
-    report_logger.debug(json.dumps(obj, indent=4, sort_keys=True))
 
 def shorten(line):
     indent = re.match(r"^\s*", line).group()
