@@ -2,6 +2,8 @@
 
 import json
 import re
+import logging
+import pprint
 
 from collections import defaultdict
 from itertools import count
@@ -9,6 +11,8 @@ from html.parser import HTMLParser
 from mfnf.transformations import NodeTransformation, ChainedAction, Action, \
      NodeTypeTransformation, check, NotInterested, Transformation
 from mfnf.utils import lookup, remove_prefix, remove_suffix, merge
+
+report_logger = logging.getLogger("report_logger")
 
 TEMPLATE_SPEC = {
     "definition": lambda x: x in ["definition"],
@@ -109,6 +113,10 @@ DEFAULT_VALUES = {
         "name": "Beweisschritt"
     },
 }
+
+def log_parser_error(message, obj):
+    report_logger.error("=== ERROR: {} ===".format(message))
+    report_logger.warning(pprint.pformat(obj))
 
 def canonical_image_name(name):
     name = remove_prefix(name, "./")
@@ -271,8 +279,10 @@ class MediaWikiCodeParser(ChainedAction):
             try:
                 name, caption = text.split("|", 1)
             except ValueError:
+                message = "Gallery item needs a caption"
+                log_parser_error(message, obj)
                 return {"type": "error",
-                        "message": "Gallery item needs a caption"}
+                        "message": message}
 
             caption = parse_inline(self.api, self.title, caption.strip())
 
@@ -371,8 +381,11 @@ class ArticleContentParser(ChainedAction):
             check(obj, "name") == "span"
             check(obj, "attrs", "typeof") == "mw:Image"
 
+            message = "Inline images are not allowed"
+            log_parser_error(message, obj)
+
             return {"type": "error",
-                    "message": "Inline images are not allowed"}
+                    "message": message}
 
     class HandleTable(NodeTransformation):
         def transform_dict(self, obj):
@@ -421,8 +434,12 @@ class ArticleContentParser(ChainedAction):
                     return {"type": "href", "url": url,
                             "content": self(obj["children"])}
                 else:
+                    message = "<a> tag without `href` url"
+                    log_parser_error(message, obj)
+
                     return {"type": "error",
-                            "message": "<a> tag without `href` url"}
+                            "message": message}
+
             elif lookup(obj, "attrs", "typeof") == "mw:Extension/ref":
                 # TODO: Proper parsing of references
                 return None
@@ -443,11 +460,13 @@ class ArticleContentParser(ChainedAction):
 
             elif obj["name"] in ("h1", "h4", "h5", "h6"):
                 message = "Heading of depth {} is not allowed"
+                log_parser_error(message, obj)
 
                 return {"type": "error",
                         "message": message.format(int(obj["name"][-1]))}
             else:
                 message = "Parsing of HTML element `{}`".format(obj["name"])
+                log_parser_error(message, obj)
 
                 return {"type": "notimplemented",
                         "message": message,
@@ -489,8 +508,12 @@ class ArticleContentParser(ChainedAction):
 
                     return {"type": "equation", "formula": formula}
                 else:
+                    message = "Wrong formatted equation"
+                    log_parser_error(message, obj)
+
                     return {"type": "error",
-                            "message": "Wrong formatted equation"}
+                            "message": message}
+
             elif obj["name"].startswith("#lst:"):
                 title = obj["name"][5:]
                 section = obj["params"]["1"]
@@ -503,10 +526,14 @@ class ArticleContentParser(ChainedAction):
                 # Template is header or footer
                 return None
             elif obj["name"] == "todo":
+                message = "Todo-Message in MediaWiki code."
+                log_parser_error(message, obj)
+
                 return {"type": "error",
-                        "message": "Todo-Message in MediaWiki code."}
+                        "message": message}
             else:
                 message = "Parsing of template `{}`".format(obj["name"])
+                log_parser_error(message, obj)
 
                 return {"type": "notimplemented",
                         "target": obj,
@@ -517,8 +544,10 @@ class ArticleContentParser(ChainedAction):
             try:
                 formula = self.api.normalize_formula(obj["formula"], mode)
             except ValueError:
+                message = "Wrong formatted formula"
+                log_parser_error(message, obj)
                 return {"type": "error",
-                        "message": "Wrong formatted formula"}
+                        "message": message}
 
             return merge(obj, {"formula": formula})
 
@@ -584,6 +613,9 @@ class ArticleParser(ChainedAction):
 
         def transform_article(self, article):
             parser = ArticleContentParser(api=self.api, title=article["title"])
+
+            article_link = self.api._index_url + "?title=" + article["title"]
+            report_logger.critical("== Parsing of Article {} ==".format(article_link))
 
             content = parser(self.api.get_content(article["title"]))
             authors = self.get_article_authors(article["title"])

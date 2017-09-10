@@ -1,10 +1,16 @@
 """Creates a PDF from an article of the project „Mathe für Nicht-Freaks“."""
 
+import time
 import os
 import shelve
 import sys
-
+import logging
 import requests
+
+report_logger = logging.getLogger("report_logger")
+report_logger.setLevel(logging.NOTSET)
+report_logger.addHandler(logging.StreamHandler())
+report_logger.addHandler(logging.FileHandler(os.path.join("out", "parser_log.log"), mode="w"))
 
 from mfnf.api import HTTPMediaWikiAPI
 from mfnf.parser import ArticleParser
@@ -27,6 +33,7 @@ def create_book(book, api):
     except FileExistsError:
         pass
 
+    report_logger.info("= Export of Book {} =".format(book["name"]))
     book = MediaWiki2Latex()(book)
 
     with open(target, "w") as latex_file:
@@ -70,6 +77,7 @@ def run_script():
                                    if to_snake_case(x["name"]) ==
                                    to_snake_case(sys.argv[1])]
 
+        report_logger.critical("= Report for pdf export of {} at {}. =\n".format(SITEMAP_ARTICLE_NAME, time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime())))
         sitemap = parser(sitemap)
 
         for book in sitemap["children"]:

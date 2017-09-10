@@ -3,11 +3,15 @@ import json
 import os
 import re
 import textwrap
+import logging
+import pprint
 
 from itertools import chain, repeat, count
 
 from mfnf.transformations import ChainedAction, NotInterested, \
                                  NodeTypeTransformation
+
+report_logger = logging.getLogger("report_logger")
 
 BOX_TEMPLATES = [
     "definition", "theorem", "solution", "solutionprocess", "proof",
@@ -44,6 +48,10 @@ LATEX_SPECIAL_CHARS = {
     '↯':  '\\Lightning{}',
 }
 
+def log_parser_error(message, obj):
+    report_logger.error("=== ERROR: {} ===".format(message))
+    report_logger.warning(pprint.pformat(obj))
+
 def shorten(line):
     indent = re.match(r"^\s*", line).group()
 
@@ -71,8 +79,10 @@ class MediaWiki2Latex(ChainedAction):
             if obj["items"]:
                 raise NotInterested()
             else:
+                message = "Empty List"
+                log_parser_error(message, obj)
                 return {"type": "error",
-                        "message": "Empty list"}
+                        "message": message}
 
         def transform_image(self, obj):
             _, ext = os.path.splitext(obj["name"])
@@ -82,8 +92,10 @@ class MediaWiki2Latex(ChainedAction):
             elif ext in (".jpg", ".svg", ".png"):
                 raise NotInterested()
             else:
+                message = "Unrecognized image with extension " + ext
+                log_parser_error(message, obj)
                 return {"type": "error",
-                        "message": "Unrecognized image with extension " + ext}
+                        "message": message}
 
         def transform_section_start(self, obj):
             return None
