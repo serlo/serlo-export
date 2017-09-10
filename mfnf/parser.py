@@ -178,7 +178,8 @@ class HTML2JSONParser(HTMLParser):
         self._is_first_node = False
 
         assert self._node_stack
-        assert self._node_stack[-1]["name"] == tag
+        assert self._node_stack[-1]["name"] == tag, "end tag should be {}, but is {}. last nodes: {}".format(
+            tag, self._node_stack[-1]["name"], self._node_stack)
 
         self._node_stack.pop()
 
@@ -391,7 +392,7 @@ class ArticleContentParser(ChainedAction):
 
     class FixNodeTypes(NodeTypeTransformation):
         def transform_element(self, obj):
-            if obj["name"] == "p":
+            if obj["name"] in ("p", "br"):
                 return {"type": "paragraph", "content": self(obj["children"])}
             elif obj["name"] == "dfn":
                 return {"type": "i", "content": self(obj["children"])}
