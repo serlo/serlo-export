@@ -85,6 +85,13 @@ class MediaWiki2Latex(ChainedAction):
                 return {"type": "error",
                         "message": "Unrecognized image with extension " + ext}
 
+        def transform_section_start(self, obj):
+            return None
+
+        def transform_section_end(self, obj):
+            return None
+
+
 class LatexExporter:
     def __init__(self, api, directory):
         self.api = api

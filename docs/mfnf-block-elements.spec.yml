@@ -585,6 +585,13 @@
         {type: text, data: "This is a test section."},
         {type: section_end, name: test_section}
       ]
+
+- in: |
+    {{#lst:Mathe für Nicht-Freaks: Beispielkapitel: Semantische Blöcke|test_section}}
+  out:
+    - type: paragraph
+      content: [{type: text, data: " This is a test section. "}]
+
 # --- Handling of Header and Footer ---
 
 - in: |
