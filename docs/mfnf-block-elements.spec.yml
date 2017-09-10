@@ -574,6 +574,17 @@
         - type: paragraph
           content: [{type: text, data: "foo bar hello"}]
 
+# --- Labeled section transclusions ---
+
+- in: |
+    <section begin=test_section />This is a test section.<section end=test_section />
+  out:
+    - type: paragraph
+      content: [
+        {type: section_start, name: test_section},
+        {type: text, data: "This is a test section."},
+        {type: section_end, name: test_section}
+      ]
 # --- Handling of Header and Footer ---
 
 - in: |

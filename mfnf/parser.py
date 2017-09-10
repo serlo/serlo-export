@@ -425,6 +425,18 @@ class ArticleContentParser(ChainedAction):
             elif lookup(obj, "attrs", "typeof") == "mw:Video/Thumb":
                 # TODO: Proper parsing of videos
                 return None
+            elif lookup(obj, "attrs", "typeof") == "mw:Extension/section":
+                data = json.loads(obj["attrs"]["data-mw"])
+
+                assert data["name"] == "section"
+
+                if "begin" in data["attrs"]:
+                    return {"type": "section_start", "name": data["attrs"]["begin"]}
+                elif "end" in data["attrs"]:
+                    return {"type": "section_end", "name": data["attrs"]["end"]}
+                else:
+                    return {"type": "error", "message": "section must be either start or end."}
+
             elif obj["name"] in ("h1", "h4", "h5", "h6"):
                 message = "Heading of depth {} is not allowed"
 
