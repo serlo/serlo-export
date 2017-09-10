@@ -3,7 +3,6 @@
 import json
 import re
 import logging
-import pprint
 
 from collections import defaultdict
 from itertools import count
@@ -116,7 +115,7 @@ DEFAULT_VALUES = {
 
 def log_parser_error(message, obj):
     report_logger.error("=== ERROR: {} ===".format(message))
-    report_logger.warning(pprint.pformat(obj))
+    report_logger.debug(json.dumps(obj, indent=4, sort_keys=True))
 
 def canonical_image_name(name):
     name = remove_prefix(name, "./")
@@ -615,7 +614,7 @@ class ArticleParser(ChainedAction):
             parser = ArticleContentParser(api=self.api, title=article["title"])
 
             article_link = self.api._index_url + "?title=" + article["title"]
-            report_logger.critical("== Parsing of Article {} ==".format(article_link))
+            report_logger.info("== Parsing of Article {} ==".format(article_link))
 
             content = parser(self.api.get_content(article["title"]))
             authors = self.get_article_authors(article["title"])

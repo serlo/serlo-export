@@ -8,9 +8,13 @@ import logging
 import requests
 
 report_logger = logging.getLogger("report_logger")
-report_logger.setLevel(logging.NOTSET)
-report_logger.addHandler(logging.StreamHandler())
-report_logger.addHandler(logging.FileHandler(os.path.join("out", "parser_log.log"), mode="w"))
+report_logger.setLevel(logging.DEBUG)
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)
+report_logger.addHandler(console_handler)
+file_handler = logging.FileHandler(os.path.join("out", "parser_log.log"), mode="w")
+file_handler.setLevel(logging.DEBUG)
+report_logger.addHandler(file_handler)
 
 from mfnf.api import HTTPMediaWikiAPI
 from mfnf.parser import ArticleParser
@@ -77,7 +81,7 @@ def run_script():
                                    if to_snake_case(x["name"]) ==
                                    to_snake_case(sys.argv[1])]
 
-        report_logger.critical("= Report for pdf export of {} at {}. =\n".format(SITEMAP_ARTICLE_NAME, time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime())))
+        report_logger.info("= Report for pdf export of {} at {}. =\n".format(SITEMAP_ARTICLE_NAME, time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime())))
         sitemap = parser(sitemap)
 
         for book in sitemap["children"]:

@@ -4,7 +4,6 @@ import os
 import re
 import textwrap
 import logging
-import pprint
 
 from itertools import chain, repeat, count
 
@@ -50,7 +49,7 @@ LATEX_SPECIAL_CHARS = {
 
 def log_parser_error(message, obj):
     report_logger.error("=== ERROR: {} ===".format(message))
-    report_logger.warning(pprint.pformat(obj))
+    report_logger.debug(json.dumps(obj, indent=4, sort_keys=True))
 
 def shorten(line):
     indent = re.match(r"^\s*", line).group()
@@ -155,7 +154,6 @@ class LatexExporter:
                                             "target": obj}, out)
 
     def print_message(self, message_type, message, out, color="Red"):
-        print(message_type + ":", message)
 
         out.write("\n{\\color{" + escape_latex(color) + "} ")
         out.write("\\textbf{" + escape_latex(message_type) + ":} ")
@@ -220,7 +218,7 @@ class LatexExporter:
         self(chapter["children"], out)
 
     def export_article(self, article, out):
-        print("Export article:", article["name"])
+        report_logger.info("== {} ==".format("Export article: " + article["name"]))
         out.write("\n\n\\chapter{")
         out.write(escape_latex(article["name"]))
         out.write("}")
