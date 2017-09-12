@@ -1,3 +1,4 @@
+import os
 import shelve
 
 from unittest import TestCase
@@ -13,7 +14,12 @@ class TestParser(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.database = shelve.open(".cache.db", "c")
+        try:
+            os.mkdir(".cache")
+        except FileExistsError:
+            pass
+
+        cls.database = shelve.open(".cache/.cache.db", "c")
         cached_function = CachedFunction(cls.database)
 
         class CachedMediaWikiAPI(HTTPMediaWikiAPI):
