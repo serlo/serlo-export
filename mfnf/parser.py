@@ -405,8 +405,12 @@ class ArticleContentParser(ChainedAction):
 
     class FixNodeTypes(NodeTypeTransformation):
         def transform_element(self, obj):
-            if obj["name"] in ("p", "br"):
+            if obj["name"] == "p":
                 return {"type": "paragraph", "content": self(obj["children"])}
+            elif obj["name"] == "br":
+                message = "<br> not allowed"
+                log_parser_error(message, obj)
+                return {"type": "error", "message": message}
             elif obj["name"] == "dfn":
                 return {"type": "i", "content": self(obj["children"])}
             elif obj["name"] in ("i", "b", "th", "tr", "td"):
