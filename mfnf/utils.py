@@ -13,10 +13,10 @@ from functools import reduce
 report_logger = logging.getLogger("report_logger")
 
 def log_parser_error(message, obj):
-    report_logger.error("=== ERROR: {} ===".format(message))
-    report_logger.debug(" <nowiki>")
+    report_logger.debug("=== ERROR: {} ===".format(message))
+    report_logger.debug("<pre>")
     report_logger.debug(json.dumps(obj, indent=4, sort_keys=True))
-    report_logger.debug(" </nowiki>")
+    report_logger.debug("</pre>")
 
 def query_path(obj, path):
     # TODO: Tests and documentation
