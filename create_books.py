@@ -12,6 +12,12 @@ report_logger.setLevel(logging.DEBUG)
 console_handler = logging.StreamHandler()
 console_handler.setLevel(logging.INFO)
 report_logger.addHandler(console_handler)
+
+try:
+    os.mkdir("out")
+except FileExistsError:
+    pass
+
 file_handler = logging.FileHandler(os.path.join("out", "parser_log.log"), mode="w")
 file_handler.setLevel(logging.DEBUG)
 report_logger.addHandler(file_handler)
