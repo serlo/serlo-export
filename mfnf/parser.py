@@ -181,8 +181,9 @@ class HTML2JSONParser(HTMLParser):
         self._is_first_node = False
 
         assert self._node_stack
-        assert self._node_stack[-1]["name"] == tag, "end tag should be {}, but is {}. last nodes: {}".format(
-            tag, self._node_stack[-1]["name"], self._node_stack)
+        assert self._node_stack[-1]["name"] == tag, \
+            "end tag should be {}, but is {}. last nodes: {}" \
+            .format(tag, self._node_stack[-1]["name"], self._node_stack)
 
         self._node_stack.pop()
 
