@@ -275,7 +275,7 @@ class MediaWikiCodeParser(ChainedAction):
                 name, caption = text.split("|", 1)
             except ValueError:
                 message = "Gallery item needs a caption"
-                log_parser_error(message, obj)
+                log_parser_error(message, text)
                 return {"type": "error",
                         "message": message}
 
