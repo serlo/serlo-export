@@ -8,18 +8,13 @@ import yaml
 
 from mfnf.api import HTTPMediaWikiAPI
 from mfnf.parser import HTML2JSONParser, ArticleContentParser
-from mfnf.utils import CachedFunction
+from mfnf.utils import CachedFunction, open_database
 
 class TestParser(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        try:
-            os.mkdir(".cache")
-        except FileExistsError:
-            pass
-
-        cls.database = shelve.open(".cache/.cache.db", "c")
+        cls.database = open_database(".cache/.cache.db")
         cached_function = CachedFunction(cls.database)
 
         class CachedMediaWikiAPI(HTTPMediaWikiAPI):

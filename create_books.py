@@ -21,7 +21,7 @@ from mfnf.parser import ArticleParser
 from mfnf.utils import CachedFunction
 from mfnf.sitemap import parse_sitemap
 from mfnf.latex import LatexExporter, MediaWiki2Latex
-from mfnf.utils import to_snake_case
+from mfnf.utils import to_snake_case, open_database
 
 # title of article which shall be converted to PDF
 SITEMAP_ARTICLE_NAME = "Mathe für Nicht-Freaks: Projekte/LMU Buchprojekte"
@@ -45,12 +45,7 @@ def create_book(book, api):
 
 def run_script():
     """Runs this script."""
-    try:
-        os.mkdir(os.path.dirname(CACHE))
-    except FileExistsError:
-        pass
-
-    with shelve.open(CACHE, "c", writeback=True) as database:
+    with open_database(CACHE) as database:
         cached_function = CachedFunction(database)
 
         class CachedMediaWikiAPI(HTTPMediaWikiAPI):

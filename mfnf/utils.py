@@ -5,6 +5,8 @@ import collections
 import re
 import logging
 import json
+import shelve
+import os
 
 from functools import reduce
 
@@ -29,6 +31,16 @@ def lookup(obj, *path):
         return query_path(obj, path)
     except (IndexError, KeyError, TypeError):
         return None
+
+def open_database(database_path):
+    """Open a database at path `database_path` where arbitrary python objects
+    can be stored."""
+    try:
+        os.makedirs(os.path.dirname(database_path))
+    except FileExistsError:
+        pass
+
+    return shelve.open(database_path, "c", writeback=True)
 
 def to_snake_case(text):
     """Converts `text` to snake_case.
