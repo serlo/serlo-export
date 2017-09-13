@@ -47,3 +47,15 @@
 \newenvironment{indentblock}{\begin{adjustwidth}{.5cm}{}}{\end{adjustwidth}}
 
 \definecolor{forestgreen}{rgb}{0.13, 0.55, 0.13}
+
+\makeatletter
+\renewenvironment{proof}[1][\relax]{\par
+  \pushQED{\qed}%
+  \normalfont \topsep6\p@\@plus6\p@\relax
+  \trivlist
+  \item[\hskip\labelsep\itshape
+      \ifx#1\relax \proofname\else\proofname{} (#1)\fi\@addpunct{.}]\ignorespaces
+}{%
+  \popQED\endtrivlist\@endpefalse
+}
+\makeatother
