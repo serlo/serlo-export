@@ -101,6 +101,11 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
             except requests.exceptions.ConnectionError:
                 continue
 
+            if "error" in api_result:
+                message = "Error while making API call."
+
+                raise ConnectionError(api_result.get("info", message))
+
             result = merge(result, query_path(api_result, path_to_result))
 
             if "continue" in api_result:
