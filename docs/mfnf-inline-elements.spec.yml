@@ -47,6 +47,11 @@
     url: 'https://de.wikibooks.org/wiki/Foo'
     content: [{type: text, data: "Bar"}]
 
+- in: "<del>strikethrough text</del>"
+  out: 
+    type: strikethrough
+    content: [{type: text, data: "strikethrough text"}]
+
 # === Invalid formating ===
 # The following MediaWiki code is invalid in the project
 # „Mathe für Nicht-Freaks“.
