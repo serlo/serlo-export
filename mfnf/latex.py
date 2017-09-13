@@ -59,7 +59,8 @@ def escape_latex(text):
     return "".join((LATEX_SPECIAL_CHARS.get(c, c) for c in text))
 
 def escape_latex_math(formula):
-    return formula.replace("[", "\\lbrack{}").replace("]", "\\rbrack{}")
+    # TODO: Is this function needed?
+    return formula
 
 def escape_latex_verbatim(code):
     code = re.sub(r"\\end\s*{\s*verbatim\s*}", "", code)
