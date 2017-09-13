@@ -262,6 +262,11 @@ class LatexExporter:
         self(b["content"], out)
         out.write("}")
 
+    def export_strikethrough(self, strikethrough, out):
+        out.write("\\sout{")
+        self(strikethrough["content"], out)
+        out.write("}")
+
     def export_image(self, image, out):
         if image["thumbnail"]:
             out.write("\n\n\\begin{figure}\n")
