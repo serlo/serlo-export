@@ -165,6 +165,26 @@
             - type: paragraph
               content: [{ type: text, data: "text3" }]
 
+- in: |
+    {{Liste
+     |abstand=0.5em
+     |liste=
+    * text1
+    * text2
+    * text3
+    }}
+  out:
+    - type: list
+      spacing: 0.5em
+      ordered: false
+      items:
+        - type: listitem
+          content: [{ type: text, data: "text1" }]
+        - type: listitem
+          content: [{ type: text, data: "text2" }]
+        - type: listitem
+          content: [{ type: text, data: "text3" }]
+
 # --- Definition Lists ---
 
 - in: |

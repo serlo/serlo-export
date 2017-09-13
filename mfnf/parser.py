@@ -32,7 +32,7 @@ TEMPLATE_SPEC = {
     "satz": lambda x: x in ["satz", "erklärung", "beispiel",
                             "zusammenfassung", "lösung", "lösungsweg",
                             "beweis", "beweis2"],
-    "liste": lambda x: x.startswith("item"),
+    "liste": lambda x: x.startswith("item") or x in ["liste"],
     # important paragraph
     "-": lambda x: x in ["1"],
     "fallunterscheidung": lambda x: x.startswith("beweis"),
@@ -504,10 +504,20 @@ class ArticleContentParser(ChainedAction):
                     return merge(params, {"type": bname})
 
             if obj["name"] == "liste":
-                return {"type": "list",
-                        "ordered": obj["params"].get("type", "") == "ol",
-                        "items": [{"type": "listitem", "content": self(x)}
-                                  for x in obj["params"]["item_list"]]}
+                if "liste" in obj["params"]:
+                    sublist = obj["params"]["liste"][0]
+
+                    assert sublist["type"] == "list"
+
+                    items = sublist["items"]
+                    ordered = sublist["ordered"]
+                else:
+                    items = [{"type": "listitem", "content": self(x)}
+                             for x in obj["params"]["item_list"]]
+                    ordered = obj["params"].get("type", "") == "ol"
+
+                return {"type": "list", "items": items, "ordered": ordered,
+                        "spacing": obj["params"].get("abstand", None)}
             elif obj["name"] == "formel":
                 formula = obj["params"].get("1", [])
 
