@@ -330,6 +330,16 @@ class ArticleContentParser(ChainedAction):
             else:
                 raise NotInterested()
 
+    class RemoveReferences(NodeTypeTransformation):
+        # TODO: We need a better implementation
+        def transform_element(self, obj):
+            if lookup(obj, "attrs", "typeof") in ("mw:Extension/ref",
+                                                  "mw:Extension/references"):
+                # TODO: Proper parsing of references
+                return None
+            else:
+                raise NotInterested()
+
     class HandleLists(NodeTransformation):
         def transform_dict(self, obj):
             check(obj, "type") == "element"
@@ -450,9 +460,6 @@ class ArticleContentParser(ChainedAction):
             elif obj["name"] == "blockquote":
                 return {"type": "blockquote", "content": self(obj["children"])}
 
-            elif lookup(obj, "attrs", "typeof") == "mw:Extension/ref":
-                # TODO: Proper parsing of references
-                return None
             elif lookup(obj, "attrs", "typeof") == "mw:Video/Thumb":
                 # TODO: Proper parsing of videos
                 return None
