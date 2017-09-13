@@ -441,6 +441,8 @@ class ArticleContentParser(ChainedAction):
                             "message": message}
             elif obj["name"] == "del":
                 return {"type": "strikethrough", "content": self(obj["children"])}
+            elif obj["name"] == "blockquote":
+                return {"type": "blockquote", "content": self(obj["children"])}
 
             elif lookup(obj, "attrs", "typeof") == "mw:Extension/ref":
                 # TODO: Proper parsing of references

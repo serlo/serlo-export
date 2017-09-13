@@ -369,6 +369,10 @@ class LatexExporter:
         with LatexEnvironment(out, "indentblock"):
             self(proofstep["proof"], out)
 
+    def export_blockquote(self, blockquote, out):
+        with LatexEnvironment(out, "displayquote"):
+            self(blockquote["content"], out)
+
 class LatexEnvironment:
     def __init__(self, out, environment, parameters=[]):
         self.out = out

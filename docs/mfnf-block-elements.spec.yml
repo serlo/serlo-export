@@ -606,6 +606,13 @@
         - type: text
           data: "Hello World"
 
+# --- Quotes ---
+
+- in: <blockquote>Someone said this.</blockquote>
+  out:
+    - type: blockquote
+      content: [{type: text, data: "Someone said this."}]
+
 # === Invalid formats ===
 # The following formats are valid MediaWiki code but are forbidden in the
 # project „Mathe für Nicht-Freaks“.
