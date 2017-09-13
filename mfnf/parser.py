@@ -439,7 +439,6 @@ class ArticleContentParser(ChainedAction):
 
                     return {"type": "error",
                             "message": message}
-
             elif lookup(obj, "attrs", "typeof") == "mw:Extension/ref":
                 # TODO: Proper parsing of references
                 return None
@@ -452,12 +451,14 @@ class ArticleContentParser(ChainedAction):
                 assert data["name"] == "section"
 
                 if "begin" in data["attrs"]:
-                    return {"type": "section_start", "name": data["attrs"]["begin"]}
+                    return {"type": "section_start",
+                            "name": data["attrs"]["begin"]}
                 elif "end" in data["attrs"]:
-                    return {"type": "section_end", "name": data["attrs"]["end"]}
+                    return {"type": "section_end",
+                            "name": data["attrs"]["end"]}
                 else:
-                    return {"type": "error", "message": "section must be either start or end."}
-
+                    return {"type": "error",
+                            "message": "section must be either start or end."}
             elif obj["name"] in ("h1", "h4", "h5", "h6"):
                 message = "Heading of depth {} is not allowed"
                 log_parser_error(message, obj)
