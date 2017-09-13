@@ -7,6 +7,7 @@ from abc import ABCMeta, abstractmethod
 import urllib.request
 from urllib.parse import quote
 import re
+import os
 import requests.exceptions
 
 from mfnf.utils import stablehash, merge, query_path, select_singleton
@@ -139,7 +140,9 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
         return self.query(params, ["pages", select_singleton, "revisions"])
 
     def download_image(self, image_name, image_path):
-        urllib.request.urlretrieve(self.get_image_url(image_name), image_path)
+        if not os.path.exists(image_path):
+            urllib.request.urlretrieve(self.get_image_url(image_name),
+                                       image_path)
 
     def normalize_formula(self, formula, mode):
         assert mode in ["tex", "inline-tex"]
