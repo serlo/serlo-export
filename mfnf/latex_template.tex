@@ -51,11 +51,20 @@
 \makeatletter
 \renewenvironment{proof}[1][\relax]{\par
   \pushQED{\qed}%
-  \normalfont \topsep6\p@\@plus6\p@\relax
   \trivlist
   \item[\hskip\labelsep\itshape
       \ifx#1\relax \proofname\else\proofname{} (#1)\fi\@addpunct{.}]\ignorespaces
 }{%
   \popQED\endtrivlist\@endpefalse
+  \unskip
 }
 \makeatother
+
+\begingroup
+    \makeatletter
+    \@for\theoremstyle:=definition,remark,plain\do{%
+        \expandafter\g@addto@macro\csname th@\theoremstyle\endcsname{%
+            \addtolength\thm@preskip\parskip
+            }%
+        }
+\endgroup
