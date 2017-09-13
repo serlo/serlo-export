@@ -574,6 +574,36 @@
         - type: paragraph
           content: [{type: text, data: "foo bar hello"}]
 
+- in: |
+    {{:Mathe für Nicht-Freaks: Vorlage:Vollständige Induktion
+     |erfuellungsmenge=N
+     |aussageform=IB
+     |induktionsanfang=IA
+     |induktionsvoraussetzung=ISvor
+     |induktionsbehauptung=ISbeh
+     |beweis_induktionsschritt=ISbew 
+    }}
+  out: 
+    - type: induction
+      baseset: 
+        - type: paragraph
+          content: [{type: text, data: N}]
+      statement: 
+        - type: paragraph
+          content: [{type: text, data: IB}]
+      induction_start:
+        - type: paragraph
+          content: [{type: text, data: IA}]
+      induction_requirement: 
+        - type: paragraph
+          content: [{type: text, data: ISvor}]
+      induction_goal: 
+        - type: paragraph
+          content: [{type: text, data: ISbeh}]
+      induction_step: 
+        - type: paragraph
+          content: [{type: text, data: ISbew}]
+
 # --- Labeled section transclusions ---
 
 - in: |

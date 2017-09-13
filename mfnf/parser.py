@@ -35,7 +35,10 @@ TEMPLATE_SPEC = {
     "liste": lambda x: x.startswith("item"),
     # important paragraph
     "-": lambda x: x in ["1"],
-    "fallunterscheidung": lambda x: x.startswith("beweis")
+    "fallunterscheidung": lambda x: x.startswith("beweis"),
+    "vollständige induktion": lambda x: x in ["aussageform", "induktionsanfang",
+                                              "induktionsvoraussetzung", "induktionsbehauptung",
+                                              "beweis_induktionsschritt", "erfuellungsmenge"],
 }
 
 TEMPLATE_INLINE_SPEC = {
@@ -105,6 +108,9 @@ BOXSPEC = [
       "proof": "beweis", "alternativeproof": "beweis2"}),
 
     ("importantparagraph", "-", {"importantparagraph": "1"}),
+    ("induction", "vollständige induktion", {"statement": "aussageform", "induction_start": "induktionsanfang",
+                                             "induction_requirement": "induktionsvoraussetzung", "induction_goal": "induktionsbehauptung",
+                                             "induction_step": "beweis_induktionsschritt", "baseset": "erfuellungsmenge"})
 ]
 
 DEFAULT_VALUES = {

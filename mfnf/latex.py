@@ -373,6 +373,29 @@ class LatexExporter:
         with LatexEnvironment(out, "displayquote"):
             self(blockquote["content"], out)
 
+    def export_induction(self, induction, out):
+        # unpack paragraphs to prevent "stretching"
+        induction = induction.copy()
+        for k, v in induction.items():
+            if type(v) == list and len(v) == 1 and v[0]["type"] == "paragraph":
+                induction[k] = v[0]["content"]
+
+        out.write("Aussageform, deren Allgemeingültigkeit für ")
+        self(induction["baseset"], out)
+        out.write(" bewiesen werden soll:")
+        self(induction["statement"], out)
+        with LatexEnvironment(out, "itemize"):
+            out.write("\\item[1.] Induktionsanfang:")
+            self(induction["induction_start"], out)
+            out.write("\\item[2.] Induktionsschritt:")
+            with LatexEnvironment(out, "itemize"):
+                out.write("\\item[2a.] Induktionsvoraussetzung:")
+                self(induction["induction_requirement"], out)
+                out.write("\\item[2b.] Induktionsbehauptung:")
+                self(induction["induction_goal"], out)
+                out.write("\\item[2c.] Beweis des Induktionsschritts:")
+                self(induction["induction_step"], out)
+
 class LatexEnvironment:
     def __init__(self, out, environment, parameters=[]):
         self.out = out
