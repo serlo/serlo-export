@@ -87,6 +87,8 @@ BOXSPEC = [
 
     ("hint", "hinweis", {"hint": "1"}),
 
+    ("smiley", "smiley", {"name": "1"}),
+
     ("mainarticle", "hauptartikel", {"mainarticle": "1"}),
 
     ("question", "frage",
@@ -117,6 +119,9 @@ DEFAULT_VALUES = {
     "proofstep": {
         "name": "Beweisschritt"
     },
+    "smiley": {
+        "name": ":)"
+    }
 }
 
 def canonical_image_name(name):
@@ -255,7 +260,8 @@ class MediaWikiCodeParser(ChainedAction):
             if lookup(obj, "attrs", "about") in self._template_ids:
                 return None
 
-            check(obj, "attrs", "typeof") == "mw:Transclusion"
+            check(obj, "attrs", "typeof").of(["mw:Transclusion",
+                                              "mw:Transclusion mw:Image"])
 
             template = json.loads(obj["attrs"]["data-mw"])
             template = template["parts"][0]["template"]
@@ -394,22 +400,6 @@ class ArticleContentParser(ChainedAction):
         def transform_dict(self, obj):
             check(obj, "type") == "element"
             check(obj, "name") == "span"
-
-            # template-generated image
-            if obj.get("attrs", {}).get("typeof") == "mw:Transclusion mw:Image":
-                data = json.loads(obj.get("attrs", {}).get("data-mw", "{'error': 1}"))
-                for part in data.get("parts", []):
-                    template = part.get("template")
-                    if not template:
-                        continue
-
-                    name = template["target"]["wt"]
-
-                    # handle smileys
-                    if name == "Smiley":
-                        return {"type": "smiley",
-                                "name": ":)" if not template["params"] else template["params"]["1"]["wt"]}
-
             check(obj, "attrs", "typeof") == "mw:Image"
 
             message = "Inline images are not allowed"
