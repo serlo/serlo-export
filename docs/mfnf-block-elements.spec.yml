@@ -40,6 +40,19 @@
       depth: 1
       content: [{ type: text, data: Heading }]
 
+# --- Smileys ---
+
+- in: |
+    {{Smiley}}
+    {{Smiley|:(}}
+  out: 
+    - type: paragraph
+      content:
+        - type: smiley
+          name: :)
+        - type: smiley
+          name: :(
+
 # --- Tables ---
 
 - in: |

@@ -394,6 +394,22 @@ class ArticleContentParser(ChainedAction):
         def transform_dict(self, obj):
             check(obj, "type") == "element"
             check(obj, "name") == "span"
+
+            # template-generated image
+            if obj.get("attrs", {}).get("typeof") == "mw:Transclusion mw:Image":
+                data = json.loads(obj.get("attrs", {}).get("data-mw", "{'error': 1}"))
+                for part in data.get("parts", []):
+                    template = part.get("template")
+                    if not template:
+                        continue
+
+                    name = template["target"]["wt"]
+
+                    # handle smileys
+                    if name == "Smiley":
+                        return {"type": "smiley",
+                                "name": ":)" if not template["params"] else template["params"]["1"]["wt"]}
+
             check(obj, "attrs", "typeof") == "mw:Image"
 
             message = "Inline images are not allowed"
