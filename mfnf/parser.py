@@ -486,6 +486,13 @@ class ArticleContentParser(ChainedAction):
 
                 return {"type": "error",
                         "message": message.format(int(obj["name"][-1]))}
+            elif (obj["name"] == "span" and
+                    lookup(obj, "attrs", "typeof") == "mw:DisplaySpace mw:Placeholder"):
+                msg = "Spans with type {} are not allowed".format(lookup(obj,
+                                                                         "attrs",
+                                                                         "typeof"))
+                log_parser_error(msg, obj)
+                return {"type": "error", "message": msg}
             else:
                 message = "Parsing of HTML element `{}`".format(obj["name"])
                 log_parser_error(message, obj)
