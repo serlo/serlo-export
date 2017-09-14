@@ -502,9 +502,8 @@ class ArticleContentParser(ChainedAction):
 
                 return {"type": "error",
                         "message": message.format(int(obj["name"][-1]))}
-            elif (obj["name"] == "span" and
-                    lookup(obj, "attrs", "typeof") == "mw:Entity" and
-                    lookup(obj, "attrs", "id") == "mwAg"):
+            elif lookup(obj, "attrs", "typeof") == "mw:Entity":
+                # TODO: Are there other entities?
                 return {"type": "entity", "kind": " "}
             elif (obj["name"] == "span" and
                     lookup(obj, "attrs", "typeof") == "mw:DisplaySpace mw:Placeholder"):
