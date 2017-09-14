@@ -74,7 +74,11 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
 
     def _index_call(self, params):
         """Make an HTTP request to the server's `index.php` file."""
-        return self.req.get(self._index_url, params=params).text
+        req = self.req.get(self._index_url, params=params)
+
+        req.raise_for_status()
+
+        return req.text
 
     def _api_call(self, endpoint, data):
         """Call an REST API endpoint."""
