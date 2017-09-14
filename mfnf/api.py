@@ -8,7 +8,6 @@ import urllib.request
 from urllib.parse import quote
 import re
 import os
-import requests.exceptions
 
 from mfnf.utils import stablehash, merge, query_path, select_singleton
 
@@ -75,20 +74,13 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
 
     def _index_call(self, params):
         """Make an HTTP request to the server's `index.php` file."""
-        while True:
-            try:
-                return self.req.get(self._index_url, params=params).text
-            except requests.exceptions.ConnectionError:
-                pass
+        return self.req.get(self._index_url, params=params).text
 
     def _api_call(self, endpoint, data):
         """Call an REST API endpoint."""
         endpoint_url = "/".join([self._rest_api_url] + endpoint)
-        while True:
-            try:
-                return self.req.post(endpoint_url, data=data)
-            except requests.exceptions.ConnectionError:
-                pass
+
+        return self.req.post(endpoint_url, data=data)
 
     def query(self, params, path_to_result):
         params["format"] = "json"
@@ -97,10 +89,7 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
         result = None
 
         while True:
-            try:
-                api_result = self.req.get(self._api_url, params=params).json()
-            except requests.exceptions.ConnectionError:
-                continue
+            api_result = self.req.get(self._api_url, params=params).json()
 
             if "error" in api_result:
                 message = "Error while making API call."

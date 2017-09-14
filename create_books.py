@@ -72,7 +72,10 @@ def run_script():
                 # need to be implemented in a better way in the future.
                 return super().get_revisions(title)
 
-        api = CachedMediaWikiAPI(requests.Session())
+        ses = requests.Session()
+        ses.mount("", requests.adapters.HTTPAdapter(max_retries=5))
+
+        api = CachedMediaWikiAPI(ses)
         parser = ArticleParser(api=api)
 
         sitemap = parse_sitemap(api.get_content(SITEMAP_ARTICLE_NAME))
