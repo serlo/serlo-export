@@ -396,6 +396,10 @@ class LatexExporter:
                 out.write("\\item[2c.] Beweis des Induktionsschritts:")
                 self(induction["induction_step"], out)
 
+    def export_entity(self, entity, out):
+        if entity["kind"] == " ":
+            out.write("~")
+
 class LatexEnvironment:
     def __init__(self, out, environment, parameters=[]):
         self.out = out

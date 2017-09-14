@@ -487,6 +487,10 @@ class ArticleContentParser(ChainedAction):
                 return {"type": "error",
                         "message": message.format(int(obj["name"][-1]))}
             elif (obj["name"] == "span" and
+                    lookup(obj, "attrs", "typeof") == "mw:Entity" and
+                    lookup(obj, "attrs", "id") == "mwAg"):
+                return {"type": "entity", "kind": " "}
+            elif (obj["name"] == "span" and
                     lookup(obj, "attrs", "typeof") == "mw:DisplaySpace mw:Placeholder"):
                 msg = "Spans with type {} are not allowed".format(lookup(obj,
                                                                          "attrs",
