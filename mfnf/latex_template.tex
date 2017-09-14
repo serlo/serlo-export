@@ -1,9 +1,20 @@
-\documentclass[a4paper,xcolor=dvipsnames]{book}
+\documentclass[xcolor=dvipsnames]{book}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[ngerman]{babel}
-\usepackage[a4paper]{geometry}
+\usepackage{geometry}
+
+% From https://tex.stackexchange.com/a/249474
+\geometry{
+  papersize={155mm,235mm},
+  textwidth=117mm,
+  textheight=191mm,
+  heightrounded,
+  hratio=1:1,
+  vratio=1:1,
+}
+
 \usepackage{parskip}
 \usepackage{graphicx}
 \usepackage{amsmath}
