@@ -6,7 +6,7 @@ import textwrap
 import logging
 
 from itertools import chain, repeat, count
-from mfnf.utils import log_parser_error
+from mfnf.utils import log_parser_error, lookup
 from mfnf.transformations import ChainedAction, NotInterested, \
                                  NodeTypeTransformation
 
@@ -269,6 +269,9 @@ class LatexExporter:
         out.write("$")
 
     def export_section(self, section, out):
+        title_prefix = lookup(section, "title", 0, "data")
+        if title_prefix and title_prefix.startswith("Baustelle: "):
+            return
         section_types = ["section", "subsection", "subsubsection", "paragraph"]
         out.write("\n\n\\" + section_types[section["depth"]] + "{")
         self(section["title"], out)
