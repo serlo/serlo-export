@@ -54,6 +54,7 @@ TEMPLATE_INLINE_SPEC = {
     "beweis": lambda x: x in ["titel"],
     "satz": lambda x: x in ["titel"],
     "aufgabe": lambda x: x in ["titel"],
+    "fg": lambda x: x in ["2"]
 }
 
 TEMPLATE_LIST_PARAMS = {
@@ -86,6 +87,8 @@ BOXSPEC = [
     ("warning", "warnung", {"warning": "1"}),
 
     ("hint", "hinweis", {"hint": "1"}),
+
+    ("coloredtext", "fg", {"color": "1", "content": "2"}),
 
     ("smiley", "smiley", {"name": "1"}),
 

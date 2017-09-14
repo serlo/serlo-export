@@ -400,6 +400,11 @@ class LatexExporter:
         if entity["kind"] == " ":
             out.write("~")
 
+    def export_coloredtext(self, coloredtext, out):
+        out.write("{\\textcolor{" + escape_latex(coloredtext["color"]) + "}{")
+        self(coloredtext["content"], out)
+        out.write("}}")
+
 class LatexEnvironment:
     def __init__(self, out, environment, parameters=[]):
         self.out = out
