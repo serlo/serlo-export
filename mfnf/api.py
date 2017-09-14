@@ -80,7 +80,10 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
         """Call an REST API endpoint."""
         endpoint_url = "/".join([self._rest_api_url] + endpoint)
 
-        return self.req.post(endpoint_url, data=data)
+        result = self.req.post(endpoint_url, data=data)
+        result.raise_for_status()
+
+        return result
 
     def query(self, params, path_to_result):
         params["format"] = "json"
@@ -138,9 +141,14 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
 
         endpoint = ["media", "math", "check"] + [mode]
         params = {"type": mode, "q": re.sub(r"\s", " ", formula)}
-        result = self._api_call(endpoint, params).json()
 
-        if result.get("title", None) == "Bad Request":
-            raise ValueError()
+        try:
+            result = self._api_call(endpoint, params).json()
 
-        return result["checked"]
+            return result["checked"]
+        except IOError as error:
+            if error.response.status_code == 400:
+                # Wrongly formatted math formula
+                raise ValueError()
+            else:
+                raise error
