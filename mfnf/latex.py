@@ -47,6 +47,36 @@ LATEX_SPECIAL_CHARS = {
     '↯':  '\\Lightning{}',
 }
 
+SMILEY_UNICODE_OUTPUT = {
+    ":)": "\U0001F60A",
+    ":(": "\U0001F61E",
+    "sad": "\U0001F61E",
+    ":-]": "\U0001F60A",
+    ":-[": "\U0001F61E",
+    ">:(": "\U0001F620",
+    ":D": "\U0001F604",
+    "lol": "\U0001F604",
+    "lach": "\U0001F604",
+    ":-D": "\U0001F604",
+    ";-]": "\U0001F60F",
+    "8-]": "\U0001F60E",
+    ":-/": "\U0001F615",
+    ":-S": "\U0001F616",
+    ":-O": "\U0001F62E",
+    "staun": "\U0001F62E",
+    ":-P": "\U0001F61B",
+    ":'(": "\U0001F622",
+    "wein": "\U0001F622",
+    "cry": "\U0001F622",
+    ">:[": "\U0001F620",
+    "wütend": "\U0001F620",
+    "angry": "\U0001F620",
+    ">:-D": "\U0001F608",
+    "Daumen": "\U0001F64C",
+    "Facepalm": "\U0001F625",
+    "#default": "\U0001F60A",
+}
+
 def shorten(line):
     indent = re.match(r"^\s*", line).group()
 
@@ -404,6 +434,9 @@ class LatexExporter:
         out.write("{\\textcolor{" + escape_latex(coloredtext["color"]) + "}{")
         self(coloredtext["content"], out)
         out.write("}}")
+
+    def export_smiley(self, smiley, out):
+        out.write("{{\DejaSans {}}}".format(SMILEY_UNICODE_OUTPUT.get(smiley["name"], "\u26A0")))
 
 class LatexEnvironment:
     def __init__(self, out, environment, parameters=[]):
