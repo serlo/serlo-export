@@ -5,7 +5,7 @@ import re
 import logging
 
 from collections import defaultdict
-from itertools import count
+from itertools import chain, count
 from html.parser import HTMLParser
 from mfnf.transformations import NodeTransformation, ChainedAction, Action, \
      NodeTypeTransformation, check, NotInterested, Transformation
@@ -581,7 +581,7 @@ class ArticleContentParser(ChainedAction):
                 content = self.api.get_content(title)
 
                 article = ArticleContentParser(api=self.api, title=title, section_filter=section)(content)
-                return article[0] if len(article) == 1 else {"type": "paragraph", "content": article}
+                return {"type": "included_section", "content": article}
 
             elif obj["name"].startswith("#invoke:"):
                 # Template is header or footer
@@ -683,6 +683,24 @@ class ArticleParser(ChainedAction):
             authors = self.get_article_authors(article["title"])
 
             return merge(article, {"content": content, "authors": authors})
+
+    class MergeIncludedSections(NodeTypeTransformation):
+        """Removes the `included_section` intermediate node."""
+
+        def transform_included_section(self, obj):
+            return {"type": "error",
+                    "message": "Included section not merged."}
+
+        def transform_article(self, obj):
+            if not next(filter(lambda x: x["type"] == "included_section",
+                               obj["content"]),
+                        None):
+                return obj
+            merged_content = chain(*(x["content"]
+                                     if x["type"] == "included_section"
+                                     else [x]
+                                     for x in obj["content"]))
+            return merge(obj, {"content": list(merged_content)})
 
     class BuildStructureTree(NodeTypeTransformation):
         """Transforms a flat article into a tree based on its structure."""
