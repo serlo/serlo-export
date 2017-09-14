@@ -683,3 +683,33 @@ class ArticleParser(ChainedAction):
             authors = self.get_article_authors(article["title"])
 
             return merge(article, {"content": content, "authors": authors})
+
+    class BuildStructureTree(NodeTypeTransformation):
+        """Transforms a flat article into a tree based on its structure."""
+
+        def split_list(self, prd, lst):
+            subforest = [[]]
+            for elem in lst:
+                if prd(elem):
+                    subforest.append([])
+                else:
+                    subforest[-1].append(elem)
+            return subforest if len(subforest[0]) > 0 else subforest[1:]
+
+        def unfold_section(self, obj, level):
+            test = lambda x: x["type"] == "header" and x["depth"] == level
+            headings = list(filter(test, obj["content"]))
+            contents = self.split_list(test, obj["content"])
+            subsections = (obj["content"] if len(headings) == 0
+                           else [{"type": "section",
+                                  "title": h["content"],
+                                  "depth": h["depth"],
+                                  "content": c}
+                                 for h, c in zip(headings, contents)])
+            return merge(obj, {"content": self(subsections)})
+
+        def transform_article(self, obj):
+            return self.unfold_section(obj, 1)
+
+        def transform_section(self, obj):
+            return self.unfold_section(obj, obj["depth"] + 1)

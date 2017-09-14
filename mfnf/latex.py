@@ -268,11 +268,12 @@ class LatexExporter:
         out.write(escape_latex_math(inlinemath["formula"]))
         out.write("$")
 
-    def export_header(self, header, out):
-        header_types = ["section", "subsection", "subsubsection", "paragraph"]
-        out.write("\n\n\\" + header_types[header["depth"]] + "{")
-        self(header["content"], out)
+    def export_section(self, section, out):
+        section_types = ["section", "subsection", "subsubsection", "paragraph"]
+        out.write("\n\n\\" + section_types[section["depth"]] + "{")
+        self(section["title"], out)
         out.write("}")
+        self(section["content"], out)
 
     def export_proofbycases(self, obj, out):
         for n, case, proof in zip(count(1), obj["cases"], obj["proofs"]):
