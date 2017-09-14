@@ -124,6 +124,12 @@ DEFAULT_VALUES = {
     }
 }
 
+USERNAMES = {
+    "Claudia4": "Claudia Renner",
+    "Agnessa power": "Agnes Pauer",
+    "Mattlocke2.0": "Matthias Greger"
+}
+
 def canonical_image_name(name):
     name = remove_prefix(name, "./")
     name = remove_prefix(name, "Datei:")
@@ -654,7 +660,8 @@ class ArticleParser(ChainedAction):
             article_size = 0
 
             for rev in (x for x in reversed(revisions) if "anon" not in x):
-                authors[rev["user"]] += max(rev["size"] - article_size, 50)
+                user = USERNAMES.get(rev["user"], rev["user"])
+                authors[user] += max(rev["size"] - article_size, 50)
                 article_size = rev["size"]
 
             return [x[0] for x in sorted(authors.items(), reverse=True,
