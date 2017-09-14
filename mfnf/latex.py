@@ -300,7 +300,7 @@ class LatexExporter:
     def export_image(self, image, out):
         if image["thumbnail"]:
             out.write("\n\n\\begin{figure}\n")
-        else:
+        elif not image["inline"]:
             out.write("\n\n")
 
         name, ext = os.path.splitext(image["name"].lower())
@@ -310,10 +310,13 @@ class LatexExporter:
 
         self.api.download_image(image["name"], image_file)
 
-        with LatexEnvironment(out, "center"):
-            out.write("\n\\includegraphics[width=0.5\\textwidth]{")
-            out.write(image_name)
-            out.write("}")
+        if image["inline"]:
+            out.write("\\includegraphics[height=\\baselineskip]{{{}}}".format(image_name))
+        else:
+            with LatexEnvironment(out, "center"):
+                out.write("\n\\includegraphics[width=0.5\\textwidth]{")
+                out.write(image_name)
+                out.write("}")
 
         if image["thumbnail"]:
             out.write("\\caption{")

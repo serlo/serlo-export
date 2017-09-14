@@ -388,8 +388,10 @@ class ArticleContentParser(ChainedAction):
     class HandleFigures(NodeTransformation):
         def transform_dict(self, obj):
             check(obj, "type") == "element"
-            check(obj, "name") == "figure"
+            check(obj, "name").of(("figure", "span"))
             check(obj, "attrs", "typeof").of(("mw:Image", "mw:Image/Thumb"))
+
+            inline = obj["name"] == "span"
 
             caption = [child
                        for child in obj["children"]
@@ -403,7 +405,8 @@ class ArticleContentParser(ChainedAction):
             name = canonical_image_name(img["attrs"]["resource"])
 
             return {"type": "image", "caption": self(caption), "name": name,
-                    "thumbnail": obj["attrs"]["typeof"] == "mw:Image/Thumb"}
+                    "thumbnail": obj["attrs"]["typeof"] == "mw:Image/Thumb",
+                    "inline": inline}
 
     class HandleInlineFigures(NodeTransformation):
         def transform_dict(self, obj):
