@@ -257,15 +257,18 @@ class MediaWikiCodeParser(ChainedAction):
 
             check(obj, "attrs", "typeof") == "mw:Transclusion"
 
-            self._template_ids.add(obj["attrs"]["about"])
-
             template = json.loads(obj["attrs"]["data-mw"])
             template = template["parts"][0]["template"]
 
             name = template["target"]["wt"].strip()
+
             # labeled section transclusion needs unchanged case.
             if not name.startswith("#lst:"):
                 name = name.lower()
+
+            if name != "(!":
+                # Template includes a table afterwards
+                self._template_ids.add(obj["attrs"]["about"])
 
             name = remove_prefix(name, ":mathe für nicht-freaks: vorlage:")
 
@@ -542,7 +545,8 @@ class ArticleContentParser(ChainedAction):
 
                     return {"type": "error",
                             "message": message}
-
+            elif obj["name"] == "(!":
+                return None
             elif obj["name"].startswith("#lst:"):
                 title = obj["name"][5:]
                 section = obj["params"]["1"]
