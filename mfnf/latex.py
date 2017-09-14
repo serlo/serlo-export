@@ -311,7 +311,7 @@ class LatexExporter:
         self.api.download_image(image["name"], image_file)
 
         if image["inline"]:
-            out.write("\\includegraphics[height=\\baselineskip]{{{}}}".format(image_name))
+            out.write("\\includegraphics[height=\\lineheight]{{{}}}".format(image_name))
         else:
             with LatexEnvironment(out, "center"):
                 out.write("\n\\includegraphics[width=0.5\\textwidth]{")
