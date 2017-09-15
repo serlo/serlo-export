@@ -719,12 +719,30 @@ class ArticleParser(ChainedAction):
             test = lambda x: x["type"] == "header" and x["depth"] == level
             headings = list(filter(test, obj["content"]))
             contents = self.split_list(test, obj["content"])
-            subsections = (obj["content"] if len(headings) == 0
-                           else [{"type": "section",
-                                  "title": h["content"],
-                                  "depth": h["depth"],
-                                  "content": c}
-                                 for h, c in zip(headings, contents)])
+            # case 1: no underlying structure
+            if not headings and len(contents) == 1:
+                subsections = obj["content"]
+            # case 2: no paragraph before first header
+            elif len(headings) == len(contents):
+                subsections = [{"type": "section",
+                                "title": h["content"],
+                                "depth": h["depth"],
+                                "content": c}
+                               for h, c in zip(headings, contents)]
+            # case 3: one paragraph before first header
+            elif len(headings) == len(contents) - 1:
+                subsections = (contents[0] +
+                               [{"type": "section",
+                                 "title": h["content"],
+                                 "depth": h["depth"],
+                                 "content": c}
+                                for h, c in zip(headings, contents[1:])])
+            # mismatch between headers and paragraphs
+            else:
+                message = "ill-formed structure in article"
+                subsections = [{"type": "error",
+                                "message": message}]
+                log_parser_error(message, obj)
             return merge(obj, {"content": self(subsections)})
 
         def transform_article(self, obj):
