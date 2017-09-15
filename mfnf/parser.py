@@ -754,3 +754,18 @@ class ArticleParser(ChainedAction):
 
         def transform_section(self, obj):
             return self.unfold_section(obj, obj["depth"] + 1)
+
+    class RemoveExcludedSections(NodeTypeTransformation):
+        def __init__(self, **options):
+            super().__init__(**options)
+            self.excludes = []
+
+        def transform_article(self, obj):
+            self.excludes = obj["excludes"]
+            raise NotInterested
+
+        def transform_section(self, obj):
+            if lookup(obj, "title", 0, "data") in self.excludes:
+                return
+            else:
+                raise NotInterested()
