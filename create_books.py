@@ -5,7 +5,6 @@ import os
 import shelve
 import sys
 import logging
-import requests
 
 report_logger = logging.getLogger("report_logger")
 report_logger.setLevel(logging.DEBUG)
@@ -21,6 +20,9 @@ except FileExistsError:
 file_handler = logging.FileHandler(os.path.join("out", "parser_log.log"), mode="w")
 file_handler.setLevel(logging.DEBUG)
 report_logger.addHandler(file_handler)
+
+import requests
+from urllib3.util.retry import Retry
 
 from mfnf.api import HTTPMediaWikiAPI
 from mfnf.parser import ArticleParser
@@ -73,7 +75,8 @@ def run_script():
                 return super().get_revisions(title)
 
         ses = requests.Session()
-        ses.mount("", requests.adapters.HTTPAdapter(max_retries=5))
+        retry = Retry(total=10, connect=5, read=5, backoff_factor=1)
+        ses.mount("", requests.adapters.HTTPAdapter(max_retries=retry))
 
         api = CachedMediaWikiAPI(ses)
         parser = ArticleParser(api=api)
