@@ -48,25 +48,30 @@
     content: [{type: text, data: "Bar"}]
 
 - in: "<del>strikethrough text</del>"
-  out: 
+  out:
     type: strikethrough
     content: [{type: text, data: "strikethrough text"}]
 
-# === Invalid formating ===
-# The following MediaWiki code is invalid in the project
-# „Mathe für Nicht-Freaks“.
-
 - in: "[[File:Foo.jpg]]"
   out:
-    type: error
-    message: "Inline images are not allowed"
+    type: image
+    name: File:Foo.jpg
+    inline: True
+    caption: []
+    thumbnail: False
 
 - in: "[[File:Foo.jpg|bar]]"
   out:
-    type: error
-    message: "Inline images are not allowed"
+    type: image
+    name: File:Foo.jpg
+    inline: True
+    caption: []
+    thumbnail: False
 
 - in: "[[File:Foo.jpg|50px]]"
   out:
-    type: error
-    message: "Inline images are not allowed"
+    type: image
+    name: File:Foo.jpg
+    inline: True
+    caption: []
+    thumbnail: False

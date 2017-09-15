@@ -223,6 +223,7 @@
   out:
     - type: image
       name: File:Foo.jpg
+      inline: False
       caption:
         - { type: text, data: bar }
       thumbnail: False
@@ -231,6 +232,7 @@
   out:
     - type: image
       name: File:Foo.jpg
+      inline: False
       caption:
         - { type: text, data: bar }
       thumbnail: True
@@ -239,6 +241,7 @@
   out:
     - type: image
       name: File:Foo.jpg
+      inline: False
       caption:
         - { type: text, data: bar }
       thumbnail: True
@@ -248,6 +251,7 @@
   out:
     - type: image
       name: File:Foo.jpg
+      inline: False
       caption:
         - { type: text, data: bar }
       thumbnail: False
@@ -652,8 +656,10 @@
 - in: |
     {{#lst:Mathe für Nicht-Freaks: Beispielkapitel: Semantische Blöcke|test_section}}
   out:
-    - type: paragraph
-      content: [{type: text, data: "This is a test section."}]
+    - type: included_section
+      content:
+        - type: paragraph
+          content: [{type: text, data: "This is a test section."}]
 
 # --- Handling of Header and Footer ---
 
