@@ -605,6 +605,10 @@ class ArticleContentParser(ChainedAction):
         def normalize(self, obj, mode):
             try:
                 formula = self.api.normalize_formula(obj["formula"], mode)
+
+                if mode == "tex":
+                    formula = remove_prefix(formula, "{\\begin{aligned}")
+                    formula = remove_suffix(formula, "\\end{aligned}}")
             except ValueError:
                 message = "Wrong formatted formula"
                 log_parser_error(message, obj)
