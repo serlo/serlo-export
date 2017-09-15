@@ -6,21 +6,6 @@ import shelve
 import sys
 import logging
 
-report_logger = logging.getLogger("report_logger")
-report_logger.setLevel(logging.DEBUG)
-console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.INFO)
-report_logger.addHandler(console_handler)
-
-try:
-    os.mkdir("out")
-except FileExistsError:
-    pass
-
-file_handler = logging.FileHandler(os.path.join("out", "parser_log.log"), mode="w")
-file_handler.setLevel(logging.DEBUG)
-report_logger.addHandler(file_handler)
-
 import requests
 from urllib3.util.retry import Retry
 
@@ -29,7 +14,20 @@ from mfnf.parser import ArticleParser
 from mfnf.utils import CachedFunction
 from mfnf.sitemap import parse_sitemap
 from mfnf.latex import LatexExporter, MediaWiki2Latex
-from mfnf.utils import to_snake_case, open_database
+from mfnf.utils import to_snake_case, open_database, mkdirs
+
+mkdirs("out")
+
+report_logger = logging.getLogger("report_logger")
+report_logger.setLevel(logging.DEBUG)
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)
+report_logger.addHandler(console_handler)
+file_handler = logging.FileHandler(os.path.join("out", "parser_log.log"),
+                                   mode="w")
+file_handler.setLevel(logging.DEBUG)
+report_logger.addHandler(file_handler)
+
 
 # title of article which shall be converted to PDF
 SITEMAP_ARTICLE_NAME = "Mathe für Nicht-Freaks: Projekte/LMU Buchprojekte"
@@ -39,12 +37,7 @@ def create_book(book, api):
     """Creates the LaTeX file of a book."""
     book_name = to_snake_case(book["name"])
     target = os.path.join("out", book_name, book_name + ".tex")
-
-    try:
-        os.makedirs(os.path.dirname(target))
-    except FileExistsError:
-        pass
-
+    mkdirs(os.path.dirname(target))
     report_logger.info("= Export of Book {} =".format(book["name"]))
     book = MediaWiki2Latex()(book)
 

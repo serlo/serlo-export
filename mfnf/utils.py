@@ -32,13 +32,17 @@ def lookup(obj, *path):
     except (IndexError, KeyError, TypeError):
         return None
 
+def mkdirs(path):
+    try:
+        os.makedirs(path)
+    except FileExistsError:
+        pass
+
+
 def open_database(database_path):
     """Open a database at path `database_path` where arbitrary python objects
     can be stored."""
-    try:
-        os.makedirs(os.path.dirname(database_path))
-    except FileExistsError:
-        pass
+    mkdirs(os.path.dirname(database_path))
 
     return shelve.open(database_path, "c", writeback=True)
 
