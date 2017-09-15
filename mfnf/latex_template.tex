@@ -33,6 +33,7 @@
 \usepackage[normalem]{ulem}
 \usepackage{csquotes}
 \usepackage{sectsty}
+\usepackage[framemethod=default]{mdframed}
 
 \usepackage{fontspec}
 \setmainfont[Ligatures=TeX,
@@ -45,6 +46,8 @@
 \makeatletter\setlength{\lineheight}{\f@size pt}\makeatother
 
 \definecolor{sblau}{HTML}{007ec1}
+\colorlet{shellblau}{sblau!30}
+
 \allsectionsfont{\color{sblau}}
 
 \theoremstyle{plain}
@@ -68,7 +71,17 @@
 
 \errorcontextlines 10000
 
-\newenvironment{importantparagraph}{\begin{adjustwidth}{1.5cm}{}}{\end{adjustwidth}}
+\newmdenv[innerleftmargin=5.5pt,
+          innerrightmargin=0pt,
+          innertopmargin=0pt,
+          innerbottommargin=0pt,
+          skipabove=\baselineskip,
+          linecolor=shellblau,
+          linewidth=5.5pt,
+          topline=false,
+          rightline=false,
+          bottomline=false,
+          fontcolor=sblau]{importantparagraph}
 \newenvironment{indentblock}{\begin{adjustwidth}{.5cm}{}}{\end{adjustwidth}}
 
 \definecolor{forestgreen}{rgb}{0.13, 0.55, 0.13}
