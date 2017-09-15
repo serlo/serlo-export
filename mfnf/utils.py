@@ -86,7 +86,9 @@ def merge(obj1, obj2):
     elif isinstance(obj1, list):
         return obj1 + obj2
     elif isinstance(obj2, dict):
-        return {**obj1, **obj2}
+        result = obj1.copy()
+        result.update(obj2)
+        return result
     else:
         raise NotImplementedError()
 
