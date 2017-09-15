@@ -270,6 +270,7 @@ class MediaWikiCodeParser(ChainedAction):
                 return None
 
             check(obj, "attrs", "typeof").of(["mw:Transclusion",
+                                              "mw:Transclusion mw:Video/Thumb",
                                               "mw:Transclusion mw:Image"])
 
             template = json.loads(obj["attrs"]["data-mw"])
