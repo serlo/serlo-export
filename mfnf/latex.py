@@ -151,7 +151,7 @@ class LatexExporter:
     def print_box(self, box_type, obj, out):
         assert box_type in BOX_TEMPLATES, box_type
 
-        out.write("\n\n\\begin{" + box_type + "}")
+        out.write("\n\n\\begin{" + box_type + "*}")
         if obj.get("title", None):
             out.write("[")
             self(obj["title"], out)
@@ -159,7 +159,7 @@ class LatexExporter:
 
         self(obj[box_type], out)
 
-        out.write("\n\\end{" + box_type + "}")
+        out.write("\n\\end{" + box_type + "*}")
 
 
     def act_on_dict(self, obj, out):
@@ -280,8 +280,9 @@ class LatexExporter:
 
     def export_proofbycases(self, obj, out):
         for n, case, proof in zip(count(1), obj["cases"], obj["proofs"]):
-            out.write("\n\n\\textbf{Fall " + str(n) + ":} ")
+            out.write("\n\n\\proofcase{" + str(n) + "}{")
             self(case, out)
+            out.write("}")
 
             with LatexEnvironment(out, "indentblock"):
                 self(proof, out)
@@ -391,13 +392,13 @@ class LatexExporter:
         out.write("}")
 
     def export_question(self, question, out):
-        with LatexEnvironment(out, "question"):
+        with LatexEnvironment(out, "question*"):
             self(question["question"], out)
-        with LatexEnvironment(out, "answer"):
+        with LatexEnvironment(out, "answer*"):
             self(question["answer"], out)
 
     def export_proofstep(self, proofstep, out):
-        with LatexMacro(out, "textbf"):
+        with LatexMacro(out, "proofstep"):
             out.write(escape_latex(proofstep["name"]) + ":")
 
         out.write(" ")
@@ -417,21 +418,27 @@ class LatexExporter:
             if type(v) == list and len(v) == 1 and v[0]["type"] == "paragraph":
                 induction[k] = v[0]["content"]
 
-        out.write("Aussageform, deren Allgemeingültigkeit für ")
+        out.write("\\begin{induction*}[Für alle ")
         self(induction["baseset"], out)
-        out.write(" bewiesen werden soll:")
+        out.write(" gilt: ")
+        out.write("]")
         self(induction["statement"], out)
-        with LatexEnvironment(out, "itemize"):
-            out.write("\\item[1.] Induktionsanfang:")
+
+        out.write("\n\\inductionstep{1}{Induktionsanfang}")
+        with LatexEnvironment(out, "indentblock"):
             self(induction["induction_start"], out)
-            out.write("\\item[2.] Induktionsschritt:")
-            with LatexEnvironment(out, "itemize"):
-                out.write("\\item[2a.] Induktionsvoraussetzung:")
+        out.write("\n\\inductionstep{2}{Induktionsschritt}")
+        with LatexEnvironment(out, "indentblock"):
+            out.write("\n\\inductionstep{2a}{Induktionsvoraussetzung}")
+            with LatexEnvironment(out, "indentblock"):
                 self(induction["induction_requirement"], out)
-                out.write("\\item[2b.] Induktionsbehauptung:")
+            out.write("\n\\inductionstep{2b}{Induktionsschritt}")
+            with LatexEnvironment(out, "indentblock"):
                 self(induction["induction_goal"], out)
-                out.write("\\item[2c.] Beweis des Induktionsschritts:")
+            out.write("\n\\inductionstep{2c}{Beweis des Induktionsschritts}")
+            with LatexEnvironment(out, "indentblock"):
                 self(induction["induction_step"], out)
+        out.write("\n\\end{induction*}")
 
     def export_entity(self, entity, out):
         if entity["kind"] == " ":
