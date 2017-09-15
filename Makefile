@@ -1,18 +1,20 @@
 ROOT_DIR:=$(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 SOURCES = $(shell git ls-tree -r master --name-only)
+PYTHON = $(shell if which pyenv > /dev/null; \
+                 then echo python ; else echo python3 ; fi)
 
 inotify = while inotifywait -e modify ${SOURCES}; do ${1} ; done
 create_book = make -C "${1}" -f ${ROOT_DIR}/build-book.mk
 
 .PHONY: all
 all:
-	python create_books.py
+	$(PYTHON) create_books.py
 	for BOOK_DIR in out/*; do \
 		$(call create_book,$$BOOK_DIR); \
 	done
 
 % :: out/% out
-	python create_books.py "$@"
+	$(PYTHON) create_books.py "$@"
 	$(call create_book,$<)
 
 .PHONY: init
@@ -21,7 +23,7 @@ init:
 
 .PHONY: test
 test:
-	python -m nose --with-doctest
+	$(PYTHON) -m nose --with-doctest
 
 .PHONY: watch
 watch:
