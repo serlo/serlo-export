@@ -564,10 +564,10 @@ class ArticleContentParser(ChainedAction):
                 if len(formula) == 1 and \
                         lookup(formula, 0, "type") == "inlinemath":
                     formula = formula[0]["formula"]
-                    formula = remove_prefix(formula, "\\begin{align}")
-                    formula = remove_suffix(formula, "\\end{align}")
+                    if formula.startswith("\\begin{align}") and formula.endswith("\\end{align}"):
+                        formula = remove_prefix(formula, "\\begin{align}")
+                        formula = remove_suffix(formula, "\\end{align}")
                     formula = "\\begin{align}" + formula + "\\end{align}"
-
                     return {"type": "equation", "formula": formula}
                 else:
                     message = "Wrong formatted equation"
