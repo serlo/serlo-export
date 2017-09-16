@@ -128,13 +128,17 @@ class SectionTracking(NodeTransformation):
         super().__init__(*args, **kwargs)
         self.current_section = {}
 
+    def add_section(self, level, text):
+        self.current_section[level] = text
+        self.current_section = {l: self.current_section[l] for l in sorted(self.current_section.keys()) if l <= level}
+
     def act_on_dict(self, obj):
         if obj.get("type") == "element":
 
             if obj["name"] in ("h2", "h3", "h4", "h5"):
-                self.current_section[int(obj["name"][-1])-1] = obj["children"][0]["data"]
+                self.add_section(int(obj["name"][-1])-1, obj["children"][0]["data"])
 
         elif obj.get("type") == "header":
-            self.current_section[obj["depth"]] = obj["content"][0]["data"]
+            self.add_section(obj["depth"], obj["content"][0]["data"])
 
         return super().act_on_dict(obj)
