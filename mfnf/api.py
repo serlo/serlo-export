@@ -116,6 +116,12 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
 
         return self.query(params, ["pages", select_singleton, "imageinfo"])
 
+    def get_image_hash(self, filename):
+        """Returns the sha1 hash of the image."""
+        params = {"titles": filename, "prop": "imageinfo", "iiprop": "sha1"}
+
+        return self.query(params, ["pages", select_singleton, "imageinfo"])[0]["sha1"]
+
     def get_image_url(self, filename):
         """Returns the URL to the current version of the image `filename`."""
         return self.get_image_revisions(filename)[-1]["url"]

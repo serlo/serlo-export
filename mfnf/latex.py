@@ -6,7 +6,7 @@ import textwrap
 import logging
 
 from itertools import chain, repeat, count
-from mfnf.utils import log_parser_error, lookup, sha1filesum
+from mfnf.utils import log_parser_error, lookup
 from mfnf.transformations import ChainedAction, NotInterested, \
                                  NodeTypeTransformation
 
@@ -307,17 +307,12 @@ class LatexExporter:
         elif not image["inline"]:
             out.write("\n\n")
 
-        name, ext = os.path.splitext(image["name"].lower())
-
+        name, ext = os.path.splitext((image["name"]).lower())
+        name +=  "_"  + image["sha1"]
         image_name = quote_image_name(name)
-        original_file = os.path.join(self.directory, image_name + ext)
-
-        self.api.download_image(image["name"], original_file)
-        sha1sum = sha1filesum(original_file)
-        image_name += "_" + sha1sum[:16]
         image_file = os.path.join(self.directory, image_name + ext)
 
-        os.rename(original_file, image_file)
+        self.api.download_image(image["name"], image_file)
 
         if image["inline"]:
             out.write("\\includegraphics[height=\\lineheight]{{{}}}".format(image_name))
