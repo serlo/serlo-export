@@ -96,6 +96,15 @@ def sha256(text):
     """Returns SHA256 of the string `text`."""
     return hashlib.sha256(text.encode("utf8")).hexdigest()
 
+def sha1filesum(path):
+    h = hashlib.sha1()
+    with open(path, "rb") as f:
+        buf = f.read(2048)
+        while buf:
+            h.update(buf)
+            buf = f.read(2048)
+    return h.hexdigest()
+
 def stablehash(obj):
     """Returns an unique hash of object `obj`."""
     try:
