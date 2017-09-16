@@ -8,7 +8,7 @@ from collections import defaultdict
 from itertools import chain, count
 from html.parser import HTMLParser
 from mfnf.transformations import NodeTransformation, ChainedAction, Action, \
-     NodeTypeTransformation, check, NotInterested, Transformation
+     NodeTypeTransformation, check, NotInterested, Transformation, SectionTracking
 from mfnf.utils import lookup, remove_prefix, remove_suffix, merge, log_parser_error
 
 report_logger = logging.getLogger("report_logger")
@@ -295,13 +295,13 @@ class MediaWikiCodeParser(ChainedAction):
 
             return {"type": "template", "name": name, "params": params}
 
-    class HandleGalleries(NodeTransformation):
+    class HandleGalleries(SectionTracking):
         def parse_gallery_item(self, text):
             try:
                 name, caption = text.split("|", 1)
             except ValueError:
                 message = "Gallery item needs a caption"
-                log_parser_error(message, text)
+                log_parser_error(message, text, position=self.current_section)
                 return {"type": "error",
                         "message": message}
 
@@ -410,14 +410,14 @@ class ArticleContentParser(ChainedAction):
                     "thumbnail": obj["attrs"]["typeof"] == "mw:Image/Thumb",
                     "inline": inline, "sha1": sha1}
 
-    class HandleInlineFigures(NodeTransformation):
+    class HandleInlineFigures(SectionTracking):
         def transform_dict(self, obj):
             check(obj, "type") == "element"
             check(obj, "name") == "span"
             check(obj, "attrs", "typeof") == "mw:Image"
 
             message = "Inline images are not allowed"
-            log_parser_error(message, obj)
+            log_parser_error(message, obj, position=self.current_section)
 
             return {"type": "error",
                     "message": message}
@@ -442,13 +442,13 @@ class ArticleContentParser(ChainedAction):
 
             return {"type": "inlinemath", "formula": formula.strip()}
 
-    class FixNodeTypes(NodeTypeTransformation):
+    class FixNodeTypes(NodeTypeTransformation, SectionTracking):
         def transform_element(self, obj):
             if obj["name"] == "p":
                 return {"type": "paragraph", "content": self(obj["children"])}
             elif obj["name"] == "br":
                 message = "<br> not allowed"
-                log_parser_error(message, obj)
+                log_parser_error(message, obj, position=self.current_section)
                 return {"type": "error", "message": message}
             elif obj["name"] == "dfn":
                 return {"type": "i", "content": self(obj["children"])}
@@ -474,7 +474,7 @@ class ArticleContentParser(ChainedAction):
                             "content": self(obj["children"])}
                 else:
                     message = "<a> tag without `href` url"
-                    log_parser_error(message, obj)
+                    log_parser_error(message, obj, position=self.current_section)
 
                     return {"type": "error",
                             "message": message}
@@ -501,8 +501,8 @@ class ArticleContentParser(ChainedAction):
                     return {"type": "error",
                             "message": "section must be either start or end."}
             elif obj["name"] in ("h1", "h4", "h5", "h6"):
-                message = "Heading of depth {} is not allowed"
-                log_parser_error(message, obj)
+                message = "Heading of depth {} is not allowed".format(obj["name"])
+                log_parser_error(message, obj, position=self.current_section)
 
                 return {"type": "error",
                         "message": message.format(int(obj["name"][-1]))}
@@ -514,11 +514,11 @@ class ArticleContentParser(ChainedAction):
                 msg = "Spans with type {} are not allowed".format(lookup(obj,
                                                                          "attrs",
                                                                          "typeof"))
-                log_parser_error(msg, obj)
+                log_parser_error(msg, obj, position=self.current_section)
                 return {"type": "error", "message": msg}
             else:
                 message = "Parsing of HTML element `{}`".format(obj["name"])
-                log_parser_error(message, obj)
+                log_parser_error(message, obj, position=self.current_section)
 
                 return {"type": "notimplemented",
                         "message": message,
@@ -534,7 +534,7 @@ class ArticleContentParser(ChainedAction):
 
             return merge(obj, {"content": heading, "anchor": anchor})
 
-    class HandleTemplates(NodeTypeTransformation):
+    class HandleTemplates(NodeTypeTransformation, SectionTracking):
         def transform_template(self, obj):
             for bname, tname, param_names in BOXSPEC:
                 if obj["name"] == tname:
@@ -571,7 +571,9 @@ class ArticleContentParser(ChainedAction):
                     return {"type": "equation", "formula": formula}
                 else:
                     message = "Wrong formatted equation"
-                    log_parser_error(message, obj)
+                    details = "Equation source code must be completely contained in just one <math></math>.\n (use \\text{this is not math} macro instead)"
+
+                    log_parser_error(message, obj, details, self.current_section)
 
                     return {"type": "error",
                             "message": message}
@@ -590,13 +592,14 @@ class ArticleContentParser(ChainedAction):
                 return None
             elif obj["name"] == "todo":
                 message = "Todo-Message in MediaWiki code."
-                log_parser_error(message, obj)
+                details = "Check if this TODO shoud be completed for a book release."
+                log_parser_error(message, obj, details, self.current_section)
 
                 return {"type": "error",
                         "message": message}
             else:
                 message = "Parsing of template `{}`".format(obj["name"])
-                log_parser_error(message, obj)
+                log_parser_error(message, obj, position=self.current_section)
 
                 return {"type": "notimplemented",
                         "target": obj,
@@ -612,7 +615,7 @@ class ArticleContentParser(ChainedAction):
                     formula = remove_suffix(formula, "\\end{aligned}}")
             except ValueError:
                 message = "Wrong formatted formula"
-                log_parser_error(message, obj)
+                log_parser_error(message, obj, position=self.current_section)
                 return {"type": "error",
                         "message": message}
 
@@ -708,7 +711,7 @@ class ArticleParser(ChainedAction):
                                      for x in obj["content"]))
             return merge(obj, {"content": list(merged_content)})
 
-    class BuildStructureTree(NodeTypeTransformation):
+    class BuildStructureTree(NodeTypeTransformation, SectionTracking):
         """Transforms a flat article into a tree based on its structure."""
 
         def split_list(self, prd, lst):
@@ -747,7 +750,7 @@ class ArticleParser(ChainedAction):
                 message = "ill-formed structure in article"
                 subsections = [{"type": "error",
                                 "message": message}]
-                log_parser_error(message, obj)
+                log_parser_error(message, obj, position=self.current_position)
             return merge(obj, {"content": self(subsections)})
 
         def transform_article(self, obj):

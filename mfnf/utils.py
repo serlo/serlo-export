@@ -12,8 +12,11 @@ from functools import reduce
 
 report_logger = logging.getLogger("report_logger")
 
-def log_parser_error(message, obj):
+def log_parser_error(message, obj, details="", position={}):
     report_logger.debug("=== ERROR: {} ===".format(message))
+    position_str = [position[k] for k in sorted(position.keys())]
+    report_logger.debug("In section: " + " -> ".join(position_str))
+    report_logger.debug(details)
     report_logger.debug("<pre>")
     report_logger.debug(json.dumps(obj, indent=4, sort_keys=True))
     report_logger.debug("</pre>")
