@@ -211,13 +211,14 @@ class LatexExporter:
         out.write("}")
 
     def print_notimplemented(self, out):
-        out.write("\n\n\chapter{Not implemented objects}")
+        if self._notimplemented:
+            out.write("\n\n\chapter{Not implemented objects}")
 
-        for obj in self._notimplemented:
-            out.write("\n\n\section{" + escape_latex(obj["message"]) + "}")
+            for obj in self._notimplemented:
+                out.write("\n\n\section{" + escape_latex(obj["message"]) + "}")
 
-            with LatexEnvironment(out, "verbatim"):
-                out.write(escape_latex_verbatim(json.dumps(obj["target"], indent=1)))
+                with LatexEnvironment(out, "verbatim"):
+                    out.write(escape_latex_verbatim(json.dumps(obj["target"], indent=1)))
 
     def export_error(self, obj, out):
         self.print_message("Error", obj["message"], out)
