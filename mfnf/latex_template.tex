@@ -34,6 +34,8 @@
 \usepackage{csquotes}
 \usepackage{sectsty}
 \usepackage[framemethod=default]{mdframed}
+\usepackage{tocloft}
+\usepackage[toc]{multitoc}
 
 \usepackage{fontspec}
 \setmainfont[Ligatures=TeX,
@@ -109,3 +111,7 @@
             }%
         }
 \endgroup
+
+\newcommand{\ColoredTOC}{{\twocolumn\color{sblau}\tableofcontents}}
+\setcounter{tocdepth}{1}
+\cftpagenumbersoff{part}

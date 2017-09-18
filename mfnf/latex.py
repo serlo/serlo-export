@@ -227,7 +227,7 @@ class LatexExporter:
         out.write("}")
         out.write("\n\n\\begin{document}")
 
-        out.write("\n\n\\tableofcontents")
+        out.write("\n\n\\ColoredTOC")
         out.write("\n\n\\newpage")
         out.write("\n")
 
