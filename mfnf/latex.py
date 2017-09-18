@@ -373,7 +373,7 @@ class LatexExporter:
         self(th["content"], out)
 
     def export_definitionlist(self, definitionlist, out):
-        with LatexEnvironment(out, "description"):
+        with LatexEnvironment(out, "description", ["style=nextline"]):
             self(definitionlist["items"], out)
 
     def export_definitionlistitem(self, definitionlistitem, out):
