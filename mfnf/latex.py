@@ -8,7 +8,7 @@ import logging
 from itertools import chain, repeat, count
 from mfnf.utils import log_parser_error, lookup
 from mfnf.transformations import ChainedAction, NotInterested, \
-                                 NodeTypeTransformation
+                                 NodeTypeTransformation, Transformation
 
 report_logger = logging.getLogger("report_logger")
 
@@ -94,6 +94,29 @@ def escape_latex_verbatim(code):
     return "\n".join((shorten(line) for line in code.splitlines()))
 
 class MediaWiki2Latex(ChainedAction):
+    class HandleBoxTemplates(Transformation):
+        def __init__(self, **options):
+            super().__init__(**options)
+            self._outer_box = None
+
+        def act_on_dict(self, obj):
+            if lookup(obj, "type") in BOX_TEMPLATES:
+                if self._outer_box:
+                    message = "Box {} inside {} is not allowed" \
+                              .format(obj["type"], self._outer_box)
+
+                    return {"type": "error", "message": message}
+                else:
+                    self._outer_box = obj["type"]
+
+                    result = super().act_on_dict(obj)
+
+                    self._outer_box = None
+
+                    return result
+            else:
+                return super().act_on_dict(obj)
+
     class DeleteNotPrintableContent(NodeTypeTransformation):
         def transform_mainarticle(self, obj):
             return None
