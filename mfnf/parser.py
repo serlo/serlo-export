@@ -662,6 +662,15 @@ class ArticleContentParser(ChainedAction):
                 else:
                     return None
 
+def parse_article_inline(api, title, text):
+    # TODO: there might be a better solution by merging with parse_inline()
+    result = ArticleContentParser(api=api, title=title)(text)
+
+    assert len(result) == 1
+    assert result[0]["type"] == "paragraph"
+
+    return result[0]["content"]
+
 class ArticleParser(ChainedAction):
     class LoadArticleContent(NodeTypeTransformation):
         """Loads the content of an article."""
@@ -763,11 +772,14 @@ class ArticleParser(ChainedAction):
             self.excludes = []
 
         def transform_article(self, obj):
-            self.excludes = obj["excludes"]
-            raise NotInterested
+            # TODO: parse_inline(x) should be called before
+            self.excludes = [parse_article_inline(self.api, obj["title"], x)
+                             for x in obj["excludes"]]
+
+            raise NotInterested()
 
         def transform_section(self, obj):
-            if lookup(obj, "title", 0, "data") in self.excludes:
+            if obj["title"] in self.excludes:
                 return
             else:
                 raise NotInterested()
