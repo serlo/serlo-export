@@ -9,6 +9,9 @@ from urllib.parse import quote
 import re
 import os
 
+import logging
+report_logger = logging.getLogger("report_logger")
+
 from mfnf.utils import stablehash, merge, query_path, select_singleton
 
 class MediaWikiAPI(metaclass=ABCMeta):
@@ -112,7 +115,7 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
 
     def get_image_revisions(self, filename):
         """Returns the history of the image `filename`."""
-        params = {"titles": filename, "prop": "imageinfo", "iiprop": "url"}
+        params = {"titles": filename, "prop": "imageinfo", "iiprop": "url", "iilimit": "max"}
 
         return self.query(params, ["pages", select_singleton, "imageinfo"])
 
@@ -121,6 +124,43 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
         params = {"titles": filename, "prop": "imageinfo", "iiprop": "sha1"}
 
         return self.query(params, ["pages", select_singleton, "imageinfo"])[0]["sha1"]
+
+    def get_image_license(self, filename):
+        """Returns licensing information for an image."""
+        params = {"titles": filename, "prop": "imageinfo", "iiprop": "user|extmetadata|url", "iilimit": "max",
+                  "iiextmetadatafilter": "LicenseShortName|UsageTerms|AttributionRequired|Restrictions|Artist|ImageDescription|DateTimeOriginal|Credit"}
+
+        query = self.query(params, ["pages", select_singleton, "imageinfo"])
+        result = query[0]
+        meta = result["extmetadata"]
+        shortname = meta.get("LicenseShortName", {}).get("value", "")
+        source = meta.get("Artist", {}).get("value", "")
+
+        url = ""
+        # creative commons
+        if shortname.startswith("CC"):
+            if shortname == "CC0":
+                url = "https://creativecommons.org/publicdomain/zero/1.0/"
+            else:
+                components = shortname.lower().split(" ")
+                if len(components) != 3:
+                    report_logger.error("Unkown license: " + shortname)
+                    return {}
+
+                _, mode, version = components
+                url = "https://creativecommons.org/licenses/{}/{}/".format(mode, version)
+
+        elif shortname.lower() == "public domain":
+            url = "https://creativecommons.org/licenses/publicdomain/"
+        else:
+            report_logger.error("Unkown license: " + shortname)
+            return {}
+
+        authors = list(set([res["user"] for res in query]))
+
+        return {"user": result["user"], "name": meta.get("UsageTerms", {}).get("value", ""),
+                "shortname": shortname, "licenseurl": url,
+                "url": result["url"], "authors": authors, "source": source}
 
     def get_image_url(self, filename):
         """Returns the URL to the current version of the image `filename`."""

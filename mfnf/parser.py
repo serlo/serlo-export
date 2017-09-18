@@ -405,10 +405,11 @@ class ArticleContentParser(ChainedAction):
             img = obj["children"][0]["children"][0]
             name = canonical_image_name(img["attrs"]["resource"])
             sha1 = self.api.get_image_hash(name)
+            license = self.api.get_image_license(name)
 
             return {"type": "image", "caption": self(caption), "name": name,
                     "thumbnail": obj["attrs"]["typeof"] == "mw:Image/Thumb",
-                    "inline": inline, "sha1": sha1}
+                    "inline": inline, "sha1": sha1, "license": license}
 
     class HandleInlineFigures(SectionTracking):
         def transform_dict(self, obj):
