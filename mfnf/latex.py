@@ -114,6 +114,9 @@ class MediaWiki2Latex(ChainedAction):
                     self._outer_box = None
 
                     return result
+            elif self._outer_box and lookup(obj, "type") == "image" and \
+                    obj["thumbnail"]:
+                return None
             else:
                 return super().act_on_dict(obj)
 
