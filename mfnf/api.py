@@ -169,10 +169,10 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
         return self._index_call({"action": "raw", "title": title})
 
     def convert_text_to_html(self, title, text):
-        endpoint = ["transform", "wikitext", "to", "html", quote(title)]
+        path = ["transform", "wikitext", "to", "html", quote(title, safe="")]
         data = {"title": title, "wikitext": text, "body_only": True}
 
-        return self._api_call(endpoint, data).text
+        return self._api_call(path, data).text
 
     def get_revisions(self, title):
         params = {"prop": "revisions", "rvprop": "size|user", "titles": title,
