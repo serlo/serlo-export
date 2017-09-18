@@ -12,7 +12,10 @@ import os
 import logging
 report_logger = logging.getLogger("report_logger")
 
-from mfnf.utils import stablehash, merge, query_path, select_singleton
+from mfnf.utils import stablehash, merge, query_path, select_singleton, mkdirs
+
+def quote_image_name(text):
+    return re.sub(r"[^a-zA-Z0-9]", lambda x: str(ord(x.group())), text)
 
 class MediaWikiAPI(metaclass=ABCMeta):
     """Interface for accessing content of a MediaWiki project."""
@@ -115,15 +118,10 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
 
     def get_image_revisions(self, filename):
         """Returns the history of the image `filename`."""
-        params = {"titles": filename, "prop": "imageinfo", "iiprop": "url", "iilimit": "max"}
+        params = {"titles": filename, "prop": "imageinfo", "iilimit": "max",
+                  "iiprop": "url|sha1"}
 
         return self.query(params, ["pages", select_singleton, "imageinfo"])
-
-    def get_image_hash(self, filename):
-        """Returns the sha1 hash of the image."""
-        params = {"titles": filename, "prop": "imageinfo", "iiprop": "sha1"}
-
-        return self.query(params, ["pages", select_singleton, "imageinfo"])[0]["sha1"]
 
     def get_image_license(self, filename):
         """Returns licensing information for an image."""
@@ -162,9 +160,10 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
                 "shortname": shortname, "licenseurl": url,
                 "url": result["url"], "authors": authors, "source": source}
 
-    def get_image_url(self, filename):
-        """Returns the URL to the current version of the image `filename`."""
-        return self.get_image_revisions(filename)[-1]["url"]
+    def get_image_info(self, filename):
+        """Returns the URL and sha1 to the current version of the image
+        `filename`."""
+        return self.get_image_revisions(filename)[-1]
 
     def get_content(self, title):
         return self._index_call({"action": "raw", "title": title})
@@ -181,10 +180,19 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
 
         return self.query(params, ["pages", select_singleton, "revisions"])
 
-    def download_image(self, image_name, image_path):
-        if not os.path.exists(image_path):
-            urllib.request.urlretrieve(self.get_image_url(image_name),
-                                       image_path)
+    def download_image(self, image_name, directory):
+        image_info = self.get_image_info(image_name)
+
+        name, ext = os.path.splitext(image_name.lower())
+        name +=  "_"  + image_info["sha1"]
+        image_name = quote_image_name(name)
+        image_file = os.path.join(directory, image_name + ext)
+
+        if not os.path.exists(image_file):
+            mkdirs(directory)
+            urllib.request.urlretrieve(image_info["url"], image_file)
+
+        return image_name
 
     def normalize_formula(self, formula, mode):
         assert mode in ["tex", "inline-tex"]

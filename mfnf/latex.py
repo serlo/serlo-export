@@ -82,9 +82,6 @@ def shorten(line):
 
     return indent + textwrap.shorten(line, 60)
 
-def quote_image_name(text):
-    return re.sub(r"[^a-zA-Z0-9]", lambda x: str(ord(x.group())), text)
-
 def escape_latex(text):
     return "".join((LATEX_SPECIAL_CHARS.get(c, c) for c in text))
 
@@ -307,12 +304,7 @@ class LatexExporter:
         elif not image["inline"]:
             out.write("\n\n")
 
-        name, ext = os.path.splitext((image["name"]).lower())
-        name +=  "_"  + image["sha1"]
-        image_name = quote_image_name(name)
-        image_file = os.path.join(self.directory, image_name + ext)
-
-        self.api.download_image(image["name"], image_file)
+        image_name = self.api.download_image(image["name"], self.directory)
 
         if image["inline"]:
             out.write("\\includegraphics[height=\\lineheight]{{{}}}".format(image_name))
@@ -333,12 +325,9 @@ class LatexExporter:
             out.write("\\hfill")
             for image in gallery["items"]:
                 out.write("\\begin{subfigure}{%f\\textwidth}" % (.9/len(gallery["items"])))
-                name, ext = os.path.splitext(image["name"].lower())
 
-                image_name = quote_image_name(name)
-                image_file = os.path.join(self.directory, image_name + ext)
-
-                self.api.download_image(image["name"], image_file)
+                image_name = self.api.download_image(image["name"],
+                                                     self.directory)
 
                 out.write("\n\\includegraphics[width=1.\\textwidth]{")
                 out.write(image_name)

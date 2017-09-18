@@ -17,9 +17,12 @@ class TestHTTPMediaWikiAPI(TestCase):
                 "https://upload.wikimedia.org/wikipedia/commons/4/43/"
                 "Hyperbola_one_over_x.svg")
 
-    def test_get_image_url(self):
+    def test_get_image_info(self):
         # TODO: Test with a image and multiple revisions
-        self.assertEqual(self.api.get_image_url("File:Hyperbola one over x.svg"),
+        # TODO: Test of sha1 info
+        image_url = self.api.get_image_info("File:Hyperbola one over x.svg")["url"]
+
+        self.assertEqual(image_url,
                 "https://upload.wikimedia.org/wikipedia/commons/4/43/"
                 "Hyperbola_one_over_x.svg")
 

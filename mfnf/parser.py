@@ -392,8 +392,6 @@ class ArticleContentParser(ChainedAction):
             check(obj, "name").of(("figure", "span"))
             check(obj, "attrs", "typeof").of(("mw:Image", "mw:Image/Thumb"))
 
-            inline = obj["name"] == "span"
-
             caption = [child
                        for child in obj["children"]
                        if child["name"] == "figcaption"]
@@ -404,12 +402,11 @@ class ArticleContentParser(ChainedAction):
 
             img = obj["children"][0]["children"][0]
             name = canonical_image_name(img["attrs"]["resource"])
-            sha1 = self.api.get_image_hash(name)
             license = self.api.get_image_license(name)
 
             return {"type": "image", "caption": self(caption), "name": name,
                     "thumbnail": obj["attrs"]["typeof"] == "mw:Image/Thumb",
-                    "inline": inline, "sha1": sha1, "license": license}
+                    "inline": obj["name"] == "span", "license": license}
 
     class HandleInlineFigures(SectionTracking):
         def transform_dict(self, obj):
