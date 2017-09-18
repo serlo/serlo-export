@@ -95,7 +95,7 @@ class NodeTransformation(Transformation):
     def transform_dict(self, obj):
         """Computes new dictionary which shall be used in tree instead of the
         node `obj`."""
-        raise NotImplementedError
+        raise NotImplementedError()
 
     def act_on_dict(self, obj):
         try:
