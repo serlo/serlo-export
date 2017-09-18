@@ -110,9 +110,12 @@ class NodeTypeTransformation(NodeTransformation):
     def transform_dict(self, obj):
         if not "type" in obj:
             raise NotInterested()
-        try:
-            return getattr(self, "transform_" + obj["type"])(obj)
-        except AttributeError:
+
+        func = getattr(self, "transform_" + obj["type"], None)
+
+        if func is not None:
+            return func(obj)
+        else:
             return self.default_transformation(obj)
 
     def default_transformation(self, obj):
