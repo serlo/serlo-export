@@ -154,7 +154,7 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
             report_logger.error("Unkown license: " + shortname)
             return {}
 
-        authors = list(set([res["user"] for res in query]))
+        authors = list(sorted(set([res["user"] for res in query])))
 
         return {"user": result["user"], "name": meta.get("UsageTerms", {}).get("value", ""),
                 "shortname": shortname, "licenseurl": url,

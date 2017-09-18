@@ -59,6 +59,14 @@
     inline: True
     caption: []
     thumbnail: False
+    license:
+        authors: ["Bastique", "I.R. Annie IP."]
+        licenseurl: "https://creativecommons.org/licenses/by-sa/2.5-2.0-1.0/"
+        name: "Creative Commons Attribution-Share Alike 2.5-2.0-1.0"
+        shortname: "CC BY-SA 2.5-2.0-1.0"
+        source: 'me (<a href="https://en.wikipedia.org/wiki/User:pfctdayelise" class="extiw" title="w:User:pfctdayelise">w:User:pfctdayelise</a>) + me, too, of course <a href="//commons.wikimedia.org/wiki/User:Huitzlipochtli_III." class="mw-redirect" title="User:Huitzlipochtli III.">;)</a> and <a href="https://de.wikipedia.org/wiki/User:W." class="extiw" title="de:User:W.">_me.as.well!_</a>'
+        url: "https://upload.wikimedia.org/wikipedia/commons/0/06/Foo.jpg"
+        user: "Bastique"
 
 - in: "[[File:Foo.jpg|bar]]"
   out:
@@ -67,6 +75,14 @@
     inline: True
     caption: []
     thumbnail: False
+    license:
+        authors: ["Bastique", "I.R. Annie IP."]
+        licenseurl: "https://creativecommons.org/licenses/by-sa/2.5-2.0-1.0/"
+        name: "Creative Commons Attribution-Share Alike 2.5-2.0-1.0"
+        shortname: "CC BY-SA 2.5-2.0-1.0"
+        source: 'me (<a href="https://en.wikipedia.org/wiki/User:pfctdayelise" class="extiw" title="w:User:pfctdayelise">w:User:pfctdayelise</a>) + me, too, of course <a href="//commons.wikimedia.org/wiki/User:Huitzlipochtli_III." class="mw-redirect" title="User:Huitzlipochtli III.">;)</a> and <a href="https://de.wikipedia.org/wiki/User:W." class="extiw" title="de:User:W.">_me.as.well!_</a>'
+        url: "https://upload.wikimedia.org/wikipedia/commons/0/06/Foo.jpg"
+        user: "Bastique"
 
 - in: "[[File:Foo.jpg|50px]]"
   out:
@@ -75,3 +91,11 @@
     inline: True
     caption: []
     thumbnail: False
+    license:
+        authors: ["Bastique", "I.R. Annie IP."]
+        licenseurl: "https://creativecommons.org/licenses/by-sa/2.5-2.0-1.0/"
+        name: "Creative Commons Attribution-Share Alike 2.5-2.0-1.0"
+        shortname: "CC BY-SA 2.5-2.0-1.0"
+        source: 'me (<a href="https://en.wikipedia.org/wiki/User:pfctdayelise" class="extiw" title="w:User:pfctdayelise">w:User:pfctdayelise</a>) + me, too, of course <a href="//commons.wikimedia.org/wiki/User:Huitzlipochtli_III." class="mw-redirect" title="User:Huitzlipochtli III.">;)</a> and <a href="https://de.wikipedia.org/wiki/User:W." class="extiw" title="de:User:W.">_me.as.well!_</a>'
+        url: "https://upload.wikimedia.org/wikipedia/commons/0/06/Foo.jpg"
+        user: "Bastique"

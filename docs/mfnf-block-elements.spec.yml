@@ -227,6 +227,14 @@
       caption:
         - { type: text, data: bar }
       thumbnail: False
+      license:
+        authors: ["Bastique", "I.R. Annie IP."]
+        licenseurl: "https://creativecommons.org/licenses/by-sa/2.5-2.0-1.0/"
+        name: "Creative Commons Attribution-Share Alike 2.5-2.0-1.0"
+        shortname: "CC BY-SA 2.5-2.0-1.0"
+        source: 'me (<a href="https://en.wikipedia.org/wiki/User:pfctdayelise" class="extiw" title="w:User:pfctdayelise">w:User:pfctdayelise</a>) + me, too, of course <a href="//commons.wikimedia.org/wiki/User:Huitzlipochtli_III." class="mw-redirect" title="User:Huitzlipochtli III.">;)</a> and <a href="https://de.wikipedia.org/wiki/User:W." class="extiw" title="de:User:W.">_me.as.well!_</a>'
+        url: "https://upload.wikimedia.org/wikipedia/commons/0/06/Foo.jpg"
+        user: "Bastique"
 
 - in: "[[Datei:Foo.jpg|thumb|bar]]"
   out:
@@ -236,6 +244,14 @@
       caption:
         - { type: text, data: bar }
       thumbnail: True
+      license:
+        authors: ["Bastique", "I.R. Annie IP."]
+        licenseurl: "https://creativecommons.org/licenses/by-sa/2.5-2.0-1.0/"
+        name: "Creative Commons Attribution-Share Alike 2.5-2.0-1.0"
+        shortname: "CC BY-SA 2.5-2.0-1.0"
+        source: 'me (<a href="https://en.wikipedia.org/wiki/User:pfctdayelise" class="extiw" title="w:User:pfctdayelise">w:User:pfctdayelise</a>) + me, too, of course <a href="//commons.wikimedia.org/wiki/User:Huitzlipochtli_III." class="mw-redirect" title="User:Huitzlipochtli III.">;)</a> and <a href="https://de.wikipedia.org/wiki/User:W." class="extiw" title="de:User:W.">_me.as.well!_</a>'
+        url: "https://upload.wikimedia.org/wikipedia/commons/0/06/Foo.jpg"
+        user: "Bastique"
 
 - in: "[[File:Foo.jpg|thumb|50px|bar]]"
   out:
@@ -245,7 +261,14 @@
       caption:
         - { type: text, data: bar }
       thumbnail: True
-
+      license:
+        authors: ["Bastique", "I.R. Annie IP."]
+        licenseurl: "https://creativecommons.org/licenses/by-sa/2.5-2.0-1.0/"
+        name: "Creative Commons Attribution-Share Alike 2.5-2.0-1.0"
+        shortname: "CC BY-SA 2.5-2.0-1.0"
+        source: 'me (<a href="https://en.wikipedia.org/wiki/User:pfctdayelise" class="extiw" title="w:User:pfctdayelise">w:User:pfctdayelise</a>) + me, too, of course <a href="//commons.wikimedia.org/wiki/User:Huitzlipochtli_III." class="mw-redirect" title="User:Huitzlipochtli III.">;)</a> and <a href="https://de.wikipedia.org/wiki/User:W." class="extiw" title="de:User:W.">_me.as.well!_</a>'
+        url: "https://upload.wikimedia.org/wikipedia/commons/0/06/Foo.jpg"
+        user: "Bastique"
 
 - in: "[[File:Foo.jpg|center|50px|bar]]"
   out:
@@ -255,18 +278,26 @@
       caption:
         - { type: text, data: bar }
       thumbnail: False
+      license:
+        authors: ["Bastique", "I.R. Annie IP."]
+        licenseurl: "https://creativecommons.org/licenses/by-sa/2.5-2.0-1.0/"
+        name: "Creative Commons Attribution-Share Alike 2.5-2.0-1.0"
+        shortname: "CC BY-SA 2.5-2.0-1.0"
+        source: 'me (<a href="https://en.wikipedia.org/wiki/User:pfctdayelise" class="extiw" title="w:User:pfctdayelise">w:User:pfctdayelise</a>) + me, too, of course <a href="//commons.wikimedia.org/wiki/User:Huitzlipochtli_III." class="mw-redirect" title="User:Huitzlipochtli III.">;)</a> and <a href="https://de.wikipedia.org/wiki/User:W." class="extiw" title="de:User:W.">_me.as.well!_</a>'
+        url: "https://upload.wikimedia.org/wikipedia/commons/0/06/Foo.jpg"
+        user: "Bastique"
 
 # --- Equations ---
 
 - in: "{{Formel|<math>x^2 \\sgn</math>}}"
   out:
     - type: equation
-      formula: "{\\begin{aligned}x^{2}\\operatorname {sgn} \\end{aligned}}"
+      formula: "x^{2}\\operatorname {sgn} "
 
 - in: "{{Formel|<math>\\begin{align} x^2 \\end{align}</math>}}"
   out:
     - type: equation
-      formula: "{\\begin{aligned}x^{2}\\end{aligned}}"
+      formula: "x^{2}"
 
 - in: |
     {{Formel|<math>\begin{align}
@@ -275,7 +306,7 @@
     \end{align}</math>}}
   out:
     - type: equation
-      formula: "{\\begin{aligned}x^{2}&=1\\\\[0.3em]x&=1\\end{aligned}}"
+      formula: "x^{2}&=1\\\\[0.3em]x&=1"
 
 # --- Galleries ---
 

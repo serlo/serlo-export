@@ -499,7 +499,7 @@ class ArticleContentParser(ChainedAction):
                     return {"type": "error",
                             "message": "section must be either start or end."}
             elif obj["name"] in ("h1", "h4", "h5", "h6"):
-                message = "Heading of depth {} is not allowed".format(obj["name"])
+                message = "Heading of depth {} is not allowed".format(obj["name"][1:])
                 log_parser_error(message, obj, position=self.current_section)
 
                 return {"type": "error",
