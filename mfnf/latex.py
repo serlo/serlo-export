@@ -136,7 +136,7 @@ class MediaWiki2Latex(ChainedAction):
         def transform_image(self, obj):
             _, ext = os.path.splitext(obj["name"])
 
-            if ext in (".webm", ".gif"):
+            if ext in (".webm", ".gif") or obj["noprint"]:
                 return None
             elif ext in (".jpg", ".svg", ".png"):
                 raise NotInterested()

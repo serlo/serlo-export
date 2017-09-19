@@ -434,7 +434,8 @@ class ArticleContentParser(ChainedAction):
 
             return {"type": "image", "caption": self(caption), "name": name,
                     "thumbnail": obj["attrs"]["typeof"] == "mw:Image/Thumb",
-                    "inline": obj["name"] == "span", "license": license}
+                    "inline": obj["name"] == "span", "license": license,
+                    "noprint": "noprint" in obj["attrs"].get("class", "")}
 
     class HandleInlineFigures(SectionTracking):
         def transform_dict(self, obj):
