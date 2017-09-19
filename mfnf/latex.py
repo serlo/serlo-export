@@ -262,7 +262,7 @@ class LatexExporter:
 
     def export_chapter(self, chapter, out):
         # TODO chapter -> part in all functions and dicts
-        out.write("\n\n\\part{")
+        out.write("\n\n\\chapter{")
         out.write(escape_latex(chapter["name"]))
         out.write("}")
 
@@ -270,7 +270,7 @@ class LatexExporter:
 
     def export_article(self, article, out):
         report_logger.info("== {} ==".format("Export article: " + article["name"]))
-        out.write("\n\n\\chapter{")
+        out.write("\n\n\\section{")
         out.write(escape_latex(article["name"]))
         out.write("}")
 
