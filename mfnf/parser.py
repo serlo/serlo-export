@@ -291,7 +291,8 @@ class MediaWikiCodeParser(ChainedAction):
             params = template["params"]
             params = {k: v["wt"] for k, v in params.items()}
             params = {key: self.parse_parameter_value(name, key, value) \
-                        for key, value in params.items()}
+                        for key, value in params.items()
+                        if not params.get(key + "-noprint", False)}
 
             return {"type": "template", "name": name, "params": params}
 
