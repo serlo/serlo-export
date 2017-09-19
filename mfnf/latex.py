@@ -19,11 +19,11 @@ BOX_TEMPLATES = [
 ]
 
 BOX_SUBTEMPLATES = {
-    "theorem": ["explanation", "example", "proofsummary", "solution", "proof",
-                "solutionprocess", "alternativeproof"],
+    "theorem": ["explanation", "example", "proofsummary", "solutionprocess",
+                "solution", "proof", "alternativeproof"],
 
-    "exercise": ["explanation", "example", "proofsummary", "solution", "proof",
-                 "solutionprocess", "alternativeproof"],
+    "exercise": ["explanation", "example", "proofsummary", "solutionprocess",
+                 "solution", "proof", "alternativeproof"],
 }
 
 LATEX_SPECIAL_CHARS = {
