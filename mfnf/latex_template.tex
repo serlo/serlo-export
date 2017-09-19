@@ -1,21 +1,13 @@
-\documentclass{book}
+\documentclass[fontsize=9pt,
+               paper=155mm:235mm,
+               parskip=half]{scrbook}
+
+% set font size to 9pt and base line height to 12pt
+\changefontsizes[12pt]{9pt}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[ngerman]{babel}
-\usepackage{geometry}
-
-% From https://tex.stackexchange.com/a/249474
-\geometry{
-  papersize={155mm,235mm},
-  textwidth=117mm,
-  textheight=191mm,
-  heightrounded,
-  hratio=1:1,
-  vratio=1:1,
-}
-
-\usepackage{parskip}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -32,7 +24,6 @@
 \usepackage{float}
 \usepackage[normalem]{ulem}
 \usepackage{csquotes}
-\usepackage{sectsty}
 \usepackage[framemethod=default]{mdframed}
 \usepackage{tocloft}
 \usepackage[toc]{multitoc}
@@ -58,12 +49,6 @@
 \newlength{\lineheight}
 \makeatletter\setlength{\lineheight}{\f@size pt}\makeatother
 
-% Set font sizes
-\usepackage{scrextend}
-
-% base line height and base font size
-\changefontsizes[12pt]{9pt}
-
 \allowdisplaybreaks[4]
 \predisplaypenalty=0
 
@@ -71,7 +56,8 @@
 \colorlet{shellblau}{sblau!30}
 \definecolor{forestgreen}{rgb}{0.13, 0.55, 0.13}
 
-\allsectionsfont{\color{sblau}}
+% change color of headers and table of contents
+\addtokomafont{disposition}{\color{sblau}}
 
 \errorcontextlines 10000
 
