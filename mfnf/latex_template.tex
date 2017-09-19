@@ -52,6 +52,9 @@
              Path=../../karmilla/ttf/]{Karmilla-Regular-016m}
 % fallback font or unicode (like smileys)
 \newfontfamily\DejaSans{DejaVu Sans}
+% font for box icons
+\newfontfamily\FontAwesome[Path=../../Font-Awesome/fonts/,
+                           Extension=.ttf]{fontawesome-webfont}
 \newlength{\lineheight}
 \makeatletter\setlength{\lineheight}{\f@size pt}\makeatother
 
@@ -106,6 +109,8 @@
 \newenvironment{indentblock}{\begin{adjustwidth}{.5cm}{}}{\end{adjustwidth}}
 
 \newcommand{\BoxIcon}[1]{\rlap{\protect\makebox[-\IconHeight]{\raisebox{-30px}[0pt][0pt]{\includegraphics[height=\IconHeight]{../../icons/#1.png}}}}}
+\def\IcProof{}
+\newcommand{\BoxFont}[1]{\rlap{\protect\makebox[-2.0cm]{\smash{\color{shellblau}\huge\FontAwesome #1}}}}
 
 \mdtheorem[style=semanticbox,
            startcode=\BoxIcon{theorem}]{theorem}{Satz}[chapter]
@@ -128,7 +133,7 @@
 \let\proof\@undefined
 \let\endproof\@undefined
 \makeatother
-\mdtheorem[style=semanticbox]{proof}{Beweis}[chapter]
+\mdtheorem[style=semanticbox,startinnercode=\BoxFont{\IcProof}]{proof}{Beweis}[chapter]
 
 \newcommand{\ColoredTOC}{{\twocolumn\color{sblau}\tableofcontents\onecolumn}}
 \setcounter{tocdepth}{1}
