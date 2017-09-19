@@ -338,7 +338,8 @@ class LatexExporter:
             out.write("\\includegraphics[height=\\lineheight]{{{}}}".format(image_name))
         else:
             with LatexEnvironment(out, "center"):
-                out.write("\n\\includegraphics[width=0.5\\textwidth]{")
+                out.write("\n\\includegraphics[max width=0.666\\textwidth,"
+                          "max height=0.25\\textheight]{")
                 out.write(image_name)
                 out.write("}")
 
