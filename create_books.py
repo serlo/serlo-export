@@ -4,6 +4,7 @@ import time
 import os
 import shelve
 import sys
+import re
 import logging
 
 import requests
@@ -74,7 +75,9 @@ def run_script():
         api = CachedMediaWikiAPI(ses)
         parser = ArticleParser(api=api)
 
-        sitemap = parse_sitemap(api.get_content(SITEMAP_ARTICLE_NAME))
+        sitemap = api.get_content(SITEMAP_ARTICLE_NAME)
+        sitemap = re.search(r"\=\s*Bücher\s*\=\s*(.*)", sitemap, re.DOTALL).group(0)
+        sitemap = parse_sitemap(sitemap)
 
         if len(sys.argv) >= 2:
             sitemap["children"] = [x for x in sitemap["children"]
