@@ -295,6 +295,33 @@ class MediaWikiCodeParser(ChainedAction):
 
             return {"type": "template", "name": name, "params": params}
 
+    class HandleLabeledTranscludedSections(NodeTypeTransformation):
+        def transform_template(self, obj):
+            if obj["name"].startswith("#lst:"):
+                article_name = remove_prefix(obj["name"], "#lst:")
+                article = self.api.get_content(article_name)
+
+                section_name = obj["params"]["1"]
+                begin = r"\<section\s+begin\=[\"']?" + re.escape(section_name) + \
+                        r"[\"']?\s*\/>"
+                end = r"\<section\s+end\=[\"']?" + re.escape(section_name) + \
+                        r"[\"']?\s*\/\>"
+
+                section = re.search(begin + "(.*)" + end, article, re.DOTALL)
+
+                if section:
+                    section = section.group(1).strip()
+                    content = parse_content(self.api, self.title, section)
+
+                    return {"type": "included_section", "content": content}
+                else:
+                    message = "section '{}' of '{}' cannot be included" \
+                              .format(section_name, article_name)
+
+                    return {"type": "error", "message": message}
+            else:
+                raise NotInterested()
+
     class HandleGalleries(SectionTracking):
         def parse_gallery_item(self, text):
             try:
@@ -577,14 +604,6 @@ class ArticleContentParser(ChainedAction):
                             "message": message}
             elif obj["name"] == "(!":
                 return None
-            elif obj["name"].startswith("#lst:"):
-                title = obj["name"][5:]
-                section = obj["params"]["1"]
-                content = self.api.get_content(title)
-
-                article = ArticleContentParser(api=self.api, title=title, section_filter=section)(content)
-                return {"type": "included_section", "content": article}
-
             elif obj["name"].startswith("#invoke:"):
                 # Template is header or footer
                 return None
@@ -634,33 +653,6 @@ class ArticleContentParser(ChainedAction):
 
             return merge(DEFAULT_VALUES[obj["type"]],
                          super(NodeTransformation, self).act_on_dict(obj))
-
-    class ApplySectionFilter(NodeTransformation):
-        def transform_dict(self, obj):
-
-            if not getattr(self, "section_filter", None):
-                return obj
-
-            if getattr(self, "_section_enable", None) is None:
-                self._section_enable = False
-
-            just_activated = False
-            if obj["type"] == "section_start" and obj["name"] == self.section_filter:
-                self._section_enable = True
-                just_activated = True
-
-            elif obj["type"] == "section_end" and obj["name"] == self.section_filter:
-                self._section_enable = False
-
-            if "content" in obj:
-                obj["content"] = [self(o) for o in obj["content"]]
-                obj["content"] = [o for o in obj["content"] if o is not None]
-                return obj if len(obj["content"]) else None
-            else:
-                if self._section_enable and not just_activated:
-                    return obj
-                else:
-                    return None
 
 def parse_article_inline(api, title, text):
     # TODO: there might be a better solution by merging with parse_inline()
