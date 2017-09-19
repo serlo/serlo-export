@@ -607,6 +607,8 @@ class ArticleContentParser(ChainedAction):
             elif obj["name"].startswith("#invoke:"):
                 # Template is header or footer
                 return None
+            elif obj["name"] == "noprint":
+                return None
             elif obj["name"] == "todo":
                 message = "Todo-Message in MediaWiki code."
                 details = "Check if this TODO shoud be completed for a book release."
