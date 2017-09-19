@@ -369,14 +369,16 @@ class LatexExporter:
                 out.write("\\hfill")
 
     def export_table(self, table, out):
+        out.write("\n\n\\begin{adjustbox}{max width=\\textwidth}")
         # TODO intermediate conversion
         ncolumns = len(table["content"][0]["content"])
-        out.write("\n\n\\begin{tabular}{" + ncolumns * 'c' + "} \\\\ \\toprule \n")
+        out.write("\n\\begin{tabular}{" + ncolumns * 'c' + "} \\\\ \\toprule \n")
         self(table["content"][0], out)
         out.write("\\midrule\n")
         self(table["content"][1:], out)
         out.write("\\bottomrule\n")
-        out.write("\\end{tabular}")
+        out.write("\\end{tabular}\n")
+        out.write("\\end{adjustbox}")
 
     def export_tr(self, tr, out):
         for cell, delimiter in zip(tr["content"], chain([""], repeat(" & "))):
