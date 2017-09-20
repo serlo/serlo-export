@@ -50,16 +50,6 @@
 \newlength{\lineheight}
 \makeatletter\setlength{\lineheight}{\f@size pt}\makeatother
 
-% define vertical space around equations
-% see https://tex.stackexchange.com/a/69665
-\expandafter\def\expandafter\normalsize\expandafter{%
-    \normalsize
-    \setlength\abovedisplayskip{0pt plus 2pt}
-    \setlength\belowdisplayskip{0pt plus 2pt}
-    \setlength\abovedisplayshortskip{0pt plus 2pt}
-    \setlength\belowdisplayshortskip{0pt plus 2pt}
-}
-
 \allowdisplaybreaks[4]
 \predisplaypenalty=0
 
@@ -143,6 +133,7 @@
 \newcommand{\inductionstep}[2]{\textbf{\textcolor{sblau}{#1.}} #2}
 
 % no additional space around equations is needed since they are always in their own paragraph
+% see https://tex.stackexchange.com/a/69665
 \expandafter\def\expandafter\normalsize\expandafter{%
 \normalsize
 \abovedisplayskip=-\baselineskip % if a paragraph starts with an equation then a blank extra line appears
