@@ -130,3 +130,13 @@
 \newcommand{\proofstep}[1]{\textbf{\textcolor{sblau}{#1}}}
 \newcommand{\proofcase}[2]{\textbf{\textcolor{sblau}{Fall #1:}} #2}
 \newcommand{\inductionstep}[2]{\textbf{\textcolor{sblau}{#1.}} #2}
+
+% no additional space around equations is needed since they are always in their own paragraph
+\expandafter\def\expandafter\normalsize\expandafter{%
+\normalsize
+\abovedisplayskip=-\baselineskip % if a paragraph starts with an equation then a blank extra line appears
+\abovedisplayshortskip=-\baselineskip
+\belowdisplayskip=0pt
+\belowdisplayshortskip=0pt
+}
+
