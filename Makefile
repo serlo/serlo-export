@@ -35,7 +35,7 @@ watch_test:
 
 .PHONY: upload
 upload:
-	rsync -v -r out/ -e ssh hp:~/mfnf-pdf-export
+	rsync -v -r out/ -e ssh --exclude 'file*' hp:~/mfnf-pdf-export
 
 .PHONY: clean
 clean:
