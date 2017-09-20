@@ -179,15 +179,16 @@ class LatexExporter:
     def print_box(self, box_type, obj, out):
         assert box_type in BOX_TEMPLATES, box_type
 
-        out.write("\n\n\\begin{" + box_type + "*}")
+        out.write("\\begin{" + box_type + "*}")
         if obj.get("title", None):
             out.write("[")
             self(obj["title"], out)
             out.write("]")
+        out.write("\n")
 
         self(obj[box_type], out)
 
-        out.write("\n\\end{" + box_type + "*}")
+        out.write("\\end{" + box_type + "*}\n\n")
 
 
     def act_on_dict(self, obj, out):
@@ -209,18 +210,17 @@ class LatexExporter:
                                             "target": obj}, out)
 
     def print_message(self, message_type, message, out, color="Red"):
-
-        out.write("\n{\\color{" + escape_latex(color) + "} ")
+        out.write("{\\color{" + escape_latex(color) + "} ")
         out.write("\\textbf{" + escape_latex(message_type) + ":} ")
         out.write(escape_latex(message))
-        out.write("}")
+        out.write("}\n")
 
     def print_notimplemented(self, out):
         if self._notimplemented:
-            out.write("\n\n\chapter{Not implemented objects}")
+            out.write("\chapter{Not implemented objects}\n\n")
 
             for obj in self._notimplemented:
-                out.write("\n\n\section{" + escape_latex(obj["message"]) + "}")
+                out.write("\section{" + escape_latex(obj["message"]) + "}\n\n")
 
                 with LatexEnvironment(out, "verbatim"):
                     out.write(escape_latex_verbatim(json.dumps(obj["target"], indent=1)))
@@ -233,8 +233,9 @@ class LatexExporter:
         self._notimplemented.append(obj)
 
     def export_listitem(self, obj, out):
-        out.write("\n\\item ")
+        out.write("\\item ")
         self(obj["content"], out)
+        out.write("\n")
 
     def export_list(self, obj, out):
         list_type = "enumerate" if obj["ordered"] else "itemize"
@@ -244,50 +245,49 @@ class LatexExporter:
 
     def export_equation(self, obj, out):
         with LatexEnvironment(out, "align*"):
-            out.write(escape_latex_math(obj["formula"]))
+            out.write(escape_latex_math(obj["formula"]) + "\n")
 
 
     def export_book(self, book, out):
         with open("mfnf/latex_template.tex", "r") as template:
             out.write(template.read())
 
-        out.write("\n\\title{")
+        out.write("\\title{")
         out.write(escape_latex(book["name"]))
-        out.write("}")
-        out.write("\n\n\\begin{document}")
+        out.write("}\n\n")
+        out.write("\\begin{document}\n\n")
 
-        out.write("\n\n\\ColoredTOC")
-        out.write("\n\n\\newpage")
-        out.write("\n")
+        out.write("\\ColoredTOC\n\n")
+        out.write("\\newpage\n\n")
 
         self(book["children"], out)
         self.print_notimplemented(out)
 
-        out.write("\n\\end{document}")
+        out.write("\\end{document}\n")
 
     def export_chapter(self, chapter, out):
         # TODO chapter -> part in all functions and dicts
-        out.write("\n\n\\chapter{")
+        out.write("\\chapter{")
         out.write(escape_latex(chapter["name"]))
-        out.write("}")
+        out.write("}\n\n")
 
         self(chapter["children"], out)
 
     def export_article(self, article, out):
         report_logger.info("== {} ==".format("Export article: " + article["name"]))
-        out.write("\n\n\\section{")
+        out.write("\\section{")
         out.write(escape_latex(article["name"]))
-        out.write("}")
+        out.write("}\n\n")
 
-        out.write("\n{\\small Autoren und Autorinnen: ")
+        out.write("{\\small Autoren und Autorinnen: ")
         out.write(", ".join((escape_latex(x) for x in article["authors"])))
-        out.write("}")
+        out.write("\par}\n\n")
 
         self(article["content"], out)
 
     def export_paragraph(self, paragraph, out):
-        out.write("\n\n")
         self(paragraph["content"], out)
+        out.write("\n\n")
 
     def export_text(self, text, out):
         out.write(escape_latex(text["data"]))
@@ -302,16 +302,16 @@ class LatexExporter:
         if title_prefix and title_prefix.startswith("Baustelle: "):
             return
         section_types = ["section", "subsection", "subsubsection", "paragraph"]
-        out.write("\n\n\\" + section_types[section["depth"]] + "{")
+        out.write("\\" + section_types[section["depth"]] + "{")
         self(section["title"], out)
-        out.write("}")
+        out.write("}\n\n")
         self(section["content"], out)
 
     def export_proofbycases(self, obj, out):
         for n, case, proof in zip(count(1), obj["cases"], obj["proofs"]):
-            out.write("\n\n\\proofcase{" + str(n) + "}{")
+            out.write("\\proofcase{" + str(n) + "}{")
             self(case, out)
-            out.write("}")
+            out.write("}\n")
 
             with LatexEnvironment(out, "indentblock"):
                 self(proof, out)
@@ -333,7 +333,7 @@ class LatexExporter:
 
     def export_image(self, image, out):
         if image["thumbnail"]:
-            out.write("\n\n\\begin{figure}\n")
+            out.write("\\begin{figure}\n")
         elif not image["inline"]:
             out.write("\n\n")
 
@@ -352,7 +352,7 @@ class LatexExporter:
             out.write("\\caption{")
             self(image["caption"], out)
             out.write("}")
-            out.write("\n\\end{figure}")
+            out.write("\n\\end{figure}\n\n")
 
     def export_gallery(self, gallery, out):
         with LatexEnvironment(out, "figure", ["H"]):
@@ -374,7 +374,7 @@ class LatexExporter:
                 out.write("\\hfill")
 
     def export_table(self, table, out):
-        out.write("\n\n\\begin{adjustbox}{max width=\\textwidth}")
+        out.write("\\begin{adjustbox}{max width=\\textwidth}")
         # TODO intermediate conversion
         ncolumns = len(table["content"][0]["content"])
         out.write("\n\\begin{tabular}{" + ncolumns * 'c' + "} \\\\ \\toprule \n")
@@ -383,7 +383,7 @@ class LatexExporter:
         self(table["content"][1:], out)
         out.write("\\bottomrule\n")
         out.write("\\end{tabular}\n")
-        out.write("\\end{adjustbox}")
+        out.write("\\end{adjustbox}\n\n")
 
     def export_tr(self, tr, out):
         for cell, delimiter in zip(tr["content"], chain([""], repeat(" & "))):
@@ -402,9 +402,9 @@ class LatexExporter:
             self(definitionlist["items"], out)
 
     def export_definitionlistitem(self, definitionlistitem, out):
-        out.write("\n\\item[")
+        out.write("\\item[")
         self(definitionlistitem["definition"], out)
-        out.write("] ")
+        out.write("]\n")
         self(definitionlistitem["explanation"], out)
 
     def export_href(self, href, out):
@@ -448,21 +448,21 @@ class LatexExporter:
         out.write("]")
         self(induction["statement"], out)
 
-        out.write("\n\\inductionstep{1}{Induktionsanfang}")
+        out.write("\\inductionstep{1}{Induktionsanfang}\n")
         with LatexEnvironment(out, "indentblock"):
             self(induction["induction_start"], out)
-        out.write("\n\\inductionstep{2}{Induktionsschritt}")
+        out.write("\\inductionstep{2}{Induktionsschritt}\n")
         with LatexEnvironment(out, "indentblock"):
-            out.write("\n\\inductionstep{2a}{Induktionsvoraussetzung}")
+            out.write("\\inductionstep{2a}{Induktionsvoraussetzung}\n")
             with LatexEnvironment(out, "indentblock"):
                 self(induction["induction_requirement"], out)
-            out.write("\n\\inductionstep{2b}{Induktionsschritt}")
+            out.write("\\inductionstep{2b}{Induktionsschritt}\n")
             with LatexEnvironment(out, "indentblock"):
                 self(induction["induction_goal"], out)
-            out.write("\n\\inductionstep{2c}{Beweis des Induktionsschritts}")
+            out.write("\\inductionstep{2c}{Beweis des Induktionsschritts}\n")
             with LatexEnvironment(out, "indentblock"):
                 self(induction["induction_step"], out)
-        out.write("\n\\end{induction*}")
+        out.write("\\end{induction*}\n\n")
 
     def export_entity(self, entity, out):
         if entity["kind"] == " ":
@@ -483,15 +483,15 @@ class LatexEnvironment:
         self.parameters = parameters
     def __enter__(self):
         parameter_str = "[" + ",".join(self.parameters) + "]"
-        self.out.write("\n\n\\begin{" + self.environment + "}" + (parameter_str if self.parameters else "") + "\n")
+        self.out.write("\\begin{" + self.environment + "}" + (parameter_str if self.parameters else "") + "\n")
     def __exit__(self, exc_type, exc_value, traceback):
-        self.out.write("\n\\end{" + self.environment + "}")
+        self.out.write("\\end{" + self.environment + "}\n\n")
 
 class LatexMacro:
     def __init__(self, out, macro):
         self.out = out
         self.macro = macro
     def __enter__(self):
-        self.out.write("\n\\" + self.macro + "{")
+        self.out.write("\\" + self.macro + "{")
     def __exit__(self, exc_type, exc_value, traceback):
-        self.out.write("}")
+        self.out.write("}\n")
