@@ -20,10 +20,10 @@ BOX_TEMPLATES = [
 
 BOX_SUBTEMPLATES = {
     "theorem": ["explanation", "example", "proofsummary", "solutionprocess",
-                "solution", "proof", "alternativeproof"],
+                "solution", "proof"],  # TODO: "alternativeproof"
 
     "exercise": ["explanation", "example", "proofsummary", "solutionprocess",
-                 "solution", "proof", "alternativeproof"],
+                 "solution", "proof"], # TODO: "alternativeproof"
 }
 
 LATEX_SPECIAL_CHARS = {
@@ -152,6 +152,11 @@ class MediaWiki2Latex(ChainedAction):
         def transform_section_end(self, obj):
             return None
 
+        def transform_question(self, obj):
+            if obj["questiontype"] == "Verständnisfrage":
+                return None
+            else:
+                raise NotInterested()
 
 class LatexExporter:
     def __init__(self, api, directory):
