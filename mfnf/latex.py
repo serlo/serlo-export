@@ -153,7 +153,7 @@ class MediaWiki2Latex(ChainedAction):
             return None
 
         def transform_question(self, obj):
-            if obj["questiontype"] == "Verständnisfrage":
+            if lookup(obj, "questiontype") == "Verständnisfrage":
                 return None
             else:
                 raise NotInterested()
