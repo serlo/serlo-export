@@ -50,6 +50,16 @@
 \newlength{\lineheight}
 \makeatletter\setlength{\lineheight}{\f@size pt}\makeatother
 
+% define vertical space around equations
+% see https://tex.stackexchange.com/a/69665
+\expandafter\def\expandafter\normalsize\expandafter{%
+    \normalsize
+    \setlength\abovedisplayskip{0pt plus 2pt}
+    \setlength\belowdisplayskip{0pt plus 2pt}
+    \setlength\abovedisplayshortskip{0pt plus 2pt}
+    \setlength\belowdisplayshortskip{0pt plus 2pt}
+}
+
 \allowdisplaybreaks[4]
 \predisplaypenalty=0
 
