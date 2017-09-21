@@ -273,8 +273,13 @@ class MediaWikiCodeParser(ChainedAction):
                                               "mw:Transclusion mw:Video/Thumb",
                                               "mw:Transclusion mw:Image"])
 
-            template = json.loads(obj["attrs"]["data-mw"])
-            template = template["parts"][0]["template"]
+            template = json.loads(obj["attrs"]["data-mw"])["parts"]
+
+            if len(template) > 1:
+                return {"type": "error",
+                        "message": "Template spans over several HTML elements."}
+
+            template = template[0]["template"]
 
             name = template["target"]["wt"].strip()
 
