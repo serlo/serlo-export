@@ -121,7 +121,8 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
         params = {"titles": filename, "prop": "imageinfo", "iilimit": "max",
                   "iiprop": "url|sha1"}
 
-        return self.query(params, ["pages", select_singleton, "imageinfo"])
+        return list(reversed(self.query(params,
+                             ["pages", select_singleton, "imageinfo"])))
 
     def get_image_license(self, filename):
         """Returns licensing information for an image."""
