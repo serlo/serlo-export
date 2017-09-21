@@ -98,6 +98,7 @@ class MediaWiki2Latex(ChainedAction):
         def __init__(self, **options):
             super().__init__(**options)
             self._outer_box = None
+            self._in_question = False
 
         def act_on_dict(self, obj):
             if lookup(obj, "type") in BOX_TEMPLATES:
@@ -114,9 +115,17 @@ class MediaWiki2Latex(ChainedAction):
                     self._outer_box = None
 
                     return result
-            elif self._outer_box and lookup(obj, "type") == "image" and \
-                    obj["thumbnail"]:
+            elif (self._outer_box or self._in_question) and \
+                    lookup(obj, "type") == "image" and obj["thumbnail"]:
                 return None
+            elif lookup(obj, "type") == "question":
+                self._in_question = True
+
+                result = super().act_on_dict(obj)
+
+                self._in_question = False
+
+                return result
             else:
                 return super().act_on_dict(obj)
 
