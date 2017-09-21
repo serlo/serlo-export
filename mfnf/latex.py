@@ -432,7 +432,8 @@ class LatexExporter:
 
     def export_proofstep(self, proofstep, out):
         with LatexMacro(out, "proofstep"):
-            out.write(escape_latex(proofstep["name"]) + ":")
+            self(proofstep["name"], out)
+            out.write(":")
 
         out.write(" ")
         self(proofstep.get("target", []), out)

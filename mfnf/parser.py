@@ -42,7 +42,7 @@ TEMPLATE_SPEC = {
 }
 
 TEMPLATE_INLINE_SPEC = {
-    "beweisschritt": lambda x: x in ["ziel"],
+    "beweisschritt": lambda x: x in ["ziel", "name"],
     "fallunterscheidung": lambda x: x.startswith("fall"),
     "formel": lambda x: x in ["1"],
     "definition": lambda x: x in ["titel"],
@@ -120,7 +120,7 @@ BOXSPEC = [
 
 DEFAULT_VALUES = {
     "proofstep": {
-        "name": "Beweisschritt"
+        "name": [{"type": "text", "data": "Beweisschritt"}]
     },
     "smiley": {
         "name": ":)"
