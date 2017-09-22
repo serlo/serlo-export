@@ -275,10 +275,17 @@ class LatexExporter:
         out.write("\\end{document}\n")
 
     def export_chapter(self, chapter, out):
-        # TODO chapter -> part in all functions and dicts
         out.write("\\chapter{")
         out.write(escape_latex(chapter["name"]))
         out.write("}\n\n")
+
+        # TODO: Move to parser calculation of author list
+        authors = [x[0] for x in sorted(chapter["authors"].items(), reverse=True,
+                                        key=lambda x: x[1])]
+
+        out.write("{\\footnotesize Autoren und Autorinnen: ")
+        out.write(", ".join(map(escape_latex, authors)))
+        out.write("\par}\n\n")
 
         self(chapter["children"], out)
 
@@ -287,10 +294,6 @@ class LatexExporter:
         out.write("\\section{")
         out.write(escape_latex(article["name"]))
         out.write("}\n\n")
-
-        out.write("{\\small Autoren und Autorinnen: ")
-        out.write(", ".join((escape_latex(x) for x in article["authors"])))
-        out.write("\par}\n\n")
 
         self(article["content"], out)
 

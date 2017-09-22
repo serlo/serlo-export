@@ -691,8 +691,7 @@ class ArticleParser(ChainedAction):
                 authors[user] += max(rev["size"] - article_size, 50)
                 article_size = rev["size"]
 
-            return [x[0] for x in sorted(authors.items(), reverse=True,
-                                         key=lambda x: x[1])]
+            return authors
 
         def transform_article(self, article):
             parser = ArticleContentParser(api=self.api, title=article["title"])
@@ -704,6 +703,15 @@ class ArticleParser(ChainedAction):
             authors = self.get_article_authors(article["title"])
 
             return merge(article, {"content": content, "authors": authors})
+
+    class MergeAuthorCounts(NodeTypeTransformation):
+        def transform_chapter(self, obj):
+            authors = defaultdict(int)
+
+            for k, v in chain(*(x["authors"].items() for x in obj["children"])):
+                authors[k] += v
+
+            return merge(obj, {"authors": authors})
 
     class MergeIncludedSections(NodeTypeTransformation):
         """Removes the `included_section` intermediate node."""
