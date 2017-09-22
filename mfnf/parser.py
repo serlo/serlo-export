@@ -299,6 +299,10 @@ class MediaWikiCodeParser(ChainedAction):
                         for key, value in params.items()
                         if not params.get(key + "-noprint", False)}
 
+            # TODO: Find better solution
+            if params.get("noprint", False):
+                return None
+
             return {"type": "template", "name": name, "params": params}
 
     class HandleLabeledTranscludedSections(NodeTypeTransformation):
