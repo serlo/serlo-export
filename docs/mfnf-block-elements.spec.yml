@@ -227,6 +227,7 @@
       caption:
         - { type: text, data: bar }
       thumbnail: False
+      noprint: False
       license:
         authors: ["Bastique", "I.R. Annie IP."]
         licenseurl: "https://creativecommons.org/licenses/by-sa/2.5-2.0-1.0/"
@@ -244,6 +245,7 @@
       caption:
         - { type: text, data: bar }
       thumbnail: True
+      noprint: False
       license:
         authors: ["Bastique", "I.R. Annie IP."]
         licenseurl: "https://creativecommons.org/licenses/by-sa/2.5-2.0-1.0/"
@@ -261,6 +263,7 @@
       caption:
         - { type: text, data: bar }
       thumbnail: True
+      noprint: False
       license:
         authors: ["Bastique", "I.R. Annie IP."]
         licenseurl: "https://creativecommons.org/licenses/by-sa/2.5-2.0-1.0/"
@@ -278,6 +281,7 @@
       caption:
         - { type: text, data: bar }
       thumbnail: False
+      noprint: False
       license:
         authors: ["Bastique", "I.R. Annie IP."]
         licenseurl: "https://creativecommons.org/licenses/by-sa/2.5-2.0-1.0/"
@@ -590,7 +594,7 @@
     }}
   out:
     - type: proofstep
-      name: foo
+      name: [{ type: text, data: foo }]
       target: [{ type: text, data: "ziel"}]
       proof:
         - type: paragraph
@@ -606,11 +610,11 @@
     }}}}
   out:
     - type: proofstep
-      name: Beweisschritt
+      name: [{ type: text, data: Beweisschritt }]
       target: [{ type: text, data: "ziel1"}]
       proof:
         - type: proofstep
-          name: Beweisschritt
+          name: [{ type: text, data: Beweisschritt }]
           target: [{ type: text, data: "ziel2"}]
           proof:
             - type: paragraph
