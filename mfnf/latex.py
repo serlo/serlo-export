@@ -428,7 +428,10 @@ class LatexExporter:
         out.write("}")
 
     def export_question(self, question, out):
-        with LatexEnvironment(out, "question*"):
+        env = ("testquestion*"
+               if lookup(question, "questiontype") == "Verständnisfrage"
+               else "question*")
+        with LatexEnvironment(out, env):
             self(question["question"], out)
         with LatexEnvironment(out, "answer*"):
             self(question["answer"], out)
