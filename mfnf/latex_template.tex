@@ -36,6 +36,10 @@
 % show overfull boxes
 \overfullrule=1mm
 
+% Redefine \rm for math environment -> raises an error otherwise
+% TODO: Is there a better solution
+\renewcommand*{\rm}[1]{\mathrm{#1}}
+
 \usepackage{fontspec}
 \setmainfont[Ligatures=TeX,
              Extension=.ttf,
