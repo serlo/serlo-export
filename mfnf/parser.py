@@ -277,7 +277,7 @@ class MediaWikiCodeParser(ChainedAction):
 
             try:
                 template = template["template"]
-            except KeyError:
+            except (TypeError, KeyError):
                 return {"type": "error",
                         "message": "Template spans over several HTML elements."}
 
