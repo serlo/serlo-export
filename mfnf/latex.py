@@ -428,10 +428,11 @@ class LatexExporter:
         out.write("}")
 
     def export_question(self, question, out):
-        env = ("testquestion*"
-               if lookup(question, "questiontype") == "Verständnisfrage"
-               else "question*")
-        with LatexEnvironment(out, env):
+        mdframed_options = (["style=semanticbox"] +
+                            (["frametitle=Frage"]
+                             if not lookup(question, "questiontype")
+                             else ["frametitle={" + question["questiontype"] + "}"]))
+        with LatexEnvironment(out, "mdframed", mdframed_options):
             self(question["question"], out)
         with LatexEnvironment(out, "answer*"):
             self(question["answer"], out)
