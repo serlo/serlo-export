@@ -30,6 +30,7 @@
 \usepackage{tocloft}
 \usepackage[toc]{multitoc}
 \usepackage{enumitem}
+\usepackage{etoolbox}
 
 % allow max height and max width for image includes
 \usepackage[Export]{adjustbox}
@@ -66,6 +67,15 @@
 \addtokomafont{disposition}{\rmfamily\color{sblau}}
 % change font of descriptionlabels
 \addtokomafont{descriptionlabel}{\rmfamily}
+% change font sizes of headings
+\addtokomafont{title}{\changefontsizes{44pt}}
+\addtokomafont{part}{\changefontsizes{44pt}}
+\KOMAoption{chapterprefix}{true}
+\addtokomafont{chapter}{\changefontsizes[28pt]{21pt}}
+\addtokomafont{section}{\changefontsizes[16pt]{12pt}}
+\addtokomafont{subsection}{\changefontsizes[12pt]{9pt}}
+\addtokomafont{chapterprefix}{\changefontsizes[12pt]{9pt}\color{shellblau}}
+\RedeclareSectionCommand[innerskip=-\baselineskip]{chapter}
 
 \errorcontextlines 10000
 

@@ -264,7 +264,9 @@ class LatexExporter:
         out.write("\\title{")
         out.write(escape_latex(book["name"]))
         out.write("}\n\n")
+        out.write("\\date{}\n\n")
         out.write("\\begin{document}\n\n")
+        out.write("\\maketitle\n\n")
 
         out.write("\\ColoredTOC\n\n")
         out.write("\\newpage\n\n")
