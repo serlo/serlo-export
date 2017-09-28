@@ -19,6 +19,7 @@
 \usepackage{verbatim}
 \usepackage{changepage}
 \usepackage{marvosym}
+\usepackage{multicol}
 \usepackage[dvipsnames]{xcolor}
 \usepackage[hidelinks,breaklinks]{hyperref}
 \usepackage{subcaption}
@@ -128,6 +129,9 @@
 \mdtheorem[style=semanticbox,startinnercode=\BoxFont{\IcProof}]{proof}{Beweis}[chapter]
 
 \newcommand{\ColoredTOC}{{\twocolumn\color{sblau}\tableofcontents\onecolumn}}
+\setlength{\columnseprule}{0.25pt}
+\setlength{\columnsep}{1cm}
+\renewcommand{\columnseprulecolor}{\color{sblau}}
 \setcounter{tocdepth}{1}
 \cftpagenumbersoff{part}
 
