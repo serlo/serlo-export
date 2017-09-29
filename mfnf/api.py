@@ -143,10 +143,17 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
             else:
                 components = shortname.lower().split(" ")
                 if len(components) != 3:
-                    report_logger.error("Unkown license: " + shortname)
-                    return {}
 
-                _, mode, version = components
+                    if shortname.startswith("CC-"):
+                        last = shortname.rfind("-")
+                        mode = shortname[:last].lower()
+                        version = shortname[last + 1:].lower()
+                    else:
+
+                        report_logger.error("Unkown license: " + shortname)
+                        return {}
+                else:
+                     _, mode, version = components
                 url = "https://creativecommons.org/licenses/{}/{}/".format(mode, version)
 
         elif shortname.lower() == "public domain":
