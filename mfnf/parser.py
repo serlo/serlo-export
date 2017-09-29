@@ -133,6 +133,15 @@ USERNAMES = {
     "Mattlocke2.0": "Matthias Greger"
 }
 
+# List of all HTML inline elements
+# see https://developer.mozilla.org/en-US/docs/Web/HTML/Inline_elements
+HTML_INLINE_ELEMENTS = [
+    "a", "b", "big", "i", "small", "tt", "abbr", "acronym", "cite", "code",
+    "dfn", "em", "kbd", "strong", "samp", "time", "var", "bdo", "br", "img",
+    "map", "object", "q", "script", "span", "sub", "sup", "button", "input",
+    "label", "select", "textarea"
+]
+
 def canonical_image_name(name):
     name = remove_prefix(name, "./")
     name = remove_prefix(name, "Datei:")
@@ -170,12 +179,8 @@ class HTML2JSONParser(HTMLParser):
 
         self._node_stack = []
         self.content = []
-        self._last_node = None
-        self._is_first_node = True
 
     def _append(self, node):
-        self._last_node = node
-
         if self._node_stack:
             self._node_stack[-1]["children"].append(node)
         else:
@@ -188,18 +193,8 @@ class HTML2JSONParser(HTMLParser):
 
         self._append(node)
         self._node_stack.append(node)
-        self._is_first_node = True
 
     def handle_endtag(self, tag):
-        assert self._last_node
-
-        try:
-            self._last_node["data"] = self._last_node["data"].rstrip()
-        except KeyError:
-            pass
-
-        self._is_first_node = False
-
         assert self._node_stack
         assert self._node_stack[-1]["name"] == tag, \
             "end tag should be {}, but is {}. last nodes: {}" \
@@ -208,16 +203,7 @@ class HTML2JSONParser(HTMLParser):
         self._node_stack.pop()
 
     def handle_data(self, data):
-        if re.search("\S", data):
-            data = re.sub(r"(?<=\S\s)\s+$", "", data)
-            data = re.sub(r"^\s+(?=\s\S)", "", data)
-            data = re.sub(r"\s", " ", data)
-
-            if self._is_first_node:
-                data = data.lstrip()
-                self._is_first_node = False
-
-            self._append({"type": "text", "data": data})
+        self._append({"type": "text", "data": data})
 
     def error(self, message):
         raise AssertionError(message)
@@ -240,6 +226,54 @@ class MediaWikiCodeParser(ChainedAction):
             parser.feed(text)
 
             return parser.content
+
+    class CollapseWhitespaces(Transformation):
+        def change_inline(self, obj, i, n):
+            if lookup(obj, "type") == "text":
+                data = re.sub(r"\s+(?=\s)", "", obj["data"])
+                data = re.sub(r"\s", " ", data)
+                if "\n" in data:
+                    print(repr(data))
+
+                if i == 0:
+                    data = data.lstrip()
+
+                if i == n-1:
+                    data = data.rstrip()
+
+                if data:
+                    return merge(obj, {"data": data})
+                else:
+                    return None
+            else:
+                return self(obj)
+
+        def change_block(self, obj, i, n):
+            result = self.change_inline(obj, i, n)
+
+            if lookup(result, "data") == " ":
+                return None
+            else:
+                return result
+
+        def act_on_list(self, lst):
+            if any((lookup(x, "name") in HTML_INLINE_ELEMENTS for x in lst)):
+                func = self.change_inline
+            else:
+                func = self.change_block
+
+            # Necessary because the header includes a <span> because of
+            # calling {{DISPLAYTITLE:...}} which should not happen. This
+            # triggers that the root content is handled as inline mode which
+            # should not happen.
+            # TODO: Find a better solution
+            if any((lookup(x, "name") == "p" for x in lst)):
+                func = self.change_block
+
+            result = (func(x, i, len(lst)) for x, i in zip(lst, count()))
+            result = [x for x in result if x is not None]
+
+            return result
 
     class TemplateDeinclusion(NodeTypeTransformation):
         """Replaces included MediaWiki templates with template

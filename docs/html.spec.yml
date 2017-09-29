@@ -40,7 +40,7 @@
       attrs:
         a: "1"
       children:
-        - { type: text, data: "hello " }
+        - { type: text, data: "hello \n" }
         - type: element
           attrs: {}
           name: bar
@@ -51,7 +51,7 @@
       name: p
       attrs: {}
       children:
-        - { type: "text", data: "Test" }
+        - { type: "text", data: "Test " }
 
 - in: |
     <a>
@@ -66,23 +66,27 @@
       name: a
       attrs: {}
       children:
+        - type: text
+          data: "\n  "
         - type: element
           name: img
           attrs: {}
           children: []
         - type: text
-          data: " hello "
+          data: "\n  hello\n  "
         - type: element
           name: b
           attrs: {}
           children:
-            - { type: text, data: "world" }
+            - { type: text, data: " world" }
         - type: text
-          data: "!"
+          data: "!\n"
     - type: text
-      data: " 42 "
+      data: "  42  "
     - type: element
       name: c
       attrs: {}
       children:
-        - { type: text, data: "apples" }
+        - { type: text, data: "\n  apples\n" }
+    - type: text
+      data: "\n"

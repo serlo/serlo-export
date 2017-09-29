@@ -45,11 +45,13 @@
 - in: |
     {{Smiley}}
     {{Smiley|:(}}
-  out: 
+  out:
     - type: paragraph
       content:
         - type: smiley
           name: :)
+        - type: text
+          data: " "
         - type: smiley
           name: :(
 
@@ -716,6 +718,31 @@
   out:
     - type: blockquote
       content: [{type: text, data: "Someone said this."}]
+
+# --- Mixed Content ---
+- in: "''italic'' '''bold'''"
+  out:
+    - type: paragraph
+      content:
+        - type: i
+          content: [{type: text, data: "italic"}]
+        - type: text
+          data: " "
+        - type: b
+          content: [{type: text, data: "bold"}]
+
+- in: "{{fg|Red|Hello}} {{fg|OliveGreen|World}}"
+  out:
+    - type: paragraph
+      content:
+        - type: coloredtext
+          color: Red
+          content: [{type: text, data: "Hello"}]
+        - type: text
+          data: " "
+        - type: coloredtext
+          color: OliveGreen
+          content: [{type: text, data: "World"}]
 
 # === Invalid formats ===
 # The following formats are valid MediaWiki code but are forbidden in the
