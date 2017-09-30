@@ -31,6 +31,7 @@
 \usepackage[toc]{multitoc}
 \usepackage{enumitem}
 \usepackage{etoolbox}
+\usepackage{marginnote}
 
 % allow max height and max width for image includes
 \usepackage[Export]{adjustbox}
@@ -105,35 +106,39 @@
                               bottomline=false,
                               fontcolor=sblau}
 
-\def\IconHeight{30px}
+\def\IconHeight{20px}
 
 \newmdenv[style=importantbox]{importantparagraph*}
 \newenvironment{indentblock}{\begin{adjustwidth}{.5cm}{}}{\end{adjustwidth}}
 
-\newcommand{\BoxIcon}[1]{\rlap{\protect\makebox[-\IconHeight]{\raisebox{-30px}[0pt][0pt]{\includegraphics[height=\IconHeight]{../../icons/#1.png}}}}}
-%\newcommand{\BoxIcon}[1]{}
+\makeatletter
+\patchcmd{\@mn@margintest}{\@tempswafalse}{\@tempswatrue}{}{}
+\patchcmd{\@mn@margintest}{\@tempswafalse}{\@tempswatrue}{}{}
+\reversemarginpar
+\makeatother
 
-\mdtheorem[style=semanticbox,
-           startcode=\BoxIcon{theorem}]{theorem}{Satz}[chapter]
+%\newcommand{\BoxIcon}[1]{\rlap{\protect\makebox[-\IconHeight]{\raisebox{-30px}[0pt][0pt]{\includegraphics[height=\IconHeight]{../../icons/#1.png}}}}}
+\newcommand{\BoxIcon}[1]{\marginnote{\includegraphics[height=\IconHeight]{../../icons/#1.png}}[0px]}
 
-\mdtheorem[style=semanticbox,startcode=\BoxIcon{definition}]{definition}{Definition}[chapter]
-\mdtheorem[style=semanticbox,startcode=\BoxIcon{exercise}]{exercise}{Übung}[chapter]
-\mdtheorem[style=semanticbox,startcode=\BoxIcon{solution}]{solution}{Lösung}[chapter]
-\mdtheorem[style=semanticbox,startcode=\BoxIcon{proof}]{alternativeproof}{Alternativer Beweis}[chapter]
-\mdtheorem[style=semanticbox,startcode=\BoxIcon{warning}]{warning}{Warnung}[chapter]
-\mdtheorem[style=semanticbox,startcode=\BoxIcon{hint}]{hint}{Hinweis}[chapter]
-\mdtheorem[style=semanticbox,startcode=]{explanation}{Erklärung}[chapter]
-\mdtheorem[style=semanticbox,startcode=\BoxIcon{proof}]{proofsummary}{Beweiszusammenfassung}[chapter]
-\mdtheorem[style=semanticbox,startcode=\BoxIcon{solutionprocess}]{solutionprocess}{Lösungsweg}[chapter]
-\mdtheorem[style=semanticbox,startcode=\BoxIcon{example}]{example}{Beispiel}[chapter]
-\mdtheorem[style=semanticbox,startcode=]{answer}{Antwort}[chapter]
-\mdtheorem[style=semanticbox,startcode=]{induction}{Induktionsbeweis}[chapter]
+\mdtheorem[style=semanticbox]{theorem}{\BoxIcon{theorem}Satz}[chapter]
+\mdtheorem[style=semanticbox]{definition}{\BoxIcon{definition}Definition}[chapter]
+\mdtheorem[style=semanticbox]{exercise}{\BoxIcon{exercise}Übung}[chapter]
+\mdtheorem[style=semanticbox]{solution}{\BoxIcon{solution}Lösung}[chapter]
+\mdtheorem[style=semanticbox]{alternativeproof}{\BoxIcon{proof}Alternativer Beweis}[chapter]
+\mdtheorem[style=semanticbox]{warning}{\BoxIcon{warning}Warnung}[chapter]
+\mdtheorem[style=semanticbox]{hint}{\BoxIcon{hint}Hinweis}[chapter]
+\mdtheorem[style=semanticbox]{explanation}{Erklärung}[chapter]
+\mdtheorem[style=semanticbox]{proofsummary}{\BoxIcon{proof}Beweiszusammenfassung}[chapter]
+\mdtheorem[style=semanticbox]{solutionprocess}{\BoxIcon{solutionprocess}Lösungsweg}[chapter]
+\mdtheorem[style=semanticbox]{example}{\BoxIcon{example}Beispiel}[chapter]
+\mdtheorem[style=semanticbox]{answer}{Antwort}[chapter]
+\mdtheorem[style=semanticbox]{induction}{Induktionsbeweis}[chapter]
 
 \makeatletter
 \let\proof\@undefined
 \let\endproof\@undefined
 \makeatother
-\mdtheorem[style=semanticbox,startinnercode=\BoxIcon{proof}]{proof}{Beweis}[chapter]
+\mdtheorem[style=semanticbox]{proof}{\BoxIcon{proof}Beweis}[chapter]
 
 \newcommand{\ColoredTOC}{{\twocolumn\color{sblau}\tableofcontents\onecolumn}}
 \setlength{\columnseprule}{0.25pt}
