@@ -97,28 +97,33 @@ class MediaWiki2Latex(ChainedAction):
     class HandleBoxTemplates(Transformation):
         def __init__(self, **options):
             super().__init__(**options)
-            self._outer_box = None
+            self._outer_boxes = []
             self._in_question = False
 
         def act_on_dict(self, obj):
             if lookup(obj, "type") in BOX_TEMPLATES:
-                if self._outer_box:
+                if self._outer_boxes:
                     message = "Box {} inside {} is not allowed" \
-                              .format(obj["type"], self._outer_box)
+                              .format(obj["type"], self._outer_boxes)
 
                     return {"type": "error", "message": message}
                 else:
-                    self._outer_box = obj["type"]
+                    self._outer_boxes.append(obj["type"])
 
                     result = super().act_on_dict(obj)
 
-                    self._outer_box = None
+                    self._outer_boxes.pop()
 
                     return result
-            elif (self._outer_box or self._in_question) and \
+            elif (self._outer_boxes or self._in_question) and \
                     lookup(obj, "type") == "image" and obj["thumbnail"]:
                 return None
             elif lookup(obj, "type") == "question":
+                if self._outer_boxes:
+                    message = "Box {} inside {} is not allowed" \
+                              .format(obj["type"], self._outer_boxes)
+
+                    return {"type": "error", "message": message}
                 self._in_question = True
 
                 result = super().act_on_dict(obj)
