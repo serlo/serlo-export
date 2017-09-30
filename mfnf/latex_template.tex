@@ -77,7 +77,7 @@
 
 \errorcontextlines 10000
 
-\mdfdefinestyle{semanticbox}{innerleftmargin=5.5pt,
+\mdfdefinestyle{semanticbox}{innerleftmargin=8.25pt,
                              innerrightmargin=0pt,
                              innertopmargin=0pt,
                              innerbottommargin=1pt,
@@ -93,7 +93,7 @@
                              frametitleaboveskip=0.5pt,
                              frametitlebelowskip=\baselineskip}
 
-\mdfdefinestyle{importantbox}{innerleftmargin=5.5pt,
+\mdfdefinestyle{importantbox}{innerleftmargin=8.25pt,
                               innerrightmargin=0pt,
                               innertopmargin=2pt,
                               innerbottommargin=1pt,
@@ -106,12 +106,12 @@
                               fontcolor=sblau}
 
 \newlength{\IconHeight}
-\setlength\IconHeight{30px}
+\setlength\IconHeight{20px}
 
 \newmdenv[style=importantbox]{importantparagraph*}
 \newenvironment{indentblock}{\begin{adjustwidth}{.5cm}{}}{\end{adjustwidth}}
 
-\newcommand{\BoxIcon}[1]{\rlap{\protect\makebox[-2\IconHeight]{\raisebox{-0.75\IconHeight}[0pt][0pt]{\includegraphics[height=\IconHeight]{../../icons/#1.png}}}}}
+\newcommand{\BoxIcon}[1]{\rlap{\protect\makebox[-2.2\IconHeight]{\raisebox{-0.65\IconHeight}[0pt][0pt]{\includegraphics[height=\IconHeight]{../../icons/#1.png}}}}}
 
 \mdtheorem[style=semanticbox]{theorem}{\BoxIcon{theorem}Satz}[chapter]
 \mdtheorem[style=semanticbox]{definition}{\BoxIcon{definition}Definition}[chapter]
