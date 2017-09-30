@@ -110,8 +110,8 @@
 \newmdenv[style=importantbox]{importantparagraph*}
 \newenvironment{indentblock}{\begin{adjustwidth}{.5cm}{}}{\end{adjustwidth}}
 
-%\newcommand{\BoxIcon}[1]{\rlap{\protect\makebox[-\IconHeight]{\raisebox{-30px}[0pt][0pt]{\includegraphics[height=\IconHeight]{../../icons/#1.png}}}}}
-\newcommand{\BoxIcon}[1]{}
+\newcommand{\BoxIcon}[1]{\rlap{\protect\makebox[-\IconHeight]{\raisebox{-30px}[0pt][0pt]{\includegraphics[height=\IconHeight]{../../icons/#1.png}}}}}
+%\newcommand{\BoxIcon}[1]{}
 
 \mdtheorem[style=semanticbox,
            startcode=\BoxIcon{theorem}]{theorem}{Satz}[chapter]
@@ -119,15 +119,15 @@
 \mdtheorem[style=semanticbox,startcode=\BoxIcon{definition}]{definition}{Definition}[chapter]
 \mdtheorem[style=semanticbox,startcode=\BoxIcon{exercise}]{exercise}{Übung}[chapter]
 \mdtheorem[style=semanticbox,startcode=\BoxIcon{solution}]{solution}{Lösung}[chapter]
-\mdtheorem[style=semanticbox,startcode=\BoxIcon{alternativeproof}]{alternativeproof}{Alternativer Beweis}[chapter]
+\mdtheorem[style=semanticbox,startcode=\BoxIcon{proof}]{alternativeproof}{Alternativer Beweis}[chapter]
 \mdtheorem[style=semanticbox,startcode=\BoxIcon{warning}]{warning}{Warnung}[chapter]
 \mdtheorem[style=semanticbox,startcode=\BoxIcon{hint}]{hint}{Hinweis}[chapter]
-\mdtheorem[style=semanticbox,startcode=\BoxIcon{explanation}]{explanation}{Erklärung}[chapter]
-\mdtheorem[style=semanticbox,startcode=\BoxIcon{proofsummary}]{proofsummary}{Beweiszusammenfassung}[chapter]
+\mdtheorem[style=semanticbox,startcode=]{explanation}{Erklärung}[chapter]
+\mdtheorem[style=semanticbox,startcode=\BoxIcon{proof}]{proofsummary}{Beweiszusammenfassung}[chapter]
 \mdtheorem[style=semanticbox,startcode=\BoxIcon{solutionprocess}]{solutionprocess}{Lösungsweg}[chapter]
 \mdtheorem[style=semanticbox,startcode=\BoxIcon{example}]{example}{Beispiel}[chapter]
-\mdtheorem[style=semanticbox,startcode=\BoxIcon{answer}]{answer}{Antwort}[chapter]
-\mdtheorem[style=semanticbox,startcode=\BoxIcon{induction}]{induction}{Induktionsbeweis}[chapter]
+\mdtheorem[style=semanticbox,startcode=]{answer}{Antwort}[chapter]
+\mdtheorem[style=semanticbox,startcode=]{induction}{Induktionsbeweis}[chapter]
 
 \makeatletter
 \let\proof\@undefined
