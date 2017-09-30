@@ -430,7 +430,7 @@ class LatexExporter:
         out.write("}")
 
     def export_question(self, question, out):
-        mdframed_options = (["style=semanticbox"] +
+        mdframed_options = (["style=semanticbox,frametitleaboveskip=3pt,innerbottommargin=3pt"] +
                             (["frametitle=Frage"]
                              if not lookup(question, "questiontype")
                              else ["frametitle={" + question["questiontype"] + "}"]))
