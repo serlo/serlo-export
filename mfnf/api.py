@@ -66,7 +66,7 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
     @property
     def _index_url(self):
         """Returns the URL to the server's `index.php` file."""
-        return "http://" + self.domain + "/w/index.php"
+        return "https://" + self.domain + "/w/index.php"
 
     @property
     def _api_url(self):
