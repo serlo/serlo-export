@@ -27,8 +27,7 @@
 \usepackage[normalem]{ulem}
 \usepackage{csquotes}
 \usepackage[framemethod=default]{mdframed}
-\usepackage{tocloft}
-\usepackage[toc]{multitoc}
+\usepackage{tocstyle}
 \usepackage{enumitem}
 \usepackage{etoolbox}
 
@@ -133,12 +132,10 @@
 \makeatother
 \mdtheorem[style=semanticbox]{proof}{\BoxIcon{proof}Beweis}[chapter]
 
-\newcommand{\ColoredTOC}{{\twocolumn\color{sblau}\tableofcontents\onecolumn}}
-\setlength{\columnseprule}{0.25pt}
-\setlength{\columnsep}{1cm}
-\renewcommand{\columnseprulecolor}{\color{sblau}}
-\setcounter{tocdepth}{1}
-\cftpagenumbersoff{part}
+\newcommand{\ColoredTOC}{{\color{sblau}\tableofcontents}}
+\usetocstyle{KOMAlike}
+\setcounter{tocdepth}{0}
+\settocstylefeature[-1]{pagenumberbox}{\csname @gobble\endcsname}
 
 \setlist{leftmargin=11pt,labelindent=0pt,font=\color{sblau}}
 
