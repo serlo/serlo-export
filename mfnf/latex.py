@@ -282,7 +282,8 @@ class LatexExporter:
         out.write("\\end{document}\n")
 
     def export_chapter(self, chapter, out):
-        out.write("\\chapter{")
+        # TODO we use parts again, rename chapter in the function names
+        out.write("\\part{")
         out.write(escape_latex(chapter["name"]))
         out.write("}\n\n")
 
@@ -298,7 +299,7 @@ class LatexExporter:
 
     def export_article(self, article, out):
         report_logger.info("== {} ==".format("Export article: " + article["name"]))
-        out.write("\\section{")
+        out.write("\\chapter{")
         out.write(escape_latex(article["name"]))
         out.write("}\n\n")
 
@@ -321,7 +322,7 @@ class LatexExporter:
         if title_prefix and title_prefix.startswith("Baustelle: "):
             return
         section_types = ["section", "subsection", "subsubsection", "paragraph"]
-        out.write("\\" + section_types[section["depth"]] + "{")
+        out.write("\\" + section_types[section["depth"]-1] + "{")
         self(section["title"], out)
         out.write("}\n\n")
         self(section["content"], out)
