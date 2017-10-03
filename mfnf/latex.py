@@ -353,7 +353,7 @@ class LatexExporter:
 
     def export_image(self, image, out):
         if image["thumbnail"]:
-            out.write("\\begin{wrapfigure}{O}{.4\linewidth}\n")
+            out.write("\\begin{wrapfigure}{O}{.4\\textwidth}\n")
         elif not image["inline"]:
             out.write("\n\n")
 
@@ -383,12 +383,12 @@ class LatexExporter:
                 image_name = self.api.download_image(image["name"],
                                                      self.directory)
 
-                out.write("\n\\includegraphics[width=1.\\linewidth]{")
+                out.write("\\includegraphics[width=1.\\linewidth]{")
                 out.write(image_name)
                 out.write("}\n")
 
                 if index < len(gallery["items"]) - 1:
-                    out.write("\n&\n")
+                    out.write("&\n")
 
             out.write("\\\\\n")
             for index, image in enumerate(gallery["items"]):
@@ -398,7 +398,7 @@ class LatexExporter:
                 out.write("}\n")
 
                 if index < len(gallery["items"]) - 1:
-                    out.write("\n&\n")
+                    out.write("&\n")
 
             out.write("\\end{tabularx}")
 
