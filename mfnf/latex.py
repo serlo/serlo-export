@@ -353,7 +353,7 @@ class LatexExporter:
 
     def export_image(self, image, out):
         if image["thumbnail"]:
-            out.write("\\begin{figure}\n")
+            out.write("\\begin{wrapfigure}{O}{.4\linewidth}\n")
         elif not image["inline"]:
             out.write("\n\n")
 
@@ -361,37 +361,46 @@ class LatexExporter:
 
         if image["inline"]:
             out.write("\\includegraphics[height=\\lineheight]{{{}}}".format(image_name))
-        else:
+        elif not image["thumbnail"]:
             with LatexEnvironment(out, "center"):
                 out.write("\n\\includegraphics[max width=0.5\\textwidth,"
                           "max height=0.2\\textheight]{")
                 out.write(image_name)
                 out.write("}")
-
-        if image["thumbnail"]:
-            out.write("\\caption{")
+        else:
+            out.write("\\centering\n")
+            out.write("\\includegraphics[max width=.4\\textwidth]{{{}}}\n".format(image_name))
+            out.write("\\caption*{")
             self(image["caption"], out)
             out.write("}")
-            out.write("\n\\end{figure}\n\n")
+            out.write("\n\\end{wrapfigure}\n\n")
 
     def export_gallery(self, gallery, out):
         with LatexEnvironment(out, "figure", ["H"]):
-            out.write("\\hfill")
-            for image in gallery["items"]:
-                out.write("\\begin{subfigure}{%f\\textwidth}" % (.9/len(gallery["items"])))
+            out.write("\\begin{tabularx}{\\textwidth}{" + "".join(["m{{{}\linewidth}}".format(.9/len(gallery["items"])) for _ in gallery["items"]]) + "}\n")
+            for index, image in enumerate(gallery["items"]):
 
                 image_name = self.api.download_image(image["name"],
                                                      self.directory)
 
-                out.write("\n\\includegraphics[width=1.\\textwidth]{")
+                out.write("\n\\includegraphics[width=1.\\linewidth]{")
                 out.write(image_name)
-                out.write("}")
+                out.write("}\n")
 
-                out.write("\\caption{")
+                if index < len(gallery["items"]) - 1:
+                    out.write("\n&\n")
+
+            out.write("\\\\\n")
+            for index, image in enumerate(gallery["items"]):
+
+                out.write("\\caption*{")
                 self(image["caption"], out)
-                out.write("}")
-                out.write("\\end{subfigure}")
-                out.write("\\hfill")
+                out.write("}\n")
+
+                if index < len(gallery["items"]) - 1:
+                    out.write("\n&\n")
+
+            out.write("\\end{tabularx}")
 
     def export_table(self, table, out):
         out.write("\\begin{adjustbox}{max width=\\textwidth}")
