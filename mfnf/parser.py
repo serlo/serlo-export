@@ -443,7 +443,7 @@ class ArticleContentParser(ChainedAction):
                     "ordered": obj["name"] == "ol",
                     "items": items}
 
-    class HandleDefinitionLists(NodeTransformation):
+    class HandleDefinitionLists(SectionTracking):
         def transform_dict(self, obj):
             check(obj, "type") == "element"
             check(obj, "name") == "dl"
@@ -453,6 +453,12 @@ class ArticleContentParser(ChainedAction):
                       "explanation": self(dd["children"])}
                       for dt, dd in zip(obj["children"][::2],
                                         obj["children"][1::2])]
+
+            if not items:
+                message = "A definition list must not be empty!"
+                log_parser_error(message, obj, position=self.current_section)
+                return {"type": "error",
+                        "message": message}
 
             return {"type": "definitionlist",
                     "items": items}
