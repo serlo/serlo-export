@@ -377,9 +377,10 @@ class MediaWikiCodeParser(ChainedAction):
                         "message": message}
 
             caption = parse_inline(self.api, self.title, caption.strip())
+            license = self.api.get_image_license(name)
 
             return {"type": "galleryitem", "caption": caption,
-                    "name": canonical_image_name(name)}
+                    "name": canonical_image_name(name), "license": license}
 
         def transform_dict(self, obj):
             check(obj, "type") == "element"

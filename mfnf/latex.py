@@ -85,6 +85,11 @@ def chunks(l, n):
     for i in range(0, len(l), n):
         yield l[i:i + n]
 
+def get_license_text(license, name):
+    if license:
+        return "(\\arabic{imagelabel}): by " + ", ".join(license["authors"]) + ": " + license["shortname"] + " details: \\url{https://commons.wikimedia.org/wiki/" + name + "}"
+    else:
+        return "(\\arabic{imagelabel}): could not get licensing information!"
 def shorten(line):
     indent = re.match(r"^\s*", line).group()
 
@@ -324,7 +329,8 @@ class LatexExporter:
 
         self(book["children"], out)
         self.print_notimplemented(out)
-
+        out.write("\\pagebreak\n")
+        out.write("\\ColoredLOF\n")
         out.write("\\end{document}\n")
 
     def export_chapter(self, chapter, out):
@@ -400,26 +406,32 @@ class LatexExporter:
     def export_image(self, image, out):
         if image["thumbnail"]:
             out.write("\\begin{figure}[H]\n")
-        elif not image["inline"]:
-            out.write("\n\n")
 
         image_name = self.api.download_image(image["name"], self.directory)
-
+        license = image["license"]
+        licensetext = get_license_text(license, image["name"])
         if image["inline"]:
             out.write("\\includegraphics[height=\\lineheight]{{{}}}".format(image_name))
         elif not image["thumbnail"]:
-            with LatexEnvironment(out, "center"):
-                out.write("\n\\includegraphics[max width=0.5\\textwidth,"
+            with LatexEnvironment(out, "figure", ["H"]):
+                out.write("\\centering\n")
+                out.write("\\includegraphics[max width=0.5\\textwidth,"
                           "max height=0.2\\textheight]{")
                 out.write(image_name)
                 out.write("}")
+                out.write("\\captionsetup{textformat=empty,labelformat=blank,belowskip=0pt,aboveskip=0pt}\n")
+                out.write("\\stepcounter{imagelabel}\n")
+                out.write("\\caption[%s]{" % licensetext)
+                self(image["caption"], out)
+                out.write(" (\\arabic{imagelabel})}\n")
         else:
             out.write("\\centering\n")
             out.write("\\includegraphics[max width=.5\\textwidth]{{{}}}\n".format(image_name))
-            out.write("\\caption{")
+            out.write("\\stepcounter{imagelabel}\n")
+            out.write("\\caption[%s]{" % licensetext)
             self(image["caption"], out)
-            out.write("}")
-            out.write("\n\\end{figure}\n\n")
+            out.write(" (\\arabic{imagelabel})}\n")
+            out.write("\\end{figure}\n")
 
     def export_gallery(self, gallery, out):
 
@@ -427,6 +439,8 @@ class LatexExporter:
             out.write("\\begin{tabularx}{\linewidth}{%s}\n" % "".join(["X" for _ in images]))
             for image in images:
                 if not image["type"] == "dummy":
+                    license = image["license"]
+                    licensetext = get_license_text(license, image["name"])
                     image_name = self.api.download_image(image["name"], self.directory)
                     out.write("\\begin{minipage}[t]{\linewidth}\n")
                     with LatexEnvironment(out, "figure", ["H"]):
@@ -434,9 +448,10 @@ class LatexExporter:
                         out.write("\centering\n")
                         out.write("\\includegraphics[max width=1.\\linewidth, max height=0.2\\textheight]{{{}}}\n".format(image_name))
                         out.write("\\end{minipage}\n")
-                        out.write("\\caption{")
+                        out.write("\\stepcounter{imagelabel}\n")
+                        out.write("\\caption[%s]{" % licensetext)
                         self(image["caption"], out)
-                        out.write("}")
+                        out.write(" (\\arabic{imagelabel})}\n")
 
                     out.write("\\end{minipage}\n")
 

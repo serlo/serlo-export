@@ -1,7 +1,8 @@
 \documentclass[fontsize=9pt,
                paper=155mm:235mm,
                parskip=half-,
-               BCOR=3mm,DIV=14]{scrbook}
+               BCOR=3mm,DIV=14,
+               listof=chapterentry]{scrbook}
 
 % set font size to 9pt and base line height to 12pt
 \changefontsizes[12pt]{9pt}
@@ -22,7 +23,7 @@
 \usepackage{multicol}
 \usepackage[usenamesm,svgnames,dvipsnames,table]{xcolor}
 \usepackage[hidelinks,breaklinks]{hyperref}
-\usepackage[font={color=sblau},figurename=Abbildung,labelformat=empty]{caption}
+\usepackage[font={color=sblau},figurename=Abbildung,labelformat=empty,aboveskip=10pt,belowskip=0pt]{caption}
 \usepackage{subcaption}
 \usepackage{float}
 \usepackage[normalem]{ulem}
@@ -33,8 +34,13 @@
 \usepackage{etoolbox}
 \usepackage{tabularx}
 
+\newcounter{imagelabel}
+\setlength{\intextsep}{0pt plus 2pt}   % default value 12pt plus 2pt minus 2pt
+
 % allow max height and max width for image includes
 \usepackage[Export]{adjustbox}
+
+\DeclareCaptionLabelFormat{blank}{}
 
 % show overfull boxes
 \overfullrule=1mm
@@ -134,9 +140,10 @@
 \makeatother
 \mdtheorem[style=semanticbox]{proof}{\BoxIcon{proof}Beweis}[chapter]
 
-\newcommand{\ColoredTOC}{{\color{sblau}\tableofcontents}}
+\newcommand{\ColoredTOC}{{\color{sblau}\setcounter{tocdepth}{0}\tableofcontents}}
+\newcommand{\ColoredLOF}{{\color{sblau}\setcounter{tocdepth}{10}\listoffigures}}
+
 \usetocstyle{KOMAlike}
-\setcounter{tocdepth}{0}
 \settocstylefeature[-1]{pagenumberbox}{\csname @gobble\endcsname}
 
 \setlist{leftmargin=11pt,labelindent=0pt,font=\color{sblau}}
