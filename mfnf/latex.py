@@ -7,8 +7,8 @@ import logging
 
 from itertools import chain, repeat, count
 from mfnf.utils import log_parser_error, lookup
-from mfnf.transformations import ChainedAction, NotInterested, \
-                                 NodeTypeTransformation, Transformation
+from mfnf.transformations import ChainedAction, NotInterested, check, \
+                                 NodeTypeTransformation, Transformation, SectionTracking
 
 report_logger = logging.getLogger("report_logger")
 
@@ -171,6 +171,43 @@ class MediaWiki2Latex(ChainedAction):
                 return None
             else:
                 raise NotInterested()
+
+    class MoveThumbnailImages(NodeTypeTransformation):
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.current_section = {}
+            self.thumb_gallery = None
+
+        def transform_section(self, obj):
+            self.thumb_gallery = {"type": "gallery", "widths": 120,
+                                  "heights": 120, "items": []}
+
+            self.current_section[obj["depth"]] = obj
+            self.current_section = {l: self.current_section[l] for l in sorted(self.current_section.keys()) if l <= obj["depth"]}
+            obj["content"] = self(obj["content"])
+            obj["content"].insert(0, self.thumb_gallery)
+            return obj
+
+        def transform_image(self, obj):
+
+            if obj["thumbnail"]:
+                self.thumb_gallery["items"].append(obj)
+                obj["type"] = "galleryitem"
+                return None
+
+            raise NotInterested()
+
+    class RemoveEmptyGalleries(NodeTypeTransformation):
+        def transform_gallery(self, obj):
+            if not obj["items"]:
+                return None
+            elif len(obj["items"]) == 1:
+                image = obj["items"][0]
+                image["type"] = "image"
+                return image
+
+            raise NotInterested()
 
 class LatexExporter:
     def __init__(self, api, directory):
@@ -353,7 +390,7 @@ class LatexExporter:
 
     def export_image(self, image, out):
         if image["thumbnail"]:
-            out.write("\\begin{wrapfigure}{O}{.4\\textwidth}\n")
+            out.write("\\begin{figure}[H]\n")
         elif not image["inline"]:
             out.write("\n\n")
 
@@ -369,38 +406,31 @@ class LatexExporter:
                 out.write("}")
         else:
             out.write("\\centering\n")
-            out.write("\\includegraphics[max width=.4\\textwidth]{{{}}}\n".format(image_name))
-            out.write("\\caption*{")
+            out.write("\\includegraphics[max width=.5\\textwidth]{{{}}}\n".format(image_name))
+            out.write("\\caption{")
             self(image["caption"], out)
             out.write("}")
-            out.write("\n\\end{wrapfigure}\n\n")
+            out.write("\n\\end{figure}\n\n")
 
     def export_gallery(self, gallery, out):
-        with LatexEnvironment(out, "figure", ["H"]):
-            out.write("\\begin{tabularx}{\\textwidth}{" + "".join(["m{{{}\linewidth}}".format(.9/len(gallery["items"])) for _ in gallery["items"]]) + "}\n")
-            for index, image in enumerate(gallery["items"]):
-
-                image_name = self.api.download_image(image["name"],
-                                                     self.directory)
-
-                out.write("\\includegraphics[width=1.\\linewidth]{")
-                out.write(image_name)
-                out.write("}\n")
-
-                if index < len(gallery["items"]) - 1:
-                    out.write("&\n")
-
-            out.write("\\\\\n")
-            for index, image in enumerate(gallery["items"]):
-
-                out.write("\\caption*{")
+        out.write("\\begin{tabularx}{\linewidth}{%s}\n" % "".join(["X" for _ in range(len(gallery["items"]))]))
+        for index, image in enumerate(gallery["items"]):
+            image_name = self.api.download_image(image["name"], self.directory)
+            out.write("\\begin{minipage}[t]{\linewidth}\n")
+            with LatexEnvironment(out, "figure", ["H"]):
+                out.write("\\begin{minipage}[t][0.2\\textheight][c]{\\linewidth}\n")
+                out.write("\\includegraphics[max width=1.\\linewidth, max height=0.2\\textheight]{{{}}}\n".format(image_name))
+                out.write("\\end{minipage}\n")
+                out.write("\\caption{")
                 self(image["caption"], out)
-                out.write("}\n")
+                out.write("}")
 
-                if index < len(gallery["items"]) - 1:
-                    out.write("&\n")
+            out.write("\\end{minipage}\n")
 
-            out.write("\\end{tabularx}")
+            if index < len(gallery["items"]) - 1:
+                out.write("&\n")
+
+        out.write("\\end{tabularx}\n\n")
 
     def export_table(self, table, out):
         out.write("\\begin{adjustbox}{max width=\\textwidth}")
