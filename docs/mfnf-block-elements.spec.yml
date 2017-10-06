@@ -318,8 +318,8 @@
 
 - in: |
     <gallery>
-    Foo.jpg|foo
-    File:Bar.svg|bar
+    File:Foo.jpg|foo
+    File:Parabola2.svg|bar
     </gallery>
   out:
     - type: gallery
@@ -330,15 +330,31 @@
           name: File:Foo.jpg
           caption:
             - { type: text, data: foo }
+          license:
+            authors: ["Bastique", "I.R. Annie IP."]
+            licenseurl: "https://creativecommons.org/licenses/by-sa/2.5-2.0-1.0/"
+            name: "Creative Commons Attribution-Share Alike 2.5-2.0-1.0"
+            shortname: "CC BY-SA 2.5-2.0-1.0"
+            source: 'me (<a href="https://en.wikipedia.org/wiki/User:pfctdayelise" class="extiw" title="w:User:pfctdayelise">w:User:pfctdayelise</a>) + me, too, of course <a href="//commons.wikimedia.org/wiki/User:Huitzlipochtli_III." class="mw-redirect" title="User:Huitzlipochtli III.">;)</a> and <a href="https://de.wikipedia.org/wiki/User:W." class="extiw" title="de:User:W.">_me.as.well!_</a>'
+            url: "https://upload.wikimedia.org/wikipedia/commons/0/06/Foo.jpg"
+            user: "Bastique"
         - type: galleryitem
-          name: File:Bar.svg
+          name: File:Parabola2.svg
           caption:
             - { type: text, data: bar }
+          license:
+            authors: ["File Upload Bot (Magnus Manske)", "LennyWikipedia~commonswiki"]
+            licenseurl: 'https://creativecommons.org/licenses/publicdomain/'
+            name: 'Public domain'
+            shortname: 'Public domain'
+            source: '<a href="//commons.wikimedia.org/wiki/User:LennyWikidata" title="User:LennyWikidata">LennyWikidata</a>'
+            url: 'https://upload.wikimedia.org/wikipedia/commons/7/76/Parabola2.svg'
+            user: 'LennyWikipedia~commonswiki'
 
 - in: |
     <gallery widths=200 heights=200>
-    Datei:Foo.jpg|''foo''
-    Bar.svg|bar <math>x^2</math>
+    File:Foo.jpg|''foo''
+    File:Parabola2.svg|bar <math>x^2</math>
     </gallery>
   out:
     - type: gallery
@@ -351,11 +367,28 @@
             - type: i
               content:
                 - { type: text, data: foo }
+          license:
+            authors: ["Bastique", "I.R. Annie IP."]
+            licenseurl: "https://creativecommons.org/licenses/by-sa/2.5-2.0-1.0/"
+            name: "Creative Commons Attribution-Share Alike 2.5-2.0-1.0"
+            shortname: "CC BY-SA 2.5-2.0-1.0"
+            source: 'me (<a href="https://en.wikipedia.org/wiki/User:pfctdayelise" class="extiw" title="w:User:pfctdayelise">w:User:pfctdayelise</a>) + me, too, of course <a href="//commons.wikimedia.org/wiki/User:Huitzlipochtli_III." class="mw-redirect" title="User:Huitzlipochtli III.">;)</a> and <a href="https://de.wikipedia.org/wiki/User:W." class="extiw" title="de:User:W.">_me.as.well!_</a>'
+            url: "https://upload.wikimedia.org/wikipedia/commons/0/06/Foo.jpg"
+            user: "Bastique"
+
         - type: galleryitem
-          name: File:Bar.svg
+          name: File:Parabola2.svg
           caption:
             - { type: text, data: "bar " }
             - { type: inlinemath, formula: "x^{2}" }
+          license:
+            authors: ["File Upload Bot (Magnus Manske)", "LennyWikipedia~commonswiki"]
+            licenseurl: 'https://creativecommons.org/licenses/publicdomain/'
+            name: 'Public domain'
+            shortname: 'Public domain'
+            source: '<a href="//commons.wikimedia.org/wiki/User:LennyWikidata" title="User:LennyWikidata">LennyWikidata</a>'
+            url: 'https://upload.wikimedia.org/wikipedia/commons/7/76/Parabola2.svg'
+            user: 'LennyWikipedia~commonswiki'
 
 # --- Boxes ---
 - in: |
@@ -772,8 +805,8 @@
 
 - in: |
     <gallery widths=200>
-    Foo.jpg
-    Bar.svg|bar
+    File:Foo.jpg
+    File:Parabola2.svg|bar
     </gallery>
   out:
     - type: gallery
@@ -783,9 +816,17 @@
         - type: error
           message: "Gallery item needs a caption"
         - type: galleryitem
-          name: File:Bar.svg
+          name: File:Parabola2.svg
           caption:
             - { type: text, data: bar }
+          license:
+            authors: ["File Upload Bot (Magnus Manske)", "LennyWikipedia~commonswiki"]
+            licenseurl: 'https://creativecommons.org/licenses/publicdomain/'
+            name: 'Public domain'
+            shortname: 'Public domain'
+            source: '<a href="//commons.wikimedia.org/wiki/User:LennyWikidata" title="User:LennyWikidata">LennyWikidata</a>'
+            url: 'https://upload.wikimedia.org/wikipedia/commons/7/76/Parabola2.svg'
+            user: 'LennyWikipedia~commonswiki'
 
 - in: "{{Formel|ABC <math>x^2</math>}}"
   out:
