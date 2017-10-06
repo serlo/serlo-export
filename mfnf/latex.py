@@ -410,8 +410,12 @@ class LatexExporter:
         image_name = self.api.download_image(image["name"], self.directory)
         license = image["license"]
         licensetext = get_license_text(license, image["name"])
+        out.write("\\stepcounter{imagelabel}\n")
+        out.write("\\addcontentsline{lof}{figure}{\\arabic{chapter}.\\arabic{section}.~ %s}" % licensetext)
+
         if image["inline"]:
             out.write("\\includegraphics[height=\\lineheight]{{{}}}".format(image_name))
+
         elif not image["thumbnail"]:
             with LatexEnvironment(out, "figure", ["H"]):
                 out.write("\\centering\n")
@@ -420,15 +424,13 @@ class LatexExporter:
                 out.write(image_name)
                 out.write("}")
                 out.write("\\captionsetup{textformat=empty,labelformat=blank,belowskip=0pt,aboveskip=0pt}\n")
-                out.write("\\stepcounter{imagelabel}\n")
-                out.write("\\caption[%s]{" % licensetext)
+                out.write("\\caption*{")
                 self(image["caption"], out)
                 out.write(" (\\arabic{imagelabel})}\n")
         else:
             out.write("\\centering\n")
             out.write("\\includegraphics[max width=.5\\textwidth]{{{}}}\n".format(image_name))
-            out.write("\\stepcounter{imagelabel}\n")
-            out.write("\\caption[%s]{" % licensetext)
+            out.write("\\caption*{")
             self(image["caption"], out)
             out.write(" (\\arabic{imagelabel})}\n")
             out.write("\\end{figure}\n")
