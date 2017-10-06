@@ -71,12 +71,12 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
     @property
     def _api_url(self):
         """Returns the URL to the server's `api.php` file."""
-        return "https://de.wikibooks.org/w/api.php"
+        return "https://" + self.domain + "/w/api.php"
 
     @property
     def _rest_api_url(self):
         """Returns the URL to the server's REST API endpoints."""
-        return "https://de.wikibooks.org/api/rest_v1"
+        return "https://" + self.domain + "/api/rest_v1"
 
     def _index_call(self, params):
         """Make an HTTP request to the server's `index.php` file."""
