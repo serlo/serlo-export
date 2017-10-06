@@ -12,6 +12,9 @@ from mfnf.transformations import ChainedAction, NotInterested, check, \
 
 report_logger = logging.getLogger("report_logger")
 
+GALLERY_IMAGES_PER_LINE = 2
+"""Numer of gallery images on one line."""
+
 BOX_TEMPLATES = [
     "definition", "theorem", "solution", "solutionprocess", "proof",
     "proofsummary", "alternativeproof", "hint", "warning", "example",
@@ -76,6 +79,11 @@ SMILEY_UNICODE_OUTPUT = {
     "Facepalm": "\U0001F625",
     "#default": "\U0001F60A",
 }
+
+def chunks(l, n):
+    """Yield successive n-sized chunks from l."""
+    for i in range(0, len(l), n):
+        yield l[i:i + n]
 
 def shorten(line):
     indent = re.match(r"^\s*", line).group()
@@ -413,24 +421,35 @@ class LatexExporter:
             out.write("\n\\end{figure}\n\n")
 
     def export_gallery(self, gallery, out):
-        out.write("\\begin{tabularx}{\linewidth}{%s}\n" % "".join(["X" for _ in range(len(gallery["items"]))]))
-        for index, image in enumerate(gallery["items"]):
-            image_name = self.api.download_image(image["name"], self.directory)
-            out.write("\\begin{minipage}[t]{\linewidth}\n")
-            with LatexEnvironment(out, "figure", ["H"]):
-                out.write("\\begin{minipage}[t][0.2\\textheight][c]{\\linewidth}\n")
-                out.write("\\includegraphics[max width=1.\\linewidth, max height=0.2\\textheight]{{{}}}\n".format(image_name))
-                out.write("\\end{minipage}\n")
-                out.write("\\caption{")
-                self(image["caption"], out)
-                out.write("}")
 
-            out.write("\\end{minipage}\n")
+        def export_subgallery(images):
+            out.write("\\begin{tabularx}{\linewidth}{%s}\n" % "".join(["X" for _ in images]))
+            for image in images:
+                if not image["type"] == "dummy":
+                    image_name = self.api.download_image(image["name"], self.directory)
+                    out.write("\\begin{minipage}[t]{\linewidth}\n")
+                    with LatexEnvironment(out, "figure", ["H"]):
+                        out.write("\\begin{minipage}[t][0.2\\textheight][c]{\\linewidth}\n")
+                        out.write("\centering\n")
+                        out.write("\\includegraphics[max width=1.\\linewidth, max height=0.2\\textheight]{{{}}}\n".format(image_name))
+                        out.write("\\end{minipage}\n")
+                        out.write("\\caption{")
+                        self(image["caption"], out)
+                        out.write("}")
 
-            if index < len(gallery["items"]) - 1:
-                out.write("&\n")
+                    out.write("\\end{minipage}\n")
 
-        out.write("\\end{tabularx}\n\n")
+                if image != images[-1]:
+                    out.write("&\n")
+
+            out.write("\\end{tabularx}\n\n")
+
+        for images in chunks(gallery["items"], GALLERY_IMAGES_PER_LINE):
+            if len(images) < GALLERY_IMAGES_PER_LINE:
+                for _ in range(GALLERY_IMAGES_PER_LINE - len(images)):
+                    images.append({"type": "dummy"})
+
+            export_subgallery(images)
 
     def export_table(self, table, out):
         out.write("\\begin{adjustbox}{max width=\\textwidth}")
