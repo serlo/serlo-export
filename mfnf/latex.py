@@ -316,6 +316,7 @@ class LatexExporter:
         out.write("}\n\n")
         out.write("\\date{}\n\n")
         out.write("\\begin{document}\n\n")
+        out.write("\\sloppy\n\n")
         out.write("\\maketitle\n\n")
 
         out.write("\\ColoredTOC\n\n")
