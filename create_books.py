@@ -29,7 +29,6 @@ file_handler = logging.FileHandler(os.path.join("out", "parser_log.log"),
 file_handler.setLevel(logging.DEBUG)
 report_logger.addHandler(file_handler)
 
-
 # title of article which shall be converted to PDF
 SITEMAP_ARTICLE_NAME = "Mathe für Nicht-Freaks: Projekte/LMU Buchprojekte"
 CACHE = ".cache/cache.db"
@@ -69,7 +68,12 @@ def run_script():
                 return super().get_revisions(title)
 
         ses = requests.Session()
-        retry = Retry(total=10, connect=5, read=5, backoff_factor=1)
+        retry = Retry(total=20, connect=10, read=10, status=10,
+                      status_forcelist=[504, 503], backoff_factor=1,
+                      method_whitelist=frozenset(['HEAD', 'TRACE', 'GET',
+                                                  'PUT', 'OPTIONS', 'DELETE',
+                                                  'POST']),
+                      raise_on_status=True)
         ses.mount("", requests.adapters.HTTPAdapter(max_retries=retry))
 
         api = CachedMediaWikiAPI(ses)
