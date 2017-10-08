@@ -160,10 +160,17 @@ class MediaWiki2Latex(ChainedAction):
                 return {"type": "error",
                         "message": message}
 
+        def transform_galleryitem(self, obj):
+            return self.check_image(obj)
+
         def transform_image(self, obj):
+            return self.check_image(obj)
+
+        def check_image(self, obj):
             _, ext = os.path.splitext(obj["name"])
 
-            if ext in (".webm", ".gif") or obj["noprint"]:
+            # TODO: Set "noprint" in galleryitem
+            if ext in (".webm", ".gif") or obj.get("noprint", False):
                 return None
             elif ext in (".jpg", ".svg", ".png"):
                 raise NotInterested()
