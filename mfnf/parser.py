@@ -686,7 +686,8 @@ class ArticleContentParser(ChainedAction):
                     formula = remove_suffix(formula, "\\end{aligned}}")
             except ValueError:
                 message = "Wrong formatted formula"
-                log_parser_error(message, obj, position=self.current_section)
+                # TODO: current_section was not set for this class
+                log_parser_error(message, obj)
                 return {"type": "error",
                         "message": message}
 
