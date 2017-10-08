@@ -34,6 +34,12 @@
 \usepackage{etoolbox}
 \usepackage{tabularx}
 
+% Support for \euro in math and text mode
+\usepackage{eurosym}
+\DeclareRobustCommand{\officialeuro}{%
+  \ifmmode\expandafter\text\fi
+    {\fontencoding{U}\fontfamily{eurosym}\selectfont e}}
+
 \newcounter{imagelabel}
 \setlength{\intextsep}{0pt plus 2pt}   % default value 12pt plus 2pt minus 2pt
 
