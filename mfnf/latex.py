@@ -440,7 +440,9 @@ class LatexExporter:
         def export_subgallery(images):
             out.write("\\begin{tabularx}{\linewidth}{%s}\n" % "".join(["X" for _ in images]))
             for image in images:
-                if not image["type"] == "dummy":
+                if image["type"] == "error":
+                    self.export_error(image, out)
+                elif not image["type"] == "dummy":
                     license = image["license"]
                     licensetext = get_license_text(license, image["name"])
                     image_name = self.api.download_image(image["name"], self.directory)
