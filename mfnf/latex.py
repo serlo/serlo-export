@@ -456,7 +456,7 @@ class LatexExporter:
                 out.write("}")
         else:
             out.write("\\centering\n")
-            out.write("\\includegraphics[max width=.5\\textwidth]{{{}}}\n".format(image_name))
+            out.write("\\includegraphics[max width=.5\\textwidth, max height=0.2\\textheight]{{{}}}\n".format(image_name))
             out.write("\\caption*{")
             self(image["caption"], out)
             out.write(" (\\arabic{imagelabel})}\n")
