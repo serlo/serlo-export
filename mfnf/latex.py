@@ -499,16 +499,16 @@ class LatexExporter:
             export_subgallery(images)
 
     def export_table(self, table, out):
-        out.write("\\begin{adjustbox}{max width=\\textwidth}")
+        #out.write("\\begin{adjustbox}{max width=\\textwidth}")
         # TODO intermediate conversion
         ncolumns = len(table["content"][0]["content"])
-        out.write("\n\\begin{tabular}{" + ncolumns * 'c' + "} \\\\ \\toprule \n")
+        out.write("\n\\begin{longtabu} to \\linewidth {" + ncolumns * 'X' + "} \\\\ \\toprule \n")
         self(table["content"][0], out)
         out.write("\\midrule\n")
         self(table["content"][1:], out)
         out.write("\\bottomrule\n")
-        out.write("\\end{tabular}\n")
-        out.write("\\end{adjustbox}\n\n")
+        out.write("\\end{longtabu}\n")
+        #out.write("\\end{adjustbox}\n\n")
 
     def export_tr(self, tr, out):
         for cell, delimiter in zip(tr["content"], chain([""], repeat(" & "))):
