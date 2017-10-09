@@ -158,9 +158,11 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
 
         elif shortname.lower() == "public domain":
             url = "https://creativecommons.org/licenses/publicdomain/"
+        elif shortname.lower().startswith("gfdl"):
+            url = "http://www.gnu.org/licenses/fdl.html"
         else:
             report_logger.error("Unkown license: " + shortname)
-            return {}
+            url = "unknown"
 
         authors = list(sorted(set([res["user"] for res in query])))
 
