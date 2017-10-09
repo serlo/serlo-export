@@ -229,6 +229,26 @@ class MediaWiki2Latex(ChainedAction):
 
             raise NotInterested()
 
+    class HandleTableFormulas(NodeTypeTransformation):
+        """This transformation tags formulas in tables as align
+           environments are not allowed there."""
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.table_count = 0
+
+        def transform_table(self, obj):
+            self.table_count += 1
+            obj["content"] = self(obj["content"])
+            self.table_count -= 1
+            return obj
+
+        def transform_equation(self, obj):
+            if self.table_count:
+                obj["in_table"] = True
+            else:
+                obj["in_table"] = False
+            return obj
+
 class LatexExporter:
     def __init__(self, api, directory):
         self.api = api
@@ -315,9 +335,13 @@ class LatexExporter:
             self(obj["items"], out)
 
     def export_equation(self, obj, out):
-        with LatexEnvironment(out, "align*"):
+        if not obj["in_table"]:
+            with LatexEnvironment(out, "align*"):
+                out.write(escape_latex_math(obj["formula"]) + "\n")
+        else:
+            out.write("{$\!\\begin{aligned}\n")
             out.write(escape_latex_math(obj["formula"]) + "\n")
-
+            out.write("\\end{aligned}$}\n")
 
     def export_book(self, book, out):
         with open("mfnf/latex_template.tex", "r") as template:
