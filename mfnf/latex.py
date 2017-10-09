@@ -430,10 +430,6 @@ class LatexExporter:
                           "max height=0.2\\textheight]{")
                 out.write(image_name)
                 out.write("}")
-                out.write("\\captionsetup{textformat=empty,labelformat=blank,belowskip=0pt,aboveskip=0pt}\n")
-                out.write("\\caption*{")
-                self(image["caption"], out)
-                out.write(" (\\arabic{imagelabel})}\n")
         else:
             out.write("\\centering\n")
             out.write("\\includegraphics[max width=.5\\textwidth]{{{}}}\n".format(image_name))
