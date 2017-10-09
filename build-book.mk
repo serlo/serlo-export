@@ -14,7 +14,7 @@ all: ${FIGURES}
 		-pdf "$(notdir $(CURDIR:%/=%))"
 
 %.pdf: %.svg
-	inkscape --without-gui --export-area-drawing --export-text-to-path \
+	inkscape --without-gui --export-area-page --export-text-to-path \
 		--export-ignore-filters --export-pdf=$@ $<
 
 %.pdf: %.jpg
