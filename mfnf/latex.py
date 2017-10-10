@@ -374,9 +374,8 @@ class LatexExporter:
         authors = [x[0] for x in sorted(chapter["authors"].items(), reverse=True,
                                         key=lambda x: x[1])]
 
-        out.write("{\\footnotesize Autoren und Autorinnen: ")
-        out.write(", ".join(map(escape_latex, authors)))
-        out.write("\par}\n\n")
+        with LatexEnvironment(out, "authors"):
+            out.write(", ".join(map(escape_latex, authors)))
 
         self(chapter["children"], out)
 

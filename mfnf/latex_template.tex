@@ -34,6 +34,7 @@
 \usepackage{tabularx}
 \usepackage{longtable}
 \usepackage{tabu}
+\usepackage{scrlayer-scrpage}
 
 % remove vertical space after floats
 \setlength{\belowcaptionskip}{-\baselineskip}\addtolength{\belowcaptionskip}{1.8ex}%
@@ -84,13 +85,33 @@
 \addtokomafont{descriptionlabel}{\rmfamily}
 % change font sizes of headings
 \addtokomafont{title}{\changefontsizes[59pt]{44pt}}
-\addtokomafont{part}{\changefontsizes[59pt]{44pt}}
+\addtokomafont{part}{\changefontsizes[59pt]{44pt}\color{white}}
+\addtokomafont{partprefix}{\color{white}}
 \KOMAoption{chapterprefix}{true}
 \addtokomafont{chapter}{\changefontsizes[28pt]{21pt}}
 \addtokomafont{section}{\changefontsizes[16pt]{12pt}}
 \addtokomafont{subsection}{\changefontsizes[12pt]{9pt}}
 \addtokomafont{chapterprefix}{\changefontsizes[12pt]{9pt}\color{shellblau}}
 \RedeclareSectionCommand[innerskip=-\baselineskip]{chapter}
+
+\newcommand{\BluePageBG}{\colorbox{shellblau}{\parbox[t][\paperheight][l]{\paperwidth}{${}$}}}
+
+\DeclareNewLayer[background,
+                 mode=picture,
+                 align=lt,
+                 area={0pt}{0pt}{\paperwidth}{\paperheight},
+                 contents=\putUL{\BluePageBG}]{partlayer}
+\DeclarePageStyleByLayers{part}{partlayer}
+\renewcommand\partpagestyle{part}
+\addtokomafont{part}{\raggedright}
+\addtokomafont{partprefix}{\raggedright}
+\RedeclareSectionCommand[beforeskip=0pt,innerskip=0pt]{part}
+\renewcommand*\thepart{\arabic{part}}
+
+\makeatletter
+\patchcmd{\scr@startchapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
+\def\@endpart{}
+\makeatother
 
 \errorcontextlines 10000
 
@@ -149,6 +170,9 @@
 \let\endproof\@undefined
 \makeatother
 \mdtheorem[style=semanticbox]{proof}{\BoxIcon{proof}Beweis}[chapter]
+
+\newenvironment{authors}{\par\vspace*{\fill}\color{white}Autoren und
+Autorinnen\\\bfseries}{\clearpage}
 
 \newcommand{\ColoredTOC}{{\color{sblau}\setcounter{tocdepth}{0}\tableofcontents}}
 \newcommand{\ColoredLOF}{{\color{sblau}\setcounter{tocdepth}{10}\listoffigures}}
