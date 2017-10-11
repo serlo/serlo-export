@@ -435,7 +435,7 @@ class LatexExporter:
 
     def export_image(self, image, out):
         if image["thumbnail"]:
-            out.write("\\begin{figure}[H]\n")
+            out.write("\\begin{figure}[h]\n")
 
         image_name = self.api.download_image(image["name"], self.directory)
         license = image["license"]
@@ -447,8 +447,7 @@ class LatexExporter:
             out.write("\\includegraphics[height=\\lineheight]{{{}}}".format(image_name))
 
         elif not image["thumbnail"]:
-            with LatexEnvironment(out, "figure", ["H"]):
-                out.write("\\centering\n")
+            with LatexEnvironment(out, "center"):
                 out.write("\\includegraphics[max width=0.5\\textwidth,"
                           "max height=0.2\\textheight]{")
                 out.write(image_name)
