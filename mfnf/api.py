@@ -8,6 +8,9 @@ import urllib.request
 from urllib.parse import quote
 import re
 import os
+from functools import wraps
+from requests.exceptions import HTTPError
+import time
 
 import logging
 report_logger = logging.getLogger("report_logger")
@@ -16,6 +19,28 @@ from mfnf.utils import stablehash, merge, query_path, select_singleton, mkdirs
 
 def quote_image_name(text):
     return re.sub(r"[^a-zA-Z0-9]", lambda x: str(ord(x.group())), text)
+
+def retry(max_retries):
+    """
+    Retry a function `max_retries` times.
+    taken from https://stackoverflow.com/questions/23892210/python-catch-timeout-and-repeat-request.
+    """
+    def retry(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            num_retries = 0
+            while num_retries <= max_retries:
+                try:
+                    ret = func(*args, **kwargs)
+                    break
+                except HTTPError:
+                    if num_retries == max_retries:
+                        raise
+                    num_retries += 1
+                    time.sleep(1)
+            return ret
+        return wrapper
+    return retry
 
 class MediaWikiAPI(metaclass=ABCMeta):
     """Interface for accessing content of a MediaWiki project."""
@@ -78,6 +103,7 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
         """Returns the URL to the server's REST API endpoints."""
         return "https://" + self.domain + "/api/rest_v1"
 
+    @retry(5)
     def _index_call(self, params):
         """Make an HTTP request to the server's `index.php` file."""
         req = self.req.get(self._index_url, params=params)
@@ -86,6 +112,7 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
 
         return req.text
 
+    @retry(5)
     def _api_call(self, endpoint, data):
         """Call an REST API endpoint."""
         endpoint_url = "/".join([self._rest_api_url] + endpoint)
@@ -95,6 +122,7 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
 
         return result
 
+    @retry(5)
     def query(self, params, path_to_result):
         params["format"] = "json"
         params["action"] = "query"
