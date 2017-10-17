@@ -94,6 +94,15 @@
 \addtokomafont{chapterprefix}{\changefontsizes[12pt]{9pt}\color{shellblau}}
 \RedeclareSectionCommand[innerskip=-\baselineskip]{chapter}
 
+\RedeclareSectionCommand[beforeskip=28pt plus 1pt minus 0pt,
+                         afterskip=28pt plus 1pt minus 0pt]{chapter}
+\RedeclareSectionCommand[beforeskip=20pt plus 1pt minus 0pt,
+                         afterskip=1pt plus 1pt minus 0pt]{section}
+\RedeclareSectionCommand[beforeskip=12pt plus 1pt minus 0pt,
+                         afterskip=1pt plus 1pt minus 0pt]{subsection}
+\RedeclareSectionCommand[beforeskip=12pt plus 1pt minus 0pt,
+                         afterskip=1pt plus 1pt minus 0pt]{subsubsection}
+
 \newcommand{\BluePageBG}{\colorbox{sblau!35}{\parbox[t][\paperheight][l]{\paperwidth}{${}$}}}
 
 \DeclareNewLayer[background,
@@ -109,7 +118,7 @@
 \renewcommand*\thepart{\arabic{part}}
 
 \makeatletter
-\patchcmd{\scr@startchapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
+\patchcmd{\scr@startchapter}{\if@openright\cleardoublepage\else\clearpage\fi}{\clearpage}{}{}
 \def\@endpart{}
 \makeatother
 
