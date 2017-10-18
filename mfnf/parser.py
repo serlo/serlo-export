@@ -130,7 +130,8 @@ DEFAULT_VALUES = {
 USERNAMES = {
     "Claudia4": "Claudia Renner",
     "Agnessa power": "Agnes Pauer",
-    "Mattlocke2.0": "Matthias Greger"
+    "Mattlocke2.0": "Matthias Greger",
+    "Auswahlaxiom": "Autorenkollektiv „Auswahlaxiom“ (Charlotte Dietze, Matthias Paulsen, Anne Reif)",
 }
 
 # List of all HTML inline elements
