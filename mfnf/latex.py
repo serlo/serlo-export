@@ -442,7 +442,8 @@ class LatexExporter:
         license = image["license"]
         licensetext = get_license_text(license, image["name"])
         out.write("\\stepcounter{imagelabel}\n")
-        out.write("\\addcontentsline{lof}{figure}{\\arabic{chapter}.\\arabic{section}.~ %s}" % licensetext)
+        out.write("\\addcontentsline{lof}{figure}{\\arabic{chapter}.\\arabic{section}.\\hspace{3mm}%s}" % licensetext)
+
 
         if image["inline"]:
             out.write("\\includegraphics[height=\\lineheight]{{{}}}".format(image_name))
@@ -471,6 +472,8 @@ class LatexExporter:
                 elif not image["type"] == "dummy":
                     license = image["license"]
                     licensetext = get_license_text(license, image["name"])
+                    out.write("\\stepcounter{imagelabel}\n")
+                    out.write("\\addcontentsline{lof}{figure}{\\arabic{chapter}.\\arabic{section}.\hspace{3mm}%s}" % licensetext)
                     image_name = self.api.download_image(image["name"], self.directory)
                     out.write("\\begin{minipage}[t]{\linewidth}\n")
                     with LatexEnvironment(out, "figure", ["H"]):
@@ -478,8 +481,7 @@ class LatexExporter:
                         out.write("\centering\n")
                         out.write("\\includegraphics[max width=1.\\linewidth, max height=0.2\\textheight]{{{}}}\n".format(image_name))
                         out.write("\\end{minipage}\n")
-                        out.write("\\stepcounter{imagelabel}\n")
-                        out.write("\\caption[%s]{" % licensetext)
+                        out.write("\\caption*{")
                         self(image["caption"], out)
                         out.write(" (\\arabic{imagelabel})}\n")
 
