@@ -132,6 +132,8 @@ USERNAMES = {
     "Agnessa power": "Agnes Pauer",
     "Mattlocke2.0": "Matthias Greger",
     "Auswahlaxiom": "Autorenkollektiv „Auswahlaxiom“ (Charlotte Dietze, Matthias Paulsen, Anne Reif)",
+    "Morpurgo10": "Paolo Martinoni",
+    "Taschee": "Alexander Sedlmayr",
 }
 
 # List of all HTML inline elements
