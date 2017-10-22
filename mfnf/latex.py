@@ -353,7 +353,7 @@ class LatexExporter:
         out.write("\\date{}\n\n")
         out.write("\\begin{document}\n\n")
         out.write("\\sloppy\n\n")
-        out.write("\\includepdf[pages=-,addtotoc={4,part,-1,Über das Buchprojekt,sec:about}]{../../predesigned_pages/mfnf_example_import_wtrim}\n\n")
+        out.write("\\includepdf[pages=-,addtotoc={4,part,-1,Über das Buchprojekt,sec:about}]{../../predesigned_pages/mfnf_prelude}\n\n")
 
         out.write("\\maketitle\n\n")
         out.write("\\ColoredTOC\n\n")
@@ -362,7 +362,8 @@ class LatexExporter:
         self(book["children"], out)
         self.print_notimplemented(out)
         out.write("\\pagebreak\n")
-        out.write("\\ColoredLOF\n")
+        out.write("\\ColoredLOF\n\n")
+        out.write("\\includepdf[pages=-]{../../predesigned_pages/mfnf_epilogue}\n\n")
         out.write("\\end{document}\n")
 
     def export_chapter(self, chapter, out):
