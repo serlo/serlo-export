@@ -189,6 +189,11 @@ Autorinnen\\\bfseries}{\clearpage}
 \usetocstyle{KOMAlike}
 \settocstylefeature[-1]{pagenumberbox}{\csname @gobble\endcsname}
 
+% width of page numbers in toc
+\makeatletter
+\renewcommand\@pnumwidth{1.5cm}
+\makeatother
+
 \setlist{leftmargin=11pt,labelindent=0pt,font=\color{sblau}}
 
 \newcommand{\proofstep}[1]{\textbf{\textcolor{sblau}{#1}}}
