@@ -451,13 +451,13 @@ class LatexExporter:
 
         elif not image["thumbnail"]:
             with LatexEnvironment(out, "center"):
-                out.write("\\includegraphics[max width=0.5\\textwidth,"
+                out.write("\\adjincludegraphics[max width=0.5\\textwidth,"
                           "max height=0.2\\textheight]{")
                 out.write(image_name)
                 out.write("}")
         else:
             out.write("\\centering\n")
-            out.write("\\includegraphics[max width=.5\\textwidth, max height=0.2\\textheight]{{{}}}\n".format(image_name))
+            out.write("\\adjincludegraphics[max width=.5\\textwidth, max height=0.2\\textheight]{{{}}}\n".format(image_name))
             out.write("\\caption*{")
             self(image["caption"], out)
             out.write(" (\\arabic{imagelabel})}\n")
@@ -480,7 +480,7 @@ class LatexExporter:
                     with LatexEnvironment(out, "figure", ["H"]):
                         out.write("\\begin{minipage}[t][0.2\\textheight][c]{\\linewidth}\n")
                         out.write("\centering\n")
-                        out.write("\\includegraphics[max width=1.\\linewidth, max height=0.2\\textheight]{{{}}}\n".format(image_name))
+                        out.write("\\adjincludegraphics[max width=1.\\linewidth, max height=0.2\\textheight]{{{}}}\n".format(image_name))
                         out.write("\\end{minipage}\n")
                         out.write("\\caption*{")
                         self(image["caption"], out)
