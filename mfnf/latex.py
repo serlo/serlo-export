@@ -437,7 +437,7 @@ class LatexExporter:
 
     def export_image(self, image, out):
         if image["thumbnail"]:
-            out.write("\\begin{figure}[h]\n")
+            out.write("\\begin{figure}[h]\n\\vspace{\\baselineskip}\n")
 
         image_name = self.api.download_image(image["name"], self.directory)
         license = image["license"]
