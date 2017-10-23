@@ -33,10 +33,6 @@ watch:
 watch_test:
 	$(call inotify,make test)
 
-.PHONY: upload
-upload:
-	rsync -v -r out/ -e ssh --exclude 'file*' hp:~/mfnf-pdf-export
-
 .PHONY: clean
 clean:
 	git clean -ffdx
