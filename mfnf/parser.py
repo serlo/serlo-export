@@ -134,6 +134,11 @@ USERNAMES = {
     "Auswahlaxiom": "Autorenkollektiv „Auswahlaxiom“ (Charlotte Dietze, Matthias Paulsen, Anne Reif)",
     "Morpurgo10": "Paolo Martinoni",
     "Taschee": "Alexander Sedlmayr",
+    "Ceranilo": "Caroline Pfannschmidt",
+    "W.e.r.n": "Werner Fröhlich",
+    "Mathpro01": "Werner Fröhlich",
+    "MJ Studies": "Menuja – MJ Studies",
+    "JennKi": "Jenny Kilian",
 }
 
 # List of all HTML inline elements
