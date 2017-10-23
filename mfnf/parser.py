@@ -139,6 +139,8 @@ USERNAMES = {
     "Mathpro01": "Werner Fröhlich",
     "MJ Studies": "Menuja J. (MJ Studies)",
     "JennKi": "Jenny Kilian",
+    "KatharinaKircher": "Katharina Kircher",
+    "Ch1nie": "Chris ShuYu Dong",
 }
 
 # List of all HTML inline elements
