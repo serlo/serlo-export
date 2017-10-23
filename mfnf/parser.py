@@ -137,7 +137,7 @@ USERNAMES = {
     "Ceranilo": "Caroline Pfannschmidt",
     "W.e.r.n": "Werner Fröhlich",
     "Mathpro01": "Werner Fröhlich",
-    "MJ Studies": "Menuja – MJ Studies",
+    "MJ Studies": "Menuja J. (MJ Studies)",
     "JennKi": "Jenny Kilian",
 }
 
