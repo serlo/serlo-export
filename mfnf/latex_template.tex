@@ -190,6 +190,9 @@ Autorinnen\\\bfseries}{\clearpage}
 
 \newcommand{\ColoredTOC}{{\color{sblau}\setcounter{tocdepth}{0}\tableofcontents}}
 \newcommand{\ColoredLOF}{{\color{sblau}\setcounter{tocdepth}{10}\listoffigures}}
+\makeatletter
+\renewcommand\@dotsep{10000}
+\makeatother
 
 \usetocstyle{KOMAlike}
 \settocstylefeature[-1]{pagenumberbox}{\csname @gobble\endcsname}
