@@ -12,6 +12,33 @@ from functools import reduce
 
 report_logger = logging.getLogger("report_logger")
 
+USERNAMES = {
+    "Claudia4": "Claudia Renner",
+    "Agnessa power": "Agnes Pauer",
+    "Mattlocke2.0": "Matthias Greger",
+    "Auswahlaxiom": "Autorenkollektiv „Auswahlaxiom“ (Charlotte Dietze, Matthias Paulsen, Anne Reif)",
+    "Morpurgo10": "Paolo Martinoni",
+    "Taschee": "Alexander Sedlmayr",
+    "Ceranilo": "Caroline Pfannschmidt",
+    "W.e.r.n": "Werner Fröhlich",
+    "Mathpro01": "Werner Fröhlich",
+    "MJ Studies": "Menuja J. (MJ Studies)",
+    "JennKi": "Jenny Kilian",
+    "KatharinaKircher": "Katharina Kircher",
+    "Ch1nie": "Chris ShuYu Dong",
+    "Sven87a": "Sven Prüfer",
+    "Einhalbmvquadrat": "Ekin Köksal",
+    "Claudia4": "Claudia Renner",
+}
+
+def resolve_usernames(usernames):
+    if isinstance(usernames, str):
+        return USERNAMES.get(usernames, usernames)
+    elif isinstance(usernames, (list, tuple)):
+        return [USERNAMES.get(n, n) for n in usernames]
+    else:
+        raise ValueError("Supply a list of users!")
+
 def log_parser_error(message, obj, details="", position={}):
     report_logger.debug("=== ERROR: {} ===".format(message))
     position_str = [position[k] for k in sorted(position.keys())]

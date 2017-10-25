@@ -86,8 +86,11 @@ def chunks(l, n):
         yield l[i:i + n]
 
 def get_license_text(license, name):
+    name = remove_prefix(remove_prefix(escape_latex(name).strip(), "File:"), "Datei:")
+    name = name.replace("\\_","\\allowbreak\\_")
+    name = name.replace("-", "\\allowbreak-")
     if license:
-        return "(\\arabic{imagelabel}): " + remove_prefix(remove_prefix(escape_latex(name).strip(), "File:"), "Datei:") + " by " + ", ".join(license["authors"]) + ": " + license["shortname"]
+        return "(\\arabic{imagelabel}): " + name + " by " + ", ".join(license["authors"]) + ": " + license["shortname"]
     else:
         return "(\\arabic{imagelabel}): could not get licensing information!"
 def shorten(line):

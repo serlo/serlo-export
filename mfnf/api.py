@@ -15,7 +15,7 @@ import time
 import logging
 report_logger = logging.getLogger("report_logger")
 
-from mfnf.utils import stablehash, merge, query_path, select_singleton, mkdirs
+from mfnf.utils import stablehash, merge, query_path, select_singleton, mkdirs, resolve_usernames
 
 def quote_image_name(text):
     return re.sub(r"[^a-zA-Z0-9]", lambda x: str(ord(x.group())), text)
@@ -194,9 +194,9 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
 
         authors = list(sorted(set([res["user"] for res in query])))
 
-        return {"user": result["user"], "name": meta.get("UsageTerms", {}).get("value", ""),
+        return {"user": resolve_usernames(result["user"]), "name": meta.get("UsageTerms", {}).get("value", ""),
                 "shortname": shortname, "licenseurl": url,
-                "url": result["url"], "authors": authors, "source": source}
+                "url": result["url"], "authors": resolve_usernames(authors), "source": source}
 
     def get_image_info(self, filename):
         """Returns the URL and sha1 to the current version of the image

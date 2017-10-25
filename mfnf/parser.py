@@ -9,7 +9,7 @@ from itertools import chain, count
 from html.parser import HTMLParser
 from mfnf.transformations import NodeTransformation, ChainedAction, Action, \
      NodeTypeTransformation, check, NotInterested, Transformation, SectionTracking
-from mfnf.utils import lookup, remove_prefix, remove_suffix, merge, log_parser_error
+from mfnf.utils import lookup, remove_prefix, remove_suffix, merge, log_parser_error, resolve_usernames
 
 report_logger = logging.getLogger("report_logger")
 
@@ -127,24 +127,6 @@ DEFAULT_VALUES = {
     }
 }
 
-USERNAMES = {
-    "Claudia4": "Claudia Renner",
-    "Agnessa power": "Agnes Pauer",
-    "Mattlocke2.0": "Matthias Greger",
-    "Auswahlaxiom": "Autorenkollektiv „Auswahlaxiom“ (Charlotte Dietze, Matthias Paulsen, Anne Reif)",
-    "Morpurgo10": "Paolo Martinoni",
-    "Taschee": "Alexander Sedlmayr",
-    "Ceranilo": "Caroline Pfannschmidt",
-    "W.e.r.n": "Werner Fröhlich",
-    "Mathpro01": "Werner Fröhlich",
-    "MJ Studies": "Menuja J. (MJ Studies)",
-    "JennKi": "Jenny Kilian",
-    "KatharinaKircher": "Katharina Kircher",
-    "Ch1nie": "Chris ShuYu Dong",
-    "Sven87a": "Sven Prüfer",
-    "Einhalbmvquadrat": "Ekin Köksal",
-    "Claudia4": "Claudia Renner",
-}
 
 # List of all HTML inline elements
 # see https://developer.mozilla.org/en-US/docs/Web/HTML/Inline_elements
@@ -742,7 +724,7 @@ class ArticleParser(ChainedAction):
             article_size = 0
 
             for rev in (x for x in reversed(revisions) if "anon" not in x):
-                user = USERNAMES.get(rev["user"], rev["user"])
+                user = resolve_usernames(rev["user"])
                 authors[user] += max(rev["size"] - article_size, 50)
                 article_size = rev["size"]
 
