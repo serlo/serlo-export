@@ -6,7 +6,7 @@ import textwrap
 import logging
 
 from itertools import chain, repeat, count
-from mfnf.utils import log_parser_error, lookup
+from mfnf.utils import log_parser_error, lookup, remove_prefix
 from mfnf.transformations import ChainedAction, NotInterested, check, \
                                  NodeTypeTransformation, Transformation, SectionTracking
 
@@ -87,7 +87,7 @@ def chunks(l, n):
 
 def get_license_text(license, name):
     if license:
-        return "(\\arabic{imagelabel}): by " + ", ".join(license["authors"]) + ": " + license["shortname"] + " details: \\url{https://commons.wikimedia.org/wiki/" + name + "}"
+        return "(\\arabic{imagelabel}): " + remove_prefix(remove_prefix(escape_latex(name).strip(), "File:"), "Datei:") + " by " + ", ".join(license["authors"]) + ": " + license["shortname"]
     else:
         return "(\\arabic{imagelabel}): could not get licensing information!"
 def shorten(line):
