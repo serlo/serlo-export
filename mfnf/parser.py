@@ -142,6 +142,8 @@ USERNAMES = {
     "KatharinaKircher": "Katharina Kircher",
     "Ch1nie": "Chris ShuYu Dong",
     "Sven87a": "Sven Prüfer",
+    "Einhalbmvquadrat": "Ekin Köksal",
+    "Claudia4": "Claudia Renner",
 }
 
 # List of all HTML inline elements
