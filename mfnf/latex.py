@@ -91,9 +91,9 @@ def get_license_text(license, name):
     name = name.replace("\\_","\\allowbreak\\_")
     name = name.replace("-", "\\allowbreak-")
     if license:
-        return "(\\arabic{imagelabel}):~\\protect\\href{https://commons.wikimedia.org/wiki/%s}{\\textbf{%s}} by " % (raw_name, name) + ", ".join(license["authors"]) + ": " + license["shortname"]
+        return "Abb. \\arabic{imagelabel}: \\protect\\href{https://commons.wikimedia.org/wiki/%s}{\\textbf{%s}} by " % (raw_name, name) + ", ".join(license["authors"]) + " \\textit{(" + license["shortname"] + ")}"
     else:
-        return "(\\arabic{imagelabel}): could not get licensing information!"
+        return "Abb. \\arabic{imagelabel}: could not get licensing information!"
 def shorten(line):
     indent = re.match(r"^\s*", line).group()
 
@@ -358,7 +358,7 @@ class LatexExporter:
         out.write("\\begin{document}\n\n")
         out.write("\\sloppy\n\n")
         out.write("\\includepdf[pages=-,addtotoc={4,part,-1,Über das Buchprojekt,sec:about}]{../../predesigned_pages/mfnf_prelude}\n\n")
-
+        out.write("\\addxcontentsline{lof}{part}[\\arabic{part}]{Über das Buchprojekt}")
         out.write("\\maketitle\n\n")
         out.write("\\ColoredTOC\n\n")
         out.write("\\newpage\n\n")
@@ -375,6 +375,7 @@ class LatexExporter:
         out.write("\\part{")
         out.write(escape_latex(chapter["name"]))
         out.write("}\n\n")
+        out.write("\\addxcontentsline{lof}{part}[\\arabic{part}]{" + escape_latex(chapter["name"]) + "}")
 
         # TODO: Move to parser calculation of author list
         authors = [x[0] for x in sorted(chapter["authors"].items(), reverse=True,
@@ -447,7 +448,7 @@ class LatexExporter:
         license = image["license"]
         licensetext = get_license_text(license, image["name"])
         out.write("\\stepcounter{imagelabel}\n")
-        out.write("\\addcontentsline{lof}{figure}{" + licensetext + "}")
+        out.write("\\addxcontentsline{lof}{section}[\\arabic{section}]{" + licensetext + "}")
 
 
         if image["inline"]:
@@ -478,7 +479,7 @@ class LatexExporter:
                     license = image["license"]
                     licensetext = get_license_text(license, image["name"])
                     out.write("\\stepcounter{imagelabel}\n")
-                    out.write("\\addcontentsline{lof}{figure}{%s}" % licensetext)
+                    out.write("\\addxcontentsline{lof}{section}[\\arabic{section}]{%s}" % licensetext)
                     image_name = self.api.download_image(image["name"], self.directory)
                     out.write("\\begin{minipage}[t]{\linewidth}\n")
                     with LatexEnvironment(out, "figure", ["H"]):

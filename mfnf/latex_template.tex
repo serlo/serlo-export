@@ -2,7 +2,8 @@
                paper=161mm:241mm,
                parskip=half-,
                BCOR=3mm,DIV=14,
-               listof=chapterentry]{scrbook}
+               listof=chapterentry,
+               tocflat]{scrbook}
 
 % set font size to 9pt and base line height to 12pt
 \changefontsizes[12pt]{9pt}
@@ -194,6 +195,7 @@ Autorinnen\\\bfseries}{\clearpage}
 \renewcommand\@dotsep{10000}
 \makeatother
 
+\usetocstyle[lof]{KOMAlike}
 \usetocstyle{KOMAlike}
 \settocstylefeature[-1]{pagenumberbox}{\csname @gobble\endcsname}
 
