@@ -509,12 +509,14 @@ class LatexExporter:
         #out.write("\\begin{adjustbox}{max width=\\textwidth}")
         # TODO intermediate conversion
         ncolumns = len(table["content"][0]["content"])
+        out.write("\n\\renewcommand{\\arraystretch}{1.5}\n")
         out.write("\n\\begin{longtabu} to \\linewidth {" + ncolumns * 'X[l]' + "} \\\\ \\toprule \n")
         self(table["content"][0], out)
         out.write("\\midrule\n")
         self(table["content"][1:], out)
         out.write("\\bottomrule\n")
         out.write("\\end{longtabu}\n")
+        out.write("\\renewcommand{\\arraystretch}{1.0}\n")
         #out.write("\\end{adjustbox}\n\n")
 
     def export_tr(self, tr, out):
