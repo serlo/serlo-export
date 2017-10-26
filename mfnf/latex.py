@@ -506,7 +506,7 @@ class LatexExporter:
         #out.write("\\begin{adjustbox}{max width=\\textwidth}")
         # TODO intermediate conversion
         ncolumns = len(table["content"][0]["content"])
-        out.write("\n\\begin{longtabu} to \\linewidth {" + ncolumns * 'X' + "} \\\\ \\toprule \n")
+        out.write("\n\\begin{longtabu} to \\linewidth {" + ncolumns * 'X[l]' + "} \\\\ \\toprule \n")
         self(table["content"][0], out)
         out.write("\\midrule\n")
         self(table["content"][1:], out)
