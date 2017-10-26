@@ -86,11 +86,12 @@ def chunks(l, n):
         yield l[i:i + n]
 
 def get_license_text(license, name):
+    raw_name = name.strip()
     name = remove_prefix(remove_prefix(escape_latex(name).strip(), "File:"), "Datei:")
     name = name.replace("\\_","\\allowbreak\\_")
     name = name.replace("-", "\\allowbreak-")
     if license:
-        return "(\\arabic{imagelabel}): " + name + " by " + ", ".join(license["authors"]) + ": " + license["shortname"]
+        return "(\\arabic{imagelabel}):~\\protect\\href{https://commons.wikimedia.org/wiki/%s}{\\textbf{%s}} by " % (raw_name, name) + ", ".join(license["authors"]) + ": " + license["shortname"]
     else:
         return "(\\arabic{imagelabel}): could not get licensing information!"
 def shorten(line):
@@ -446,7 +447,7 @@ class LatexExporter:
         license = image["license"]
         licensetext = get_license_text(license, image["name"])
         out.write("\\stepcounter{imagelabel}\n")
-        out.write("\\addcontentsline{lof}{figure}{\\arabic{chapter}.\\arabic{section}.\\hspace{3mm}%s}" % licensetext)
+        out.write("\\addcontentsline{lof}{figure}{" + licensetext + "}")
 
 
         if image["inline"]:
@@ -477,7 +478,7 @@ class LatexExporter:
                     license = image["license"]
                     licensetext = get_license_text(license, image["name"])
                     out.write("\\stepcounter{imagelabel}\n")
-                    out.write("\\addcontentsline{lof}{figure}{\\arabic{chapter}.\\arabic{section}.\hspace{3mm}%s}" % licensetext)
+                    out.write("\\addcontentsline{lof}{figure}{%s}" % licensetext)
                     image_name = self.api.download_image(image["name"], self.directory)
                     out.write("\\begin{minipage}[t]{\linewidth}\n")
                     with LatexEnvironment(out, "figure", ["H"]):
