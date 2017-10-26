@@ -67,6 +67,15 @@ Wenn du eine Abbildung weiterverwenden willst, findest du unter \textbf{\url{htt
 \renewcommand*{\rm}[1]{\mathrm{#1}}
 
 \usepackage{fontspec}
+% voodoo
+% fontspec and titlesec have errors displaying math font, unless \maketitle is
+% used. This piece of black magic solves the problem.
+% https://github.com/wspr/unicode-math/issues/253
+\makeatletter
+\AtBeginDocument{%
+ \let\glb@currsize\relax
+}
+\makeatother
 \setmainfont[Ligatures=TeX,
              Extension=.ttf,
              BoldFont=Karmilla-Bold-016m,
