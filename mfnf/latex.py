@@ -358,6 +358,7 @@ class LatexExporter:
         out.write("\\sloppy\n\n")
         out.write("\\includepdf[pages=-,addtotoc={4,part,-1,Über das Buchprojekt,sec:about}]{../../predesigned_pages/mfnf_prelude}\n\n")
 
+        out.write("\\maketitle\n\n")
         out.write("\\ColoredTOC\n\n")
         out.write("\\newpage\n\n")
 
