@@ -233,6 +233,20 @@ class MediaWiki2Latex(ChainedAction):
 
             raise NotInterested()
 
+    class MarkSectionImageCount(NodeTypeTransformation):
+
+        def _count_images(self, obj, count):
+            if obj.get("content"):
+                for child in obj["content"]:
+                    count += self._count_images(child, count)
+            if obj.get("type") in ("image", "gallery"):
+                count += 1
+            return count
+
+        def transform_section(self, obj):
+            obj["image_count"] = self._count_images(obj, 0)
+            return obj
+
     class HandleTableFormulas(NodeTypeTransformation):
         """This transformation tags formulas in tables as align
            environments are not allowed there."""
@@ -448,7 +462,7 @@ class LatexExporter:
         license = image["license"]
         licensetext = get_license_text(license, image["name"])
         out.write("\\stepcounter{imagelabel}\n")
-        out.write("\\addxcontentsline{lof}{section}[\\arabic{section}]{" + licensetext + "}")
+        out.write("\\addxcontentsline{lof}{section}[]{" + licensetext + "}")
 
 
         if image["inline"]:
@@ -479,7 +493,7 @@ class LatexExporter:
                     license = image["license"]
                     licensetext = get_license_text(license, image["name"])
                     out.write("\\stepcounter{imagelabel}\n")
-                    out.write("\\addxcontentsline{lof}{section}[\\arabic{section}]{%s}" % licensetext)
+                    out.write("\\addxcontentsline{lof}{section}[]{%s}" % licensetext)
                     image_name = self.api.download_image(image["name"], self.directory)
                     out.write("\\begin{minipage}[t]{\linewidth}\n")
                     with LatexEnvironment(out, "figure", ["H"]):
