@@ -29,6 +29,7 @@ USERNAMES = {
     "Sven87a": "Sven Prüfer",
     "Einhalbmvquadrat": "Ekin Köksal",
     "Claudia4": "Claudia Renner",
+    "Griever~dewikibooks": "Akram Chawki",
 }
 
 def resolve_usernames(usernames):
