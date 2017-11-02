@@ -110,6 +110,15 @@ def escape_latex_verbatim(code):
     code = re.sub(r"\\end\s*{\s*verbatim\s*}", "", code)
     return "\n".join((shorten(line) for line in code.splitlines()))
 
+
+def collect_images(obj, result, origin = False):
+    if origin or obj.get("content") and not obj.get("type") in ("section", "book", "chapter", "article"):
+        for child in obj["content"]:
+            collect_images(child, result)
+
+    if obj.get("type") == "image" and obj["thumbnail"]:
+        result.append(obj)
+
 class MediaWiki2Latex(ChainedAction):
     class HandleBoxTemplates(Transformation):
         def __init__(self, **options):
@@ -200,31 +209,40 @@ class MediaWiki2Latex(ChainedAction):
 
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
-            self.current_section = {}
             self.thumb_gallery = None
 
-        def transform_section(self, obj):
-            self.thumb_gallery = {"type": "gallery", "widths": 120,
-                                  "heights": 120, "items": []}
-
-            self.current_section[obj["depth"]] = obj
-            self.current_section = {l: self.current_section[l] for l in sorted(self.current_section.keys()) if l <= obj["depth"]}
-            obj["content"] = self(obj["content"])
-            obj["content"].insert(0, self.thumb_gallery)
+        def transform_article(self, obj):
+            self.transform_section(obj)
             return obj
+
+        def transform_section(self, obj):
+            thumbs = []
+            collect_images(obj, thumbs, True)
+            gallery_items = []
+
+            for thumb in thumbs:
+                item = thumb.copy()
+                item["type"] = "galleryitem"
+                gallery_items.append(item)
+
+            thumb_gallery = {"type": "gallery", "widths": 120,
+                                  "heights": 120, "items": gallery_items}
+            self(obj["content"])
+            obj["content"].insert(0, thumb_gallery)
+            return obj
+
+    class RemoveThumbnailImages(NodeTypeTransformation):
 
         def transform_image(self, obj):
 
             if obj["thumbnail"]:
-                self.thumb_gallery["items"].append(obj)
-                obj["type"] = "galleryitem"
                 return None
 
-            raise NotInterested()
+            return obj
 
     class RemoveEmptyGalleries(NodeTypeTransformation):
         def transform_gallery(self, obj):
-            if not obj["items"]:
+            if len(obj["items"]) == 0:
                 return None
             elif len(obj["items"]) == 1:
                 image = obj["items"][0]
@@ -232,20 +250,6 @@ class MediaWiki2Latex(ChainedAction):
                 return image
 
             raise NotInterested()
-
-    class MarkSectionImageCount(NodeTypeTransformation):
-
-        def _count_images(self, obj, count):
-            if obj.get("content"):
-                for child in obj["content"]:
-                    count += self._count_images(child, count)
-            if obj.get("type") in ("image", "gallery"):
-                count += 1
-            return count
-
-        def transform_section(self, obj):
-            obj["image_count"] = self._count_images(obj, 0)
-            return obj
 
     class HandleTableFormulas(NodeTypeTransformation):
         """This transformation tags formulas in tables as align
