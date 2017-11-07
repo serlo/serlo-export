@@ -93,9 +93,15 @@ Wenn du eine Abbildung weiterverwenden willst, findest du unter \textbf{\url{htt
 
 \setcounter{secnumdepth}{1}
 
-\definecolor{sblau}{HTML}{007ec1}
-\colorlet{shellblau}{sblau!15}
-\definecolor{forestgreen}{rgb}{0.13, 0.55, 0.13}
+% define colors in rgb colorspace (for digital pdfs)
+% \definecolor{sblau}{HTML}{007ec1}
+% \colorlet{shellblau}{sblau!15}
+% \definecolor{forestgreen}{rgb}{0.13, 0.55, 0.13}
+
+% define colors in cmyk colorspace (for print)
+\definecolor{sblau}{cmyk}{0.83,0.41,0,0}
+\definecolor{shellblau}{cmyk}{0.39,0.05,0.03,0}
+\definecolor{forestgreen}{cmyk}{0.82,0.19,1,0.05}
 
 % change font and color of headers and table of contents
 \addtokomafont{disposition}{\rmfamily\color{sblau}}
