@@ -1,6 +1,6 @@
 # Makefile for creating a PDF from a LaTeX project
 LATEX = lualatex
-LATEXFLAGS = -halt-on-error
+LATEXFLAGS = -halt-on-error -no-shell-escape
 LATEXMK = latexmk
 LATEXMKFLAGS = -f
 
