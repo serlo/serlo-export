@@ -68,7 +68,7 @@ def run_script():
                 return super().get_revisions(title)
 
         ses = requests.Session()
-        retry = Retry(total=20, connect=10, read=10, status=10,
+        retry = Retry(total=20, connect=10, read=10,
                       status_forcelist=[504, 503], backoff_factor=1,
                       method_whitelist=frozenset(['HEAD', 'TRACE', 'GET',
                                                   'PUT', 'OPTIONS', 'DELETE',
