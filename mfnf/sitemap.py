@@ -9,6 +9,10 @@ from mfnf.utils import remove_prefix, lookup
 
 SITEMAP_NODE_TYPES = ["mfnf_sitemap", "book", "chapter", "article"]
 SITEMAP_DELIMITER = "= Bücher ="
+SITEMAP_ANNOTATIONS = {
+    "exlcudes": ": Exclude:",
+    "after": ": After:",
+}
 
 def generate_sitemap_nodes(sitemap_text):
     """Generator for all node specifications in a sitemap source code. It
@@ -46,10 +50,12 @@ def generate_sitemap_nodes(sitemap_text):
                     "children": []
                 }
 
-        if line.startswith(": Exclude:"):
-            header = remove_prefix(line, ": Exclude:").strip()
+        for an_type, an_prefix in SITEMAP_ANNOTATIONS.items():
+            if line.startswith(an_prefix):
+                value = remove_prefix(line, an_prefix).strip()
 
-            yield { "type": "exclude", "header": header }
+                yield { "type": "annotation", "value": value,
+                        "annotation_type": an_type }
 
 def insert_node(node, new_node):
     """Inserts the node `new_node` in the tree `node` at the right position
@@ -91,8 +97,10 @@ def parse_sitemap_node_codes(node):
         "title": title,
         "name": name,
         "children": [parse_sitemap_node_codes(x) for x in node["children"]],
-        "excludes": node.get("excludes", [])
+        "excludes": node.get("excludes", []),
+        "after": node.get("after", []),
     }
+
     return add_sitemap_node_type(parsed_node)
 
 def add_sitemap_node_type(node, depth=0):
@@ -107,7 +115,8 @@ def add_sitemap_node_type(node, depth=0):
         "name": name,
         "type": SITEMAP_NODE_TYPES[depth],
         "children": [add_sitemap_node_type(x, depth + 1) for x in children],
-        "excludes": node["excludes"]
+        "excludes": node["excludes"],
+        "after": node["after"],
     }
 
 def parse_sitemap(sitemap_text):
@@ -122,13 +131,15 @@ def parse_sitemap(sitemap_text):
     last_node = None
 
     for node in generate_sitemap_nodes(stripped_sitemap_text):
-        if lookup(node, "type") == "exclude":
+        if lookup(node, "type") == "annotation":
             assert last_node
 
-            if "excludes" not in last_node:
-                last_node["excludes"] = []
+            an_type = node["annotation_type"]
 
-            last_node["excludes"].append(node["header"])
+            if an_type not in last_node:
+                last_node[an_type] = []
+
+            last_node[an_type].append(node["value"])
         else:
             last_node = node
             insert_node(root, node)
