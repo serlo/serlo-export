@@ -8,7 +8,7 @@ import logging
 from itertools import chain, repeat, count
 from mfnf.utils import log_parser_error, lookup, remove_prefix
 from mfnf.transformations import ChainedAction, NotInterested, check, \
-                                 NodeTypeTransformation, Transformation, SectionTracking
+                                 NodeTypeTransformation, Transformation
 
 report_logger = logging.getLogger("report_logger")
 
