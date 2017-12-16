@@ -388,6 +388,9 @@ class LatexExporter:
         out.write("\\includepdf[pages=-]{../../predesigned_pages/mfnf_epilogue}\n\n")
         out.write("\\end{document}\n")
 
+    def include_pdf(self, pdf_name, out):
+        out.write("\\includepdf[pages=-]{../../predesigned_pages/" + pdf_name + "}\n\n")
+
     def export_chapter(self, chapter, out):
         # TODO we use parts again, rename chapter in the function names
         out.write("\\part{")
@@ -411,6 +414,11 @@ class LatexExporter:
         out.write("}\n\n")
 
         self(article["content"], out)
+
+        if "Spendenaufruf" in article["after"]:
+            self.include_pdf("mfnf_fundraising", out)
+        elif "Mitmachaufruf" in article["after"]:
+            self.include_pdf("mfnf_participation", out)
 
     def export_paragraph(self, paragraph, out):
         self(paragraph["content"], out)
