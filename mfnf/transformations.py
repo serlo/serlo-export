@@ -123,6 +123,18 @@ class NodeTypeTransformation(NodeTransformation):
         found."""
         raise NotInterested()
 
+# TODO: Find a better solution!
+def concatenate_text_nodes(children):
+    """Returns the complete text inside a node"""
+
+    result = ""
+
+    for child in children:
+        if child.get("type") == "text":
+            result += child["data"]
+
+    return result
+
 class SectionTracking(NodeTransformation):
     """Transformation tracking the current position in a document to
     allow easier debugging."""
@@ -139,9 +151,9 @@ class SectionTracking(NodeTransformation):
         if obj.get("type") == "element":
 
             if obj["name"] in ("h2", "h3", "h4", "h5"):
-                self.add_section(int(obj["name"][-1])-1, obj["children"][0]["data"])
+                self.add_section(int(obj["name"][-1])-1, concatenate_text_nodes(obj["children"]))
 
         elif obj.get("type") == "header":
-            self.add_section(obj["depth"], obj["content"][0]["data"])
+            self.add_section(obj["depth"], concatenate_text_nodes(obj["content"]))
 
         return super().act_on_dict(obj)
