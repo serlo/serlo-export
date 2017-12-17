@@ -222,6 +222,13 @@ class MediaWikiCodeParser(ChainedAction):
 
             return parser.content
 
+    class RemoveUnicodeFallback(NodeTransformation):
+        def transform_dict(self, obj):
+            check(obj, "type") == "element"
+            check(obj, "name").of(("span", ))
+            check(obj, "attrs", "typeof") == "mw:FallbackId"
+            return None
+
     class CollapseWhitespaces(Transformation):
         def change_inline(self, obj, i, n):
             if lookup(obj, "type") == "text":
