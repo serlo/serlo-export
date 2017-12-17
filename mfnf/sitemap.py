@@ -10,7 +10,7 @@ from mfnf.utils import remove_prefix, lookup
 SITEMAP_NODE_TYPES = ["mfnf_sitemap", "book", "chapter", "article"]
 SITEMAP_DELIMITER = "= Bücher ="
 SITEMAP_ANNOTATIONS = {
-    "exlcudes": ": Exclude:",
+    "excludes": ": Exclude:",
     "after": ": After:",
 }
 
