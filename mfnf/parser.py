@@ -469,7 +469,7 @@ class ArticleContentParser(ChainedAction):
     class HandleFigures(NodeTransformation):
         def transform_dict(self, obj):
             check(obj, "type") == "element"
-            check(obj, "name").of(("figure", "span"))
+            check(obj, "name").of(("figure", "span", "figure-inline"))
             check(obj, "attrs", "typeof").of(("mw:Image", "mw:Image/Thumb"))
 
             caption = [child
@@ -486,7 +486,8 @@ class ArticleContentParser(ChainedAction):
 
             return {"type": "image", "caption": self(caption), "name": name,
                     "thumbnail": obj["attrs"]["typeof"] == "mw:Image/Thumb",
-                    "inline": obj["name"] == "span", "license": license,
+                    "inline": obj["name"] in ("span", "figure-inline"),
+                    "license": license,
                     "noprint": "noprint" in obj["attrs"].get("class", "")}
 
     class HandleInlineFigures(SectionTracking):
