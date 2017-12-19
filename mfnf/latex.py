@@ -383,7 +383,7 @@ class LatexExporter:
 
         self(book["children"], out)
         self.print_notimplemented(out)
-        out.write("\\pagebreak\n")
+        out.write("\\clearpage\n")
         out.write("\\ColoredLOF\n\n")
         out.write("\\includepdf[pages=-]{../../predesigned_pages/mfnf_epilogue}\n\n")
         out.write("\\end{document}\n")
