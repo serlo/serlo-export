@@ -14,7 +14,7 @@ ARTICLE_EXPORTS := article_exports
 inotify = while inotifywait -e modify ${SOURCES}; do ${1} ; done
 create_book = make -C "${1}" -f ${ROOT_DIR}/build-book.mk
 
-.PHONY: clean watch_test watch test init all $(ARTICLES)
+.PHONY: clean watch_test watch test init all $(ARTICLES) $(IMAGES)
 
 all:
 	$(PYTHON) create_books.py
@@ -30,6 +30,12 @@ $(ARTICLES):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:articles/%=%))
 	@[[ -d $(ARTICLES) ]] || mkdir $(ARTICLES)
 	$(MAKE) -C $(ARTICLES) -f $(MK)/article.mk MK=$(MK) $(NEXTGOAL)
+
+$(IMAGES):
+	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
+	@[[ -d $@ ]] || mkdir $@
+	$(MAKE) -C $@ -f $(MK)/image.mk MK=$(MK) $(NEXTGOAL)
+
 init:
 	pip install -r requirements.txt
 
@@ -50,3 +56,5 @@ clean:
 Makefile : ;
 
 $(ARTICLES)/% :: $(ARTICLES) ;
+
+$(IMAGES)/% :: $(IMAGES) ;
