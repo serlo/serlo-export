@@ -142,6 +142,12 @@ def stablehash(obj):
         else:
             raise NotImplementedError()
 
+def quote_filename(filename):
+    return filename.replace(" ", "_").replace(":", "@COLON@")
+
+def unquote_filename(filename):
+    return filename.replace("@COLON@", ":")
+
 class CachedFunction:
     def __init__(self, db):
         self.db = db

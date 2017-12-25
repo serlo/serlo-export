@@ -15,7 +15,7 @@ import time
 import logging
 report_logger = logging.getLogger("report_logger")
 
-from mfnf.utils import stablehash, merge, query_path, select_singleton, mkdirs, resolve_usernames
+from lib.utils import stablehash, merge, query_path, select_singleton, mkdirs, resolve_usernames
 
 def quote_image_name(text):
     return re.sub(r"[^a-zA-Z0-9]", lambda x: str(ord(x.group())), text)
@@ -203,8 +203,8 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
         `filename`."""
         return self.get_image_revisions(filename)[-1]
 
-    def get_content(self, title):
-        return self._index_call({"action": "raw", "title": title})
+    def get_content(self, title, revision_id=None):
+        return self._index_call({"action": "raw", "title": title, "oldid": revision_id})
 
     def convert_text_to_html(self, title, text):
         path = ["transform", "wikitext", "to", "html", quote(title, safe="")]
@@ -213,7 +213,7 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
         return self._api_call(path, data).text
 
     def get_revisions(self, title):
-        params = {"prop": "revisions", "rvprop": "size|user", "titles": title,
+        params = {"prop": "revisions", "rvprop": "size|user|ids", "titles": title,
                   "rvlimit": "max"}
 
         return self.query(params, ["pages", select_singleton, "revisions"])

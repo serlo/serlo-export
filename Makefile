@@ -3,10 +3,19 @@ SOURCES = $(shell git ls-tree -r master --name-only)
 PYTHON = $(shell if which pyenv > /dev/null; \
                  then echo python ; else echo python3 ; fi)
 
+MK := $(ROOT_DIR)/mk
+
+#topdir = $(shell echo $(1) | sed 's,^[^/]*/,,')
+
+ARTICLES := articles
+IMAGES := images
+ARTICLE_EXPORTS := article_exports
+
 inotify = while inotifywait -e modify ${SOURCES}; do ${1} ; done
 create_book = make -C "${1}" -f ${ROOT_DIR}/build-book.mk
 
-.PHONY: all
+.PHONY: clean watch_test watch test init all $(ARTICLES)
+
 all:
 	$(PYTHON) create_books.py
 	for BOOK_DIR in out/*; do \
@@ -17,22 +26,27 @@ all:
 	$(PYTHON) create_books.py "$@"
 	$(call create_book,$<)
 
-.PHONY: init
+$(ARTICLES):
+	$(eval NEXTGOAL := $(MAKECMDGOALS:articles/%=%))
+	@[[ -d $(ARTICLES) ]] || mkdir $(ARTICLES)
+	$(MAKE) -C $(ARTICLES) -f $(MK)/article.mk MK=$(MK) $(NEXTGOAL)
 init:
 	pip install -r requirements.txt
 
-.PHONY: test
 test:
 	$(PYTHON) -m nose --with-doctest
 
-.PHONY: watch
 watch:
 	$(call inotify,make all)
 
-.PHONY: watch_test
 watch_test:
 	$(call inotify,make test)
 
-.PHONY: clean
 clean:
 	git clean -ffdx
+
+.SUFFIXES:
+
+Makefile : ;
+
+$(ARTICLES)/% :: $(ARTICLES) ;
