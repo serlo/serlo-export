@@ -6,7 +6,7 @@ from abc import ABCMeta, abstractmethod
 from collections import OrderedDict
 from collections.abc import Sequence, Mapping
 from functools import reduce
-from mfnf.utils import lookup
+from lib.utils import lookup
 
 class NotInterested(Exception):
     pass

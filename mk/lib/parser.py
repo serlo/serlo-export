@@ -7,9 +7,9 @@ import logging
 from collections import defaultdict
 from itertools import chain, count
 from html.parser import HTMLParser
-from mfnf.transformations import NodeTransformation, ChainedAction, Action, \
+from lib.transformations import NodeTransformation, ChainedAction, Action, \
      NodeTypeTransformation, check, NotInterested, Transformation, SectionTracking
-from mfnf.utils import lookup, remove_prefix, remove_suffix, merge, log_parser_error, resolve_usernames
+from lib.utils import lookup, remove_prefix, remove_suffix, merge, log_parser_error, resolve_usernames
 
 report_logger = logging.getLogger("report_logger")
 
@@ -744,10 +744,12 @@ class ArticleParser(ChainedAction):
             article_link = self.api._index_url + "?title=" + article["title"].replace(" ", "+")
             report_logger.info("== Parsing of Article [{} {}] ==".format(article_link, article["title"]))
 
+            # TODO: not do that, use article["content"]
             content = parser(self.api.get_content(article["title"]))
             authors = self.get_article_authors(article["title"])
 
-            return merge(article, {"content": content, "authors": authors})
+            return merge(article, {"content": content, "authors": authors,
+                                   "name": article["title"]})
 
     class MergeAuthorCounts(NodeTypeTransformation):
         def transform_chapter(self, obj):
