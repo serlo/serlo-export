@@ -1,13 +1,14 @@
 import collections
 import json
 import os
+import os.path
 import re
 import textwrap
 import logging
 
 from itertools import chain, repeat, count
-from mfnf.utils import log_parser_error, lookup, remove_prefix
-from mfnf.transformations import ChainedAction, NotInterested, check, \
+from lib.utils import log_parser_error, lookup, remove_prefix, quote_filename
+from lib.transformations import ChainedAction, NotInterested, check, \
                                  NodeTypeTransformation, Transformation
 
 report_logger = logging.getLogger("report_logger")
@@ -470,7 +471,7 @@ class LatexExporter:
         if image["thumbnail"]:
             out.write("\\begin{figure}[h]\n\\vspace{\\baselineskip}\n")
 
-        image_name = self.api.download_image(image["name"], self.directory)
+        image_name = "images/" + os.path.splitext(quote_filename(image["name"]))[0]
         license = image["license"]
         licensetext = get_license_text(license, image["name"])
         out.write("\\stepcounter{imagelabel}\n")
@@ -506,7 +507,7 @@ class LatexExporter:
                     licensetext = get_license_text(license, image["name"])
                     out.write("\\stepcounter{imagelabel}\n")
                     out.write("\\addxcontentsline{lof}{section}[]{%s}" % licensetext)
-                    image_name = self.api.download_image(image["name"], self.directory)
+                    image_name = "images/" + os.path.splitext(quote_filename(image["name"]))[0]
                     out.write("\\begin{minipage}[t]{\linewidth}\n")
                     with LatexEnvironment(out, "figure", ["H"]):
                         out.write("\\begin{minipage}[t][0.2\\textheight][c]{\\linewidth}\n")

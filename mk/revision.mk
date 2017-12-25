@@ -4,6 +4,9 @@
 %.json: %.md
 	python $(MK)/transform_article.py $(ARTICLE) $* < $< > $@
 
+%.tex: %.json
+	python $(MK)/article_to_tex.py < $< > $@
+
 .DELETE_ON_ERROR:
 
 .SECONDARY:
