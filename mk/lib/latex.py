@@ -416,6 +416,9 @@ class LatexExporter:
 
         self(article["content"], out)
 
+        if not "after" in article:
+            return
+
         if "Spendenaufruf" in article["after"]:
             self.include_pdf("mfnf_fundraising", out)
         elif "Mitmachaufruf" in article["after"]:
