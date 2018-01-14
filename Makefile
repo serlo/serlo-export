@@ -43,6 +43,10 @@ $(ARTICLE_EXPORTS):
 
 init:
 	pip install -r requirements.txt
+	git clone https://github.com/vroland/mediawiki-peg-rust
+	git clone https://github.com/vroland/mfnf-export
+	(cd mediawiki-peg-rust && exec cargo build --release)
+	(cd mfnf-export && exec cargo build --release)
 
 test:
 	$(PYTHON) -m nose --with-doctest

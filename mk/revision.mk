@@ -4,8 +4,11 @@
 %.json: %.md
 	python $(MK)/transform_article.py $(ARTICLE) $* < $< > $@
 
-%.tex: %.json
-	python $(MK)/article_to_tex.py < $< > $@
+%.yml: %.md
+	$(MK)/transform_article.sh < $< > $@
+
+%.tex: %.yml
+	$(MK)/article_to_tex.sh $(ARTICLE) $* $< > $@
 
 %.dep: %.json
 	python $(MK)/article_dependencies.py $* < $< > $@
