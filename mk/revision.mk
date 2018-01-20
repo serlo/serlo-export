@@ -8,10 +8,10 @@
 	$(MK)/transform_article.sh < $< > $@
 
 %.tex: %.yml
-	$(MK)/article_to_tex.sh $(ARTICLE) $* $< > $@
+	$(MK)/article_to_tex.sh $(ARTICLE) $* < $< > $@
 
-%.dep: %.json
-	python $(MK)/article_dependencies.py $* < $< > $@
+%.dep: %.yml
+	$(MK)/article_dependencies.sh $(ARTICLE) $* < $< > $@
 
 .DELETE_ON_ERROR:
 

@@ -10,7 +10,8 @@ from lib.utils import unquote_filename
 def download_image(image):
     with requests.Session() as session:
         api = HTTPMediaWikiAPI(session)
-        image_info = api.get_image_info(image)
+        image_uri = "File:" + image[:1].upper() + image[1:]
+        image_info = api.get_image_info(image_uri)
         return requests.get(image_info["url"]).text
 
 if __name__ == "__main__":
