@@ -47,6 +47,9 @@ init:
 	git clone https://github.com/vroland/mfnf-export
 	(cd mediawiki-peg-rust && exec cargo build --release)
 	(cd mfnf-export && exec cargo build --release)
+	which ocamlopt &>/dev/null || { echo "Please install ocaml"; exit 1; }
+	git clone https://phabricator.wikimedia.org/diffusion/EMAT/extension-math.git
+	(cd extension-math/texvccheck && exec make)
 
 test:
 	$(PYTHON) -m nose --with-doctest
