@@ -7,3 +7,4 @@ images/
 article_exports/
 mediawiki-peg-rust/
 mfnf-export/
+venv/
