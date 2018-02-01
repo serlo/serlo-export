@@ -1,7 +1,7 @@
 LATEX = lualatex
 LATEXFLAGS = -halt-on-error -no-shell-escape
 LATEXMK = latexmk
-LATEXMKFLAGS = -f
+LATEXMKFLAGS = -f -quiet
 
 ARTICLES_SYMLINK_HACK := articles
 DEP := $(MAKECMDGOALS:%.pdf=%.dep)
