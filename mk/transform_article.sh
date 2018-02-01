@@ -1,1 +1,1 @@
-$MK/../mediawiki-peg-rust/target/release/mwtoast -s <&0
+$MK/bin/mwtoast -s <&0

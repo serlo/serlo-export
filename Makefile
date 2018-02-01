@@ -10,6 +10,7 @@ MK := $(ROOT_DIR)/mk
 ARTICLES := articles
 IMAGES := images
 ARTICLE_EXPORTS := article_exports
+TMP_BIN_DIR := .build
 
 inotify = while inotifywait -e modify ${SOURCES}; do ${1} ; done
 create_book = make -C "${1}" -f ${ROOT_DIR}/build-book.mk
@@ -42,14 +43,16 @@ $(ARTICLE_EXPORTS):
 	$(MAKE) -C $@ -f $(MK)/article_export.mk MK=$(MK) $(NEXTGOAL)
 
 init:
-	pip install -r requirements.txt
-	git clone https://github.com/vroland/mediawiki-peg-rust
-	git clone https://github.com/vroland/mfnf-export
-	(cd mediawiki-peg-rust && exec cargo build --release)
-	(cd mfnf-export && exec cargo build --release)
 	which ocamlopt &>/dev/null || { echo "Please install ocaml"; exit 1; }
-	git clone https://phabricator.wikimedia.org/diffusion/EMAT/extension-math.git
-	(cd extension-math/texvccheck && exec make)
+	pip install -r requirements.txt
+	[[ -d $(TMP_BIN_DIR) ]] || mkdir $(TMP_BIN_DIR)
+	[[ -d $(MK)/bin ]] || mkdir $(MK)/bin
+	[[ -d $(TMP_BIN_DIR)/mediawiki-peg-rust ]] || (cd $(TMP_BIN_DIR) && git clone https://github.com/vroland/mediawiki-peg-rust)
+	[[ -d $(TMP_BIN_DIR)/mfnf-export ]] || ( cd $(TMP_BIN_DIR) && git clone https://github.com/vroland/mfnf-export)
+	[[ -d $(TMP_BIN_DIR)/extension-math ]] || ( cd $(TMP_BIN_DIR) && git clone https://phabricator.wikimedia.org/diffusion/EMAT/extension-math.git)
+	(cd $(TMP_BIN_DIR)/mediawiki-peg-rust && git pull && cargo build --release && cp target/release/mwtoast $(MK)/bin )
+	(cd $(TMP_BIN_DIR)/mfnf-export && git pull && cargo build --release && cp target/release/mfnf_ex $(MK)/bin)
+	(cd $(TMP_BIN_DIR)/extension-math/texvccheck && make && cp texvccheck $(MK)/bin)
 
 test:
 	$(PYTHON) -m nose --with-doctest

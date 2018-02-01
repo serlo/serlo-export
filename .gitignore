@@ -5,6 +5,6 @@ out/
 articles/
 images/
 article_exports/
-mediawiki-peg-rust/
-mfnf-export/
+.build/
 venv/
+mk/bin/
