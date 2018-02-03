@@ -146,7 +146,7 @@ def quote_filename(filename):
     return filename.replace(" ", "_").replace(":", "@COLON@").replace("(", "@LBR@").replace(")", "@RBR")
 
 def unquote_filename(filename):
-    return filename.replace("@COLON@", ":").replace("@LBR@", "(").replace("@RBR", ")")
+    return filename.replace("@COLON@", ":").replace("@LBR@", "(").replace("@RBR@", ")")
 
 class CachedFunction:
     def __init__(self, db):
