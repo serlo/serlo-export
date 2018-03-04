@@ -36,8 +36,8 @@ $(BUILD_TEX):
 $(BUILD_DEP):
 	$(MAKE) -C $(MK)/.. articles/$(ARTICLE)/$(MAKECMDGOALS:%.pdf=%.dep)
 
-images/%:
-	$(MAKE) -C $(MK)/.. images/$*
+media/%:
+	$(MAKE) -C $(MK)/.. media/$*
 
 include $(MK)/../articles/$(ARTICLE)/$(DEP)
 

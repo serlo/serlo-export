@@ -12,7 +12,7 @@ def article_dependencies(article, revision_id):
     return revision_id + ".pdf: " + " ".join(DependencyParser.dependencies)
 
 def quote_image_name(image_name):
-    return "images/" + quote_filename(image_name).replace(".svg", ".pdf")
+    return "media/" + quote_filename(image_name).replace(".svg", ".pdf")
 
 class DependencyParser(ChainedAction):
 

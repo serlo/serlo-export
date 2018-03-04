@@ -8,14 +8,14 @@ MK := $(ROOT_DIR)/mk
 #topdir = $(shell echo $(1) | sed 's,^[^/]*/,,')
 
 ARTICLES := articles
-IMAGES := images
+MEDIA := media
 ARTICLE_EXPORTS := article_exports
 TMP_BIN_DIR := .build
 
 inotify = while inotifywait -e modify ${SOURCES}; do ${1} ; done
 create_book = make -C "${1}" -f ${ROOT_DIR}/build-book.mk
 
-.PHONY: clean watch_test watch test init all $(ARTICLES) $(IMAGES) $(ARTICLE_EXPORTS)
+.PHONY: clean watch_test watch test init all $(ARTICLES) $(MEDIA) $(ARTICLE_EXPORTS)
 
 all:
 	$(PYTHON) create_books.py
@@ -32,10 +32,10 @@ $(ARTICLES):
 	@[[ -d $(ARTICLES) ]] || mkdir $(ARTICLES)
 	$(MAKE) -C $(ARTICLES) -f $(MK)/article.mk MK=$(MK) $(NEXTGOAL)
 
-$(IMAGES):
+$(MEDIA):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
 	@[[ -d $@ ]] || mkdir $@
-	$(MAKE) -C $@ -f $(MK)/image.mk MK=$(MK) $(NEXTGOAL)
+	$(MAKE) -C $@ -f $(MK)/media.mk MK=$(MK) $(NEXTGOAL)
 
 $(ARTICLE_EXPORTS):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
@@ -72,6 +72,6 @@ Makefile : ;
 
 $(ARTICLES)/% :: $(ARTICLES) ;
 
-$(IMAGES)/% :: $(IMAGES) ;
+$(MEDIA)/% :: $(MEDIA) ;
 
 $(ARTICLE_EXPORTS)/% :: $(ARTICLE_EXPORTS) ;
