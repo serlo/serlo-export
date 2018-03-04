@@ -4,6 +4,8 @@ __pycache__/
 out/
 articles/
 images/
+media/
+sections/
 article_exports/
 .build/
 venv/
