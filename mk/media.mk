@@ -2,7 +2,7 @@
 	python $(MK)/download_image.py $@ > $@
 
 %.gif.qr.eps %.webm.qr.eps %.mp4.qr.eps:
-	qrencode -o $@ -t EPS "$@"
+	qrencode -o $@ -t EPS "https://commons.wikimedia.org/wiki/File:`echo $@ | sed s/.qr.*//g`"
 
 %.jpg.pdf: %.jpg
 	convert $< $@
@@ -18,18 +18,9 @@
 	inkscape --without-gui --export-area-page --export-text-to-path \
 		--export-ignore-filters --export-pdf=$@ $<
 
-%.webm.qr.pdf: %.webm.qr.eps
+%.qr.pdf: %.qr.eps
 	inkscape --without-gui --export-area-page --export-text-to-path \
 		--export-ignore-filters --export-pdf=$@ $<
-
-%.gif.qr.pdf: %.gif.qr.eps
-	inkscape --without-gui --export-area-page --export-text-to-path \
-		--export-ignore-filters --export-pdf=$@ $<
-
-%.mp4.qr.pdf: %.mp4.qr.eps
-	inkscape --without-gui --export-area-page --export-text-to-path \
-		--export-ignore-filters --export-pdf=$@ $<
-
 
 .DELETE_ON_ERROR:
 
