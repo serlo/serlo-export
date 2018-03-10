@@ -8,28 +8,30 @@ MEDIA := media
 ARTICLE_EXPORTS := article_exports
 TMP_BIN_DIR := .build
 
+include $(MK)/utils.mk
+
 .PHONY: clean init $(ARTICLES) $(MEDIA) $(ARTICLE_EXPORTS)
 
 $(ARTICLES):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:articles/%=%))
-	@[ -d $(ARTICLES) ] || mkdir $(ARTICLES)
+	$(call create_directory,$@)
 	$(MAKE) -C $(ARTICLES) -f $(MK)/article.mk MK=$(MK) $(NEXTGOAL)
 
 $(MEDIA):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
-	@[ -d $@ ] || mkdir $@
+	$(call create_directory,$@)
 	$(MAKE) -C $@ -f $(MK)/media.mk MK=$(MK) $(NEXTGOAL)
 
 $(ARTICLE_EXPORTS):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
-	@[ -d $@ ] || mkdir $@
+	$(call create_directory,$@)
 	$(MAKE) -C $@ -f $(MK)/article_export.mk MK=$(MK) $(NEXTGOAL)
 
 init:
 	which ocamlopt &>/dev/null || { echo "Please install ocaml"; exit 1; }
 	pip install -r requirements.txt
-	[ -d $(TMP_BIN_DIR) ] || mkdir $(TMP_BIN_DIR)
-	[ -d $(MK)/bin ] || mkdir $(MK)/bin
+	$(call create_directory,$(TMP_BIN_DIR))
+	$(call create_directory,$(MK)/bin)
 	[ -d $(TMP_BIN_DIR)/mediawiki-peg-rust ] || (cd $(TMP_BIN_DIR) && git clone https://github.com/vroland/mediawiki-peg-rust)
 	[ -d $(TMP_BIN_DIR)/mfnf-export ] || ( cd $(TMP_BIN_DIR) && git clone https://github.com/vroland/mfnf-export)
 	[ -d $(TMP_BIN_DIR)/extension-math ] || ( cd $(TMP_BIN_DIR) && git clone https://phabricator.wikimedia.org/diffusion/EMAT/extension-math.git)
