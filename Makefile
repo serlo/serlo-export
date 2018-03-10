@@ -1,7 +1,4 @@
 ROOT_DIR:=$(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
-SOURCES = $(shell git ls-tree -r master --name-only)
-PYTHON = $(shell if which pyenv > /dev/null; \
-                 then echo python ; else echo python3 ; fi)
 
 MK := $(ROOT_DIR)/mk
 
@@ -12,20 +9,7 @@ MEDIA := media
 ARTICLE_EXPORTS := article_exports
 TMP_BIN_DIR := .build
 
-inotify = while inotifywait -e modify ${SOURCES}; do ${1} ; done
-create_book = make -C "${1}" -f ${ROOT_DIR}/build-book.mk
-
-.PHONY: clean watch_test watch test init all $(ARTICLES) $(MEDIA) $(ARTICLE_EXPORTS)
-
-all:
-	$(PYTHON) create_books.py
-	for BOOK_DIR in out/*; do \
-		$(call create_book,$$BOOK_DIR); \
-	done
-
-% :: out/% out
-	$(PYTHON) create_books.py "$@"
-	$(call create_book,$<)
+.PHONY: clean init $(ARTICLES) $(MEDIA) $(ARTICLE_EXPORTS)
 
 $(ARTICLES):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:articles/%=%))
@@ -53,15 +37,6 @@ init:
 	(cd $(TMP_BIN_DIR)/mediawiki-peg-rust && git pull && cargo build --release && cp target/release/mwtoast $(MK)/bin )
 	(cd $(TMP_BIN_DIR)/mfnf-export && git pull && cargo build --release && cp target/release/mfnf_ex $(MK)/bin)
 	(cd $(TMP_BIN_DIR)/extension-math/texvccheck && make && cp texvccheck $(MK)/bin)
-
-test:
-	$(PYTHON) -m nose --with-doctest
-
-watch:
-	$(call inotify,make all)
-
-watch_test:
-	$(call inotify,make test)
 
 clean:
 	git clean -ffdx

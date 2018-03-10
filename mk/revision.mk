@@ -1,9 +1,6 @@
 %.md:
 	python $(MK)/download_article.py $(ARTICLE) $* > $@
 
-%.json: %.md
-	python $(MK)/transform_article.py $(ARTICLE) $* < $< > $@
-
 %.yml: %.md
 	$(MK)/transform_article.sh < $< > $@
 
