@@ -34,14 +34,9 @@ $(SECTIONS):
 	$(MAKE) -C $@ -f $(MK)/sec_article.mk MK=$(MK) $(NEXTGOAL)
 
 init:
-	$(call check_dependency,ocamlopt)
-	$(call check_dependency,inkscape)
-	$(call check_dependency,convert)
-	$(call check_dependency,qrencode)
-	$(call check_dependency,latex)
+	$(call map,check_dependency,ocamlopt inkscape convert qrencode latex)
 	pip install -r requirements.txt
-	$(call create_directory,$(TMP_BIN_DIR))
-	$(call create_directory,$(MK)/bin)
+	$(call map,create_directory,$(TMP_BIN_DIR) $(MK)/bin)
 	$(call build_rust_dep,mediawiki-peg-rust, \
 		https://github.com/vroland/mediawiki-peg-rust,mwtoast)
 	$(call build_rust_dep,mfnf-export, \
