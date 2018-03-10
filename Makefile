@@ -1,4 +1,5 @@
-ROOT_DIR:=$(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
+# Absolute path to the directory of this Makefile
+ROOT_DIR := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 
 MK := $(ROOT_DIR)/mk
 
