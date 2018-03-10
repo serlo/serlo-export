@@ -1,10 +1,8 @@
 # Absolute path to the directory of this Makefile
 ROOT_DIR := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 
+# Define variables for different directories
 MK := $(ROOT_DIR)/mk
-
-#topdir = $(shell echo $(1) | sed 's,^[^/]*/,,')
-
 ARTICLES := articles
 MEDIA := media
 ARTICLE_EXPORTS := article_exports
