@@ -42,10 +42,14 @@ init:
 	pip install -r requirements.txt
 	$(call create_directory,$(TMP_BIN_DIR))
 	$(call create_directory,$(MK)/bin)
-	$(call build_rust_dep,mediawiki-peg-rust,https://github.com/vroland/mediawiki-peg-rust,mwtoast)
-	$(call build_rust_dep,mfnf-export,https://github.com/vroland/mfnf-export,mfnf_ex)
-	$(call git_clone,extension-math,https://phabricator.wikimedia.org/diffusion/EMAT/extension-math.git)
-	(cd $(TMP_BIN_DIR)/extension-math/texvccheck && make && cp texvccheck $(MK)/bin)
+	$(call build_rust_dep,mediawiki-peg-rust, \
+		https://github.com/vroland/mediawiki-peg-rust,mwtoast)
+	$(call build_rust_dep,mfnf-export, \
+		https://github.com/vroland/mfnf-export,mfnf_ex)
+	$(call git_clone,extension-math, \
+		https://phabricator.wikimedia.org/diffusion/EMAT/extension-math.git)
+	(cd $(TMP_BIN_DIR)/extension-math/texvccheck && make && \
+		cp texvccheck $(MK)/bin)
 
 clean:
 	git clean -ffdx
