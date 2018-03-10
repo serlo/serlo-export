@@ -6,11 +6,12 @@ MK := $(ROOT_DIR)/mk
 ARTICLES := articles
 MEDIA := media
 ARTICLE_EXPORTS := article_exports
+SECTIONS := sections
 TMP_BIN_DIR := .build
 
 include $(MK)/utils.mk
 
-.PHONY: clean init $(ARTICLES) $(MEDIA) $(ARTICLE_EXPORTS)
+.PHONY: clean init $(ARTICLES) $(MEDIA) $(ARTICLE_EXPORTS) $(SECTIONS)
 
 $(ARTICLES):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:articles/%=%))
@@ -26,6 +27,11 @@ $(ARTICLE_EXPORTS):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
 	$(call create_directory,$@)
 	$(MAKE) -C $@ -f $(MK)/article_export.mk MK=$(MK) $(NEXTGOAL)
+
+$(SECTIONS):
+	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
+	@[[ -d $@ ]] || mkdir $@
+	$(MAKE) -C $@ -f $(MK)/sec_article.mk MK=$(MK) $(NEXTGOAL)
 
 init:
 	$(call check_dependency,ocamlopt)
@@ -55,3 +61,5 @@ $(ARTICLES)/% :: $(ARTICLES) ;
 $(MEDIA)/% :: $(MEDIA) ;
 
 $(ARTICLE_EXPORTS)/% :: $(ARTICLE_EXPORTS) ;
+
+$(SECTIONS)/% :: $(SECTIONS) ;

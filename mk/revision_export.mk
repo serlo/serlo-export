@@ -39,6 +39,11 @@ $(BUILD_DEP):
 media/%:
 	$(MAKE) -C $(MK)/.. media/$*
 
+sections/%:
+	$(eval SECS := $(dir $*))
+	$(eval REVID := $(basename $(notdir $*)))
+	$(MAKE) -C $(MK)/.. sections/$(dir $(SECS:%/=%))$(REVID)
+
 include $(MK)/../articles/$(ARTICLE)/$(DEP)
 
 .DELETE_ON_ERROR:
