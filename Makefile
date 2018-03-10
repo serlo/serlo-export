@@ -28,7 +28,11 @@ $(ARTICLE_EXPORTS):
 	$(MAKE) -C $@ -f $(MK)/article_export.mk MK=$(MK) $(NEXTGOAL)
 
 init:
-	which ocamlopt &>/dev/null || { echo "Please install ocaml"; exit 1; }
+	$(call check_dependency,ocamlopt)
+	$(call check_dependency,inkscape)
+	$(call check_dependency,convert)
+	$(call check_dependency,qrencode)
+	$(call check_dependency,latex)
 	pip install -r requirements.txt
 	$(call create_directory,$(TMP_BIN_DIR))
 	$(call create_directory,$(MK)/bin)
