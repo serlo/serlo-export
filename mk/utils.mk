@@ -1,5 +1,5 @@
 # Utility functions
-create_directory = [ -d '$(strip 1)' ] || mkdir '$(strip 1)'
+create_directory = [ -d '$(strip $1)' ] || mkdir '$(strip $1)'
 
 check_dependency = which '$(strip $1)' > /dev/null || \
                      { echo 'Please install $(strip $1)'; exit 1; }
