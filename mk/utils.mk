@@ -7,7 +7,7 @@ check_dependency = which '$(strip $1)' > /dev/null || \
 git_clone = [ -d '$(TMP_BIN_DIR)/$1' ] || \
               git clone '$(strip $2)' '$(TMP_BIN_DIR)/$1'
 
-define build_rust_dep =
+define build_rust_dep
 	$(call git_clone,$1,$2)
 	(cd $(TMP_BIN_DIR)/$1 && git pull && cargo build --release && \
 		cp target/release/$3 $(MK)/bin)

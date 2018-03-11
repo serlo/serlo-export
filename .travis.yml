@@ -1,21 +1,24 @@
 language: python
 
-# Python versions for which we want to run Travis.
-python:
-  - "3.5"
-  - "3.6"
+python: '3.5'
 
-# Caching setup for Travis.
-# See https://docs.travis-ci.com/user/caching/ for more details.
 cache:
-  # Timeout for cache is set to one day.
-  timeout: 86400
-  pip: true
-  directories:
-    - .cache
+  - ~/.cargo
+  - pip
+
+before_install:
+  - curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable
+  - export PATH=~/.cargo/bin:$PATH
+  - sudo apt-get -qq update
+  - sudo apt-get install qrencode
+  - sudo apt-get install ocaml
+  - sudo apt-get install inkscape
+  - sudo apt-get install imagemagick
+  - sudo apt-get install texlive-latex-extra
 
 # Command for installing dependencies
 install: make init
 
 # Command for running the tests
-script: make test
+script:
+  - make article_exports/Mathe_für_Nicht-Freaks@COLON@_Uneigentliches_Supremum_und_Infimum/839516.pdf
