@@ -3,10 +3,11 @@ include $(MK)/utils.mk
 ARTICLE_SECTS = article_sects
 
 $(ARTICLE_SECTS):
-	$(eval override ARTICLE := $(patsubst %/,%,$(dir $(MAKECMDGOALS))))
-	$(eval override REVISION := $(notdir $(MAKECMDGOALS)))
+	$(eval ARTICLE := $(patsubst %/,%,$(dir $(MAKECMDGOALS))))
+	$(eval REVISION := $(notdir $(MAKECMDGOALS)))
+	$(eval export ARTICLE)
 	$(call create_directory,$(ARTICLE))
-	$(MAKE) -C $(ARTICLE) -f $(MK)/section.mk ARTICLE=$(ARTICLE) MK=$(MK) $(REVISION)
+	$(MAKE) -C $(ARTICLE) -f $(MK)/section.mk $(REVISION)
 
 % :: $(ARTICLE_SECTS) ;
 

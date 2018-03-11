@@ -1,13 +1,16 @@
 # Absolute path to the directory of this Makefile
-ROOT_DIR := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
+BASE := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 
 # Define variables for different directories
-MK := $(ROOT_DIR)/mk
+MK := $(BASE)/mk
 ARTICLES := articles
 MEDIA := media
 ARTICLE_EXPORTS := article_exports
 SECTIONS := sections
 TMP_BIN_DIR := .build
+
+export BASE
+export MK
 
 include $(MK)/utils.mk
 
@@ -16,22 +19,22 @@ include $(MK)/utils.mk
 $(ARTICLES):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:articles/%=%))
 	$(call create_directory,$@)
-	$(MAKE) -C $(ARTICLES) -f $(MK)/article.mk MK=$(MK) $(NEXTGOAL)
+	$(MAKE) -C $(ARTICLES) -f $(MK)/article.mk $(NEXTGOAL)
 
 $(MEDIA):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
 	$(call create_directory,$@)
-	$(MAKE) -C $@ -f $(MK)/media.mk MK=$(MK) $(NEXTGOAL)
+	$(MAKE) -C $@ -f $(MK)/media.mk $(NEXTGOAL)
 
 $(ARTICLE_EXPORTS):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
 	$(call create_directory,$@)
-	$(MAKE) -C $@ -f $(MK)/article_export.mk MK=$(MK) $(NEXTGOAL)
+	$(MAKE) -C $@ -f $(MK)/article_export.mk $(NEXTGOAL)
 
 $(SECTIONS):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
 	$(call create_directory,$@)
-	$(MAKE) -C $@ -f $(MK)/sec_article.mk MK=$(MK) $(NEXTGOAL)
+	$(MAKE) -C $@ -f $(MK)/sec_article.mk $(NEXTGOAL)
 
 init:
 	$(call map,check_dependency,ocamlopt inkscape convert qrencode latex)

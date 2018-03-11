@@ -1,6 +1,6 @@
 REVISION := $(basename $(MAKECMDGOALS))
 
-ORIGIN := $(MK)/../articles/$(ARTICLE)
+ORIGIN := $(BASE)/articles/$(ARTICLE)
 
 RECURSE_TO_ORIGIN := recurse_to_origin
 
@@ -15,15 +15,15 @@ $(ORIGIN)/% :: $(RECURSE_TO_ORIGIN) ;
 .PHONY: $(RECURSE_TO_ORIGIN)
 
 $(RECURSE_TO_ORIGIN):
-	$(MAKE) -C $(MK)/.. articles/$(ARTICLE)/$(REVISION).yml
+	$(MAKE) -C $(BASE) articles/$(ARTICLE)/$(REVISION).yml
 
 media/%:
-	$(MAKE) -C $(MK)/.. media/$*
+	$(MAKE) -C $(BASE) media/$*
 
 sections/%:
 	$(eval SECS := $(dir $*))
 	$(eval REVID := $(basename $(notdir $*)))
-	$(MAKE) -C $(MK)/.. sections/$(dir $(SECS:%/=%))$(REVID)
+	$(MAKE) -C $(BASE) sections/$(dir $(SECS:%/=%))$(REVID)
 
 include $(REVISION).dep
 

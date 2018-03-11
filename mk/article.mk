@@ -6,7 +6,8 @@ $(REVISIONS):
 	$(eval ARTICLE := $(patsubst %/,%,$(dir $(MAKECMDGOALS))))
 	$(eval REVISION := $(notdir $(MAKECMDGOALS)))
 	$(call create_directory,$(ARTICLE))
-	$(MAKE) -C $(ARTICLE) -f $(MK)/revision.mk ARTICLE=$(ARTICLE) MK=$(MK) $(REVISION)
+	$(eval export ARTICLE)
+	$(MAKE) -C $(ARTICLE) -f $(MK)/revision.mk $(REVISION)
 
 % :: $(REVISIONS) ;
 

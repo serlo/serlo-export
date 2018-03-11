@@ -5,8 +5,9 @@ TARGETS = targets
 $(TARGETS):
 	$(eval TARGET := $(call dir_head,$(MAKECMDGOALS)))
 	$(eval NEXTHOP := $(call dir_tail,$(MAKECMDGOALS)))
+	$(eval export TARGET)
 	$(call create_directory,$(TARGET))
-	$(MAKE) -C $(TARGET) -f $(MK)/target.mk TARGET=$(TARGET) MK=$(MK) $(NEXTHOP)
+	$(MAKE) -C $(TARGET) -f $(MK)/target.mk $(NEXTHOP)
 
 % :: $(TARGETS) ;
 

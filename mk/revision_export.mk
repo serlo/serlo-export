@@ -9,42 +9,42 @@ DEP := $(MAKECMDGOALS:%.pdf=%.dep)
 BUILD_DEP := build_dep
 BUILD_TEX := build_tex
 
-export TEXINPUTS=$(MK)/..:
+export TEXINPUTS=$(BASE):
 export openout_any=a
 
 %.tex: | $(ARTICLES_SYMLINK_HACK)
-	cp $(MK)/../templates/article.tex $@
+	cp $(BASE)/templates/article.tex $@
 	sed -i -e 's/__ARTICLE__/$(ARTICLE:%/=%)/' -e 's/__REVISION__/$*/' $@
 
 $(ARTICLES_SYMLINK_HACK):
-	ln -s $(MK)/../$@ $@
+	ln -s $(BASE)/$@ $@
 
-%.pdf: %.tex $(MK)/../articles/$(ARTICLE)/%.tex $(MK)/../articles/$(ARTICLE)/%.dep
-	echo $(MK)/../articles/$(ARTICLE)/$(DEP)
+%.pdf: %.tex $(BASE)/articles/$(ARTICLE)/%.tex $(BASE)/articles/$(ARTICLE)/%.dep
+	echo $(BASE)/articles/$(ARTICLE)/$(DEP)
 	$(LATEXMK) $(LATEXMKFLAGS) -pdflatex="openout_any=a $(LATEX) $(LATEXFLAGS) %O %S" \
 		-pdf "$*"
 
-$(MK)/../articles/%.tex :: $(BUILD_TEX) ;
+$(BASE)/articles/%.tex :: $(BUILD_TEX) ;
 
-$(MK)/../articles/%.dep :: $(BUILD_DEP) ;
+$(BASE)/articles/%.dep :: $(BUILD_DEP) ;
 
 .PHONY: $(BUILD_TEX) $(BUILD_DEP)
 
 $(BUILD_TEX):
-	$(MAKE) -C $(MK)/.. articles/$(ARTICLE)/$(MAKECMDGOALS:%.pdf=%.tex)
+	$(MAKE) -C $(BASE) articles/$(ARTICLE)/$(MAKECMDGOALS:%.pdf=%.tex)
 
 $(BUILD_DEP):
-	$(MAKE) -C $(MK)/.. articles/$(ARTICLE)/$(MAKECMDGOALS:%.pdf=%.dep)
+	$(MAKE) -C $(BASE) articles/$(ARTICLE)/$(MAKECMDGOALS:%.pdf=%.dep)
 
 media/%:
-	$(MAKE) -C $(MK)/.. media/$*
+	$(MAKE) -C $(BASE) media/$*
 
 sections/%:
 	$(eval SECS := $(dir $*))
 	$(eval REVID := $(basename $(notdir $*)))
-	$(MAKE) -C $(MK)/.. sections/$(dir $(SECS:%/=%))$(REVID)
+	$(MAKE) -C $(BASE) sections/$(dir $(SECS:%/=%))$(REVID)
 
-include $(MK)/../articles/$(ARTICLE)/$(DEP)
+include $(BASE)/articles/$(ARTICLE)/$(DEP)
 
 .DELETE_ON_ERROR:
 
