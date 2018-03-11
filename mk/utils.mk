@@ -14,3 +14,6 @@ define build_rust_dep
 endef
 
 map = $(foreach a,$(2),$(call $(1),$(a)) ;)
+
+dir_head = $(shell echo $1 | sed -e 's,/.*$$,,')
+dir_tail = $(shell echo $1 | sed -e 's,^[^/]*/,,')
