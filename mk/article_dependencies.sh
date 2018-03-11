@@ -1,1 +1,1 @@
-$MK/bin/mfnf_ex -t $1 -r $2 deps <&0
+$MK/bin/mfnf_ex -c $MK/../config/mfnf.yml -t $1 -r $2 deps $3 <&0

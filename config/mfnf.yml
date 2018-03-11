@@ -1,0 +1,13 @@
+---
+targets:
+  latex.all:
+    Latex:
+      opts:
+        page_width: 210
+        page_height: 297
+  latex.print:
+    Latex: {}
+  deps:
+    Dependencies: {}
+  sections:
+    Sections: {}
