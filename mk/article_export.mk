@@ -1,13 +1,13 @@
 include $(MK)/utils.mk
 
-REVISIONS = revisions
+TARGETS = targets
 
-$(REVISIONS):
-	$(eval ARTICLE := $(patsubst %/,%,$(dir $(MAKECMDGOALS))))
-	$(eval REVISION := $(notdir $(MAKECMDGOALS)))
-	$(call create_directory,$(ARTICLE))
-	$(MAKE) -C $(ARTICLE) -f $(MK)/revision_export.mk ARTICLE=$(ARTICLE) MK=$(MK) $(REVISION)
+$(TARGETS):
+	$(eval TARGET := $(call dir_head,$(MAKECMDGOALS)))
+	$(eval NEXTHOP := $(call dir_tail,$(MAKECMDGOALS)))
+	$(call create_directory,$(TARGET))
+	$(MAKE) -C $(TARGET) -f $(MK)/target.mk TARGET=$(TARGET) MK=$(MK) $(NEXTHOP)
 
-% :: $(REVISIONS) ;
+% :: $(TARGETS) ;
 
-.PHONY: $(REVISIONS)
+.PHONY: $(TARGETS)
