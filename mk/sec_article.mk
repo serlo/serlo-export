@@ -1,3 +1,5 @@
+include $(MK)/utils.mk
+
 ARTICLE_SECTS = article_sects
 
 $(ARTICLE_SECTS):
