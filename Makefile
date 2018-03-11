@@ -30,7 +30,7 @@ $(ARTICLE_EXPORTS):
 
 $(SECTIONS):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
-	@[[ -d $@ ]] || mkdir $@
+	$(call create_directory,$@)
 	$(MAKE) -C $@ -f $(MK)/sec_article.mk MK=$(MK) $(NEXTGOAL)
 
 init:
