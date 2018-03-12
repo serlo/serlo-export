@@ -38,7 +38,7 @@ $(SECTIONS):
 	$(MAKE) -C $@ -f $(MK)/sec_article.mk $(NEXTGOAL)
 
 init:
-	$(call map,check_dependency,ocamlopt inkscape convert qrencode latex)
+	$(call map,check_dependency,ocamlopt inkscape convert qrencode latex sed)
 	pip install -r requirements.txt
 	$(call map,create_directory,$(TMP_BIN_DIR) $(MK)/bin)
 	$(call build_rust_dep,mediawiki-peg-rust, \
