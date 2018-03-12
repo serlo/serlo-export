@@ -14,7 +14,7 @@ export MK
 
 include $(MK)/utils.mk
 
-.PHONY: clean init $(ARTICLES) $(MEDIA) $(ARTICLE_EXPORTS) $(SECTIONS)
+.PHONY: clean_all init $(ARTICLES) $(MEDIA) $(ARTICLE_EXPORTS) $(SECTIONS)
 
 $(ARTICLES):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:articles/%=%))
@@ -49,7 +49,7 @@ init:
 	(cd $(TMP_BIN_DIR)/extension-math/texvccheck && make && \
 		cp texvccheck $(MK)/bin)
 
-clean:
+clean_all:
 	git clean -ffdx
 
 .SUFFIXES:
