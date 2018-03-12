@@ -8,13 +8,14 @@ MEDIA := media
 ARTICLE_EXPORTS := article_exports
 SECTIONS := sections
 TMP_BIN_DIR := .build
+OUTPUT_DIRS := $(ARTICLES) $(MEDIA) $(ARTICLE_EXPORTS) $(SECTIONS)
 
 export BASE
 export MK
 
 include $(MK)/utils.mk
 
-.PHONY: clean_all init $(ARTICLES) $(MEDIA) $(ARTICLE_EXPORTS) $(SECTIONS)
+.PHONY: clean clean_all init $(OUTPUT_DIRS)
 
 $(ARTICLES):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:articles/%=%))
@@ -48,6 +49,9 @@ init:
 		https://phabricator.wikimedia.org/diffusion/EMAT/extension-math.git)
 	(cd $(TMP_BIN_DIR)/extension-math/texvccheck && make && \
 		cp texvccheck $(MK)/bin)
+
+clean:
+	$(call map,remove_file,$(OUTPUT_DIRS))
 
 clean_all:
 	git clean -ffdx
