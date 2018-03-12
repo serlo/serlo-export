@@ -21,6 +21,6 @@ before_install:
 # Command for installing dependencies
 install: make init
 
-# Command for running the tests
+# Commands for running the tests
 script:
-  - make article_exports/Mathe_für_Nicht-Freaks@COLON@_Uneigentliches_Supremum_und_Infimum/839516.pdf
+  - make article_exports/latex/print/Mathe_für_Nicht-Freaks@COLON@_Uneigentliches_Supremum_und_Infimum/839516.tex
