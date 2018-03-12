@@ -14,7 +14,9 @@ before_install:
   - sudo apt-get install ocaml
   - sudo apt-get install inkscape
   - sudo apt-get install imagemagick
-  - sudo apt-get install texlive-latex-extra
+  - sudo apt-get install latexmk
+  - sudo apt-get install texlive-full
+  - sudo apt-get install texlive-lang-german
 
 # Command for installing dependencies
 install: make init
