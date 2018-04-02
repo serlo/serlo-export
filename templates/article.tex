@@ -1,8 +1,25 @@
+\RequirePackage{luatex85}
 \documentclass[{{document_options}}]{scrbook}
 
-% set baseline height and font size
-\changefontsizes[{{baseline_height}}pt]{ {{font_size}}pt}
-\usepackage[paperwidth=155mm, paperheight=235mm, top=20.5mm, bottom=32.6mm, outer=22mm, inner=18.5mm]{geometry}
+% allow calculations in package parameters
+\usepackage{calc}
+
+\usepackage[dvips=false,pdftex=false,vtex=false]{geometry}
+
+\geometry{
+    paperwidth={{page_width}}mm,
+    paperheight={{page_height}}mm,
+    top={{border.[0]}}mm,
+    bottom={{border.[1]}}mm,
+    outer={{border.[2]}}mm,
+    inner={{border.[3]}}mm,
+}
+
+\usepackage[
+     width={{add page_width (mult 2 page_trim)}}mm,
+     height={{add page_height (mult 2 page_trim)}}mm,
+     cam,axes,center,
+]{crop}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -40,6 +57,10 @@
 \addtocontents{lof}{ {Alle Abbildungen sind auffindbar auf \textbf{Wikimedia Commons}, einer Sammlung von frei verwendbaren Mediendateien, zu der jeder beitragen kann. Wenn du eine Abbildung weiterverwenden willst, findest du hier weitere Informationen:\\ \textbf{https://commons.wikimedia.org/wiki/File:<BILDNAME>}
 }\\}
 \addtocontents{lof}{}
+
+
+% set baseline height and font size
+\changefontsizes[{{baseline_height}}pt]{ {{font_size}}pt}
 
 % remove vertical space after floats
 
