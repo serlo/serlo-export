@@ -9,7 +9,7 @@ RECURSE_TO_ORIGIN := recurse_to_origin
 LATEX := lualatex
 
 %.pdf: %.tex
-	TEXINPUTS=$(BASE): latexmk -pdflatex="$(LATEX) %O %S" -pdf $<
+	TEXINPUTS=$(BASE): latexmk -quiet -pdflatex="$(LATEX) %O %S" -pdf $<
 
 %.tex: %.yml $(LATEX_ARTICLE)/%.tex
 	$(MK)/article_tex_template.sh $(CURDIR)/$< $(word 2,$^) $(ARTICLE) $* > $@
