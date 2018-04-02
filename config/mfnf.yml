@@ -13,3 +13,6 @@ targets:
     Sections: {}
   pdf.all:
     PDF: {}
+  pdf.print:
+    PDF:
+      page_trim: 10
