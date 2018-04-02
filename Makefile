@@ -45,6 +45,8 @@ init:
 		https://github.com/vroland/mediawiki-peg-rust,mwtoast)
 	$(call build_rust_dep,mfnf-export, \
 		https://github.com/vroland/mfnf-export,mfnf_ex)
+	$(call build_rust_dep,handlebars-cli-rs, \
+		https://github.com/vroland/handlebars-cli-rs,handlebars-cli-rs)
 	$(call git_clone,extension-math, \
 		https://phabricator.wikimedia.org/diffusion/EMAT/extension-math.git)
 	(cd $(TMP_BIN_DIR)/extension-math/texvccheck && make && \

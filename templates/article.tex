@@ -1,15 +1,9 @@
-\documentclass[fontsize=9pt,
-               parskip=half-,
-               DIV=14,
-               listof=chapterentry,
-               tocflat]{scrbook}
+\documentclass[{{document_options}}]{scrbook}
 
-% paper with page trim: 161mm:241mm
-% paper without page trim: 155mm:235mm
-
-% set font size to 9pt and base line height to 12pt
-\changefontsizes[12pt]{9pt}
+% set baseline height and font size
+\changefontsizes[{{baseline_height}}pt]{ {{font_size}}pt}
 \usepackage[paperwidth=155mm, paperheight=235mm, top=20.5mm, bottom=32.6mm, outer=22mm, inner=18.5mm]{geometry}
+
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[ngerman]{babel}
@@ -43,7 +37,7 @@
 \usepackage{pdfpages}
 \usepackage{microtype}
 
-\addtocontents{lof}{{Alle Abbildungen sind auffindbar auf \textbf{Wikimedia Commons}, einer Sammlung von frei verwendbaren Mediendateien, zu der jeder beitragen kann. Wenn du eine Abbildung weiterverwenden willst, findest du hier weitere Informationen:\\ \textbf{https://commons.wikimedia.org/wiki/File:<BILDNAME>}
+\addtocontents{lof}{ {Alle Abbildungen sind auffindbar auf \textbf{Wikimedia Commons}, einer Sammlung von frei verwendbaren Mediendateien, zu der jeder beitragen kann. Wenn du eine Abbildung weiterverwenden willst, findest du hier weitere Informationen:\\ \textbf{https://commons.wikimedia.org/wiki/File:<BILDNAME>}
 }\\}
 \addtocontents{lof}{}
 
@@ -84,7 +78,7 @@
              Extension=.ttf,
              BoldFont=Karmilla-Bold-016m,
              ItalicFont=Karmilla-Italic-016m,
-             Path=../../karmilla/ttf/]{Karmilla-Regular-016m}
+             Path={{fontpath}}]{Karmilla-Regular-016m}
 % fallback font or unicode (like smileys)
 \newfontfamily\DejaSans{DejaVu Sans}
 
@@ -185,7 +179,7 @@
 \newmdenv[style=importantbox]{importantparagraph*}
 \newenvironment{indentblock}{\begin{adjustwidth}{.5cm}{}}{\end{adjustwidth}}
 
-\newcommand{\BoxIcon}[1]{\rlap{\protect\makebox[-2.2\IconHeight]{\raisebox{-0.65\IconHeight}[0pt][0pt]{\includegraphics[height=\IconHeight]{../../icons/#1.pdf}}}}}
+\newcommand{\BoxIcon}[1]{\rlap{\protect\makebox[-2.2\IconHeight]{\raisebox{-0.65\IconHeight}[0pt][0pt]{\includegraphics[height=\IconHeight]{icons/#1.pdf}}}}}
 
 \mdtheorem[style=semanticbox]{theorem}{\BoxIcon{theorem}Satz}[chapter]
 \mdtheorem[style=semanticbox]{definition}{\BoxIcon{definition}Definition}[chapter]
@@ -210,8 +204,8 @@
 \newenvironment{authors}{\par\vspace*{\fill}\color{white}Autoren und
 Autorinnen\\\bfseries}{\clearpage}
 
-\newcommand{\ColoredTOC}{{\color{sblau}\setcounter{tocdepth}{0}\tableofcontents}}
-\newcommand{\ColoredLOF}{{\color{sblau}\setcounter{tocdepth}{10}\listoffigures}}
+\newcommand{\ColoredTOC}{ {\color{sblau}\setcounter{tocdepth}{0}\tableofcontents}}
+\newcommand{\ColoredLOF}{ {\color{sblau}\setcounter{tocdepth}{10}\listoffigures}}
 \makeatletter
 \renewcommand\@dotsep{10000}
 \makeatother
@@ -249,6 +243,6 @@ Autorinnen\\\bfseries}{\clearpage}
 
 \begin{document}
 
-\include{articles/__ARTICLE__/__REVISION__}
+\input{ {{content}} }
 
 \end{document}

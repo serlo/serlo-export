@@ -11,3 +11,5 @@ targets:
     Dependencies: {}
   sections:
     Sections: {}
+  pdf.all:
+    PDF: {}
