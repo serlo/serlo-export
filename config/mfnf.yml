@@ -2,17 +2,18 @@
 targets:
   latex.all:
     Latex:
-      opts:
-        page_width: 210
-        page_height: 297
+      centered_image_captions: false
   latex.print:
-    Latex: {}
+    Latex:
+      centered_image_captions: false
   deps:
     Dependencies: {}
   sections:
     Sections: {}
   pdf.all:
-    PDF: {}
+    PDF: 
+      page_width: 210
+      page_height: 297
   pdf.print:
     PDF:
       page_trim: 10
