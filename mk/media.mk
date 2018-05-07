@@ -1,4 +1,4 @@
-%.svg:
+%.svg %.png %.jpg %.gif:
 	python $(MK)/download_image.py $@ > $@
 
 %.gif.qr.eps %.webm.qr.eps %.mp4.qr.eps:

@@ -3,6 +3,7 @@
 import argparse
 import os
 import requests
+import sys
 
 from lib.api import HTTPMediaWikiAPI
 from lib.utils import unquote_filename
@@ -12,11 +13,12 @@ def download_image(image):
         api = HTTPMediaWikiAPI(session)
         image_uri = "File:" + image[:1].upper() + image[1:]
         image_info = api.get_image_info(image_uri)
-        return requests.get(image_info["url"]).text
+        return requests.get(image_info["url"]).content
 
 if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser(description=__doc__)
     arg_parser.add_argument("image")
     args = arg_parser.parse_args()
     image = unquote_filename(args.image)
-    print(download_image(image))
+    fp = os.fdopen(sys.stdout.fileno(), 'wb')
+    fp.write(download_image(image))
