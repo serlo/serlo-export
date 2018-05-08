@@ -7,6 +7,8 @@ images/
 media/
 sections/
 article_exports/
+books/
+book_exports/
 .build/
 venv/
 mk/bin/
