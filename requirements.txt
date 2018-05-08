@@ -1,6 +1,10 @@
 # Requirements for using this project
 requests == 2.18.1
+ruamel.yaml >= 0.15
+curio-http >= 0.1
+
 
 # Requirements for running the tests
 PyYAML == 3.12
 nose == 1.3.7
+
