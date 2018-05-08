@@ -45,7 +45,6 @@ if __name__ == "__main__":
     bookmap = yaml.load(open(unquote_filename(args.bookmap)))
     t = time.time()
     curio.run(fill(bookmap))
-    print ("took {} s.".format(time.time() - t))
     yaml.dump(bookmap, sys.stdout)
 
 
