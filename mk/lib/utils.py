@@ -143,10 +143,10 @@ def stablehash(obj):
             raise NotImplementedError()
 
 def quote_filename(filename):
-    return filename.replace(" ", "_").replace(":", "@COLON@").replace("(", "@LBR@").replace(")", "@RBR").replace("/", "@SLASH")
+    return filename.replace(" ", "_").replace(":", "@COLON@").replace("(", "@LBR@").replace(")", "@RBR").replace("/", "@SLASH@").replace("'", "@SQUOTE@").replace('"', "@DQUOTE@")
 
 def unquote_filename(filename):
-    return filename.replace("@COLON@", ":").replace("@LBR@", "(").replace("@RBR@", ")").replace("@SLASH@", "/")
+    return filename.replace("@COLON@", ":").replace("@LBR@", "(").replace("@RBR@", ")").replace("@SLASH@", "/").replace("'", "@SQUOTE@").replace('"', "@DQUOTE@")
 
 class CachedFunction:
     def __init__(self, db):
