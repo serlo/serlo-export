@@ -16,25 +16,25 @@ async def fetch_one(url):
         content = await response.json()
         return response, content
 
-async def print_all(article_list):
+async def fill(bookmap):
     tasks = []
-    result = {}
+    chapter_mapping = {}
 
-    for article in article_list:
-        url = "{}page/title/{}".format(MW_BASE, article)
+    for chapter in chapters(bookmap):
+        url = "{}page/title/{}".format(MW_BASE, chapter["path"])
         task = await curio.spawn(fetch_one(url))
         tasks.append(task)
+        chapter_mapping[task] = chapter
 
     for task in tasks:
         response, content = await task.join()
         content = content["items"][0]
-        result[quote_filename(content["title"])] =  content["rev"]
-    return result
+        chapter_mapping[task]["revision"] =  content["rev"]
 
-def extract_articles(bookmap):
+def chapters(bookmap):
     for part in bookmap["parts"]:
         for chapter in part["chapters"]:
-            yield chapter["path"]
+            yield chapter
 
 if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser(description=__doc__)
@@ -44,9 +44,9 @@ if __name__ == "__main__":
     yaml = YAML(typ="rt")
     bookmap = yaml.load(open(unquote_filename(args.bookmap)))
     t = time.time()
-    result = curio.run(print_all(extract_articles(bookmap)))
+    curio.run(fill(bookmap))
     print ("took {} s.".format(time.time() - t))
-    yaml.dump(result, sys.stdout)
+    yaml.dump(bookmap, sys.stdout)
 
 
 
