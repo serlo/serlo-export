@@ -6,9 +6,10 @@ MK := $(BASE)/mk
 ARTICLES := articles
 MEDIA := media
 ARTICLE_EXPORTS := article_exports
+BOOK_EXPORTS := book_exports
 SECTIONS := sections
 TMP_BIN_DIR := .build
-OUTPUT_DIRS := $(ARTICLES) $(MEDIA) $(ARTICLE_EXPORTS) $(SECTIONS)
+OUTPUT_DIRS := $(ARTICLES) $(MEDIA) $(ARTICLE_EXPORTS) $(SECTIONS) $(BOOK_EXPORTS)
 
 export BASE
 export MK
@@ -32,6 +33,11 @@ $(ARTICLE_EXPORTS):
 	$(call create_directory,$@)
 	$(MAKE) -C $@ -f $(MK)/article_export.mk $(NEXTGOAL)
 
+$(BOOK_EXPORTS):
+	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
+	$(call create_directory,$@)
+	$(MAKE) -C $@ -f $(MK)/book_export.mk $(NEXTGOAL)
+
 $(SECTIONS):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
 	$(call create_directory,$@)
@@ -49,6 +55,8 @@ init:
 		https://github.com/vroland/handlebars-cli-rs,handlebars-cli-rs)
 	$(call build_rust_dep,mfnf-sitemap-parser, \
 		https://github.com/vroland/mfnf-sitemap-parser,parse_bookmap)
+	$(call build_rust_dep,mfnf-sitemap-parser, \
+		https://github.com/vroland/mfnf-sitemap-parser,sitemap_utils)
 	$(call git_clone,extension-math, \
 		https://phabricator.wikimedia.org/diffusion/EMAT/extension-math.git)
 	(cd $(TMP_BIN_DIR)/extension-math/texvccheck && make && \
@@ -69,5 +77,7 @@ $(ARTICLES)/% :: $(ARTICLES) ;
 $(MEDIA)/% :: $(MEDIA) ;
 
 $(ARTICLE_EXPORTS)/% :: $(ARTICLE_EXPORTS) ;
+
+$(BOOK_EXPORTS)/% :: $(BOOK_EXPORTS) ;
 
 $(SECTIONS)/% :: $(SECTIONS) ;
