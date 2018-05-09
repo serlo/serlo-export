@@ -142,11 +142,25 @@ def stablehash(obj):
         else:
             raise NotImplementedError()
 
+MAKE_ESCAPES = {
+    " ": "_",
+    ":": "@COLON@",
+    "(": "@LBR@",
+    ")": "@RBR@",
+    "/": "@SLASH@",
+    "'": "@SQUOTE@",
+    '"': "@DQUOTE@",
+}
+
 def quote_filename(filename):
-    return filename.replace(" ", "_").replace(":", "@COLON@").replace("(", "@LBR@").replace(")", "@RBR").replace("/", "@SLASH@").replace("'", "@SQUOTE@").replace('"', "@DQUOTE@")
+    for key, value in MAKE_ESCAPES.items():
+        filename = filename.replace(key, value)
+    return filename
 
 def unquote_filename(filename):
-    return filename.replace("@COLON@", ":").replace("@LBR@", "(").replace("@RBR@", ")").replace("@SLASH@", "/").replace("'", "@SQUOTE@").replace('"', "@DQUOTE@")
+    for key, value in MAKE_ESCAPES.items():
+        filename = filename.replace(value, key)
+    return filename
 
 class CachedFunction:
     def __init__(self, db):
