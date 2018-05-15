@@ -5,7 +5,13 @@ ORIGIN := $(BASE)/articles/$(ARTICLE)
 RECURSE_TO_ORIGIN := recurse_to_origin
 
 %.tex: $(ORIGIN)/%.yml %.dep
-	$(MK)/article_to_tex.sh $(ARTICLE) $(REVISION) $(TARGET).$(SUBTARGET) < $< > $@
+	$(MK)/bin/mfnf_ex --config $(BASE)/config/mfnf.yml \
+		--title $(ARTICLE) \
+		--revision $(REVISION) \
+		--section-path $(BASE)/sections \
+		--externals-path $(BASE)/media \
+		--texvccheck-path $(MK)/bin/texvccheck \
+		$(TARGET).$(SUBTARGET) < $< > $@
 
 %.dep: $(ORIGIN)/%.yml
 	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
@@ -29,7 +35,7 @@ $(BASE)/sections/%:
 	$(eval REVID := $(basename $(notdir $*)))
 	$(MAKE) -C $(BASE) sections/$(dir $(SECS:%/=%))$(REVID)
 
-# make will try to build $(REVISION).dep before including
+# make will check and maybe rebuild $(REVISION).dep before including
 include $(REVISION).dep
 
 .PHONY: $(RECURSE_TO_ORIGIN)
