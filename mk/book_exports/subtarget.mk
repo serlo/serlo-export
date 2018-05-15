@@ -1,14 +1,14 @@
 include $(MK)/utils.mk
 
-SUBTARGETS = subtargets
+ARTICLES = articles
 
-$(SUBTARGETS):
+$(ARTICLES):
 	$(eval SUBTARGET := $(call dir_head,$(MAKECMDGOALS)))
 	$(eval NEXTHOP := $(call dir_tail,$(MAKECMDGOALS)))
 	$(eval export SUBTARGET)
 	$(call create_directory,$(SUBTARGET))
-	$(MAKE) -C $(SUBTARGET) -f $(MK)/subtarget.mk $(NEXTHOP)
+	$(MAKE) -C $(SUBTARGET) -f $(MK)/book_exports/$(TARGET)/$(TARGET).mk $(NEXTHOP)
 
-% :: $(SUBTARGETS) ;
-
-.PHONY: $(SUBTARGETS)
+% :: $(ARTICLES) ;
+	
+.PHONY: $(ARTICLES)

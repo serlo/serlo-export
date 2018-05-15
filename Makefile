@@ -21,27 +21,27 @@ include $(MK)/utils.mk
 $(ARTICLES):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:articles/%=%))
 	$(call create_directory,$@)
-	$(MAKE) -C $(ARTICLES) -f $(MK)/article.mk $(NEXTGOAL)
+	$(MAKE) -C $(ARTICLES) -f $(MK)/articles/article.mk $(NEXTGOAL)
 
 $(MEDIA):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
 	$(call create_directory,$@)
-	$(MAKE) -C $@ -f $(MK)/media.mk $(NEXTGOAL)
+	$(MAKE) -C $@ -f $(MK)/media/media.mk $(NEXTGOAL)
 
 $(ARTICLE_EXPORTS):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
 	$(call create_directory,$@)
-	$(MAKE) -C $@ -f $(MK)/article_export.mk $(NEXTGOAL)
+	$(MAKE) -C $@ -f $(MK)/article_exports/article.mk $(NEXTGOAL)
 
 $(BOOK_EXPORTS):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
 	$(call create_directory,$@)
-	$(MAKE) -C $@ -f $(MK)/book_export.mk $(NEXTGOAL)
+	$(MAKE) -C $@ -f $(MK)/book_exports/book.mk $(NEXTGOAL)
 
 $(SECTIONS):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
 	$(call create_directory,$@)
-	$(MAKE) -C $@ -f $(MK)/sec_article.mk $(NEXTGOAL)
+	$(MAKE) -C $@ -f $(MK)/sections/sec_article.mk $(NEXTGOAL)
 
 init:
 	$(call map,check_dependency,ocamlopt inkscape convert qrencode latex sed)

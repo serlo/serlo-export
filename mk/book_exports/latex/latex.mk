@@ -15,7 +15,7 @@ $(SUBTARGET).tex: $(SUBTARGET)
 	$(eval ARTICLE_FILE := $(call dir_tail,$@))
 	$(eval export ARTICLE)
 	$(call create_directory,$(ARTICLE))
-	$(MAKE) -C $(ARTICLE) -f $(MK)/latex.mk $(ARTICLE_FILE)
+	$(MAKE) -C $(ARTICLE) -f $(MK)/article_exports/latex/latex.mk $(ARTICLE_FILE)
 
 # make will check and maybe rebuild articles.dep before including
 include articles.dep

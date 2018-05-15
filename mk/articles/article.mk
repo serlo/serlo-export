@@ -7,7 +7,7 @@ $(REVISIONS):
 	$(eval REVISION := $(notdir $(MAKECMDGOALS)))
 	$(call create_directory,$(ARTICLE))
 	$(eval export ARTICLE)
-	$(MAKE) -C $(ARTICLE) -f $(MK)/revision.mk $(REVISION)
+	$(MAKE) -C $(ARTICLE) -f $(MK)/articles/revision.mk $(REVISION)
 
 % :: $(REVISIONS) ;
 

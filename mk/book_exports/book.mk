@@ -7,7 +7,7 @@ $(TARGETS):
 	$(eval NEXTHOP := $(call dir_tail,$(MAKECMDGOALS)))
 	$(eval export BOOK)
 	$(call create_directory,$(BOOK))
-	$(MAKE) -C $(BOOK) -f $(MK)/book_target.mk $(NEXTHOP)
+	$(MAKE) -C $(BOOK) -f $(MK)/book_exports/target.mk $(NEXTHOP)
 
 % :: $(TARGETS) ;
 

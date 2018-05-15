@@ -7,7 +7,7 @@ $(SUBTARGETS):
 	$(eval NEXTHOP := $(call dir_tail,$(MAKECMDGOALS)))
 	$(eval export TARGET)
 	$(call create_directory,$(TARGET))
-	$(MAKE) -C $(TARGET) -f $(MK)/book_subtarget.mk $(NEXTHOP)
+	$(MAKE) -C $(TARGET) -f $(MK)/book_exports/subtarget.mk $(NEXTHOP)
 
 bookmap.yml: bookmap.md
 	$(MK)/bin/parse_bookmap -i bookmap.md > bookmap.yml
