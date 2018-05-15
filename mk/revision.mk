@@ -2,8 +2,7 @@
 	python $(MK)/download_article.py $(ARTICLE) $* > $@
 
 %.yml: %.md
-	$(MK)/transform_article.sh < $< > $@
+	$(MK)/bin/mwtoast --stdin < $< > $@
 
 .DELETE_ON_ERROR:
-
 .SECONDARY:
