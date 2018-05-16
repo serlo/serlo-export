@@ -18,28 +18,40 @@ $(MAKECMDGOALS): articles.dep
 # generate article dependencies #
 #################################
 .SECONDEXPANSION:
-%.dep: $(ORIGIN_SECONDARY) articles.dep
+%.dep: $(ORIGIN_SECONDARY) articles.dep %.markers
 	$(eval ARTICLE:= $(call dir_head,$@))
 	$(eval REVISION := $(basename $(call dir_tail,$@)))
 	$(call create_directory,$(ARTICLE))
 	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
 		--title $(ARTICLE) \
 		--revision $(ARTICLE)/$(REVISION) \
+		--markers $(ARTICLE)/$(REVISION).markers \
 		--section-path $(BASE)/sections \
 		--externals-path $(BASE)/media \
 		deps $(TARGET).$(SUBTARGET) \
 		< $< > $@
 
+#########################################
+# extract article markers from sitemap  #
+#########################################
+%.markers: $(SITEMAP)
+	$(eval ARTICLE:= $(call dir_head,$@))
+	$(eval UNQUOTED:= $(shell python $(MK)/unescape_make.py $(ARTICLE)))
+	$(call create_directory,$(ARTICLE))
+	$(MK)/bin/sitemap_utils --input $(SITEMAP) \
+		markers "$(UNQUOTED)" $(TARGET) > $@
+
 ##################################################
 # generate files from article tree serialization #
 ##################################################
 .SECONDEXPANSION:
-%.tex %.html: $(ORIGIN_SECONDARY) articles.dep %.dep
+%.tex %.html: $(ORIGIN_SECONDARY) articles.dep %.dep %.markers
 	$(eval ARTICLE:= $(call dir_head,$@))
 	$(eval REVISION := $(basename $(call dir_tail,$@)))
 	$(MK)/bin/mfnf_ex --config $(BASE)/config/mfnf.yml \
 		--title $(ARTICLE) \
 		--revision $(REVISION) \
+		--markers $(ARTICLE)/$(REVISION).markers \
 		--section-path $(BASE)/sections \
 		--externals-path $(BASE)/media \
 		--texvccheck-path $(MK)/bin/texvccheck \
@@ -57,7 +69,8 @@ $(BASE)/articles/%.yml:
 # producing a target named like $(MAKECMDGOALS)                     #
 # ###################################################################
 articles.dep: $(SITEMAP)
-	$(MK)/bin/sitemap_utils -i $(SITEMAP) --deps $(TARGET) $(SUBTARGET) > articles.dep
+	$(MK)/bin/sitemap_utils --input $(SITEMAP) \
+		deps $(TARGET) $(SUBTARGET) > articles.dep
 
 include articles.dep
 
