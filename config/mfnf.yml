@@ -6,10 +6,17 @@ targets:
   latex.print:
     Latex:
       centered_image_captions: false
+  latex.minimal:
+    Latex:
+      centered_image_captions: false
+
   deps:
     Dependencies: {}
   sections:
     Sections: {}
+
+  pdf.minimal:
+    PDF: {}
   pdf.all:
     PDF: 
       page_width: 210
