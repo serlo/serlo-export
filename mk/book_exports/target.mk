@@ -20,5 +20,5 @@ bookmap.md:
 % :: bookmap.yml $(SUBTARGETS) ;
 
 .DELETE_ON_ERROR:
-
+.NOTPARALLEL:
 .PHONY: $(SUBTARGETS)

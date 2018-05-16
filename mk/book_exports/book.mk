@@ -12,3 +12,4 @@ $(TARGETS):
 % :: $(TARGETS) ;
 
 .PHONY: $(TARGETS)
+.NOTPARALLEL:

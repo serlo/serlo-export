@@ -18,3 +18,4 @@ $(BUILD_YML):
 	$(MAKE) -C $(BASE) articles/$(ARTICLE)/$(REVID:%=%.yml)
 
 .PHONY: $(THE_SECTIONS) $(BUILD_YML)
+.NOTPARALLEL:

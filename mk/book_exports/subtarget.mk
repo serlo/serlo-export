@@ -10,5 +10,6 @@ $(ARTICLES):
 	$(MAKE) -C $(SUBTARGET) -f $(MK)/book_exports/dependencies.mk $(NEXTHOP)
 
 % :: $(ARTICLES) ;
-	
+
+.NOTPARALLEL:
 .PHONY: $(ARTICLES)
