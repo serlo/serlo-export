@@ -28,6 +28,7 @@ $(MAKECMDGOALS): articles.dep
 		--markers $(ARTICLE)/$(REVISION).markers \
 		--section-path $(BASE)/sections \
 		--externals-path $(BASE)/media \
+		--texvccheck-path $(MK)/bin/texvccheck \
 		deps $(TARGET).$(SUBTARGET) \
 		< $< > $@
 

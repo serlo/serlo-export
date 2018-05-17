@@ -9,13 +9,20 @@ $(SUBTARGETS):
 	$(call create_directory,$(TARGET))
 	$(MAKE) -C $(TARGET) -f $(MK)/book_exports/subtarget.mk $(NEXTHOP)
 
-bookmap.yml: bookmap.md
-	$(MK)/bin/parse_bookmap -i bookmap.md > bookmap.yml
-	python $(MK)/fill_sitemap_revisions.py bookmap.yml > bookmap.yml.tmp
-	mv bookmap.yml.tmp bookmap.yml
-
 bookmap.md:
 	python $(MK)/download_article.py $(BOOK) latest > bookmap.md
+
+bookmap.raw.yml: bookmap.md
+	$(MK)/bin/mwtoast -i bookmap.md > bookmap.raw.yml
+
+bookmap.pre.yml: bookmap.raw.yml
+	$(MK)/bin/parse_bookmap \
+		--input bookmap.raw.yml \
+		--texvccheck-path $(MK)/bin/texvccheck \
+	> bookmap.pre.yml	
+
+bookmap.yml: bookmap.pre.yml
+	python $(MK)/fill_sitemap_revisions.py bookmap.pre.yml > bookmap.yml
 	
 % :: bookmap.yml $(SUBTARGETS) ;
 
