@@ -516,6 +516,14 @@ class ArticleContentParser(ChainedAction):
 
     class ConvertInlineMath(NodeTransformation):
         def transform_dict(self, obj):
+            check(obj, "type") == "element"
+
+            # Remove <span about="..."></span> which is created for some math
+            # formulas
+            if lookup(obj, "name") == "span" and \
+               lookup(obj, "attrs", "about") and not obj["children"]:
+                return None
+
             check(obj, "attrs", "typeof") == "mw:Extension/math"
 
             formula = json.loads(obj["attrs"]["data-mw"])["body"]["extsrc"]
