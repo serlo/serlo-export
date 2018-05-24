@@ -1,22 +1,18 @@
 include $(MK)/utils.mk
 
-SITEMAP := $(BASE)/book_exports/$(BOOK)/bookmap.yml
+export SITEMAP := $(BASE)/book_exports/$(BOOK)/bookmap.yml
 
 # this will be expanded to the original article location,
 # circumventing make's filename manipulation
 ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 
 
-
-################################
-# build the actual target file #
-################################
+# build the actual target file 
 $(MAKECMDGOALS): articles.dep
+	$(export $(SITEMAP))
 	$(MAKE) -f $(MK)/book_exports/$(TARGET)/book.mk $(MAKECMDGOALS)
 
-#################################
-# generate article dependencies #
-#################################
+# generate article dependencies 
 .SECONDEXPANSION:
 %.dep: $(ORIGIN_SECONDARY) articles.dep %.markers
 	$(eval ARTICLE:= $(call dir_head,$@))
@@ -32,9 +28,7 @@ $(MAKECMDGOALS): articles.dep
 		deps $(TARGET).$(SUBTARGET) \
 		< $< > $@
 
-#########################################
-# extract article markers from sitemap  #
-#########################################
+# extract article markers from sitemap 
 %.markers: $(SITEMAP)
 	$(eval ARTICLE:= $(call dir_head,$@))
 	$(eval UNQUOTED:= $(shell python $(MK)/unescape_make.py $(ARTICLE)))
@@ -42,9 +36,7 @@ $(MAKECMDGOALS): articles.dep
 	$(MK)/bin/sitemap_utils --input $(SITEMAP) \
 		markers "$(UNQUOTED)" $(TARGET) > $@
 
-##################################################
-# generate files from article tree serialization #
-##################################################
+# generate files from article tree serialization 
 .SECONDEXPANSION:
 %.tex %.html: $(ORIGIN_SECONDARY) articles.dep %.dep %.markers
 	$(eval ARTICLE:= $(call dir_head,$@))
@@ -62,22 +54,18 @@ $(BASE)/articles/%.yml:
 	$(MAKE) -C $(BASE) articles/$*.yml
 
 
-#####################################################################
-# Generate / include article dependencies                           #
-#                                                                   #
-# (which include article deps)                                      #
-# make will check and maybe rebuild articles.dep before including,  #
-# producing a target named like $(MAKECMDGOALS)                     #
-# ###################################################################
+# Generate / include article dependencies                           
+#                                                                   
+# (which include article deps)                                      
+# make will check and maybe rebuild articles.dep before including, 
+# producing a target named like $(MAKECMDGOALS)                     
 articles.dep: $(SITEMAP)
 	$(MK)/bin/sitemap_utils --input $(SITEMAP) \
 		deps $(TARGET) $(SUBTARGET) > articles.dep
 
 include articles.dep
 
-############################
-# Build included artifacts #
-############################
+# Build included artifacts 
 $(BASE)/media/%:
 	$(MAKE) -C $(BASE) media/$*
 
