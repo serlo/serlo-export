@@ -150,6 +150,11 @@ MAKE_ESCAPES = {
     "/": "@SLASH@",
     "'": "@SQUOTE@",
     '"': "@DQUOTE@",
+    "*": "@STAR@",
+    "=": "@EQ@",
+    "$": "@DOLLAR@",
+    "#": "@SHARP@",
+    "%": "@PERC@",
 }
 
 def quote_filename(filename):
