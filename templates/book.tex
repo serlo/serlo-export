@@ -1,0 +1,13 @@
+%\title{ {{title}} }
+
+%\begin{document}
+
+{{#each parts}}
+    \part{ {{~ this.title ~}} }
+    {{#each this.chapters}}
+        \chapter{ {{~ this.title ~}} }
+        \input{\articlespath/{{escape_make this.path}}/{{this.revision ~}}.tex} 
+    {{/each}}
+{{/each}}
+
+%\end{document}

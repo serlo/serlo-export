@@ -265,8 +265,10 @@ Autorinnen\\\bfseries}{\clearpage}
 \newenvironment{error}{\textbf{Error:}}{}
 
 \parindent0pt
+
+\newcommand*{\articlespath}{ {{~ articlespath ~}} }
+
 \begin{document}
-
-\input{ {{content}} }
-
+    \input{\articlespath/{{content ~}} }
 \end{document}
+
