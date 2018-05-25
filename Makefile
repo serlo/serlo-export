@@ -52,7 +52,7 @@ init:
 	$(call build_rust_dep,mfnf-export, \
 		https://github.com/vroland/mfnf-export,mfnf_ex)
 	$(call build_rust_dep,handlebars-cli-rs, \
-		https://github.com/vroland/handlebars-cli-rs,handlebars-cli-rs)
+		https://github.com/vroland/handlebars-cli-rs,handlebars-cli-rs,mediawiki)
 	$(call build_rust_dep,mfnf-sitemap-parser, \
 		https://github.com/vroland/mfnf-sitemap-parser,parse_bookmap)
 	$(call build_rust_dep,mfnf-sitemap-parser, \
