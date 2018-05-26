@@ -1,12 +1,10 @@
 include $(MK)/utils.mk
 
-SITEMAP := $(BASE)/book_exports/$(BOOK)/bookmap.yml
-
-$(SUBTARGET).tex:
+$(BOOK_REVISION).tex:
 	$(MK)/bin/handlebars-cli-rs \
 		--input $(BASE)/templates/book.tex \
 		--data $(SITEMAP) \
-	> $(SUBTARGET).tex	
+	> $(BOOK_REVISION).tex	
 
-.PHONY: $(SUBTARGET).tex
+.PHONY: $(BOOK_REVISION).tex
 .DELETE_ON_ERROR:

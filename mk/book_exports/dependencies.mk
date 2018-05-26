@@ -1,7 +1,7 @@
 include $(MK)/utils.mk
 
 RECURSE_TO_LATEX := recurse_to_latex
-SITEMAP := $(BASE)/book_exports/$(BOOK)/bookmap.yml
+export SITEMAP := $(BASE)/book_exports/$(BOOK)/$(BOOK_REVISION)/$(BOOK_REVISION).yml
 
 # this will be expanded to the original article location,
 # circumventing make's filename manipulation
@@ -91,10 +91,10 @@ $(BASE)/sections/%:
 	$(MAKE) -C $(BASE) sections/$(dir $(SECS:%/=%))$(REVID)
 
 # recurse back for targets depending on other targets.
-$(BASE)/book_exports/$(BOOK)/latex/$(SUBTARGET)/$(SUBTARGET).tex :: $(RECURSE_TO_LATEX) ;
+$(BASE)/book_exports/$(BOOK)/$(BOOK_REVISION)/latex/$(SUBTARGET)/$(BOOK_REVISION).tex :: $(RECURSE_TO_LATEX) ;
 
 $(RECURSE_TO_LATEX):
-	$(MAKE) -C $(BASE) book_exports/$(BOOK)/latex/$(SUBTARGET)/$(SUBTARGET).tex
+	$(MAKE) -C $(BASE) book_exports/$(BOOK)/$(BOOK_REVISION)/latex/$(SUBTARGET)/$(BOOK_REVISION).tex
 
 .PHONY: $(RECURSE_TO_LATEX)
 .DELETE_ON_ERROR:

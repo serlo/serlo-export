@@ -1,26 +1,32 @@
 include $(MK)/utils.mk
 
-SITEMAP := $(BASE)/book_exports/$(BOOK)/bookmap.yml
-TEXBOOK := $(BASE)/book_exports/$(BOOK)/latex/$(SUBTARGET)/$(SUBTARGET).tex
+TEXBOOK := $(BASE)/book_exports/$(BOOK)/$(BOOK_REVISION)/latex/$(SUBTARGET)/$(BOOK_REVISION).tex
 LATEX := lualatex
 
-$(SUBTARGET)_opts.yml:
+$(BOOK_REVISION)_opts.yml:
 	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
 		--title $(BOOK) \
 		--revision $(shell date +"%F:%T") \
 	$(TARGET).$(SUBTARGET) < $(MK)/dummy.yml > $@
 
-$(SUBTARGET).tex: $(SUBTARGET)_opts.yml $(TEXBOOK)
+$(BOOK_REVISION).tex: $(BOOK_REVISION)_opts.yml $(TEXBOOK)
 	$(MK)/bin/handlebars-cli-rs \
 		--input $(BASE)/templates/book_export.tex \
 		--data $< \
-		content $(SUBTARGET).tex \
+		content $(BOOK_REVISION).tex \
 		fontpath $(BASE)/karmilla/ttf/ \
-		articlespath $(BASE)/book_exports/$(BOOK)/latex/$(SUBTARGET) \
-	> $(SUBTARGET).tex
+		articlespath texfiles \
+	> $(BOOK_REVISION).tex
 
-$(SUBTARGET).pdf: $(SUBTARGET).tex
-	TEXINPUTS=$(BASE): latexmk -pdflatex="$(LATEX) %O %S" -pdf $<
-
+$(BOOK_REVISION).pdf: $(BOOK_REVISION).tex
+	rm -f texfiles
+	ln -s $(BASE)/book_exports/$(BOOK)/$(BOOK_REVISION)/latex/$(SUBTARGET)/ texfiles
+	TEXINPUTS=$(BASE): latexmk \
+		-pdflatex="$(LATEX) %O %S -no-shell-escape" -pdf $< \
+		-interaction=nonstopmode \
+		-quiet \
+		-norc \
+		-logfilewarninglist \
+		
 .DELETE_ON_ERROR:
 .NOTPARALLEL:

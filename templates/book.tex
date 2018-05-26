@@ -6,7 +6,7 @@
     \part{ {{~ this.title ~}} }
     {{#each this.chapters}}
         \chapter{ {{~ this.title ~}} }
-        \input{\articlespath/{{escape_make this.path}}/{{this.revision ~}}.tex} 
+        \include{\articlespath/{{escape_make this.path}}/{{this.revision ~}}}
     {{/each}}
 {{/each}}
 
