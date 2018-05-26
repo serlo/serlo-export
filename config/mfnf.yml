@@ -10,8 +10,11 @@ targets:
     Latex:
       centered_image_captions: false
 
-  deps:
-    Dependencies: {}
+  section-deps:
+    SectionDeps: {}
+  media-deps:
+    MediaDeps: {}
+
   sections:
     Sections: {}
 

@@ -4,7 +4,7 @@ ORIGIN := $(BASE)/articles/$(ARTICLE)
 
 RECURSE_TO_ORIGIN := recurse_to_origin
 
-%.tex: $(ORIGIN)/%.yml %.dep
+%.tex: $(ORIGIN)/%.yml %.section-dep %.media-dep
 	$(MK)/bin/mfnf_ex --config $(BASE)/config/mfnf.yml \
 		--title $(ARTICLE) \
 		--revision $(REVISION) \
@@ -13,13 +13,23 @@ RECURSE_TO_ORIGIN := recurse_to_origin
 		--texvccheck-path $(MK)/bin/texvccheck \
 		$(TARGET).$(SUBTARGET) < $< > $@
 
-%.dep: $(ORIGIN)/%.yml
+%.section-dep: $(ORIGIN)/%.yml
 	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
 		--title $(ARTICLE) \
 		--revision $(REVISION) \
 		--section-path $(BASE)/sections \
 		--externals-path $(BASE)/media \
-		deps $(TARGET).$(SUBTARGET) \
+		section-deps $(TARGET).$(SUBTARGET) \
+		< $< > $@
+
+# %.sections is a target defined by %.section-dep
+%.media-dep: $(ORIGIN)/%.yml %.section-dep %.sections
+	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
+		--title $(ARTICLE) \
+		--revision $(REVISION) \
+		--section-path $(BASE)/sections \
+		--externals-path $(BASE)/media \
+		media-deps $(TARGET).$(SUBTARGET) \
 		< $< > $@
 
 $(ORIGIN)/% :: $(RECURSE_TO_ORIGIN) ;
@@ -35,8 +45,9 @@ $(BASE)/sections/%:
 	$(eval REVID := $(basename $(notdir $*)))
 	$(MAKE) -C $(BASE) sections/$(dir $(SECS:%/=%))$(REVID)
 
-# make will check and maybe rebuild $(REVISION).dep before including
-include $(REVISION).dep
+include $(REVISION).section-dep 
+# media-dep cannot be made initially, needs sections
+-include $(REVISION).media-dep
 
 .PHONY: $(RECURSE_TO_ORIGIN)
 .DELETE_ON_ERROR:
