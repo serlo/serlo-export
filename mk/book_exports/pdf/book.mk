@@ -23,7 +23,7 @@ $(BOOK_REVISION).pdf: $(BOOK_REVISION).tex
 	ln -s $(BASE)/book_exports/$(BOOK)/$(BOOK_REVISION)/latex/$(SUBTARGET)/ texfiles
 	TEXINPUTS=$(BASE): latexmk \
 		-pdflatex="$(LATEX) %O %S -no-shell-escape" -pdf $< \
-		-interaction=nonstopmode \
+		-interaction=batchmode \
 		-quiet \
 		-norc \
 		-logfilewarninglist \
