@@ -7,15 +7,9 @@ export SITEMAP := $(BASE)/book_exports/$(BOOK)/$(BOOK_REVISION)/$(BOOK_REVISION)
 # circumventing make's filename manipulation
 ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 
-
-# build the actual target file 
-$(MAKECMDGOALS): articles.dep
-	$(export $(SITEMAP))
-	$(MAKE) -f $(MK)/book_exports/$(TARGET)/book.mk $(MAKECMDGOALS)
-
 # generate article dependencies 
 .SECONDEXPANSION:
-%.section-dep: $(ORIGIN_SECONDARY) articles.dep %.markers
+%.section-dep: $(ORIGIN_SECONDARY) %.markers
 	$(eval ARTICLE:= $(call dir_head,$@))
 	$(eval REVISION := $(basename $(call dir_tail,$@)))
 	$(call create_directory,$(ARTICLE))
@@ -30,7 +24,7 @@ $(MAKECMDGOALS): articles.dep
 		< $< > $@
 
 .SECONDEXPANSION:
-%.media-dep: $(ORIGIN_SECONDARY) articles.dep %.markers %.sections
+%.media-dep: $(ORIGIN_SECONDARY) %.markers %.sections
 	$(eval ARTICLE:= $(call dir_head,$@))
 	$(eval REVISION := $(basename $(call dir_tail,$@)))
 	$(call create_directory,$(ARTICLE))
@@ -80,6 +74,9 @@ articles.dep: $(SITEMAP)
 		deps $(TARGET) $(SUBTARGET) > articles.dep
 
 include articles.dep
+
+# build rules for the current target
+include $(MK)/book_exports/$(TARGET)/book.mk
 
 # Build included artifacts 
 $(BASE)/media/%:

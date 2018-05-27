@@ -1,7 +1,6 @@
 include $(MK)/utils.mk
 
 REVISIONS = subtargets
-BOOK_REVISION := $(basename $(notdir $(MAKECMDGOALS)))
 
 $(REVISIONS): 
 	$(eval TARGET := $(call dir_head,$(MAKECMDGOALS)))

@@ -3,7 +3,7 @@ include $(MK)/utils.mk
 SUBTARGETS = subtargets
 
 $(SUBTARGETS): 
-	$(eval BOOK_REVISION := $(basename $(notdir $(MAKECMDGOALS))))
+	$(eval BOOK_REVISION := $(call dir_head,$(MAKECMDGOALS)))
 	$(eval NEXTHOP := $(call dir_tail,$(MAKECMDGOALS)))
 	$(eval export BOOK_REVISION)
 	$(call create_directory,$(BOOK_REVISION))

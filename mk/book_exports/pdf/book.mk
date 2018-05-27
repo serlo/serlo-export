@@ -1,5 +1,3 @@
-include $(MK)/utils.mk
-
 TEXBOOK := $(BASE)/book_exports/$(BOOK)/$(BOOK_REVISION)/latex/$(SUBTARGET)/$(BOOK_REVISION).tex
 LATEX := lualatex
 
@@ -18,7 +16,7 @@ $(BOOK_REVISION).tex: $(BOOK_REVISION)_opts.yml $(TEXBOOK)
 		articlespath texfiles \
 	> $(BOOK_REVISION).tex
 
-$(BOOK_REVISION).pdf: $(BOOK_REVISION).tex
+$(BOOK_REVISION).pdf: $(BOOK_REVISION).tex articles.dep
 	rm -f texfiles
 	ln -s $(BASE)/book_exports/$(BOOK)/$(BOOK_REVISION)/latex/$(SUBTARGET)/ texfiles
 	TEXINPUTS=$(BASE): latexmk \
