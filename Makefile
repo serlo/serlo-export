@@ -57,6 +57,8 @@ init:
 		https://github.com/vroland/mfnf-sitemap-parser,parse_bookmap)
 	$(call build_rust_dep,mfnf-sitemap-parser, \
 		https://github.com/vroland/mfnf-sitemap-parser,sitemap_utils)
+	$(call build_rust_dep,mwlint, \
+		https://github.com/vroland/mwlint,mwlint)
 	$(call git_clone,extension-math, \
 		https://phabricator.wikimedia.org/diffusion/EMAT/extension-math.git)
 	(cd $(TMP_BIN_DIR)/extension-math/texvccheck && make && \

@@ -48,9 +48,9 @@ ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 
 # generate files from article tree serialization 
 .SECONDEXPANSION:
-%.tex %.html: $(ORIGIN_SECONDARY) articles.dep %.media-dep %.section-dep %.markers
+%.stats.yml %.tex %.html: $(ORIGIN_SECONDARY) articles.dep %.media-dep %.section-dep %.markers
 	$(eval ARTICLE:= $(call dir_head,$@))
-	$(eval REVISION := $(basename $(call dir_tail,$@)))
+	$(eval REVISION := $(call dir_tail,$*))
 	$(MK)/bin/mfnf_ex --config $(BASE)/config/mfnf.yml \
 		--title $(ARTICLE) \
 		--revision $(REVISION) \

@@ -10,14 +10,6 @@ targets:
     Latex:
       centered_image_captions: false
 
-  section-deps:
-    SectionDeps: {}
-  media-deps:
-    MediaDeps: {}
-
-  sections:
-    Sections: {}
-
   pdf.minimal:
     PDF: {}
   pdf.all:
@@ -27,3 +19,19 @@ targets:
   pdf.print:
     PDF:
       page_trim: 10
+
+  # generates dependencies for articles
+  section-deps:
+    SectionDeps: {}
+  media-deps:
+    MediaDeps: {}
+
+  # extracts <section>s from articles
+  sections:
+    Sections: {}
+
+  # stats targets for lints and more
+  stats.all:
+    Stats: {}
+  stats.print:
+    Stats: {}

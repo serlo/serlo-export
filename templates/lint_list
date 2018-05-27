@@ -1,0 +1,5 @@
+{{#each parts~}}
+{{#each this.chapters~}}
+{{escape_make this.path}}/{{this.revision}}.lints.yml
+{{/each~}}
+{{/each~}}
