@@ -5,12 +5,15 @@
 		--texvccheck-path $(MK)/bin/texvccheck \
 	< $< > $@
 
-$(BOOK_REVISION).stats.yml: articles.dep
+$(BOOK_REVISION).stats.yml $(BOOK_REVISION).article_list: articles.dep
 	$(MK)/bin/handlebars-cli-rs \
-		--input $(BASE)/templates/lint_list \
+		--input $(BASE)/templates/article_list \
 		--data $(SITEMAP) \
-	> $(BOOK_REVISION).lint_list
+	> $(BOOK_REVISION).article_list
 
-	touch $(BOOK_REVISION).stats.yml
+	python3 $(MK)/book_exports/stats/collect_stats.py $(BOOK_REVISION) \
+		> $(BOOK_REVISION).stats.yml
+
+	cat $(BOOK_REVISION).stats.yml
 
 .DELETE_ON_ERROR:
