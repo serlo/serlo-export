@@ -27,7 +27,7 @@ Make sure you have the following software installed:
 
 In the root of this repository, create a new python virtual environment:
 ``` sh
-virtualenv venv
+virtualenv -p python3.6 venv
 ```
 Source the virtual environment:
 ``` sh
