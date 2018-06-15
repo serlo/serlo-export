@@ -9,7 +9,7 @@ RECURSE_TO_ORIGIN := recurse_to_origin
 		--title $(ARTICLE) \
 		--revision $(REVISION) \
 		--section-path $(BASE)/sections \
-		--externals-path $(BASE)/media \
+		--externals-path media \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		$(TARGET).$(SUBTARGET) < $< > $@
 

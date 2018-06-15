@@ -19,6 +19,7 @@ LATEX := lualatex
 		article $(ARTICLE) \
 		revision $(REVISION) \
 		fontpath $(BASE)/karmilla/ttf/ \
+		graphics_path "$(BASE)/" \
 		> $@
 
 # generate article template values

@@ -56,7 +56,7 @@ ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 		--revision $(REVISION) \
 		--markers $(ARTICLE)/$(REVISION).markers \
 		--section-path $(BASE)/sections \
-		--externals-path $(BASE)/media \
+		--externals-path media \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		$(TARGET).$(SUBTARGET) < $< > $@
 

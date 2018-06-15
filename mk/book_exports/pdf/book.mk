@@ -14,6 +14,7 @@ $(BOOK_REVISION).tex: $(BOOK_REVISION)_opts.yml $(TEXBOOK)
 		content $(BOOK_REVISION).tex \
 		fontpath $(BASE)/karmilla/ttf/ \
 		articlespath texfiles \
+		graphics_path "$(BASE)/" \
 	> $(BOOK_REVISION).tex
 
 $(BOOK_REVISION).pdf: $(BOOK_REVISION).tex articles.dep
