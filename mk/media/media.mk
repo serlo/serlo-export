@@ -39,7 +39,9 @@ DOWNLOAD_PDF = python $(MK)/download_image.py $*.pdf > $@
 %.plain.PDF:
 	$(DOWNLOAD_PDF)
 
-%.svg %.SVG %.png %.PNG %.jpg %.JPG %.jpeg %.JPEG %.gif %.GIF:
+%.dummy:;
+
+%.svg %.SVG %.png %.PNG %.jpg %.JPG %.jpeg %.JPEG %.gif %.GIF %.webm %.WEBM:
 	python $(MK)/download_image.py $@ > $@
 
 .DELETE_ON_ERROR:
