@@ -20,6 +20,9 @@ targets:
     PDF:
       page_trim: 10
 
+  html.all:
+    HTML: {}
+
   # generates dependencies for articles
   section-deps:
     SectionDeps: {}
