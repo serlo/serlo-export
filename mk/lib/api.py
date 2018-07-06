@@ -8,6 +8,7 @@ import urllib.request
 from urllib.parse import quote
 import re
 import os
+import sys
 from functools import wraps
 from requests.exceptions import HTTPError
 import time
@@ -137,7 +138,11 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
 
                 raise ConnectionError(api_result.get("info", message))
 
-            result = merge(result, query_path(api_result, path_to_result))
+            try:
+                result = merge(result, query_path(api_result, path_to_result))
+            except KeyError:
+                print ("Key error with path", path_to_result, "in", api_result, file=sys.stderr)
+                sys.exit(1)
 
             if "continue" in api_result:
                 params.update(api_result["continue"])
