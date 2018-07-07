@@ -41,9 +41,11 @@ DOWNLOAD_PDF = python $(MK)/download_image.py $*.pdf > $@
 
 %.dummy:;
 
-%.svg %.SVG %.png %.PNG %.jpg %.JPG %.jpeg %.JPEG %.gif %.GIF %.webm %.WEBM %.meta:
+%.svg %.SVG %.png %.PNG %.jpg %.JPG %.jpeg %.JPEG %.gif %.GIF %.webm %.WEBM:
 	python $(MK)/download_image.py $@ > $@
-	python $(MK)/get_image_license.py $@ > $@.meta
+
+%.meta: %
+	python $(MK)/get_image_license.py $< > $@
 
 .DELETE_ON_ERROR:
 .NOTPARALLEL:
