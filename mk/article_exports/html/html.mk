@@ -4,14 +4,18 @@ ORIGIN := $(BASE)/articles/$(ARTICLE)
 
 RECURSE_TO_ORIGIN := recurse_to_origin
 
-%.html: $(ORIGIN)/%.yml %.section-dep %.media-dep
+%.html %.css: $(ORIGIN)/%.yml %.section-dep %.media-dep
 	$(MK)/bin/mfnf_ex --config $(BASE)/config/mfnf.yml \
 		--title $(ARTICLE) \
 		--revision $(REVISION) \
 		--section-path $(BASE)/sections \
 		--externals-path media \
 		--texvccheck-path $(MK)/bin/texvccheck \
-		$(TARGET).$(SUBTARGET) < $< > $@
+		$(TARGET).$(SUBTARGET) < $< > $*.body
+	cp $(BASE)/templates/article.html $@
+
+	sed -i -e '/{{content}}/{r $*.body' -e 'd' -e '}' $@
+	cp $(BASE)/templates/article.css .
 
 %.section-dep: $(ORIGIN)/%.yml
 	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
