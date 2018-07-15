@@ -17,8 +17,7 @@ ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 		--title $(ARTICLE) \
 		--revision $(ARTICLE)/$(REVISION) \
 		--markers $(ARTICLE)/$(REVISION).markers \
-		--section-path $(BASE)/sections \
-		--externals-path $(BASE)/media \
+		--base-path $(BASE) \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		section-deps $(TARGET).$(SUBTARGET) \
 		< $< > $@
@@ -32,8 +31,7 @@ ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 		--title $(ARTICLE) \
 		--revision $(ARTICLE)/$(REVISION) \
 		--markers $(ARTICLE)/$(REVISION).markers \
-		--section-path $(BASE)/sections \
-		--externals-path $(BASE)/media \
+		--base-path $(BASE) \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		media-deps $(TARGET).$(SUBTARGET) \
 		< $< > $@
@@ -55,8 +53,7 @@ ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 		--title $(ARTICLE) \
 		--revision $(REVISION) \
 		--markers $(ARTICLE)/$(REVISION).markers \
-		--section-path $(BASE)/sections \
-		--externals-path media \
+		--base-path $(BASE) \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		$(TARGET).$(SUBTARGET) < $< > $@
 

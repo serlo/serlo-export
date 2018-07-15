@@ -8,8 +8,7 @@ RECURSE_TO_ORIGIN := recurse_to_origin
 	$(MK)/bin/mfnf_ex --config $(BASE)/config/mfnf.yml \
 		--title $(ARTICLE) \
 		--revision $(REVISION) \
-		--section-path $(BASE)/sections \
-		--externals-path media \
+		--base-path $(BASE) \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		$(TARGET).$(SUBTARGET) < $< > $@
 
@@ -17,8 +16,7 @@ RECURSE_TO_ORIGIN := recurse_to_origin
 	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
 		--title $(ARTICLE) \
 		--revision $(REVISION) \
-		--section-path $(BASE)/sections \
-		--externals-path $(BASE)/media \
+		--base-path $(BASE) \
 		section-deps $(TARGET).$(SUBTARGET) \
 		< $< > $@
 
@@ -27,8 +25,7 @@ RECURSE_TO_ORIGIN := recurse_to_origin
 	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
 		--title $(ARTICLE) \
 		--revision $(REVISION) \
-		--section-path $(BASE)/sections \
-		--externals-path $(BASE)/media \
+		--base-path $(BASE) \
 		media-deps $(TARGET).$(SUBTARGET) \
 		< $< > $@
 
