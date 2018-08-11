@@ -159,7 +159,7 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
 
     def get_image_license(self, filename):
         """Returns licensing information for an image."""
-        params = {"titles": filename, "prop": "imageinfo", "iiprop": "user|extmetadata|url", "iilimit": "max",
+        params = {"titles": "File:" + filename, "prop": "imageinfo", "iiprop": "user|extmetadata|url", "iilimit": "max",
                   "iiextmetadatafilter": "LicenseShortName|UsageTerms|AttributionRequired|Restrictions|Artist|ImageDescription|DateTimeOriginal|Credit"}
 
         query = self.query(params, ["pages", select_singleton, "imageinfo"])
@@ -200,8 +200,8 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
         authors = list(sorted(set([res["user"] for res in query])))
 
         return {"user": resolve_usernames(result["user"]), "name": meta.get("UsageTerms", {}).get("value", ""),
-                "shortname": shortname, "licenseurl": url,
-                "url": result["url"], "authors": resolve_usernames(authors), "source": source}
+                "shortname": shortname, "licenseurl": url, "detailsurl": "https://commons.wikimedia.org/wiki/File:"+filename,
+                "url": result["url"], "authors": resolve_usernames(authors), "source": source, "filename": filename}
 
     def get_image_info(self, filename):
         """Returns the URL and sha1 to the current version of the image

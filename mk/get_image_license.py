@@ -17,5 +17,5 @@ if __name__ == "__main__":
     args = arg_parser.parse_args()
     yaml = YAML(typ="rt")
     yaml.dump({
-        "license": get_image_license(unquote_filename("File:" + args.image))
+        "license": get_image_license(unquote_filename(args.image))
     }, sys.stdout)
