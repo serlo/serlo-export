@@ -15,6 +15,7 @@ RECURSE_TO_ORIGIN := recurse_to_origin
 
 	sed -i -e '/{{content}}/{r $*.body' -e 'd' -e '}' $@
 	cp $(BASE)/templates/article.css .
+	ln -s $(BASE)/media media
 
 %.section-dep: $(ORIGIN)/%.yml
 	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
