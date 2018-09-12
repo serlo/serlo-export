@@ -1,0 +1,27 @@
+<!doctype html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{book}}</title>
+</head>
+<nav id="sidebar">
+    <div class="partlist">
+    <ol class="parts">
+        {{#each parts~}}
+        <li>{{this.title}}
+            <div class="chapterlist">
+            <ol class="chapters">
+                {{#each this.chapters~}}
+                <li>
+                    <a href="{{escape_make this.path}}/{{this.revision}}.html">{{this.title}}</a>
+                </li>
+                {{/each~}}
+            </ol>
+            </div>
+        </li>
+        {{/each~}}
+    </ol>
+    </div>
+</nav>
+</html>
