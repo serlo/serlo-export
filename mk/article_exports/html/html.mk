@@ -14,7 +14,7 @@ RECURSE_TO_ORIGIN := recurse_to_origin
 	cp $(BASE)/templates/article.html $@
 
 	sed -i -e '/{{content}}/{r $*.body' -e 'd' -e '}' $@
-	cp $(BASE)/templates/article.css .
+	cp $(BASE)/templates/serlo.css .
 	ln -s $(BASE)/media media
 
 %.section-dep: $(ORIGIN)/%.yml
