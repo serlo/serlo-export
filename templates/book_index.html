@@ -14,7 +14,7 @@
             <ol class="chapters">
                 {{#each this.chapters~}}
                 <li>
-                    <a href="{{escape_make this.path}}/{{this.revision}}.html">{{this.title}}</a>
+                    <a href="{{urlencode (escape_make this.path)}}/{{this.revision}}.html">{{this.title}}</a>
                 </li>
                 {{/each~}}
             </ol>

@@ -6,7 +6,7 @@
     <base href="../" target="_self">
     <link rel="stylesheet" href="static/serlo.css">
     <link rel="stylesheet" href="static/katex.min.css">
-    <script src="static/katex.min.js"></script>
+    <script defer src="static/katex.min.js"></script>
 
     <title>{{article}}</title>
 </head>
@@ -20,7 +20,7 @@
             <ol class="chapters">
                 {{#each this.chapters~}}
                 <li>
-                    <a href="{{escape_make this.path}}/{{this.revision}}.html">{{this.title}}</a>
+                    <a href="{{urlencode (escape_make this.path)}}/{{this.revision}}.html">{{this.title}}</a>
                 </li>
                 {{/each~}}
             </ol>
