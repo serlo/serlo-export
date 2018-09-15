@@ -1,13 +1,17 @@
 %\title{ {{title}} }
 
 %\begin{document}
-
+\includepdf[pages=-]{include/mfnf_prelude-{{subtarget}}.pdf}
 {{#each parts}}
     \part{ {{~ this.title ~}} }
-    {{#each this.chapters}}
+    {{~ #each this.chapters ~}}
         \chapter{ {{~ this.title ~}} }
         \input{\articlespath/{{escape_make this.path}}/{{this.revision ~}}}
-    {{/each}}
+        {{#if this.markers.after ~}}
+        \includepdf[pages=-]{include/{{this.markers.after.path}}-{{../../subtarget}}.pdf}
+        {{/if ~}}
+    {{~ /each ~}}
 {{/each}}
-
+\listoffigures
+\includepdf[pages=-]{include/mfnf_epilogue-{{subtarget}}.pdf}
 %\end{document}
