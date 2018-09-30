@@ -11,3 +11,93 @@ body {
     border: 1px;
     border-style: solid;
 }
+@charset "UTF-8";
+
+@font-face {
+  font-family: "untitled-font-1";
+  src:url("fonts/untitled-font-1.eot");
+  src:url("fonts/untitled-font-1.eot?#iefix") format("embedded-opentype"),
+    url("fonts/untitled-font-1.woff") format("woff"),
+    url("fonts/untitled-font-1.ttf") format("truetype"),
+    url("fonts/untitled-font-1.svg#untitled-font-1") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+[data-icon]:before {
+  font-family: "untitled-font-1" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: "untitled-font-1" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-definition:before {
+    content: "\61";
+    color: #007EC1;
+    font-size: 50px;
+}
+.icon-warning:before {
+    content: "\62";
+    color: #007EC1;
+	font-size: 50px;
+}
+.icon-example:before {
+    content: "\63";
+    color: #007EC1;
+	font-size: 50px;
+}
+.icon-exercise:before {
+    content: "\64";
+    color: #007EC1;
+	font-size: 50px;
+}
+.icon-hint:before {
+    content: "\65";
+    color: #007EC1;
+	font-size: 50px;
+}
+.icon-proof:before {
+    content: "\66";
+    color: #007EC1;
+	font-size: 50px;
+}
+.icon-proofsummary:before {
+    content: "\67";
+    color: #007EC1;
+	font-size: 50px;
+}
+.icon-solution:before {
+    content: "\68";
+    color: #007EC1;
+	font-size: 50px;
+}
+.icon-solutionprocess:before {
+    content: "\69";
+    color: #007EC1;
+	font-size: 50px;
+}
+.icon-theorem:before {
+    content: "\6a";
+    color: #007EC1;
+	font-size: 50px;
+}
+
