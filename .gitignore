@@ -8,6 +8,7 @@ __pycache__/
 /sections/
 /article_exports/
 /books/
+/docs/
 /book_exports/
 /.build/
 /venv/

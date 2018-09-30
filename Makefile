@@ -8,8 +8,9 @@ MEDIA := media
 ARTICLE_EXPORTS := article_exports
 BOOK_EXPORTS := book_exports
 SECTIONS := sections
+DOCS := docs
 TMP_BIN_DIR := .build
-OUTPUT_DIRS := $(ARTICLES) $(MEDIA) $(ARTICLE_EXPORTS) $(SECTIONS) $(BOOK_EXPORTS)
+OUTPUT_DIRS := $(ARTICLES) $(MEDIA) $(ARTICLE_EXPORTS) $(SECTIONS) $(BOOK_EXPORTS) $(DOCS)
 
 export BASE
 export MK
@@ -44,7 +45,7 @@ $(SECTIONS):
 	$(MAKE) -C $@ -f $(MK)/sections/sec_article.mk $(NEXTGOAL)
 
 init:
-	$(call map,check_dependency,ocamlopt inkscape convert qrencode latex sed)
+	$(call map,check_dependency,ocamlopt inkscape convert qrencode latex sed cmark)
 	pip install -r requirements.txt
 	$(call map,create_directory,$(TMP_BIN_DIR) $(MK)/bin)
 	$(call build_rust_dep,mediawiki-peg-rust, \
@@ -63,6 +64,11 @@ init:
 		https://phabricator.wikimedia.org/diffusion/EMAT/extension-math.git)
 	(cd $(TMP_BIN_DIR)/extension-math/texvccheck && make && \
 		cp texvccheck $(MK)/bin)
+
+mfnf-docs:
+	mkdir -p $(BASE)/$(DOCS)
+	$(MAKE) -C $(BASE)/$(DOCS) -f $(MK)/doc.mk $(@)
+
 
 clean:
 	$(call map,remove_file,$(OUTPUT_DIRS))
