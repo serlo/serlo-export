@@ -1,0 +1,276 @@
+\RequirePackage{luatex85}
+\documentclass[{{document_options}}]{scrbook}
+
+% allow calculations in package parameters
+\usepackage{calc}
+
+\usepackage[dvips=false,pdftex=false,vtex=false]{geometry}
+
+\geometry{
+    paperwidth={{page_width}}mm,
+    paperheight={{page_height}}mm,
+    top={{border.[0]}}mm,
+    bottom={{border.[1]}}mm,
+    outer={{border.[2]}}mm,
+    inner={{border.[3]}}mm,
+}
+
+\usepackage[
+     width={{add page_width (mult 2 page_trim)}}mm,
+     height={{add page_height (mult 2 page_trim)}}mm,
+     cam,axes,center,
+]{crop}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{cancel}
+\usepackage{booktabs}
+\usepackage[space]{grffile}
+\usepackage{verbatim}
+\usepackage{changepage}
+\usepackage{marvosym}
+\usepackage{multicol}
+\usepackage[usenamesm,svgnames,dvipsnames,table]{xcolor}
+\usepackage{parskip}
+
+% pdfencoding=auto for supporting special characters in PDF's table of contents
+\usepackage[hidelinks,breaklinks,pdfencoding=auto]{hyperref}
+\usepackage[font={color=sblau},justification=raggedright,labelformat=empty]{caption}
+\usepackage{float}
+\usepackage[normalem]{ulem}
+\usepackage{csquotes}
+\usepackage[framemethod=default]{mdframed}
+\usepackage[toctextentriesindented]{tocstyle}
+\usepackage{enumitem}
+\usepackage{etoolbox}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{tabu}
+\usepackage{scrlayer-scrpage}
+\usepackage{pdfpages}
+\usepackage{microtype}
+
+\addtocontents{lof}{ {Alle Abbildungen sind auffindbar auf \textbf{Wikimedia Commons}, einer Sammlung von frei verwendbaren Mediendateien, zu der jeder beitragen kann. Wenn du eine Abbildung weiterverwenden willst, findest du hier weitere Informationen:\\ \textbf{https://commons.wikimedia.org/wiki/File:<BILDNAME>}
+}\\}
+\addtocontents{lof}{}
+
+\graphicspath{ { {{~graphics_path~}} } }
+
+% set baseline height and font size
+\changefontsizes[{{baseline_height}}pt]{ {{font_size}}pt}
+
+% remove vertical space after floats
+
+% Support for \euro in math and text mode
+\usepackage{eurosym}
+\DeclareRobustCommand{\officialeuro}{%
+  \ifmmode\expandafter\text\fi
+    {\fontencoding{U}\fontfamily{eurosym}\selectfont e}}
+
+\newcounter{imagelabel}
+\setlength{\intextsep}{0pt plus 2pt}   % default value 12pt plus 2pt minus 2pt
+
+% allow max height and max width for image includes
+\usepackage{adjustbox}
+
+\DeclareCaptionLabelFormat{blank}{}
+
+% show overfull boxes
+\overfullrule=1mm
+
+% Redefine \rm for math environment -> raises an error otherwise
+% TODO: Is there a better solution
+\renewcommand*{\rm}[1]{\mathrm{#1}}
+
+\usepackage{fontspec}
+% voodoo
+% fontspec and titlesec have errors displaying math font, unless \maketitle is
+% used. This piece of black magic solves the problem.
+% https://github.com/wspr/unicode-math/issues/253
+\makeatletter
+\AtBeginDocument{%
+ \let\glb@currsize\relax
+}
+\makeatother
+\setmainfont[Ligatures=TeX,
+             Extension=.ttf,
+             BoldFont=Karmilla-Bold-016m,
+             ItalicFont=Karmilla-Italic-016m,
+             Path={{fontpath}}]{Karmilla-Regular-016m}
+% fallback font or unicode (like smileys)
+\newfontfamily\DejaSans{DejaVu Sans}
+
+\newlength{\lineheight}
+\makeatletter\setlength{\lineheight}{\f@size pt}\makeatother
+
+\allowdisplaybreaks[4]
+\predisplaypenalty=0
+
+\setcounter{secnumdepth}{1}
+
+% define colors in rgb colorspace (for digital pdfs)
+% \definecolor{sblau}{HTML}{007ec1}
+% \colorlet{shellblau}{sblau!15}
+% \definecolor{forestgreen}{rgb}{0.13, 0.55, 0.13}
+
+% define colors in cmyk colorspace (for print)
+\definecolor{sblau}{cmyk}{0.83,0.41,0,0}
+\definecolor{shellblau}{cmyk}{0.39,0.05,0.03,0}
+\definecolor{forestgreen}{cmyk}{0.82,0.19,1,0.05}
+
+% change font and color of headers and table of contents
+\addtokomafont{disposition}{\rmfamily\color{sblau}}
+% change font of descriptionlabels
+\addtokomafont{descriptionlabel}{\rmfamily}
+% change font sizes of headings
+\addtokomafont{title}{\changefontsizes[59pt]{44pt}}
+\addtokomafont{part}{\changefontsizes[59pt]{44pt}\color{white}}
+\addtokomafont{partprefix}{\changefontsizes[12pt]{9pt}\color{white}}
+\KOMAoption{chapterprefix}{true}
+\addtokomafont{chapter}{\changefontsizes[28pt]{21pt}}
+\addtokomafont{section}{\changefontsizes[16pt]{12pt}}
+\addtokomafont{subsection}{\changefontsizes[12pt]{9pt}}
+\addtokomafont{chapterprefix}{\changefontsizes[12pt]{9pt}\color{sblau}}
+\RedeclareSectionCommand[innerskip=-\baselineskip]{chapter}
+
+\RedeclareSectionCommand[beforeskip=28pt plus 1pt minus 0pt,
+                         afterskip=28pt plus 1pt minus 0pt]{chapter}
+\RedeclareSectionCommand[beforeskip=20pt plus 1pt minus 0pt,
+                         afterskip=1pt plus 1pt minus 0pt]{section}
+\RedeclareSectionCommand[beforeskip=12pt plus 1pt minus 0pt,
+                         afterskip=1pt plus 1pt minus 0pt]{subsection}
+\RedeclareSectionCommand[beforeskip=12pt plus 1pt minus 0pt,
+                         afterskip=1pt plus 1pt minus 0pt]{subsubsection}
+
+\newcommand{\BluePageBG}{\colorbox{shellblau}{\parbox[t][\paperheight][l]{\paperwidth}{${}$}}}
+
+\DeclareNewLayer[background,
+                 mode=picture,
+                 align=lt,
+                 area={0pt}{0pt}{\paperwidth}{\paperheight},
+                 contents=\putUL{\BluePageBG}]{partlayer}
+\DeclarePageStyleByLayers{part}{partlayer}
+\renewcommand\partpagestyle{part}
+\addtokomafont{part}{\raggedright}
+\addtokomafont{partprefix}{\raggedright}
+\RedeclareSectionCommand[beforeskip=0pt,innerskip=0pt]{part}
+\renewcommand*\thepart{\arabic{part}}
+
+\makeatletter
+\patchcmd{\scr@startchapter}{\if@openright\cleardoublepage\else\clearpage\fi}{\clearpage}{}{}
+\def\@endpart{}
+\makeatother
+
+\errorcontextlines 10000
+
+\mdfdefinestyle{semanticbox}{innerleftmargin=8.25pt,
+                             innerrightmargin=0pt,
+                             innertopmargin=0pt,
+                             innerbottommargin=1pt,
+                             startcode=\leavevmode,
+                             linecolor=shellblau,
+                             linewidth=2.75pt,
+                             topline=false,
+                             rightline=false,
+                             bottomline=false,
+                             theoremseparator=\\,
+                             frametitlefont=\normalfont,
+                             theoremtitlefont={\normalfont\bfseries\color{sblau}},
+                             frametitleaboveskip=0.5pt,
+                             frametitlebelowskip=\baselineskip}
+
+\mdfdefinestyle{importantbox}{innerleftmargin=8.25pt,
+                              innerrightmargin=0pt,
+                              innertopmargin=2pt,
+                              innerbottommargin=1pt,
+                              startcode=\leavevmode,
+                              linecolor=shellblau,
+                              linewidth=2.75pt,
+                              topline=false,
+                              rightline=false,
+                              bottomline=false,
+                              fontcolor=sblau}
+
+\newlength{\IconHeight}
+\setlength\IconHeight{20px}
+
+\newmdenv[style=importantbox]{important*}
+\newenvironment{indentblock}{\begin{adjustwidth}{.5cm}{}}{\end{adjustwidth}}
+
+\newcommand{\BoxIcon}[1]{\rlap{\protect\makebox[-2.2\IconHeight]{\raisebox{-0.65\IconHeight}[0pt][0pt]{\includegraphics[height=\IconHeight]{icons/#1.pdf}}}}}
+
+\mdtheorem[style=semanticbox]{theorem}{\BoxIcon{theorem}Satz}[chapter]
+\mdtheorem[style=semanticbox]{definition}{\BoxIcon{definition}Definition}[chapter]
+\mdtheorem[style=semanticbox]{exercise}{\BoxIcon{exercise}Übung}[chapter]
+\mdtheorem[style=semanticbox]{solution}{\BoxIcon{solution}Lösung}[chapter]
+\mdtheorem[style=semanticbox]{alternativeproof}{\BoxIcon{proof}Alternativer Beweis}[chapter]
+\mdtheorem[style=semanticbox]{warning}{\BoxIcon{warning}Warnung}[chapter]
+\mdtheorem[style=semanticbox]{hint}{\BoxIcon{hint}Hinweis}[chapter]
+\mdtheorem[style=semanticbox]{explanation}{Erklärung}[chapter]
+\mdtheorem[style=semanticbox]{proofsummary}{\BoxIcon{proofsummary}Beweiszusammenfassung}[chapter]
+\mdtheorem[style=semanticbox]{summary}{\BoxIcon{proofsummary}Zusammenfassung}[chapter]
+\mdtheorem[style=semanticbox]{solutionprocess}{\BoxIcon{solutionprocess}Lösungsweg}[chapter]
+\mdtheorem[style=semanticbox]{example}{\BoxIcon{example}Beispiel}[chapter]
+\mdtheorem[style=semanticbox]{answer}{Antwort}[chapter]
+\mdtheorem[style=semanticbox]{induction}{Induktionsbeweis}[chapter]
+\mdtheorem[style=semanticbox]{question}{Frage}[chapter]
+
+\makeatletter
+\let\proof\@undefined
+\let\endproof\@undefined
+\makeatother
+\mdtheorem[style=semanticbox]{proof}{\BoxIcon{proof}Beweis}[chapter]
+
+\newenvironment{authors}{\par\vspace*{\fill}\color{white}Autoren und
+Autorinnen\\\bfseries}{\clearpage}
+
+\newcommand{\ColoredTOC}{ {\color{sblau}\setcounter{tocdepth}{0}\tableofcontents}}
+\newcommand{\ColoredLOF}{ {\color{sblau}\setcounter{tocdepth}{10}\listoffigures}}
+\makeatletter
+\renewcommand\@dotsep{10000}
+\makeatother
+
+\usetocstyle[lof]{KOMAlike}
+\usetocstyle{KOMAlike}
+\settocstylefeature[-1]{pagenumberbox}{\csname @gobble\endcsname}
+%\settocstylefeature[0]{pagenumberbox}{\csname @gobble\endcsname}
+\settocfeature[lof]{raggedhook}{\raggedright}
+\settocfeature[lof]{entryvskip}{5pt plus 1pt minus 1pt}
+
+% width of page numbers in toc
+\makeatletter
+\renewcommand\@pnumwidth{1.5cm}
+\makeatother
+
+\setlist{leftmargin=11pt,labelindent=0pt,font=\color{sblau}}
+
+\newcommand{\proofstep}[1]{\textbf{\textcolor{sblau}{#1}}}
+\newcommand{\proofcase}[2]{\textbf{\textcolor{sblau}{Fall #1:}} #2}
+\newcommand{\inductionstep}[2]{\textbf{\textcolor{sblau}{#1.}} #2}
+
+% no additional space around equations is needed since they are always in their own paragraph
+% see https://tex.stackexchange.com/a/69665
+\expandafter\def\expandafter\normalsize\expandafter{%
+\normalsize
+\abovedisplayskip=-\baselineskip % if a paragraph starts with an equation then a blank extra line appears
+\abovedisplayshortskip=-\baselineskip
+\belowdisplayskip=0pt
+\belowdisplayshortskip=0pt
+}
+
+% error environment for export errors
+\newenvironment{error}{\textbf{Error:}}{}
+
+\parindent0pt
+
+\newcommand*{\articlespath}{ {{~ articlespath ~}} }
+
+\begin{document}
+    \input{\articlespath/{{content ~}} } 
+\end{document}
+

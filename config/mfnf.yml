@@ -1,0 +1,40 @@
+---
+targets:
+  latex.all:
+    Latex:
+      centered_image_captions: false
+  latex.print:
+    Latex:
+      centered_image_captions: false
+  latex.minimal:
+    Latex:
+      centered_image_captions: false
+
+  pdf.minimal:
+    PDF: {}
+  pdf.all:
+    PDF: 
+      page_width: 210
+      page_height: 297
+  pdf.print:
+    PDF:
+      page_trim: 10
+
+  html.all:
+    HTML: {}
+
+  # generates dependencies for articles
+  section-deps:
+    SectionDeps: {}
+  media-deps:
+    MediaDeps: {}
+
+  # extracts <section>s from articles
+  sections:
+    Sections: {}
+
+  # stats targets for lints and more
+  stats.all:
+    Stats: {}
+  stats.print:
+    Stats: {}

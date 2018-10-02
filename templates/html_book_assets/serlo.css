@@ -1,0 +1,13 @@
+
+body {
+    font-family: sans-serif;
+}
+
+.question-kind {
+    display: inline;
+}
+
+.environment {
+    border: 1px;
+    border-style: solid;
+}
