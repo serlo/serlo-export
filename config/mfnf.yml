@@ -22,6 +22,10 @@ targets:
 
   html.all:
     HTML: {}
+  html.print:
+    HTML: {}
+  html.minimal:
+    HTML: {}
 
   # generates dependencies for articles
   section-deps:
@@ -37,4 +41,6 @@ targets:
   stats.all:
     Stats: {}
   stats.print:
+    Stats: {}
+  stats.minimal:
     Stats: {}
