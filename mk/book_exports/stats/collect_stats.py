@@ -62,7 +62,10 @@ if __name__ == "__main__":
         lint_index = [l.strip() for l in f.readlines() if len(l.strip()) > 0]
 
     for article in lint_index:
-        article_stats = yaml.load(open(article + ".stats.yml"))
-        process_article_stats(article, article_stats)
+        try:
+            article_stats = yaml.load(open(article + ".stats.yml"))
+            process_article_stats(article, article_stats)
+        except FileNotFoundError:
+            print(unquote_filename(article), "seems to be excluded...", file=sys.stderr)
 
     YAML(typ="rt").dump(book_stats, sys.stdout)
