@@ -3,14 +3,18 @@
 %\begin{document}
 \includepdf[pages=-]{include/mfnf_prelude-{{subtarget}}.pdf}
 {{#each parts}}
-    \part{ {{~ this.title ~}} }
-    {{~ #each this.chapters ~}}
-        \chapter{ {{~ this.title ~}} }
-        \input{\articlespath/{{escape_make this.path}}/{{this.revision ~}}}
-        {{#if this.markers.after ~}}
-        \includepdf[pages=-]{include/{{this.markers.after.path}}-{{../../subtarget}}.pdf}
-        {{/if ~}}
-    {{~ /each ~}}
+    {{~ #unless (part_excluded this ../subtarget)}}
+        \part{ {{~ this.title ~}} }
+        {{~ #each this.chapters ~}}
+            {{~ #unless (chapter_excluded this.markers.exclude ../../subtarget)}}
+                \chapter{ {{~ this.title ~}} }
+                \input{\articlespath/{{escape_make this.path}}/{{this.revision ~}}}
+                {{#if this.markers.after ~}}
+                \includepdf[pages=-]{include/{{this.markers.after.path}}-{{../../subtarget}}.pdf}
+                {{/if ~}}
+            {{/unless ~}}
+        {{~ /each ~}}
+    {{~ /unless ~}}
 {{/each}}
 \listoffigures
 \includepdf[pages=-]{include/mfnf_epilogue-{{subtarget}}.pdf}

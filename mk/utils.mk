@@ -11,7 +11,7 @@ git_clone = [ -d '$(TMP_BIN_DIR)/$1' ] || \
 
 define build_rust_dep
 	$(call git_clone,$1,$2)
-	(cd $(TMP_BIN_DIR)/$1 && git pull && cargo build --release --features=$4 && \
+	(cd $(TMP_BIN_DIR)/$1 && git pull && cargo build --release --features=$4,$5,$6,$7 && \
 		cp target/release/$3 $(MK)/bin)
 endef
 

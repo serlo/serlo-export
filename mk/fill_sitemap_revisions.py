@@ -20,7 +20,7 @@ def fetch(q):
             break
         chapter, url = task
         r = requests.get(url)
-        chapter["revision"] = r.json()["items"][0]["rev"]
+        chapter["revision"] = str(r.json()["items"][0]["rev"])
         q.task_done()
 
 def chapters(bookmap):
