@@ -1,12 +1,12 @@
-$(BOOK_REVISION).html: articles.dep	
 
+$(BOOK_REVISION).html: articles.dep	
 	$(MK)/bin/handlebars-cli-rs \
 		--input $(BASE)/templates/book_index.html \
 		--data $(SITEMAP) \
 		book "$(shell python3 $(MK)/unescape_make.py $(BOOK))" \
 	> $(BOOK_REVISION).html
 	cp -r $(BASE)/templates/html_book_assets static/
-	ln -s $(BASE)/media/ .
+	ln -s -f $(BASE)/media/ .
 
 # postprocess html articles
 %.html: %.raw_html

@@ -18,10 +18,8 @@ $(BOOK_REVISION).tex: $(BOOK_REVISION)_opts.yml $(TEXBOOK)
 	> $(BOOK_REVISION).tex
 
 $(BOOK_REVISION).pdf: $(BOOK_REVISION).tex articles.dep
-	rm -f texfiles
-	rm -f include
-	ln -s $(BASE)/book_exports/$(BOOK)/$(BOOK_REVISION)/latex/$(SUBTARGET)/ texfiles
-	ln -s $(BASE)/include include
+	ln -s -f $(BASE)/book_exports/$(BOOK)/$(BOOK_REVISION)/latex/$(SUBTARGET)/ texfiles
+	ln -s -f $(BASE)/include include
 	TEXINPUTS=$(BASE): latexmk \
 		-pdflatex="$(LATEX) %O %S -no-shell-escape" -pdf $< \
 		-interaction=batchmode \
