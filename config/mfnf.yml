@@ -4,6 +4,7 @@ targets:
     Latex:
       centered_image_captions: true
       with_todo: true
+      environment_numbers: true
   latex.print:
     Latex:
       centered_image_captions: false

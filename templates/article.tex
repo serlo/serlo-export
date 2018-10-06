@@ -200,6 +200,7 @@
 \setlength\IconHeight{20px}
 
 \newmdenv[style=importantbox]{important*}
+\newmdenv[style=importantbox]{important}
 \newenvironment{indentblock}{\begin{adjustwidth}{.5cm}{}}{\end{adjustwidth}}
 
 \newcommand{\BoxIcon}[1]{\rlap{\protect\makebox[-2.2\IconHeight]{\raisebox{-0.65\IconHeight}[0pt][0pt]{\includegraphics[height=\IconHeight]{icons/#1.pdf}}}}}
@@ -220,6 +221,10 @@
 \mdtheorem[style=semanticbox]{induction}{Induktionsbeweis}[chapter]
 \mdtheorem[style=semanticbox]{question}{Frage}[chapter]
 \mdtheorem[style=semanticbox]{todo}{Todo}[chapter]
+\mdtheorem[style=semanticbox]{error}{Error}[chapter]
+
+% implement "numbered" displayquote
+\newenvironment{displayquote*}{\begin{displayquote}}{\end{displayquote}}
 
 \makeatletter
 \let\proof\@undefined
@@ -263,9 +268,6 @@ Autorinnen\\\bfseries}{\clearpage}
 \belowdisplayskip=0pt
 \belowdisplayshortskip=0pt
 }
-
-% error environment for export errors
-\newenvironment{error}{\textbf{Error:}}{}
 
 \parindent0pt
 \begin{document}
