@@ -1,30 +1,38 @@
 ---
 targets:
-  latex.all:
+  latex.verbose:
     Latex:
       centered_image_captions: true
       with_todo: true
       environment_numbers: true
+  latex.all:
+    Latex: {}
   latex.print:
-    Latex:
-      centered_image_captions: false
+    Latex: {}
   latex.minimal:
-    Latex:
-      centered_image_captions: false
+    Latex: {}
 
-  pdf.minimal:
-    PDF: {}
+  pdf.verbose:
+    PDF: 
+      page_width: 210
+      page_height: 297
   pdf.all:
     PDF: 
       page_width: 210
       page_height: 297
+  pdf.minimal:
+     PDF: 
+      page_width: 210
+      page_height: 297   
   pdf.print:
     PDF:
       page_trim: 10
 
-  html.all:
+  html.verbose:
     HTML:
       with_todo: true
+  html.all:
+    HTML: {}
   html.print:
     HTML: {}
   html.minimal:
@@ -41,6 +49,8 @@ targets:
     Sections: {}
 
   # stats targets for lints and more
+  stats.verbose:
+    Stats: {}
   stats.all:
     Stats: {}
   stats.print:
