@@ -2,7 +2,8 @@
 targets:
   latex.all:
     Latex:
-      centered_image_captions: false
+      centered_image_captions: true
+      with_todo: true
   latex.print:
     Latex:
       centered_image_captions: false
@@ -21,7 +22,8 @@ targets:
       page_trim: 10
 
   html.all:
-    HTML: {}
+    HTML:
+      with_todo: true
   html.print:
     HTML: {}
   html.minimal:
