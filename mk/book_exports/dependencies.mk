@@ -20,7 +20,8 @@ ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 		--base-path $(BASE) \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		section-deps $(TARGET).$(SUBTARGET) \
-		< $< > $@
+		< $< \
+		> $@
 
 .SECONDEXPANSION:
 %.media-dep: $(ORIGIN_SECONDARY) %.markers %.sections
@@ -34,7 +35,8 @@ ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 		--base-path $(BASE) \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		media-deps $(TARGET).$(SUBTARGET) \
-		< $< > $@
+		< $< \
+		> $@
 
 # extracts the reference anchors (link targets) provided by an article.
 .SECONDEXPANSION:
@@ -50,7 +52,8 @@ ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 		--texvccheck-path $(MK)/bin/texvccheck \
 		--base-path $(BASE) \
 		anchors $(TARGET).$(SUBTARGET) \
-		< $< > $@
+		< $< \
+		> $@
 
 # concatenates individual anchors file to a whole
 $(BOOK_REVISION).anchors: articles.dep
@@ -77,7 +80,9 @@ $(BOOK_REVISION).anchors: articles.dep
 		--markers $(ARTICLE)/$(REVISION).markers \
 		--base-path $(BASE) \
 		--texvccheck-path $(MK)/bin/texvccheck \
-		$(TARGET).$(SUBTARGET) < $< > $@
+		$(TARGET).$(SUBTARGET) \
+		< $< \
+		> $@
 
 $(BASE)/articles/%.yml:
 	$(MAKE) -C $(BASE) articles/$*.yml
