@@ -48,6 +48,11 @@ targets:
   sections:
     Sections: {}
 
+  # extracts anchors (link targets) from articles
+  anchors:
+    Anchors: {}
+       
+
   # stats targets for lints and more
   stats.verbose:
     Stats: {}

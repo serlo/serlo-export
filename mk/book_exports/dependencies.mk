@@ -36,6 +36,28 @@ ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 		media-deps $(TARGET).$(SUBTARGET) \
 		< $< > $@
 
+# extracts the reference anchors (link targets) provided by an article.
+.SECONDEXPANSION:
+%.anchors: $(ORIGIN_SECONDARY) %.markers %.sections
+	$(eval ARTICLE:= $(call dir_head,$@))
+	$(eval UNQUOTED:= $(shell python $(MK)/unescape_make.py $(ARTICLE)))
+	$(eval REVISION := $(basename $(call dir_tail,$@)))
+	$(call create_directory,$(ARTICLE))
+	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
+		--title "$(UNQUOTED)" \
+		--revision "$(REVISION)" \
+		--markers $(ARTICLE)/$(REVISION).markers \
+		--texvccheck-path $(MK)/bin/texvccheck \
+		--base-path $(BASE) \
+		anchors $(TARGET).$(SUBTARGET) \
+		< $< > $@
+
+# concatenates individual anchors file to a whole
+$(BOOK_REVISION).anchors: articles.dep
+	# extract anchor files from dependencies and concatenate
+	$(shell cat $(filter %.anchors,$^) > $@)
+	
+
 # extract article markers from sitemap 
 %.markers: $(SITEMAP)
 	$(eval ARTICLE:= $(call dir_head,$@))
@@ -46,7 +68,7 @@ ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 
 # generate files from article tree serialization 
 .SECONDEXPANSION:
-%.stats.yml %.tex %.raw_html: $(ORIGIN_SECONDARY) articles.dep %.media-dep %.section-dep %.markers %.sections %.media
+%.stats.yml %.tex %.raw_html: $(ORIGIN_SECONDARY) $(BOOK_REVISION).anchors articles.dep %.media-dep %.section-dep %.markers %.sections %.media
 	$(eval ARTICLE:= $(call dir_head,$@))
 	$(eval REVISION := $(call dir_tail,$*))
 	$(MK)/bin/mfnf_ex --config $(BASE)/config/mfnf.yml \
