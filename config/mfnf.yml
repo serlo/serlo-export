@@ -34,7 +34,8 @@ targets:
   html.all:
     HTML: {}
   html.print:
-    HTML: {}
+    HTML:
+      hoist_thumbnails: true
   html.minimal:
     HTML: {}
 
