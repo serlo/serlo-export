@@ -73,12 +73,14 @@ $(BOOK_REVISION).anchors: articles.dep
 .SECONDEXPANSION:
 %.stats.yml %.tex %.raw_html: $(ORIGIN_SECONDARY) $(BOOK_REVISION).anchors articles.dep %.media-dep %.section-dep %.markers %.sections %.media
 	$(eval ARTICLE:= $(call dir_head,$@))
+	$(eval UNQUOTED:= $(shell python $(MK)/unescape_make.py $(ARTICLE)))
 	$(eval REVISION := $(call dir_tail,$*))
 	$(MK)/bin/mfnf_ex --config $(BASE)/config/mfnf.yml \
-		--title $(ARTICLE) \
+		--title "$(UNQUOTED)" \
 		--revision $(REVISION) \
 		--markers $(ARTICLE)/$(REVISION).markers \
 		--base-path $(BASE) \
+		--available-anchors $(BOOK_REVISION).anchors \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		$(TARGET).$(SUBTARGET) \
 		< $< \
