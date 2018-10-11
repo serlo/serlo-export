@@ -27,6 +27,9 @@ def add_dict(target, stats):
     for key, value in stats.items():
         if isinstance(value, (int, float)):
             target[key] = target.get(key, 0) + value
+        elif isinstance(value, list):
+            target[key] = target.get(key, [])
+            target[key].extend(value)
         elif isinstance(value, dict):
             target[key] = target.get(key, {})
             add_dict(target[key], value)
@@ -43,6 +46,7 @@ def process_article_stats(article, stats):
     name, revision = article.split("/")
     article_result["name"] = unquote_filename(name)
     article_result["revision"] = revision
+
 
     add_article_stats(book_stats, article_stats)
     add_article_stats(article_result, article_stats)
