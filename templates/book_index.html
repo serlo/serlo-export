@@ -9,17 +9,21 @@
     <div class="partlist">
     <ol class="parts">
         {{#each parts~}}
+        {{~ #unless (part_excluded this ../subtarget)}}
         <li>{{this.title}}
             <div class="chapterlist">
             <ol class="chapters">
                 {{#each this.chapters~}}
+                {{~ #unless (chapter_excluded this.markers.exclude ../../subtarget)}}
                 <li>
                     <a href="{{urlencode (escape_make this.path)}}/{{this.revision}}.html">{{this.title}}</a>
                 </li>
+                {{~ /unless ~}}
                 {{/each~}}
             </ol>
             </div>
         </li>
+        {{~ /unless ~}}
         {{/each~}}
     </ol>
     </div>
