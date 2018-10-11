@@ -39,8 +39,10 @@ def add_article_stats(target, stats):
 
 def process_article_stats(article, stats):
 
+    article_stats = yaml.load(open(article))
+
+    article = article.rstrip(".stats.yml")
     lint_stats = yaml.load(open(article + ".lints.yml"))
-    article_stats = yaml.load(open(article + ".stats.yml"))
 
     article_result = book_stats.get(article, {})
     name, revision = article.split("/")
@@ -62,14 +64,11 @@ if __name__ == "__main__":
     args = arg_parser.parse_args()
     yaml = YAML(typ="safe")
 
-    with open("{}.article_list".format(args.revision)) as f:
-        lint_index = [l.strip() for l in f.readlines() if len(l.strip()) > 0]
+    with open("{}.article_list".format(args.revision), "r") as f:
+        lint_index = [l for l in f.read().split() if len(l) > 0]
 
     for article in lint_index:
-        try:
-            article_stats = yaml.load(open(article + ".stats.yml"))
-            process_article_stats(article, article_stats)
-        except FileNotFoundError:
-            print(unquote_filename(article), "seems to be excluded...", file=sys.stderr)
+        article_stats = yaml.load(open(article))
+        process_article_stats(article, article_stats)
 
     YAML(typ="rt").dump(book_stats, sys.stdout)
