@@ -25,18 +25,19 @@
 \usepackage[T1]{fontenc}
 \usepackage[ngerman]{babel}
 \usepackage{graphicx}
+\usepackage{grffile}
+
+% math
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
 \usepackage{cancel}
+
 \usepackage{booktabs}
-\usepackage[space]{grffile}
-\usepackage{verbatim}
 \usepackage{changepage}
 \usepackage{marvosym}
-\usepackage{multicol}
+
 \usepackage[usenamesm,svgnames,dvipsnames,table]{xcolor}
-\usepackage{parskip}
 
 % pdfencoding=auto for supporting special characters in PDF's table of contents
 \usepackage[hidelinks,breaklinks,pdfencoding=auto]{hyperref}
@@ -48,7 +49,7 @@
 \usepackage[toctextentriesindented]{tocstyle}
 \usepackage{enumitem}
 \usepackage{etoolbox}
-\usepackage{tabularx}
+%\usepackage{tabularx}
 \usepackage{longtable}
 \usepackage{tabu}
 \usepackage{scrlayer-scrpage}
@@ -73,7 +74,7 @@
     {\fontencoding{U}\fontfamily{eurosym}\selectfont e}}
 
 \newcounter{imagelabel}
-\setlength{\intextsep}{0pt plus 2pt}   % default value 12pt plus 2pt minus 2pt
+%\setlength{\intextsep}{0pt plus 2pt}   % default value 12pt plus 2pt minus 2pt
 
 % allow max height and max width for image includes
 \usepackage{adjustbox}
@@ -168,11 +169,17 @@
 
 \errorcontextlines 10000
 
-\mdfdefinestyle{semanticbox}{innerleftmargin=8.25pt,
-                             innerrightmargin=0pt,
-                             innertopmargin=0pt,
-                             innerbottommargin=1pt,
-                             startcode=\leavevmode,
+\mdfsetup{
+    skipabove={5pt plus 1pt minus 0pt},
+    skipbelow={3pt plus 1pt minus 1pt},
+    innerleftmargin=8.25pt,
+    innerrightmargin=0pt,
+    innertopmargin=0pt,
+    innerbottommargin=1pt,
+    frametitleaboveskip=0pt,
+}
+
+\mdfdefinestyle{semanticbox}{startcode=\leavevmode,
                              linecolor=shellblau,
                              linewidth=2.75pt,
                              topline=false,
@@ -181,14 +188,9 @@
                              theoremseparator=\\,
                              frametitlefont=\normalfont,
                              theoremtitlefont={\normalfont\bfseries\color{sblau}},
-                             frametitleaboveskip=0.5pt,
                              frametitlebelowskip=\baselineskip}
 
-\mdfdefinestyle{importantbox}{innerleftmargin=8.25pt,
-                              innerrightmargin=0pt,
-                              innertopmargin=2pt,
-                              innerbottommargin=1pt,
-                              startcode=\leavevmode,
+\mdfdefinestyle{importantbox}{startcode=\leavevmode,
                               linecolor=shellblau,
                               linewidth=2.75pt,
                               topline=false,
@@ -201,6 +203,7 @@
 
 \newmdenv[style=importantbox]{important*}
 \newmdenv[style=importantbox]{important}
+
 \newenvironment{indentblock}{\begin{adjustwidth}{.5cm}{}}{\end{adjustwidth}}
 
 \newcommand{\BoxIcon}[1]{\rlap{\protect\makebox[-2.2\IconHeight]{\raisebox{-0.65\IconHeight}[0pt][0pt]{\includegraphics[height=\IconHeight]{icons/#1.pdf}}}}}
@@ -222,6 +225,20 @@
 \mdtheorem[style=semanticbox]{question}{Frage}[chapter]
 \mdtheorem[style=semanticbox]{todo}{Todo}[chapter]
 \mdtheorem[style=semanticbox]{error}{Error}[chapter]
+
+\newenvironment{proofstep}[1][]{%
+\par\medskip
+\textbf{\textbf{\textcolor{sblau}{#1:}}}
+}
+{}
+\newenvironment{proofstep*}[1][]{\begin{proofstep}[#1]}{\end{proofstep}}
+
+\newenvironment{proofcase}[1][]{%
+\par\medskip
+\textbf{\textbf{\textcolor{sblau}{#1:}}}
+}
+{}
+\newenvironment{proofcase*}[1][]{\begin{proofcase}[#1]}{\end{proofcase}}
 
 \makeatletter
 \let\proof\@undefined
@@ -252,21 +269,10 @@ Autorinnen\\\bfseries}{\clearpage}
 
 \setlist{leftmargin=11pt,labelindent=0pt,font=\color{sblau}}
 
-\newcommand{\proofstep}[1]{\textbf{\textcolor{sblau}{#1}}}
-\newcommand{\proofcase}[2]{\textbf{\textcolor{sblau}{Fall #1:}} #2}
 \newcommand{\inductionstep}[2]{\textbf{\textcolor{sblau}{#1.}} #2}
 
-% no additional space around equations is needed since they are always in their own paragraph
-% see https://tex.stackexchange.com/a/69665
-\expandafter\def\expandafter\normalsize\expandafter{%
-\normalsize
-\abovedisplayskip=-\baselineskip % if a paragraph starts with an equation then a blank extra line appears
-\abovedisplayshortskip=-\baselineskip
-\belowdisplayskip=0pt
-\belowdisplayshortskip=0pt
-}
-
 \parindent0pt
+
 \begin{document}
 
 \input{ {{content}} }
