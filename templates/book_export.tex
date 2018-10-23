@@ -170,33 +170,27 @@
 \errorcontextlines 10000
 
 \mdfsetup{
-    skipabove={10pt plus 1pt minus 0pt},
-    skipbelow={8pt plus 1pt minus 0pt},
+    skipabove=\parskip,
+    skipbelow=0pt,
     innerleftmargin=8.25pt,
     innerrightmargin=0pt,
     innertopmargin=0pt,
     innerbottommargin=1pt,
     frametitleaboveskip=0pt,
+    startcode=\leavevmode,
+    linecolor=shellblau,
+    linewidth=2.75pt,
+    topline=false,
+    rightline=false,
+    bottomline=false,
+    theoremseparator=\\,
 }
 
-\mdfdefinestyle{semanticbox}{startcode=\leavevmode,
-                             linecolor=shellblau,
-                             linewidth=2.75pt,
-                             topline=false,
-                             rightline=false,
-                             bottomline=false,
-                             theoremseparator=\\,
-                             frametitlefont=\normalfont,
+\mdfdefinestyle{semanticbox}{frametitlefont=\normalfont,
                              theoremtitlefont={\normalfont\bfseries\color{sblau}},
-                             frametitlebelowskip=\baselineskip}
+                             frametitlebelowskip=\parskip}
 
-\mdfdefinestyle{importantbox}{startcode=\leavevmode,
-                              linecolor=shellblau,
-                              linewidth=2.75pt,
-                              topline=false,
-                              rightline=false,
-                              bottomline=false,
-                              fontcolor=sblau}
+\mdfdefinestyle{importantbox}{fontcolor=sblau}
 
 \newlength{\IconHeight}
 \setlength\IconHeight{20px}
@@ -277,6 +271,7 @@ Autorinnen\\\bfseries}{\clearpage}
 \newcommand*{\articlespath}{ {{~ articlespath ~}} }
 
 \begin{document}
+    \allowdisplaybreaks
     \input{\articlespath/{{content ~}} } 
 \end{document}
 
