@@ -1,4 +1,6 @@
-TEXBOOK := $(BASE)/book_exports/$(BOOK)/$(BOOK_REVISION)/latex/$(SUBTARGET)/$(BOOK_REVISION).tex
+RECURSE_TO_LATEX := recurse_to_latex
+
+TEXBOOK := book_exports/$(BOOK)/$(BOOK_REVISION)/latex/$(SUBTARGET)/$(BOOK_REVISION).tex
 LATEX := lualatex
 
 $(BOOK_REVISION)_opts.yml:
@@ -7,7 +9,7 @@ $(BOOK_REVISION)_opts.yml:
 		--revision $(shell date +"%F:%T") \
 	$(TARGET).$(SUBTARGET) < $(MK)/dummy.yml > $@
 
-$(BOOK_REVISION).tex: $(BOOK_REVISION)_opts.yml $(TEXBOOK)
+$(BOOK_REVISION).tex: $(BOOK_REVISION)_opts.yml $(BASE)/$(TEXBOOK)
 	$(MK)/bin/handlebars-cli-rs \
 		--input $(BASE)/templates/book_export.tex \
 		--data $< \
@@ -27,6 +29,11 @@ $(BOOK_REVISION).pdf: $(BOOK_REVISION).tex articles.dep
 		-quiet \
 		-norc \
 		-logfilewarninglist \
+
+# recurse back for targets depending on other targets.
+$(BASE)/$(TEXBOOK):
+	$(MAKE) -C $(BASE) $(TEXBOOK)
 		
+.PHONY: $(BASE)/$(TEXBOOK)
 .DELETE_ON_ERROR:
 .NOTPARALLEL:
