@@ -1,14 +1,15 @@
 include $(MK)/utils.mk
 
-ARTICLES = articles
+TO_EXPORT = export
 
-$(ARTICLES):
+$(TO_EXPORT):
 	$(eval ARTICLE := $(call dir_head,$(MAKECMDGOALS)))
 	$(eval NEXTHOP := $(call dir_tail,$(MAKECMDGOALS)))
 	$(eval export ARTICLE)
 	$(call create_directory,$(ARTICLE))
-	$(MAKE) -C $(ARTICLE) -f $(MK)/article_exports/$(TARGET)/$(TARGET).mk $(NEXTHOP)
+	$(eval export REVISION := $(basename $(NEXTHOP)))
+	$(MAKE) -C . -f $(MK)/article_exports/export.mk $(ARTICLE)/$(NEXTHOP)
 
-% :: $(ARTICLES) ;
+% :: $(TO_EXPORT) ;
 
-.PHONY: $(ARTICLES)
+.PHONY: $(TO_EXPORT)

@@ -1,14 +1,14 @@
 include $(MK)/utils.mk
 
-TARGETS = targets
+TO_TARGET = target
 
-$(TARGETS):
+$(TO_TARGET):
 	$(eval TARGET := $(call dir_head,$(MAKECMDGOALS)))
 	$(eval NEXTHOP := $(call dir_tail,$(MAKECMDGOALS)))
 	$(eval export TARGET)
 	$(call create_directory,$(TARGET))
 	$(MAKE) -C $(TARGET) -f $(MK)/article_exports/target.mk $(NEXTHOP)
 
-% :: $(TARGETS) ;
+% :: $(TO_TARGET) ;
 
-.PHONY: $(TARGETS)
+.PHONY: $(TO_TARGET)

@@ -2,17 +2,27 @@
 
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <base href="." target="_self">
+    <link rel="stylesheet" href="static/serlo.css">
+    <link rel="stylesheet" href="static/katex.min.css">
+    <script defer src="static/katex.min.js"></script>
 
-  <title></title>
-
-  <link rel="stylesheet" href="article.css">
+    <title>{{article}}</title>
 </head>
-
 <body>
-  {{content}}  
-</body>
+<div id="content">
+<!-- @ARTICLE_CONTENT@ -->
+</div>
 
+    <script defer type="text/javascript">
+        // load KaTeX
+        document.addEventListener("DOMContentLoaded", function() {
+            var math = document.getElementsByClassName('math');
+            for (var i = 0; i < math.length; i++) {
+                katex.render(math[i].textContent, math[i]);
+            } 
+        });
+    </script>
+</body>
 </html>
