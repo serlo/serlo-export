@@ -1,7 +1,5 @@
 include $(MK)/utils.mk
 
-export SITEMAP := $(BASE)/book_exports/$(BOOK)/$(BOOK_REVISION)/$(BOOK_REVISION).yml
-
 # this will be expanded to the original article location,
 # circumventing make's filename manipulation
 ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
@@ -53,24 +51,12 @@ ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 		anchors $(TARGET).$(SUBTARGET) \
 		< $< \
 		> $@
-
-# concatenates individual anchors file to a whole
-$(BOOK_REVISION).anchors: articles.dep
-	# extract anchor files from dependencies and concatenate
-	$(shell cat $(filter %.anchors,$^) > $@)
 	
-
-# extract article markers from sitemap 
-%.markers: $(SITEMAP)
-	$(eval ARTICLE:= $(call dir_head,$@))
-	$(eval UNQUOTED:= $(shell python $(MK)/unescape_make.py $(ARTICLE)))
-	$(call create_directory,$(ARTICLE))
-	$(MK)/bin/sitemap_utils --input $(SITEMAP) \
-		markers "$(UNQUOTED)" $(TARGET) > $@
-
 # generate files from article tree serialization 
+# $(ALL_ANCHORS) must be defined before this file is loaded
+# and points to a file containing a list of all available anchors in the export.
 .SECONDEXPANSION:
-%.stats.yml %.tex %.raw_html: $(ORIGIN_SECONDARY) $(BOOK_REVISION).anchors articles.dep %.media-dep %.section-dep %.markers %.sections %.media
+%.stats.yml %.tex %.raw_html: $(ORIGIN_SECONDARY) $(ALL_ANCHORS) articles.dep %.media-dep %.section-dep %.markers %.sections %.media
 	$(eval ARTICLE:= $(call dir_head,$@))
 	$(eval UNQUOTED:= $(shell python $(MK)/unescape_make.py $(ARTICLE)))
 	$(eval REVISION := $(call dir_tail,$*))
@@ -79,7 +65,7 @@ $(BOOK_REVISION).anchors: articles.dep
 		--revision $(REVISION) \
 		--markers $(ARTICLE)/$(REVISION).markers \
 		--base-path $(BASE) \
-		--available-anchors $(BOOK_REVISION).anchors \
+		--available-anchors $(ALL_ANCHORS) \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		$(TARGET).$(SUBTARGET) \
 		< $< \
@@ -87,21 +73,6 @@ $(BOOK_REVISION).anchors: articles.dep
 
 $(BASE)/articles/%.yml:
 	$(MAKE) -C $(BASE) articles/$*.yml
-
-
-# Generate / include article dependencies                           
-#                                                                   
-# (which include article deps)                                      
-# make will check and maybe rebuild articles.dep before including, 
-# producing a target named like $(MAKECMDGOALS)                     
-articles.dep: $(SITEMAP)
-	$(MK)/bin/sitemap_utils --input $(SITEMAP) \
-		deps $(TARGET) $(SUBTARGET) > articles.dep
-
-include articles.dep
-
-# build rules for the current target
-include $(MK)/book_exports/$(TARGET)/book.mk
 
 # Build included artifacts 
 $(BASE)/media/%:
