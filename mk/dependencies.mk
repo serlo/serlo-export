@@ -56,7 +56,7 @@ ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 # $(ALL_ANCHORS) must be defined before this file is loaded
 # and points to a file containing a list of all available anchors in the export.
 .SECONDEXPANSION:
-%.stats.yml %.tex %.raw_html: $(ORIGIN_SECONDARY) $(ALL_ANCHORS) articles.dep %.media-dep %.section-dep %.markers %.sections %.media
+%.stats.yml %.tex %.raw_html: $(ORIGIN_SECONDARY) $(ALL_ANCHORS) $(ALL_ARTICLES) %.media-dep %.section-dep %.markers %.sections %.media
 	$(eval ARTICLE:= $(call dir_head,$@))
 	$(eval UNQUOTED:= $(shell python $(MK)/unescape_make.py $(ARTICLE)))
 	$(eval REVISION := $(call dir_tail,$*))
