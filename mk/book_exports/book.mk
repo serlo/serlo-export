@@ -1,15 +1,16 @@
 include $(MK)/utils.mk
 
-TARGETS = targets
+TO_REVISION = book_revision
 
-$(TARGETS):
+# make a directory for the book and proceed to make the book revision
+$(TO_REVISION):
 	$(eval BOOK := $(call dir_head,$(MAKECMDGOALS)))
 	$(eval NEXTHOP := $(call dir_tail,$(MAKECMDGOALS)))
 	$(eval export BOOK)
 	$(call create_directory,$(BOOK))
-	$(MAKE) -C $(BOOK) -f $(MK)/book_exports/target.mk $(NEXTHOP)
+	$(MAKE) -C $(BOOK) -f $(MK)/book_exports/revision.mk $(NEXTHOP)
 
-% :: $(TARGETS) ;
+% :: $(TO_REVISION) ;
 
-.PHONY: $(TARGETS)
+.PHONY: $(TO_REVISION)
 .NOTPARALLEL:
