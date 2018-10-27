@@ -22,7 +22,7 @@ before_install:
   - sudo apt-get install texlive-lang-german
   - sudo apt-get install cmake
   - sudo apt-get install build-essential
-  - (git clone https://github.com/github/cmark-gfm.git && cd cmark-gfm && mkdir build && cd build && cmake .. && sudo make install)
+  - (git clone https://github.com/commonmark/cmark.git && cd cmark-gfm && mkdir build && cd build && cmake .. && sudo make install)
 
 # Command for installing dependencies
 install: make init
