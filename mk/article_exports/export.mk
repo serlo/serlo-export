@@ -11,9 +11,9 @@ include $(MK)/dependencies.mk
 %.markers:
 	cp $(MARKERS) $@
 
+# build rules for the current target
+include $(MK)/article_exports/$(TARGET)/article.mk
+
 include $(ARTICLE)/$(REVISION).section-dep 
 # media-dep cannot be made initially, needs sections
 -include $(ARTICLE)/$(REVISION).media-dep
-
-# build rules for the current target
-include $(MK)/article_exports/$(TARGET)/article.mk
