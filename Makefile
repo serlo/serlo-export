@@ -62,7 +62,10 @@ init:
 		https://github.com/vroland/mwlint,mwlint)
 	$(call git_clone,extension-math, \
 		https://phabricator.wikimedia.org/diffusion/EMAT/extension-math.git)
-	(cd $(TMP_BIN_DIR)/extension-math/texvccheck && make && \
+	(cd $(TMP_BIN_DIR)/extension-math \
+		&& git reset --hard 8879b5b7a1c2a983ad6d191c1b9f2fdf2b40956e \
+		&& cd texvccheck \
+		&& make && \
 		cp texvccheck $(MK)/bin)
 
 mfnf-docs:
