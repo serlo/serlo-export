@@ -1,4 +1,7 @@
 # Utility functions
+space :=
+space +=
+
 create_directory = mkdir -p '$(strip $1)'
 
 remove_file = rm -rf '$(strip $1)'
@@ -19,3 +22,6 @@ map = $(foreach a,$(2),$(call $(1),$(a)) ;)
 
 dir_head = $(shell echo $1 | sed -e 's,/.*$$,,')
 dir_tail = $(shell echo $1 | sed -e 's,^[^/]*/,,')
+
+latest_revision = $(shell curl "https://de.wikibooks.org/api/rest_v1/page/title/$(subst $(space),_,$(subst $$,%24,$(subst /,%2F,$(subst \",%22,$(subst \',%27,$(strip $1))))))" -qgs | jq ".items[0].rev")
+
