@@ -1,18 +1,15 @@
-language: python
-
-python: '3.5'
-
+language: rust
+rust:
+  - stable
 cache:
   cargo: true
   pip: true
   directories:
+    - $HOME/.cargo
     - /tmp/texlive
     - $HOME/.texlive
 
 before_install:
-  - curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable
-  - export PATH=~/.cargo/bin:$PATH
-  - sudo apt-get -qq update
   - sudo apt-get install qrencode
   - sudo apt-get install ocaml
   - sudo apt-get install inkscape
