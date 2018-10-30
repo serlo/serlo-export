@@ -9,8 +9,7 @@ LATEX := lualatex
 			-pdflatex="$(LATEX) %O %S -no-shell-escape" -pdf $(TEX) \
 			-interaction=batchmode \
 			-quiet \
-			-norc \
-			-logfilewarninglist )
+			-norc )
 
 # make a compilable preamble
 %_preamble.tex: %_opts.yml $(BASE)/$(LATEX_ARTICLE)

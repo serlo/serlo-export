@@ -27,8 +27,7 @@ $(BOOK_REVISION).pdf: $(BOOK_REVISION).tex articles.dep
 		-pdflatex="$(LATEX) %O %S -no-shell-escape" -pdf $< \
 		-interaction=batchmode \
 		-quiet \
-		-norc \
-		-logfilewarninglist \
+		-norc 
 
 # recurse back for targets depending on other targets.
 $(BASE)/$(TEXBOOK):
