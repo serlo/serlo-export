@@ -6,7 +6,7 @@
 # Arguments: <revision_file> <article name>
 set -e
 
-NAME=$(sed -e "s/ /_/g" <<< "$2")
+NAME=$(echo "$2" | sed -e "s/ /_/g")
 REV_FILE="$1"
 
 # create lockfile if not present
@@ -15,9 +15,9 @@ REV_FILE="$1"
 HAS_KEY=$(flock $REV_FILE jq ".articles | has(\"$NAME\")" $REV_FILE);
 
 if [ $HAS_KEY != true ]; then 
-    URL_ENC=$(jq -r -R @uri <<< $NAME)
+    URL_ENC=$(echo $NAME | jq -r -R @uri)
     REVISION=$(curl -qgsf "https://de.wikibooks.org/api/rest_v1/page/title/$URL_ENC" | jq ".items[0].rev")
-    REVISION=$(grep -e "^[0-9][0-9]*$" <<< "$REVISION" || echo "error")
+    REVISION=$(echo "$REVISION" | grep -e "^[0-9][0-9]*$" || echo "error")
 
     [[ $REVISION != error ]] || (>&2 echo "revision fetching failed for $NAME"! && exit 1);
     # use sponge here to keep the file at the same inode, 
