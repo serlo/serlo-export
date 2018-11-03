@@ -16,6 +16,7 @@ before_install:
   - sudo apt-get install build-essential
   - sudo apt-get install python3
   - sudo apt-get install python-virtualenv
+  - sudo apt-get install texlive
   - (git clone https://github.com/commonmark/cmark.git && cd cmark && mkdir build && cd build && cmake .. && sudo make install) 
 
 # Command for installing dependencies
