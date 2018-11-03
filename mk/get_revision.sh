@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # get the revision of the article from a revision lock file.
 # if it is not currently known, it the latest revision will be fetched 
 # and stored in the lock file.
@@ -18,8 +20,9 @@ if [ $HAS_KEY != true ]; then
     REVISION=$(grep -e "^[0-9][0-9]*$" <<< "$REVISION" || echo "error")
 
     [[ $REVISION != error ]] || (>&2 echo "revision fetching failed for $NAME"! && exit 1);
-	flock $REV_FILE jq ".articles += {\"$NAME\": $REVISION}" $REV_FILE > $REV_FILE.new
-    mv $REV_FILE.new $REV_FILE
+    # use sponge here to keep the file at the same inode, 
+    # avoiding issues with parallel access
+    flock $REV_FILE -c "jq \".articles += {\\\"$NAME\\\": $REVISION}\" $REV_FILE | sponge $REV_FILE"
 else
     REVISION=$(flock $REV_FILE jq ".articles.\"$NAME\"" $REV_FILE)
 fi

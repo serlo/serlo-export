@@ -23,7 +23,7 @@ $(BOOK_REVISION).pre.yml: $(BOOK_REVISION).raw.yml
 	> $(BOOK_REVISION).pre.yml	
 
 $(BOOK_REVISION).yml: $(BOOK_REVISION).pre.yml
-	python $(MK)/fill_sitemap_revisions.py $(BOOK_REVISION).pre.yml > $(BOOK_REVISION).yml
+	python $(MK)/fill_sitemap_revisions.py $(BOOK_REVISION).pre.yml $(REVISION_LOCK_FILE) > $(BOOK_REVISION).yml
 	
 % :: $(BOOK_REVISION).yml $(TO_SUBTARGET) ;
 
