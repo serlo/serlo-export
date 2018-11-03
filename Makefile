@@ -10,10 +10,13 @@ BOOK_EXPORTS := book_exports
 SECTIONS := sections
 DOCS := docs
 TMP_BIN_DIR := .build
-OUTPUT_DIRS := $(ARTICLES) $(MEDIA) $(ARTICLE_EXPORTS) $(SECTIONS) $(BOOK_EXPORTS) $(DOCS)
+REVISION_LOCK_FILE = $(BASE)/revisions.json
+OUTPUT_DIRS := $(ARTICLES) $(MEDIA) $(ARTICLE_EXPORTS) $(SECTIONS) $(BOOK_EXPORTS) $(DOCS) 
+TEMP_FILES := $(REVISION_LOCK_FILE)
 
 export BASE
 export MK
+export REVISION_LOCK_FILE
 
 include $(MK)/utils.mk
 
@@ -75,6 +78,8 @@ mfnf-docs:
 
 clean:
 	$(call map,remove_file,$(OUTPUT_DIRS))
+	$(call map,remove_file,$(TEMP_FILES))
+
 
 clean_all:
 	git clean -ffdx

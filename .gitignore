@@ -13,3 +13,4 @@ __pycache__/
 /.build/
 /venv/
 /mk/bin/
+revisions.json

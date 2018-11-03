@@ -23,5 +23,4 @@ map = $(foreach a,$(2),$(call $(1),$(a)) ;)
 dir_head = $(shell echo $1 | sed -e 's,/.*$$,,')
 dir_tail = $(shell echo $1 | sed -e 's,^[^/]*/,,')
 
-latest_revision = $(shell curl "https://de.wikibooks.org/api/rest_v1/page/title/$(subst $(space),_,$(subst $$,%24,$(subst /,%2F,$(subst \",%22,$(subst \',%27,$(strip $1))))))" -qgs | jq ".items[0].rev")
-
+latest_revision = $(shell $(MK)/get_revision.sh $(REVISION_LOCK_FILE) "$1")
