@@ -9,7 +9,7 @@ $(TO_REVISION):
 	$(eval export BOOK)
 	$(call create_directory,$(BOOK))
 	# resolve "latest" placeholder
-	$(eval RAW_BOOK := $(shell python3 $(MK)/unescape_make.py $(BOOK)))
+	$(eval RAW_BOOK := $(call unescape,$(BOOK)))
 	$(eval REMOTE_REVISION := $(call latest_revision,$(RAW_BOOK)))
 	$(eval export NEXTHOP := $(subst latest/,$(REMOTE_REVISION)/,$(NEXTHOP)))
 	$(eval export NEXTHOP := $(subst /latest.,/$(REMOTE_REVISION).,$(NEXTHOP)))

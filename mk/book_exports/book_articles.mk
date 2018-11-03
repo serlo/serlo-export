@@ -9,7 +9,7 @@ include $(MK)/dependencies.mk
 # extract article markers from sitemap 
 %.markers: $(SITEMAP)
 	$(eval ARTICLE:= $(call dir_head,$@))
-	$(eval UNQUOTED:= $(shell python $(MK)/unescape_make.py $(ARTICLE)))
+	$(eval UNQUOTED:= $(call unescape,$(ARTICLE)))
 	$(call create_directory,$(ARTICLE))
 	$(MK)/bin/sitemap_utils --input $(SITEMAP) \
 		markers "$(UNQUOTED)" $(TARGET) > $@

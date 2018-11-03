@@ -8,7 +8,7 @@ $(TO_EXPORT):
 	$(eval export ARTICLE)
 	$(call create_directory,$(ARTICLE))
 	# resolve "latest" placeholder
-	$(eval RAW_ARTICLE := $(shell python3 $(MK)/unescape_make.py $(ARTICLE)))
+	$(eval RAW_ARTICLE := $(call unescape,$(ARTICLE)))
 	$(eval export NEXTHOP := $(subst latest,$(call latest_revision,$(RAW_ARTICLE)),$(NEXTHOP)))
 	# revision is only until the first dot, not anything else
 	$(eval export REVISION := $(word 1,$(subst ., ,$(NEXTHOP))))

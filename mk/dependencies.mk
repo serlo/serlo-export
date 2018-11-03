@@ -39,7 +39,7 @@ ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 .SECONDEXPANSION:
 %.anchors: $(ORIGIN_SECONDARY) %.markers %.sections
 	$(eval ARTICLE:= $(call dir_head,$@))
-	$(eval UNQUOTED:= $(shell python $(MK)/unescape_make.py $(ARTICLE)))
+	$(eval UNQUOTED:= $(call unescape,$(ARTICLE)))
 	$(eval REVISION := $(basename $(call dir_tail,$@)))
 	$(call create_directory,$(ARTICLE))
 	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
@@ -58,7 +58,7 @@ ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 .SECONDEXPANSION:
 %.stats.yml %.tex %.raw_html: $(ORIGIN_SECONDARY) $(ALL_ANCHORS) $(ALL_ARTICLES) %.media-dep %.section-dep %.markers %.sections %.media
 	$(eval ARTICLE:= $(call dir_head,$@))
-	$(eval UNQUOTED:= $(shell python $(MK)/unescape_make.py $(ARTICLE)))
+	$(eval UNQUOTED:= $(call unescape,$(ARTICLE)))
 	$(eval REVISION := $(call dir_tail,$*))
 	$(MK)/bin/mfnf_ex --config $(BASE)/config/mfnf.yml \
 		--title "$(UNQUOTED)" \

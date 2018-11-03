@@ -9,7 +9,7 @@ $(BOOK_REVISION).stats.html: $(BOOK_REVISION).stats.yml
 	$(MK)/bin/handlebars-cli-rs \
 		--input $(BASE)/templates/stats.html \
 		--data $(BOOK_REVISION).stats.yml \
-		book "$(shell python3 $(MK)/unescape_make.py $(BOOK))" \
+		book "$(call unescape,$(BOOK))" \
 		book_revision $(BOOK_REVISION) \
 	> $(BOOK_REVISION).stats.html
 

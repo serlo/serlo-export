@@ -3,7 +3,7 @@ $(BOOK_REVISION).html: articles.dep
 	$(MK)/bin/handlebars-cli-rs \
 		--input $(BASE)/templates/book_index.html \
 		--data $(SITEMAP) \
-		book "$(shell python3 $(MK)/unescape_make.py $(BOOK))" \
+		book "$(call unescape,$(BOOK))" \
 		subtarget "$(SUBTARGET)" \
 	> $(BOOK_REVISION).html
 	cp -r $(BASE)/templates/html_book_assets static/
@@ -17,8 +17,8 @@ $(BOOK_REVISION).html: articles.dep
 	$(MK)/bin/handlebars-cli-rs \
 		--input $(BASE)/templates/book_article.html \
 		--data $(SITEMAP) \
-		book "$(shell python3 $(MK)/unescape_make.py $(BOOK))" \
-		article "$(shell python3 $(MK)/unescape_make.py $(ARTICLE))" \
+		book "$(call unescape,$(BOOK))" \
+		article "$(call unescape,$(ARTICLE))" \
 		subtarget "$(SUBTARGET)" \
 	> $@	
 

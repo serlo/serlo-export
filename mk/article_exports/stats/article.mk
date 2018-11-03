@@ -10,6 +10,6 @@
 	$(MK)/bin/handlebars-cli-rs \
 		--input $(BASE)/templates/article_stats.html \
 		--data $< \
-		article "$(shell python3 $(MK)/unescape_make.py $(ARTICLE))" \
+		article "$(call unescape,$(ARTICLE))" \
 		revision $(REVISION) \
 	> $@
