@@ -6,21 +6,16 @@ cache:
   pip: true
   directories:
     - $HOME/.cargo
-    - /tmp/texlive
-    - $HOME/.texlive
 
 before_install:
   - sudo apt-get install qrencode
   - sudo apt-get install ocaml
   - sudo apt-get install inkscape
   - sudo apt-get install imagemagick
-  - sudo apt-get install latexmk
-  - sudo apt-get install texlive-base
-  - sudo apt-get install texlive-lang-german
   - sudo apt-get install cmake
   - sudo apt-get install build-essential
   - sudo apt-get install python3
-  - sudo apt-get install python3-virtualenv
+  - sudo apt-get install python-virtualenv
   - (git clone https://github.com/commonmark/cmark.git && cd cmark && mkdir build && cd build && cmake .. && sudo make install) 
 
 # Command for installing dependencies
@@ -35,4 +30,4 @@ script:
   - make article_exports/html/all/Mathe_für_Nicht-Freaks@COLON@_Epsilon-Delta-Kriterium_der_Stetigkeit/839108.html
   - make article_exports/stats/all/Mathe_für_Nicht-Freaks@COLON@_Epsilon-Delta-Kriterium_der_Stetigkeit/839108.stats.html
   - make book_exports/Benutzer@COLON@Valentin_Roland@SLASH@Analysis_1/latest/html/all/latest.html
-  - make book_exports/Benutzer@COLON@Valentin_Roland@SLASH@Analysis_1/latest/pdf/print/latest.pdf
+  - make book_exports/Benutzer@COLON@Valentin_Roland@SLASH@Analysis_1/latest/pdf/print/latest.tex
