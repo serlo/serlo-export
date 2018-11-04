@@ -3,7 +3,6 @@ BASE := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 
 # Define variables for different directories
 MK := $(BASE)/mk
-ARTICLES := articles
 MEDIA := media
 ARTICLE_EXPORTS := article_exports
 BOOK_EXPORTS := book_exports
@@ -11,8 +10,13 @@ SECTIONS := sections
 DOCS := docs
 TMP_BIN_DIR := .build
 REVISION_LOCK_FILE = $(BASE)/revisions.json
-OUTPUT_DIRS := $(ARTICLES) $(MEDIA) $(ARTICLE_EXPORTS) $(SECTIONS) $(BOOK_EXPORTS) $(DOCS) 
+OUTPUT_DIRS := articles $(MEDIA) $(ARTICLE_EXPORTS) $(SECTIONS) $(BOOK_EXPORTS) $(DOCS) 
 TEMP_FILES := $(REVISION_LOCK_FILE)
+
+# helper variables with dir head / tails for the target 
+# pattern (value of $*) where they are expanded
+PATTERN_HEAD = $(call dir_head,$*)
+PATTERN_TAIL = $(call dir_tail,$*)
 
 export BASE
 export MK
@@ -22,10 +26,7 @@ include $(MK)/utils.mk
 
 .PHONY: clean clean_all init $(OUTPUT_DIRS)
 
-$(ARTICLES):
-	$(eval NEXTGOAL := $(MAKECMDGOALS:articles/%=%))
-	$(call create_directory,$@)
-	$(MAKE) -C $(ARTICLES) -f $(MK)/articles/article.mk $(NEXTGOAL)
+include $(MK)/articles/articles.mk
 
 $(MEDIA):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
@@ -87,8 +88,6 @@ clean_all:
 .SUFFIXES:
 
 Makefile : ;
-
-$(ARTICLES)/% :: $(ARTICLES) ;
 
 $(MEDIA)/% :: $(MEDIA) ;
 
