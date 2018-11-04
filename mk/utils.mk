@@ -23,5 +23,6 @@ map = $(foreach a,$(2),$(call $(1),$(a)) ;)
 dir_head = $(shell echo $1 | sed -e 's,/.*$$,,')
 dir_tail = $(shell echo $1 | sed -e 's,^[^/]*/,,')
 
-latest_revision = $(shell $(MK)/get_revision.sh $(REVISION_LOCK_FILE) "$1")
+latest_revision = $(shell $(MK)/get_revision.sh $(REVISION_LOCK_FILE) "articles" "$1")
+image_revision = $(shell $(MK)/get_revision.sh $(REVISION_LOCK_FILE) "media" "$1")
 unescape = $(shell python3 $(MK)/unescape_make.py $1)

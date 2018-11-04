@@ -149,18 +149,18 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
             else:
                 return result
 
-    def get_image_revisions(self, filename):
+    def get_image_revisions(self, filename, timestamp="now"):
         """Returns the history of the image `filename`."""
         params = {"titles": filename, "prop": "imageinfo", "iilimit": "max",
-                  "iiprop": "url|sha1"}
+                  "iiprop": "url|sha1|timestamp", "iistart": timestamp}
 
         return list(reversed(self.query(params,
                              ["pages", select_singleton, "imageinfo"])))
 
-    def get_image_license(self, filename):
+    def get_image_license(self, filename, timestamp="now"):
         """Returns licensing information for an image."""
         params = {"titles": "File:" + filename, "prop": "imageinfo", "iiprop": "user|extmetadata|url", "iilimit": "max",
-                  "iiextmetadatafilter": "LicenseShortName|UsageTerms|AttributionRequired|Restrictions|Artist|ImageDescription|DateTimeOriginal|Credit"}
+                "iiextmetadatafilter": "LicenseShortName|UsageTerms|AttributionRequired|Restrictions|Artist|ImageDescription|DateTimeOriginal|Credit", "iistart": timestamp}
 
         query = self.query(params, ["pages", select_singleton, "imageinfo"])
         result = query[0]
@@ -203,10 +203,10 @@ class HTTPMediaWikiAPI(MediaWikiAPI):
                 "shortname": shortname, "licenseurl": url, "detailsurl": "https://commons.wikimedia.org/wiki/File:"+filename,
                 "url": result["url"], "authors": resolve_usernames(authors), "source": source, "filename": filename}
 
-    def get_image_info(self, filename):
+    def get_image_info(self, filename, timestamp="now"):
         """Returns the URL and sha1 to the current version of the image
         `filename`."""
-        return self.get_image_revisions(filename)[-1]
+        return self.get_image_revisions(filename, timestamp)[-1]
 
     def get_content(self, title, revision_id=None):
         return self._index_call({"action": "raw", "title": title, "oldid": revision_id})

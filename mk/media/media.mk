@@ -1,3 +1,5 @@
+include $(MK)/utils.mk
+
 INKSCAPE = inkscape --without-gui --export-area-page --export-text-to-path \
 	--export-ignore-filters --export-pdf=$@ $<
 CONVERT = convert $< $@
@@ -42,10 +44,10 @@ DOWNLOAD_PDF = python $(MK)/download_image.py $*.pdf > $@
 %.dummy:;
 
 %.svg %.SVG %.png %.PNG %.jpg %.JPG %.jpeg %.JPEG %.gif %.GIF %.webm %.WEBM:
-	python $(MK)/download_image.py $@ > $@	
+	python $(MK)/download_image.py "$@" "$(call image_revision,$@)" > $@
 
 %.meta:
-	python $(MK)/get_image_license.py $* > $@
+	python $(MK)/get_image_license.py "$*" "$(call image_revision,$*)" > $@
 
 
 .DELETE_ON_ERROR:

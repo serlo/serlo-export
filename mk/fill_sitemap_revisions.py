@@ -19,7 +19,7 @@ def fetch(q):
             break
         chapter, article, rev_file = task
         script_path = os.path.abspath(os.path.dirname(__file__)) + "/get_revision.sh"
-        result = subprocess.check_output([script_path, rev_file, article])
+        result = subprocess.check_output([script_path, rev_file, "articles", article])
         chapter["revision"] = result.decode("utf-8").strip()
         q.task_done()
 
