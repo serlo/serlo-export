@@ -5,11 +5,10 @@ BASE := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 MK := $(BASE)/mk
 ARTICLE_EXPORTS := article_exports
 BOOK_EXPORTS := book_exports
-SECTIONS := sections
 DOCS := docs
 TMP_BIN_DIR := .build
 REVISION_LOCK_FILE = $(BASE)/revisions.json
-OUTPUT_DIRS := articles media $(ARTICLE_EXPORTS) $(SECTIONS) $(BOOK_EXPORTS) $(DOCS)
+OUTPUT_DIRS := articles media sections $(ARTICLE_EXPORTS) $(BOOK_EXPORTS) $(DOCS)
 TEMP_FILES := $(REVISION_LOCK_FILE)
 
 # helper variables with dir head / tails for the target 
@@ -27,6 +26,7 @@ include $(MK)/utils.mk
 
 include $(MK)/articles/articles.mk
 include $(MK)/media/media.mk
+include $(MK)/sections/section.mk
 
 $(ARTICLE_EXPORTS):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
@@ -37,11 +37,6 @@ $(BOOK_EXPORTS):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
 	$(call create_directory,$@)
 	$(MAKE) -C $@ -f $(MK)/book_exports/book.mk $(NEXTGOAL)
-
-$(SECTIONS):
-	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
-	$(call create_directory,$@)
-	$(MAKE) -C $@ -f $(MK)/sections/sec_article.mk $(NEXTGOAL)
 
 init:
 	$(call map,check_dependency,ocamlopt inkscape convert qrencode latex sed cmark jq curl sponge)
@@ -88,5 +83,3 @@ Makefile : ;
 $(ARTICLE_EXPORTS)/% :: $(ARTICLE_EXPORTS) ;
 
 $(BOOK_EXPORTS)/% :: $(BOOK_EXPORTS) ;
-
-$(SECTIONS)/% :: $(SECTIONS) ;

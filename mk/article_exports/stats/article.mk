@@ -3,7 +3,7 @@
 %.lints.yml: $(ORIGIN_SECONDARY)
 	$(MK)/bin/mwlint \
 		--texvccheck-path $(MK)/bin/texvccheck \
-	< $< > $@
+	< $(BASE)/$< > $@
 
 # TODO: stats.html does not contain lint info.
 %.stats.html: %.stats.yml %.lints.yml

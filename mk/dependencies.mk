@@ -2,7 +2,7 @@ include $(MK)/utils.mk
 
 # this will be expanded to the original article location,
 # circumventing make's filename manipulation
-ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
+ORIGIN_SECONDARY := articles/$$(call dir_head,$$@)/$$*.yml
 
 # generate article dependencies 
 .SECONDEXPANSION:
@@ -14,10 +14,9 @@ ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 		--title $(ARTICLE) \
 		--revision $(ARTICLE)/$(REVISION) \
 		--markers $(ARTICLE)/$(REVISION).markers \
-		--base-path $(BASE) \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		section-deps $(TARGET).$(SUBTARGET) \
-		< $< \
+		< $(BASE)/$< \
 		> $@
 
 .SECONDEXPANSION:
@@ -29,10 +28,9 @@ ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 		--title $(ARTICLE) \
 		--revision $(ARTICLE)/$(REVISION) \
 		--markers $(ARTICLE)/$(REVISION).markers \
-		--base-path $(BASE) \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		media-deps $(TARGET).$(SUBTARGET) \
-		< $< \
+		< $(BASE)/$< \
 		> $@
 
 # extracts the reference anchors (link targets) provided by an article.
@@ -47,9 +45,8 @@ ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 		--revision "$(REVISION)" \
 		--markers $(ARTICLE)/$(REVISION).markers \
 		--texvccheck-path $(MK)/bin/texvccheck \
-		--base-path $(BASE) \
 		anchors $(TARGET).$(SUBTARGET) \
-		< $< \
+		< $(BASE)/$< \
 		> $@
 	
 # generate files from article tree serialization 
@@ -64,24 +61,21 @@ ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 		--title "$(UNQUOTED)" \
 		--revision $(REVISION) \
 		--markers $(ARTICLE)/$(REVISION).markers \
-		--base-path $(BASE) \
 		--available-anchors $(ALL_ANCHORS) \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		$(TARGET).$(SUBTARGET) \
-		< $< \
+		< $(BASE)/$< \
 		> $@
 
-$(BASE)/articles/%.yml:
-	$(MAKE) -C $(BASE) articles/$*.yml
+articles/%.yml:
+	$(MAKE) -C $(BASE) $@
 
 # Build included artifacts 
-$(BASE)/media/%:
-	$(MAKE) -C $(BASE) media/$*
+media/%:
+	$(MAKE) -C $(BASE) $@
 
-$(BASE)/sections/%:
-	$(eval SECS := $(dir $*))
-	$(eval REVID := $(basename $(notdir $*)))
-	$(MAKE) -C $(BASE) sections/$(dir $(SECS:%/=%))$(REVID)
+sections/%:
+	$(MAKE) -C $(BASE) $@
 
 .DELETE_ON_ERROR:
 .SECONDARY:

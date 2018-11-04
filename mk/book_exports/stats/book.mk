@@ -3,7 +3,7 @@
 %.lints.yml: $(ORIGIN_SECONDARY)
 	$(MK)/bin/mwlint \
 		--texvccheck-path $(MK)/bin/texvccheck \
-	< $< > $@
+	< $(BASE)/$< > $@
 
 $(BOOK_REVISION).stats.html: $(BOOK_REVISION).stats.yml
 	$(MK)/bin/handlebars-cli-rs \
