@@ -2,54 +2,60 @@ include $(MK)/utils.mk
 
 INKSCAPE = inkscape --without-gui --export-area-page --export-text-to-path \
 	--export-ignore-filters --export-pdf=$@ $<
-CONVERT = convert $< $@
+CONVERT_IMG = convert $< $@
 DOWNLOAD_PDF = python $(MK)/download_image.py $*.pdf > $@
 
-%.gif.qr.svg %.GIF.qr.svg %.webm.qr.svg %.WEBM.qr.svg %.mp4.qr.svg %.MP4.qr.svg:
-	qrencode -o - -t SVG "https://commons.wikimedia.org/wiki/File:`echo $@ | sed 's/.qr.*//g'`" > $@
 
-%.jpg.pdf: %.jpg
-	$(CONVERT)
+# create a qr code for media files not supported in some targets
+media/%.gif.qr.svg media/%.GIF.qr.svg media/%.webm.qr.svg \
+media/%.WEBM.qr.svg media/%.mp4.qr.svg media/%.MP4.qr.svg: | media
+	$(eval FILENAME := $(shell echo $@ | sed 's/.qr.*//g'))
+	qrencode -o - -t SVG "https://commons.wikimedia.org/wiki/File:$(FILENAME)" > $@
 
-%.JPG.pdf: %.JPG
-	$(CONVERT)
+media/%.jpg.pdf: media/%.jpg
+	$(CONVERT_IMG)
 
-%.png.pdf: %.png
-	$(CONVERT)
+media/%.JPG.pdf: media/%.JPG
+	$(CONVERT_IMG)
 
-%.PNG.pdf: %.PNG
-	$(CONVERT)
+media/%.png.pdf: media/%.png
+	$(CONVERT_IMG)
 
-%.svg.pdf: %.svg
+media/%.PNG.pdf: media/%.PNG
+	$(CONVERT_IMG)
+
+media/%.svg.pdf: media/%.svg
 	$(INKSCAPE)
 
-%.SVG.pdf: %.SVG
+media/%.SVG.pdf: media/%.SVG
 	$(INKSCAPE)
 
-%.eps.pdf: %.eps
+media/%.eps.pdf: media/%.eps
 	$(INKSCAPE)
 
-%.EPS.pdf: %.EPS
+media/%.EPS.pdf: media/%.EPS
 	$(INKSCAPE)
 
-%.qr.pdf: %.qr.svg
+media/%.qr.pdf: media/%.qr.svg
 	$(INKSCAPE)
 
-%.plain.pdf:
+media/%.plain.pdf: | media
 	$(DOWNLOAD_PDF)
 
-%.plain.PDF:
+media/%.plain.PDF: | media
 	$(DOWNLOAD_PDF)
 
-%.dummy:;
+media/%.dummy: | media;
 
-%.svg %.SVG %.png %.PNG %.jpg %.JPG %.jpeg %.JPEG %.gif %.GIF %.webm %.WEBM:
-	python $(MK)/download_image.py "$@" "$(call image_revision,$@)" > $@
+media/%.svg media/%.SVG media/%.png media/%.PNG media/%.jpg media/%.JPG \
+media/%.jpeg media/%.JPEG media/%.gif media/%.GIF media/%.webm media/%.WEBM: | media
+	$(eval FILENAME := $(call dir_tail,$@))
+	python $(MK)/download_image.py "$(FILENAME)" "$(call image_revision,$(FILENAME))" > $@
 
-%.meta:
+media/%.meta: | media
 	python $(MK)/get_image_license.py "$*" "$(call image_revision,$*)" > $@
 
-
-.DELETE_ON_ERROR:
-.NOTPARALLEL:
-.SECONDARY:
+# create the media directory
+# use with | (order-only prerequisite) to ignore timestamp
+media:
+	$(call create_directory,media)

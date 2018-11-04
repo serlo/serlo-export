@@ -3,14 +3,13 @@ BASE := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 
 # Define variables for different directories
 MK := $(BASE)/mk
-MEDIA := media
 ARTICLE_EXPORTS := article_exports
 BOOK_EXPORTS := book_exports
 SECTIONS := sections
 DOCS := docs
 TMP_BIN_DIR := .build
 REVISION_LOCK_FILE = $(BASE)/revisions.json
-OUTPUT_DIRS := articles $(MEDIA) $(ARTICLE_EXPORTS) $(SECTIONS) $(BOOK_EXPORTS) $(DOCS) 
+OUTPUT_DIRS := articles media $(ARTICLE_EXPORTS) $(SECTIONS) $(BOOK_EXPORTS) $(DOCS)
 TEMP_FILES := $(REVISION_LOCK_FILE)
 
 # helper variables with dir head / tails for the target 
@@ -27,11 +26,7 @@ include $(MK)/utils.mk
 .PHONY: clean clean_all init $(OUTPUT_DIRS)
 
 include $(MK)/articles/articles.mk
-
-$(MEDIA):
-	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
-	$(call create_directory,$@)
-	$(MAKE) -C $@ -f $(MK)/media/media.mk $(NEXTGOAL)
+include $(MK)/media/media.mk
 
 $(ARTICLE_EXPORTS):
 	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
@@ -86,10 +81,9 @@ clean_all:
 	git clean -ffdx
 
 .SUFFIXES:
+.DELETE_ON_ERROR:
 
 Makefile : ;
-
-$(MEDIA)/% :: $(MEDIA) ;
 
 $(ARTICLE_EXPORTS)/% :: $(ARTICLE_EXPORTS) ;
 
