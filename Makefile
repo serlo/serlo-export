@@ -15,9 +15,7 @@ REVISION_LOCK_FILE := revisions.json
 OUTPUT_DIRS := $(ARTICLE_DIR) $(MEDIA_DIR) $(SECTION_DIR) $(EXPORT_DIR) $(DOCS_DIR)
 TEMP_FILES := $(REVISION_LOCK_FILE)
 
-.PHONY: clean clean_all init
-.SECONDARY:
-.DELETE_ON_ERROR:
+
 .SECONDEXPANSION:
 
 include $(MK)/utils.mk
@@ -63,3 +61,7 @@ clean:
 
 clean_all:
 	git clean -ffdx
+
+.PHONY: clean clean_all init mfnf-docs
+.SECONDARY:
+.DELETE_ON_ERROR:

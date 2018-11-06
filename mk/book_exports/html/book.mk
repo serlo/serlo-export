@@ -6,7 +6,7 @@ $(EXPORT_DIR)/%/latest.book.html: $(BOOK_RESOLVED_REVISION_SECONDARY)
 	ln -s -f $(notdir $<) $@
 
 # final book index, depends dependency file which adds its dependencies
-$(EXPORT_DIR)/%.book.html: $(BOOK_DEP_SECONDARY) $(BOOK_DEP_PHONY) 
+$(EXPORT_DIR)/%.book.html: $(BOOK_DEP_SECONDARY) $(BOOK_DEP_INTERMEDIATE) 
 	$(eval $(parse_bootarget))
 	$(eval BOOK_PATH := $(call book_path,$<))
 	$(MK)/bin/handlebars-cli-rs \

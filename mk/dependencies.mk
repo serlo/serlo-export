@@ -12,8 +12,8 @@ $(BOOK_DEP_FILES): $(SITEMAP_SECONDARY)
 	$(MK)/bin/sitemap_utils --input $< \
 		deps $(TARGET) $(SUBTARGET) \
 		--prefix $(dir $@) \
-		--book-target $(BOOK_DEP_PHONY) \
-		--anchors-target $(BOOK_ANCHORS_PHONY) \
+		--book-target $(BOOK_DEP_INTERMEDIATE) \
+		--anchors-target $(BOOK_ANCHORS_INTERMEDIATE) \
 		> $@
 
 -include $(BOOK_DEP_FILES)
@@ -81,7 +81,7 @@ $(EXPORT_DIR)/%.anchors: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers $(EXPORT_DI
 # $(ALL_ANCHORS) must be defined before this file is loaded
 # and points to a file containing a list of all available anchors in the export.
 $(EXPORT_DIR)/%.stats.yml $(EXPORT_DIR)/%.tex $(EXPORT_DIR)/%.raw_html: \
-	$(ORIGIN_SECONDARY) $(BOOK_ANCHORS_PHONY_SECONDARY) $(BOOK_DEP_SECONDARY) \
+	$(ORIGIN_SECONDARY) $(BOOK_ANCHORS_INTERMEDIATE) $(BOOK_DEP_SECONDARY) \
 	$(EXPORT_DIR)/%.markers \
 	$(EXPORT_DIR)/%.media-dep \
 	$(EXPORT_DIR)/%.section-dep \

@@ -52,7 +52,7 @@ $(MEDIA_DIR)/%.svg $(MEDIA_DIR)/%.SVG $(MEDIA_DIR)/%.png \
 	$(MEDIA_DIR)/%.jpeg $(MEDIA_DIR)/%.JPEG $(MEDIA_DIR)/%.gif \
 	$(MEDIA_DIR)/%.GIF $(MEDIA_DIR)/%.webm $(MEDIA_DIR)/%.WEBM: | $(MEDIA_DIR)
 
-	$(eval FILENAME := $(call dir_tail,$@))
+	$(eval FILENAME := $(notdir $@))
 	python $(MK)/download_image.py "$(FILENAME)" "$(call image_revision,$(FILENAME))" > $@
 
 $(MEDIA_DIR)/%.meta: | $(MEDIA_DIR)

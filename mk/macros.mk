@@ -3,22 +3,23 @@
 # runtime (mostly in secondary expansion)
 #
 
-# this will be expanded to the original article location,
-# circumventing make's filename manipulation
+# compute the article source path from an article export target
 ORIGIN_SECONDARY := $(ARTICLE_DIR)/$$(lastword $$(subst /,$(space),$$(dir $$@)))/$$(call filebase,$$@).yml
 
 # parses the target path and constructs
 BOOK_RESOLVED_REVISION_SECONDARY := $$(eval $$(parse_booktarget_and_revision))$(EXPORT_DIR)/$$(BOOK)/$$(BOOK_REVISION)/$$(TARGET)/$$(SUBTARGET)/$$(subst latest,$$(BOOK_REVISION),$$(notdir $$@))
 
-# compute the path to books dependency file with resolved revisions
+# compute the path the book dependency file
 BOOK_DEP_SECONDARY := $$(eval $$(parse_booktarget))$(EXPORT_DIR)/$$(BOOK)/$$(BOOK_REVISION)/$$(TARGET)/$$(SUBTARGET)/$$(BOOK_REVISION).book.dep
 
-# phony book dependency targets which as articles as dependencies (generated)
-BOOK_DEP_PHONY_SECONDARY := $$(eval $$(parse_booktarget_and_revision))$(EXPORT_DIR)/$$(BOOK)/$$(BOOK_REVISION)/$$(TARGET)/$$(SUBTARGET)/$$(BOOK_REVISION).book.dependencies
-BOOK_DEP_PHONY = $(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(TARGET)/$(SUBTARGET)/$(BOOK_REVISION).book.dependencies
-BOOK_ANCHORS_PHONY_SECONDARY := $$(eval $$(parse_booktarget_and_revision))$(EXPORT_DIR)/$$(BOOK)/$$(BOOK_REVISION)/$$(TARGET)/$$(SUBTARGET)/$$(BOOK_REVISION).book.anchors
-BOOK_ANCHORS_PHONY = $(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(TARGET)/$(SUBTARGET)/$(BOOK_REVISION).book.anchors
+# these describe intermediate targets for which dependencies are generated
+# These should never actually exist!
+# careful: These depend on the variables beeing defined. So when used in a 
+# prerequisite list another prerquisite must have created them through secondary 
+# expansion (calling parse_booktarget)
+BOOK_DEP_INTERMEDIATE = $(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(TARGET)/$(SUBTARGET)/$(BOOK_REVISION).book.dependencies
+BOOK_ANCHORS_INTERMEDIATE = $(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(TARGET)/$(SUBTARGET)/$(BOOK_REVISION).book.anchors
 
-# compute the sitemap name from the book dependency file as target
+# compute the sitemap path from the target
 SITEMAP_SECONDARY := $$(call dirmerge,$$(wordlist 1,3,$$(call dirsplit,$$@)))/$$(word 3,$$(call dirsplit,$$@)).sitemap.yml
 SITEMAP_PATH = $(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(BOOK_REVISION).sitemap.yml
