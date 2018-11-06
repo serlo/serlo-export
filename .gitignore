@@ -10,6 +10,7 @@ __pycache__/
 /books/
 /docs/
 /book_exports/
+/exports/
 /.build/
 /venv/
 /mk/bin/

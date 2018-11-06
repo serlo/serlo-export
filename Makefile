@@ -1,42 +1,33 @@
 # Absolute path to the directory of this Makefile
 BASE := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
-
-# Define variables for different directories
 MK := $(BASE)/mk
-ARTICLE_EXPORTS := article_exports
-BOOK_EXPORTS := book_exports
-DOCS := docs
+
+# define the concrete build directories
+EXPORT_DIR := exports
+ARTICLE_DIR := articles
+MEDIA_DIR := media
+SECTION_DIR := sections
+DOCS_DIR := docs
 TMP_BIN_DIR := .build
-REVISION_LOCK_FILE = $(BASE)/revisions.json
-OUTPUT_DIRS := articles media sections $(ARTICLE_EXPORTS) $(BOOK_EXPORTS) $(DOCS)
+REVISION_LOCK_FILE := revisions.json
+
+# files which might be created (for clean target)
+OUTPUT_DIRS := $(ARTICLE_DIR) $(MEDIA_DIR) $(SECTION_DIR) $(EXPORT_DIR) $(DOCS_DIR)
 TEMP_FILES := $(REVISION_LOCK_FILE)
 
-# helper variables with dir head / tails for the target 
-# pattern (value of $*) where they are expanded
-PATTERN_HEAD = $(call dir_head,$*)
-PATTERN_TAIL = $(call dir_tail,$*)
-
-export BASE
-export MK
-export REVISION_LOCK_FILE
+.PHONY: clean clean_all init
+.SECONDARY:
+.DELETE_ON_ERROR:
+.SECONDEXPANSION:
 
 include $(MK)/utils.mk
-
-.PHONY: clean clean_all init $(OUTPUT_DIRS)
-
-include $(MK)/articles/articles.mk
-include $(MK)/media/media.mk
-include $(MK)/sections/section.mk
-
-$(ARTICLE_EXPORTS):
-	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
-	$(call create_directory,$@)
-	$(MAKE) -C $@ -f $(MK)/article_exports/article.mk $(NEXTGOAL)
-
-$(BOOK_EXPORTS):
-	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
-	$(call create_directory,$@)
-	$(MAKE) -C $@ -f $(MK)/book_exports/book.mk $(NEXTGOAL)
+include $(MK)/macros.mk
+include $(MK)/articles.mk
+include $(MK)/sections.mk
+include $(MK)/media.mk
+include $(MK)/sitemap.mk
+include $(MK)/dependencies.mk
+include $(MK)/book_exports/html/book.mk
 
 init:
 	$(call map,check_dependency,ocamlopt inkscape convert qrencode latex sed cmark jq curl sponge)
@@ -66,20 +57,9 @@ mfnf-docs:
 	mkdir -p $(BASE)/$(DOCS)
 	$(MAKE) -C $(BASE)/$(DOCS) -f $(MK)/doc.mk $(@)
 
-
 clean:
 	$(call map,remove_file,$(OUTPUT_DIRS))
 	$(call map,remove_file,$(TEMP_FILES))
 
-
 clean_all:
 	git clean -ffdx
-
-.SUFFIXES:
-.DELETE_ON_ERROR:
-
-Makefile : ;
-
-$(ARTICLE_EXPORTS)/% :: $(ARTICLE_EXPORTS) ;
-
-$(BOOK_EXPORTS)/% :: $(BOOK_EXPORTS) ;

@@ -1,81 +1,103 @@
-include $(MK)/utils.mk
 
-# this will be expanded to the original article location,
-# circumventing make's filename manipulation
-ORIGIN_SECONDARY := articles/$$(call dir_head,$$@)/$$*.yml
+# book dependency files of all supplied goals
+BOOK_DEP_FILES := $(foreach P,$(filter $(EXPORT_DIR)/%,$(MAKECMDGOALS)),\
+	$(info evaluating make targets...)\
+	$(eval $(parse_bookpath_and_revision))\
+	$(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(TARGET)/$(SUBTARGET)/$(BOOK_REVISION).book.dep)
+
+# Generate / include book dependencies (articles it depends on) for every supplied goal
+$(BOOK_DEP_FILES): $(SITEMAP_SECONDARY)
+	$(eval $(parse_booktarget))
+	$(call create_directory,$(dir $@))
+	$(MK)/bin/sitemap_utils --input $< \
+		deps $(TARGET) $(SUBTARGET) \
+		--prefix $(dir $@) \
+		--book-target $(BOOK_DEP_PHONY) \
+		--anchors-target $(BOOK_ANCHORS_PHONY) \
+		> $@
+
+-include $(BOOK_DEP_FILES)
+
+# concatenates individual anchors file to a whole
+# dependencies specified in generated book deps
+$(EXPORT_DIR)/%.book.anchors: 
+	$(info collecting anchors...)
+	$(shell cat $(filter %.anchors,$^) > $@)
+
+# extract article markers from sitemap and create its directory
+$(EXPORT_DIR)/%.markers: $(SITEMAP_SECONDARY)
+	$(eval $(parse_booktarget))
+	$(call create_directory,$(call book_path,$@)/$(ARTICLE))
+	$(eval UNQUOTED := $(call unescape,$(ARTICLE)))
+	$(MK)/bin/sitemap_utils --input $< \
+		markers "$(UNQUOTED)" $(TARGET) > $@
 
 # generate article dependencies 
 .SECONDEXPANSION:
-%.section-dep: $(ORIGIN_SECONDARY) %.markers
-	$(eval ARTICLE:= $(call dir_head,$@))
-	$(eval REVISION := $(basename $(call dir_tail,$@)))
-	$(call create_directory,$(ARTICLE))
+$(EXPORT_DIR)/%.section-dep: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers
+	$(eval $(parse_booktarget))
 	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
-		--title $(ARTICLE) \
-		--revision $(ARTICLE)/$(REVISION) \
-		--markers $(ARTICLE)/$(REVISION).markers \
+		--title '$(ARTICLE)' \
+		--revision '$(ARTICLE_REVISION)' \
+		--markers '$(word 2,$^)' \
+		--base-path '$(call book_path,$@)/$(ARTICLE)/' \
+		--section-path '$(SECTION_DIR)/' \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		section-deps $(TARGET).$(SUBTARGET) \
-		< $(BASE)/$< \
+		< $< \
 		> $@
 
 .SECONDEXPANSION:
-%.media-dep: $(ORIGIN_SECONDARY) %.markers %.sections
-	$(eval ARTICLE:= $(call dir_head,$@))
-	$(eval REVISION := $(basename $(call dir_tail,$@)))
-	$(call create_directory,$(ARTICLE))
+$(EXPORT_DIR)/%.media-dep: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers $(EXPORT_DIR)/%.sections
+	$(eval $(parse_booktarget))
 	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
-		--title $(ARTICLE) \
-		--revision $(ARTICLE)/$(REVISION) \
-		--markers $(ARTICLE)/$(REVISION).markers \
+		--title '$(ARTICLE)' \
+		--revision '$(ARTICLE_REVISION)' \
+		--markers '$(word 2,$^)' \
+		--base-path '$(call book_path,$@)/$(ARTICLE)/' \
+		--section-path '$(SECTION_DIR)/' \
+		--media-path '$(MEDIA_DIR)' \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		media-deps $(TARGET).$(SUBTARGET) \
-		< $(BASE)/$< \
+		< $< \
 		> $@
 
 # extracts the reference anchors (link targets) provided by an article.
 .SECONDEXPANSION:
-%.anchors: $(ORIGIN_SECONDARY) %.markers %.sections
-	$(eval ARTICLE:= $(call dir_head,$@))
-	$(eval UNQUOTED:= $(call unescape,$(ARTICLE)))
-	$(eval REVISION := $(basename $(call dir_tail,$@)))
-	$(call create_directory,$(ARTICLE))
+$(EXPORT_DIR)/%.anchors: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers $(EXPORT_DIR)/%.sections
+	$(eval $(parse_booktarget))
+	$(eval UNESCAPED := $(call unescape,$(ARTICLE)))
 	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
-		--title "$(UNQUOTED)" \
-		--revision "$(REVISION)" \
-		--markers $(ARTICLE)/$(REVISION).markers \
+		--title '$(UNESCAPED)' \
+		--revision '$(ARTICLE_REVISION)' \
+		--markers '$(word 2,$^)' \
+		--section-path '$(SECTION_DIR)/' \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		anchors $(TARGET).$(SUBTARGET) \
-		< $(BASE)/$< \
+		< $< \
 		> $@
 	
 # generate files from article tree serialization 
 # $(ALL_ANCHORS) must be defined before this file is loaded
 # and points to a file containing a list of all available anchors in the export.
-.SECONDEXPANSION:
-%.stats.yml %.tex %.raw_html: $(ORIGIN_SECONDARY) $(ALL_ANCHORS) $(ALL_ARTICLES) %.media-dep %.section-dep %.markers %.sections %.media
-	$(eval ARTICLE:= $(call dir_head,$@))
-	$(eval UNQUOTED:= $(call unescape,$(ARTICLE)))
-	$(eval REVISION := $(call dir_tail,$*))
-	$(MK)/bin/mfnf_ex --config $(BASE)/config/mfnf.yml \
-		--title "$(UNQUOTED)" \
-		--revision $(REVISION) \
-		--markers $(ARTICLE)/$(REVISION).markers \
-		--available-anchors $(ALL_ANCHORS) \
+$(EXPORT_DIR)/%.stats.yml $(EXPORT_DIR)/%.tex $(EXPORT_DIR)/%.raw_html: \
+	$(ORIGIN_SECONDARY) $(BOOK_ANCHORS_PHONY_SECONDARY) $(BOOK_DEP_SECONDARY) \
+	$(EXPORT_DIR)/%.markers \
+	$(EXPORT_DIR)/%.media-dep \
+	$(EXPORT_DIR)/%.section-dep \
+	$(EXPORT_DIR)/%.sections \
+	$(EXPORT_DIR)/%.media\
+
+	$(eval $(parse_booktarget))
+	$(eval UNESCAPED := $(call unescape,$(ARTICLE)))
+	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
+		--title '$(UNESCAPED)' \
+		--revision '$(ARTICLE_REVISION)' \
+		--markers '$(word 4,$^)' \
+		--section-path '$(SECTION_DIR)/' \
+		--media-path '$(MEDIA_DIR)' \
+		--available-anchors '$(word 2,$^)' \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		$(TARGET).$(SUBTARGET) \
-		< $(BASE)/$< \
+		< $< \
 		> $@
-
-articles/%.yml:
-	$(MAKE) -C $(BASE) $@
-
-# Build included artifacts 
-media/%:
-	$(MAKE) -C $(BASE) $@
-
-sections/%:
-	$(MAKE) -C $(BASE) $@
-
-.DELETE_ON_ERROR:
-.SECONDARY:

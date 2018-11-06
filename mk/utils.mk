@@ -22,7 +22,48 @@ map = $(foreach a,$(2),$(call $(1),$(a)) ;)
 
 dir_head = $(shell echo $1 | sed -e 's,/.*$$,,')
 dir_tail = $(shell echo $1 | sed -e 's,^[^/]*/,,')
+dirbase = $(dir $1)$(firstword $(subst .,$(space),$(notdir $1)))
+filebase = $(firstword $(subst .,$(space),$(notdir $1)))
+dirsplit = $(subst /,$(space),$1)
+dirmerge = $(subst $(space),/,$1)
 
-latest_revision = $(shell $(MK)/get_revision.sh $(REVISION_LOCK_FILE) "articles" "$1")
-image_revision = $(shell $(MK)/get_revision.sh $(REVISION_LOCK_FILE) "media" "$1")
+latest_revision = $(shell $(MK)/get_revision.sh $(REVISION_LOCK_FILE) "articles" '$1')
+image_revision = $(shell $(MK)/get_revision.sh $(REVISION_LOCK_FILE) "media" '$1')
 unescape = $(shell python3 $(MK)/unescape_make.py $1)
+resolve_revision = $(subst latest,$(call latest_revision,$2),$1)
+
+parse_booktarget_and_revision = $(eval P:=$@)$(eval $(parse_bookpath_and_revision))
+parse_booktarget = $(eval P:=$@)$(eval $(parse_bookpath))
+book_path = $(call dirmerge,$(wordlist 1,5,$(call dirsplit,$1)))
+
+parse_bookpath_and_revision := \
+	$$(info PATH: $$P)\
+	$$(eval S := $$(call dirsplit,$$P))\
+	$$(eval BOOK := $$(word 2,$$S))\
+	$$(eval BOOK_UNESCAPED := $$(call unescape,$$(BOOK)))\
+	$$(eval BOOK_REVISION := $$(firstword $$(subst .,$$(space),$$(notdir $$(word 3,$$S)))))\
+	$$(eval BOOK_REVISION := $$(call resolve_revision,$$(BOOK_REVISION),$$(BOOK_UNESCAPED)))\
+	$$(eval TARGET := $$(word 4,$$S))\
+	$$(eval SUBTARGET := $$(word 5,$$S))\
+	$$(eval ARTICLE := $$(word 6,$$S))\
+	$$(eval ARTICLE_REVISION := $$(call filebase,$$(word 7,$$S)))\
+	$$(info ARTICLE: $$(ARTICLE))\
+	$$(info ARTICLE_REVISION: $$(ARTICLE_REVISION))\
+	$$(info BOOK: $$(BOOK))\
+	$$(info BOOK_REVISION: $$(BOOK_REVISION))\
+	$$(info CURRENT_TARGET: $$@)\
+
+parse_bookpath := \
+	$$(info PATH: $$P)\
+	$$(eval S := $$(call dirsplit,$$P))\
+	$$(eval BOOK := $$(word 2,$$S))\
+	$$(eval BOOK_REVISION := $$(firstword $$(subst .,$$(space),$$(notdir $$(word 3,$$S)))))\
+	$$(eval TARGET := $$(word 4,$$(S)))\
+	$$(eval SUBTARGET := $$(word 5,$$(S)))\
+	$$(eval ARTICLE := $$(word 6,$$S))\
+	$$(eval ARTICLE_REVISION := $$(call filebase,$$(word 7,$$S)))\
+	$$(info ARTICLE: $$(ARTICLE))\
+	$$(info ARTICLE_REVISION: $$(ARTICLE_REVISION))\
+	$$(info BOOK: $$(BOOK))\
+	$$(info BOOK_REVISION: $$(BOOK_REVISION))\
+	$$(info CURRENT_TARGET: $$@)\
