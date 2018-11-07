@@ -33,7 +33,6 @@ resolve_revision = $(subst latest,$(call article_revision,$2),$1)
 
 parse_booktarget_and_revision = $(eval P:=$@)$(eval $(parse_bookpath_and_revision))
 parse_booktarget = $(eval P:=$@)$(eval $(parse_bookpath))
-book_path = $(call dirmerge,$(wordlist 1,5,$(call dirsplit,$1)))
 
 # parse the variable P and split the path into its semantic elements.
 # This will allways create the variable "ARTICLE", although it might be
@@ -51,3 +50,7 @@ parse_bookpath_and_revision := \
 	$(parse_bookpath)\
 	$$(eval BOOK_UNESCAPED := $$(call unescape,$$(BOOK)))\
 	$$(eval BOOK_REVISION := $$(call resolve_revision,$$(BOOK_REVISION),$$(BOOK_UNESCAPED)))\
+
+# Recipe lines for linking "latest" to the revision-resolved file (first prerquisite)
+LINK_BOOK_LATEST = ln -s -f -n $(BOOK_REVISION) $(EXPORT_DIR)/$(BOOK)/latest
+LINK_LATEST_TARGET = ln -s -f $(notdir $<) $(dir $<)latest.$(subst $(space),.,$(wordlist 2,1000,$(subst ., ,$(@))))

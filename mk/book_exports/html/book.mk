@@ -1,22 +1,29 @@
 
+$(EXPORT_DIR)/%article.html: $(TARGET_RESOLVED_REVISION)
+	$(LINK_BOOK_LATEST)
+	$(LINK_LATEST_TARGET)
 
-$(EXPORT_DIR)/%/latest.book.html: $(BOOK_RESOLVED_REVISION_SECONDARY)
-	$(info linking latest...)
-	ln -s -f $(BOOK_REVISION) $(EXPORT_DIR)/$(BOOK)/latest
+$(EXPORT_DIR)/%.article.html: $(EXPORT_DIR)/%.html $$(eval $$(parse_booktarget)) $(NO_LATEST_GUARD)
 	ln -s -f $(notdir $<) $@
 
+# applies after the following rule, only when revisions are not resolved
+$(EXPORT_DIR)/%book.html: $(TARGET_RESOLVED_REVISION)
+	$(LINK_BOOK_LATEST)
+	$(LINK_LATEST_TARGET)
+
 # final book index, depends dependency file which adds its dependencies
-$(EXPORT_DIR)/%.book.html: $(BOOK_DEP_SECONDARY) $(BOOK_DEP_INTERMEDIATE) 
-	$(eval $(parse_bootarget))
-	$(eval BOOK_PATH := $(call book_path,$<))
+# only applies for resolved dependencies
+$(EXPORT_DIR)/%.book.html: $$(eval $$(parse_booktarget)) \
+	$(BOOK_DEP_FILE) $(BOOK_DEP_INTERMEDIATE) $(NO_LATEST_GUARD)
+
 	$(MK)/bin/handlebars-cli-rs \
 		--input 'templates/book_index.html' \
-		book "$(call unescape,$(BOOK))" \
-		subtarget "$(SUBTARGET)" \
+		book '$(BOOK_UNESCAPED))' \
+		subtarget '$(SITEMAP_PATH)' \
 	< $(SITEMAP_PATH) \
 	> $(basename $<).html
-	cp -r templates/html_book_assets $(BOOK_PATH)/static/
-	ln -s -f $(BASE)/$(MEDIA_DIR)/ $(BOOK_PATH)
+	ln -s -f -n $(BASE)/templates/html_book_assets $(BOOK_ROOT)/static
+	ln -s -f -n $(BASE)/$(MEDIA_DIR)/ $(BOOK_ROOT)
 
 # postprocess html articles
 $(EXPORT_DIR)/%.html: $(EXPORT_DIR)/%.raw_html $(SITEMAP_SECONDARY)
@@ -30,4 +37,3 @@ $(EXPORT_DIR)/%.html: $(EXPORT_DIR)/%.raw_html $(SITEMAP_SECONDARY)
 	< $(SITEMAP_PATH) \
 	> $@
 	sed -i -e '/<!-- @ARTICLE_CONTENT@ -->/{r $<' -e 'd' -e '}' $@
-
