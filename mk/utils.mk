@@ -35,34 +35,19 @@ parse_booktarget_and_revision = $(eval P:=$@)$(eval $(parse_bookpath_and_revisio
 parse_booktarget = $(eval P:=$@)$(eval $(parse_bookpath))
 book_path = $(call dirmerge,$(wordlist 1,5,$(call dirsplit,$1)))
 
-parse_bookpath_and_revision := \
-	$$(info PATH: $$P)\
+# parse the variable P and split the path into its semantic elements.
+# This will allways create the variable "ARTICLE", although it might be
+# empty or wrong for non-article paths.
+parse_bookpath := \
 	$$(eval S := $$(call dirsplit,$$P))\
 	$$(eval BOOK := $$(word 2,$$S))\
-	$$(eval BOOK_UNESCAPED := $$(call unescape,$$(BOOK)))\
 	$$(eval BOOK_REVISION := $$(firstword $$(subst .,$$(space),$$(notdir $$(word 3,$$S)))))\
-	$$(eval BOOK_REVISION := $$(call resolve_revision,$$(BOOK_REVISION),$$(BOOK_UNESCAPED)))\
 	$$(eval TARGET := $$(word 4,$$S))\
 	$$(eval SUBTARGET := $$(word 5,$$S))\
 	$$(eval ARTICLE := $$(word 6,$$S))\
 	$$(eval ARTICLE_REVISION := $$(call filebase,$$(word 7,$$S)))\
-	$$(info ARTICLE: $$(ARTICLE))\
-	$$(info ARTICLE_REVISION: $$(ARTICLE_REVISION))\
-	$$(info BOOK: $$(BOOK))\
-	$$(info BOOK_REVISION: $$(BOOK_REVISION))\
-	$$(info CURRENT_TARGET: $$@)\
 
-parse_bookpath := \
-	$$(info PATH: $$P)\
-	$$(eval S := $$(call dirsplit,$$P))\
-	$$(eval BOOK := $$(word 2,$$S))\
-	$$(eval BOOK_REVISION := $$(firstword $$(subst .,$$(space),$$(notdir $$(word 3,$$S)))))\
-	$$(eval TARGET := $$(word 4,$$(S)))\
-	$$(eval SUBTARGET := $$(word 5,$$(S)))\
-	$$(eval ARTICLE := $$(word 6,$$S))\
-	$$(eval ARTICLE_REVISION := $$(call filebase,$$(word 7,$$S)))\
-	$$(info ARTICLE: $$(ARTICLE))\
-	$$(info ARTICLE_REVISION: $$(ARTICLE_REVISION))\
-	$$(info BOOK: $$(BOOK))\
-	$$(info BOOK_REVISION: $$(BOOK_REVISION))\
-	$$(info CURRENT_TARGET: $$@)\
+parse_bookpath_and_revision := \
+	$(parse_bookpath)\
+	$$(eval BOOK_UNESCAPED := $$(call unescape,$$(BOOK)))\
+	$$(eval BOOK_REVISION := $$(call resolve_revision,$$(BOOK_REVISION),$$(BOOK_UNESCAPED)))\

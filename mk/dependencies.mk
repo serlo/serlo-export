@@ -1,5 +1,5 @@
 
-# book dependency files of all supplied goals
+# book dependency files of all supplied export goals
 BOOK_DEP_FILES := $(foreach P,$(filter $(EXPORT_DIR)/%,$(MAKECMDGOALS)),\
 	$(info evaluating make targets...)\
 	$(eval $(parse_bookpath_and_revision))\
@@ -16,6 +16,7 @@ $(BOOK_DEP_FILES): $(SITEMAP_SECONDARY)
 		--anchors-target $(BOOK_ANCHORS_INTERMEDIATE) \
 		> $@
 
+# build / include dependency files for books
 -include $(BOOK_DEP_FILES)
 
 # concatenates individual anchors file to a whole
@@ -33,7 +34,6 @@ $(EXPORT_DIR)/%.markers: $(SITEMAP_SECONDARY)
 		markers "$(UNQUOTED)" $(TARGET) > $@
 
 # generate article dependencies 
-.SECONDEXPANSION:
 $(EXPORT_DIR)/%.section-dep: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers
 	$(eval $(parse_booktarget))
 	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
@@ -47,7 +47,6 @@ $(EXPORT_DIR)/%.section-dep: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers
 		< $< \
 		> $@
 
-.SECONDEXPANSION:
 $(EXPORT_DIR)/%.media-dep: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers $(EXPORT_DIR)/%.sections
 	$(eval $(parse_booktarget))
 	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
@@ -63,7 +62,6 @@ $(EXPORT_DIR)/%.media-dep: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers $(EXPORT_
 		> $@
 
 # extracts the reference anchors (link targets) provided by an article.
-.SECONDEXPANSION:
 $(EXPORT_DIR)/%.anchors: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers $(EXPORT_DIR)/%.sections
 	$(eval $(parse_booktarget))
 	$(eval UNESCAPED := $(call unescape,$(ARTICLE)))
