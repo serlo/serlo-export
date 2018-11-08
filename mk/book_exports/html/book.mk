@@ -10,6 +10,7 @@ $(EXPORT_DIR)/%book.html: $(TARGET_RESOLVED_REVISION) $(HAS_LATEST_GUARD)
 
 # postprocess articles for article export (dummy book)
 $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.html: $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.raw_html $(PARSE_PATH_SECONDARY) $(NO_LATEST_GUARD)
+	$(eval $(parse_booktarget))
 	$(MK)/bin/handlebars-cli-rs \
 		--input 'templates/article.html' \
 		article '$(call unescape,$(ARTICLE))' \
@@ -35,9 +36,10 @@ $(EXPORT_DIR)/%.html: $(EXPORT_DIR)/%.raw_html $(SITEMAP_SECONDARY)
 # final book index, depends dependency file which adds its dependencies
 # only applies for resolved dependencies
 $(EXPORT_DIR)/%.book.html: $(PARSE_PATH_SECONDARY) $$(BOOK_DEP_FILE) $$(BOOK_DEP_INTERMEDIATE) $(NO_LATEST_GUARD)
+	$(eval $(parse_booktarget))
 	$(MK)/bin/handlebars-cli-rs \
 		--input 'templates/book_index.html' \
-		book '$(BOOK_UNESCAPED)' \
+		book '$(call unescape,$(BOOK))' \
 		subtarget '$(SITEMAP_PATH)' \
 	< $(SITEMAP_PATH) \
 	> $(basename $<).html

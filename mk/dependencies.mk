@@ -53,6 +53,7 @@ $(EXPORT_DIR)/%.stats.yml $(EXPORT_DIR)/%.tex $(EXPORT_DIR)/%.raw_html: \
 	$(EXPORT_DIR)/%.sections \
 	$(EXPORT_DIR)/%.media\
 
+	$(eval $(parse_booktarget))
 	$(eval UNESCAPED := $(call unescape,$(ARTICLE)))
 	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
 		--title '$(UNESCAPED)' \

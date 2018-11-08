@@ -33,25 +33,25 @@ image_revision = $(call fetch_revision,$1,media)
 unescape = $(shell python3 $(MK)/scripts/unescape_make.py $1)
 resolve_revision = $(subst latest,$(call article_revision,$2),$1)
 
-parse_booktarget_and_revision = $(eval P:=$@)$(eval $(parse_bookpath_and_revision))
-parse_booktarget = $(eval P:=$@)$(eval $(parse_bookpath))
+parse_booktarget_and_revision = $(eval P:=$@)$(parse_bookpath_and_revision)
+parse_booktarget = $(eval P:=$@)$(parse_bookpath)
 
 # parse the variable P and split the path into its semantic elements.
 # This will allways create the variable "ARTICLE", although it might be
 # empty or wrong for non-article paths.
-parse_bookpath := \
-	$$(eval S := $$(call dirsplit,$$P))\
-	$$(eval BOOK := $$(word 2,$$S))\
-	$$(eval BOOK_REVISION := $$(firstword $$(subst .,$$(space),$$(notdir $$(word 3,$$S)))))\
-	$$(eval TARGET := $$(word 4,$$S))\
-	$$(eval SUBTARGET := $$(word 5,$$S))\
-	$$(eval ARTICLE := $$(word 6,$$S))\
-	$$(eval ARTICLE_REVISION := $$(call filebase,$$(word 7,$$S)))\
+parse_bookpath = \
+	$(eval S := $(call dirsplit,$P))\
+	$(eval BOOK := $(word 2,$S))\
+	$(eval BOOK_REVISION := $(firstword $(subst .,$(space),$(notdir $(word 3,$S)))))\
+	$(eval TARGET := $(word 4,$S))\
+	$(eval SUBTARGET := $(word 5,$S))\
+	$(eval ARTICLE := $(word 6,$S))\
+	$(eval ARTICLE_REVISION := $(call filebase,$(word 7,$S)))\
 
-parse_bookpath_and_revision := \
+parse_bookpath_and_revision = \
 	$(parse_bookpath)\
-	$$(eval BOOK_UNESCAPED := $$(call unescape,$$(BOOK)))\
-	$$(eval BOOK_REVISION := $$(call resolve_revision,$$(BOOK_REVISION),$$(BOOK_UNESCAPED)))\
+	$(eval BOOK_UNESCAPED := $(call unescape,$(BOOK)))\
+	$(eval BOOK_REVISION := $(call resolve_revision,$(BOOK_REVISION),$(BOOK_UNESCAPED)))\
 
 # splits the current target path as a section path and defines the according variables.
 parse_section_target = $(eval S := $(call dirsplit,$1)) \

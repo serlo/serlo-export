@@ -5,7 +5,7 @@
 # use sort to remove duplicates
 BOOK_DEP_FILES := $(sort $(foreach P,$\
 	$(filter-out $(EXPORT_DIR)/$(ARTICLE_BOOK)/%,$(filter $(EXPORT_DIR)/%,$(MAKECMDGOALS))),\
-	$(eval $(parse_bookpath_and_revision))\
+	$(parse_bookpath_and_revision)\
 	$(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(TARGET)/$(SUBTARGET)/$(BOOK_REVISION).book.dep\
 ))
 

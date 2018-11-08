@@ -6,7 +6,7 @@
 # This is is like $(BOOK_DEP_FILES) but for article (dummy book) export.
 ARTICLE_BOOK_DEP_FILES := $(sort $(foreach P,$\
 	$(filter $(EXPORT_DIR)/$(ARTICLE_BOOK)/%,$(MAKECMDGOALS)),\
-	$(eval $(parse_bookpath_and_revision))\
+	$(parse_bookpath_and_revision)\
 	$(eval ARTICLE_REVISION := $(call article_revision,$(call unescape,$(ARTICLE))))\
 	$(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(TARGET)/$(SUBTARGET)/$(ARTICLE)/$(ARTICLE_REVISION).section-dep \
 	$(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(TARGET)/$(SUBTARGET)/$(ARTICLE)/$(ARTICLE_REVISION).media-dep\
