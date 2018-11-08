@@ -23,7 +23,7 @@ if [ $HAS_KEY != true ]; then
         REVISION=$(echo "$REVISION" | grep -e "^[0-9][0-9]*$" || echo "error")
     fi
     if [ $SECTION = media ]; then
-        SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+        SCRIPTPATH=$(dirname "$0")
         REVISION=$(python3 $SCRIPTPATH/get_image_revision.py $NAME)
         # revision has to start with year
         REVISION=$(echo "$REVISION" | grep -e "^[0-9][0-9]*" || echo "error")

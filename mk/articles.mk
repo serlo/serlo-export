@@ -5,4 +5,4 @@ $(ARTICLE_DIR)/%.yml: $(ARTICLE_DIR)/%.md
 
 $(ARTICLE_DIR)/%.md:
 	$(call create_directory,$(dir $@))
-	python $(MK)/download_article.py $(word 2,$(call dirsplit,$@)) $(notdir $*) > $@
+	python $(MK)/scripts/download_article.py $(word 2,$(call dirsplit,$@)) $(notdir $*) > $@

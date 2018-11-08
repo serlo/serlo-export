@@ -3,7 +3,7 @@ include $(MK)/utils.mk
 INKSCAPE = inkscape --without-gui --export-area-page --export-text-to-path \
 	--export-ignore-filters --export-pdf=$@ $<
 CONVERT_IMG = convert $< $@
-DOWNLOAD_PDF = python $(MK)/download_image.py $*.pdf > $@
+DOWNLOAD_PDF = python $(MK)/scripts/download_image.py $*.pdf > $@
 
 
 # create a qr code for media files not supported in some targets
@@ -53,10 +53,10 @@ $(MEDIA_DIR)/%.svg $(MEDIA_DIR)/%.SVG $(MEDIA_DIR)/%.png \
 	$(MEDIA_DIR)/%.GIF $(MEDIA_DIR)/%.webm $(MEDIA_DIR)/%.WEBM: | $(MEDIA_DIR)
 
 	$(eval FILENAME := $(notdir $@))
-	python $(MK)/download_image.py "$(FILENAME)" "$(call image_revision,$(FILENAME))" > $@
+	python $(MK)/scripts/download_image.py "$(FILENAME)" "$(call image_revision,$(FILENAME))" > $@
 
 $(MEDIA_DIR)/%.meta: | $(MEDIA_DIR)
-	python $(MK)/get_image_license.py "$*" "$(call image_revision,$*)" > $@
+	python $(MK)/scripts/get_image_license.py "$*" "$(call image_revision,$*)" > $@
 
 # create the media directory
 # use with | (order-only prerequisite) to ignore timestamp

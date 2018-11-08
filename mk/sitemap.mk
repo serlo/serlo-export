@@ -2,10 +2,10 @@
 %.sitemap.md:
 	$(eval $(parse_booktarget))
 	$(call create_directory,$(dir $@))
-	python $(MK)/download_article.py $(BOOK) $(BOOK_REVISION) > $@
+	python $(MK)/scripts/download_article.py $(BOOK) $(BOOK_REVISION) > $@
 	
 %.sitemap.yml: %.sitemap.parsed.yml
-	python $(MK)/fill_sitemap_revisions.py \
+	python $(MK)/scripts/fill_sitemap_revisions.py \
 		$< $(REVISION_LOCK_FILE) \
 	> $@
 
