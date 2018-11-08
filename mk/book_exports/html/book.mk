@@ -15,7 +15,7 @@ $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.html: $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.raw_html $
 		article '$(call unescape,$(ARTICLE))' \
 		subtarget '$(SUBTARGET)' \
 		target '$(TARGET)' \
-	< $(MK)/dummy.yml \
+	< $(MK)/artifacts/dummy.yml \
 	> $@
 	sed -i -e '/<!-- @ARTICLE_CONTENT@ -->/{r $<' -e 'd' -e '}' $@
 

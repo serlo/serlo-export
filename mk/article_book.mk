@@ -27,7 +27,7 @@ $(EXPORT_DIR)/$(ARTICLE_BOOK)/$(ARTICLE_BOOK_REVISION)/%.book.anchors:
 
 $(EXPORT_DIR)/$(ARTICLE_BOOK)/$(ARTICLE_BOOK_REVISION)/%.markers:
 	$(call create_directory,$(dir $@))
-	cp $(MK)/dummy.markers $@
+	cp $(MK)/artifacts/dummy.markers $@
 
 
 # build and include dependency files for books
