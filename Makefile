@@ -30,7 +30,8 @@ include $(MK)/media.mk
 include $(MK)/dependencies.mk
 include $(MK)/article_book.mk
 include $(MK)/book.mk
-include $(MK)/book_exports/html/book.mk
+include $(MK)/targets/html.mk
+include $(MK)/targets/latex.mk
 
 init:
 	$(call map,check_dependency,ocamlopt inkscape convert qrencode latex sed cmark jq curl sponge)

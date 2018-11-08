@@ -51,7 +51,8 @@ $(EXPORT_DIR)/%.stats.yml $(EXPORT_DIR)/%.tex $(EXPORT_DIR)/%.raw_html: \
 	$(EXPORT_DIR)/%.media-dep \
 	$(EXPORT_DIR)/%.section-dep \
 	$(EXPORT_DIR)/%.sections \
-	$(EXPORT_DIR)/%.media\
+	$(EXPORT_DIR)/%.media \
+	$(NO_LATEST_GUARD) \
 
 	$(eval $(parse_booktarget))
 	$(eval UNESCAPED := $(call unescape,$(ARTICLE)))
