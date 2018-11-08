@@ -53,6 +53,15 @@ parse_bookpath_and_revision := \
 	$$(eval BOOK_UNESCAPED := $$(call unescape,$$(BOOK)))\
 	$$(eval BOOK_REVISION := $$(call resolve_revision,$$(BOOK_REVISION),$$(BOOK_UNESCAPED)))\
 
+# splits the current target path as a section path and defines the according variables.
+parse_section_target = $(eval S := $(call dirsplit,$1)) \
+	$(eval ARTICLE := $(word 2,$S)) \
+	$(eval SECTION := $(word 3,$S)) \
+	$(eval ARTICLE_REVISION := $(call filebase,$(word 4,$S)))\
+
+parse_section_target_and_revision = $(parse_section_target) \
+	$(eval ARTICLE_REVISION := $(call article_revision,$(call unescape,$(ARTICLE))))
+
 # Recipe lines for linking "latest" to the revision-resolved file (first prerquisite)
 LINK_BOOK_LATEST = ln -s -f -n $(BOOK_REVISION) $(EXPORT_DIR)/$(BOOK)/latest
 LINK_LATEST_TARGET = ln -s -f $(notdir $<) $(dir $<)latest.$(subst $(space),.,$(wordlist 2,1000,$(subst ., ,$(@))))

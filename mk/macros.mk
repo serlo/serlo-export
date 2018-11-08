@@ -51,3 +51,10 @@ HAS_LATEST_GUARD := $$(if $(NO_LATEST_GUARD),, IMPOSSIBLE)
 
 # splits the current target path and defines the according variables
 PARSE_PATH_SECONDARY := $$(eval $$(parse_booktarget))
+
+# splits the current target path as a section path and defines the according variables.
+PARSE_SECTION_TARGET := $$(call parse_section_target,$$@)
+PARSE_RESOLVED_SECTION_TARGET := $$(call parse_section_target_and_revision,$$@)
+
+# like NO_LATEST_GUARD, but for section paths
+SECTION_NO_LATEST_GUARD := $$(filter IMPOSSIBLE,$$(subst latest,IMPOSSIBLE,$$(ARTICLE_REVISION)))
