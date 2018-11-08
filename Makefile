@@ -27,7 +27,6 @@ include $(MK)/macros.mk
 include $(MK)/articles.mk
 include $(MK)/sections.mk
 include $(MK)/media.mk
-include $(MK)/sitemap.mk
 include $(MK)/dependencies.mk
 include $(MK)/article_book.mk
 include $(MK)/book.mk

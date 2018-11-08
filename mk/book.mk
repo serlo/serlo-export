@@ -9,6 +9,20 @@ BOOK_DEP_FILES := $(sort $(foreach P,$\
 	$(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(TARGET)/$(SUBTARGET)/$(BOOK_REVISION).book.dep\
 ))
 
+# parse the sitemap article and output a sitemap yaml
+%.sitemap.parsed.yml: $(PARSE_PATH_SECONDARY) $(ARTICLE_DIR)/$$(BOOK)/$$(BOOK_REVISION).yml
+	$(call create_directory,$(dir $@))
+	$(MK)/bin/parse_bookmap \
+		--input $< \
+		--texvccheck-path $(MK)/bin/texvccheck \
+	> $@
+
+# in sitemap, replace references to latest with the latest revision
+%.sitemap.yml: %.sitemap.parsed.yml
+	python $(MK)/scripts/fill_sitemap_revisions.py \
+		$< $(REVISION_LOCK_FILE) \
+	> $@
+
 # Generate the book dependencies for every supplied goal
 $(BOOK_DEP_FILES): $(SITEMAP_SECONDARY)
 	$(eval $(parse_booktarget))

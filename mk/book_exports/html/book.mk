@@ -37,7 +37,7 @@ $(EXPORT_DIR)/%.html: $(EXPORT_DIR)/%.raw_html $(SITEMAP_SECONDARY)
 $(EXPORT_DIR)/%.book.html: $(PARSE_PATH_SECONDARY) $$(BOOK_DEP_FILE) $$(BOOK_DEP_INTERMEDIATE) $(NO_LATEST_GUARD)
 	$(MK)/bin/handlebars-cli-rs \
 		--input 'templates/book_index.html' \
-		book '$(BOOK_UNESCAPED))' \
+		book '$(BOOK_UNESCAPED)' \
 		subtarget '$(SITEMAP_PATH)' \
 	< $(SITEMAP_PATH) \
 	> $(basename $<).html
