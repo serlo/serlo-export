@@ -24,8 +24,8 @@ install:
 
 # Commands for running the tests
 script:
-  - make article_exports/pdf/print/Mathe_für_Nicht-Freaks@COLON@_Uneigentliches_Supremum_und_Infimum/839516.tex
-  - make article_exports/html/all/Mathe_für_Nicht-Freaks@COLON@_Epsilon-Delta-Kriterium_der_Stetigkeit/839108.html
-  - make article_exports/stats/all/Mathe_für_Nicht-Freaks@COLON@_Epsilon-Delta-Kriterium_der_Stetigkeit/839108.stats.html
-  - make book_exports/Benutzer@COLON@Valentin_Roland@SLASH@Analysis_1/latest/html/all/latest.html
-  - make book_exports/Benutzer@COLON@Valentin_Roland@SLASH@Analysis_1/latest/pdf/print/latest.tex
+  - make exports/articles/latest/latex/print/Mathe_für_Nicht-Freaks@COLON@_Uneigentliches_Supremum_und_Infimum/839516.tex
+  - make exports/articles/latest/html/all/Mathe_für_Nicht-Freaks@COLON@_Epsilon-Delta-Kriterium_der_Stetigkeit/839108.html
+  - make exports/articles/latest/stats/all/Mathe_für_Nicht-Freaks@COLON@_Epsilon-Delta-Kriterium_der_Stetigkeit/839108.stats.html
+  - make exports/Benutzer@COLON@Valentin_Roland@SLASH@Analysis_1/latest/html/all/latest.book.html
+  - make exports/Benutzer@COLON@Valentin_Roland@SLASH@Analysis_1/latest/latex/print/latest.book.tex
