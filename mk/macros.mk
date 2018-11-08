@@ -21,7 +21,7 @@ IS_NOT_LATEST_REVISION = $(subst $(BOOK_REVISION),$(call article_revision,$(call
 
 
 # compute the path the book dependency file
-BOOK_DEP_FILE = $(EXPORT_DIR)/$$(BOOK)/$$(BOOK_REVISION)/$$(TARGET)/$$(SUBTARGET)/$$(BOOK_REVISION).book.dep
+BOOK_DEP_FILE = $(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(TARGET)/$(SUBTARGET)/$(BOOK_REVISION).book.dep
 
 BOOK_ROOT = $(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(TARGET)/$(SUBTARGET)
 

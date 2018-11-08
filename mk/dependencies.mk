@@ -79,14 +79,14 @@ $(EXPORT_DIR)/%.anchors: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers $(EXPORT_DI
 # $(ALL_ANCHORS) must be defined before this file is loaded
 # and points to a file containing a list of all available anchors in the export.
 $(EXPORT_DIR)/%.stats.yml $(EXPORT_DIR)/%.tex $(EXPORT_DIR)/%.raw_html: \
-	$(ORIGIN_SECONDARY) $(BOOK_ANCHORS_INTERMEDIATE) $(BOOK_DEP_FILE) \
+	$$(eval $$(parse_booktarget)) \
+	$(ORIGIN_SECONDARY) $$(BOOK_ANCHORS_INTERMEDIATE) $$(BOOK_DEP_FILE) \
 	$(EXPORT_DIR)/%.markers \
 	$(EXPORT_DIR)/%.media-dep \
 	$(EXPORT_DIR)/%.section-dep \
 	$(EXPORT_DIR)/%.sections \
 	$(EXPORT_DIR)/%.media\
 
-	$(eval $(parse_booktarget))
 	$(eval UNESCAPED := $(call unescape,$(ARTICLE)))
 	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
 		--title '$(UNESCAPED)' \

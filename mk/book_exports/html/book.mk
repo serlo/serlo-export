@@ -1,20 +1,21 @@
 
+# catch rules for targets with references to latest revision
 $(EXPORT_DIR)/%article.html: $(TARGET_RESOLVED_REVISION)
 	$(LINK_BOOK_LATEST)
 	$(LINK_LATEST_TARGET)
 
-$(EXPORT_DIR)/%.article.html: $(EXPORT_DIR)/%.html $$(eval $$(parse_booktarget)) $(NO_LATEST_GUARD)
-	ln -s -f $(notdir $<) $@
-
-# applies after the following rule, only when revisions are not resolved
 $(EXPORT_DIR)/%book.html: $(TARGET_RESOLVED_REVISION)
 	$(LINK_BOOK_LATEST)
 	$(LINK_LATEST_TARGET)
 
+
+$(EXPORT_DIR)/%.article.html: $(EXPORT_DIR)/%.html $$(eval $$(parse_booktarget)) $(NO_LATEST_GUARD)
+	ln -s -f $(notdir $<) $@
+
 # final book index, depends dependency file which adds its dependencies
 # only applies for resolved dependencies
 $(EXPORT_DIR)/%.book.html: $$(eval $$(parse_booktarget)) \
-	$(BOOK_DEP_FILE) $(BOOK_DEP_INTERMEDIATE) $(NO_LATEST_GUARD)
+	$$(BOOK_DEP_FILE) $$(BOOK_DEP_INTERMEDIATE) $(NO_LATEST_GUARD)
 
 	$(MK)/bin/handlebars-cli-rs \
 		--input 'templates/book_index.html' \
