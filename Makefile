@@ -11,6 +11,10 @@ DOCS_DIR := docs
 TMP_BIN_DIR := .build
 REVISION_LOCK_FILE := revisions.json
 
+# name of the dummy book for article exports
+ARTICLE_BOOK := articles
+ARTICLE_BOOK_REVISION := dummy
+
 # files which might be created (for clean target)
 OUTPUT_DIRS := $(ARTICLE_DIR) $(MEDIA_DIR) $(SECTION_DIR) $(EXPORT_DIR) $(DOCS_DIR)
 TEMP_FILES := $(REVISION_LOCK_FILE)
@@ -25,6 +29,8 @@ include $(MK)/sections.mk
 include $(MK)/media.mk
 include $(MK)/sitemap.mk
 include $(MK)/dependencies.mk
+include $(MK)/article_book.mk
+include $(MK)/book.mk
 include $(MK)/book_exports/html/book.mk
 
 init:

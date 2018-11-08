@@ -25,8 +25,10 @@ filebase = $(firstword $(subst .,$(space),$(notdir $1)))
 dirsplit = $(subst /,$(space),$1)
 dirmerge = $(subst $(space),/,$1)
 
-article_revision = $(shell $(MK)/get_revision.sh $(REVISION_LOCK_FILE) "articles" '$1')
-image_revision = $(shell $(MK)/get_revision.sh $(REVISION_LOCK_FILE) "media" '$1')
+fetch_revision = $(eval FETCH_RESULT := $(shell $(MK)/get_revision.sh $(REVISION_LOCK_FILE) '$2' '$1'))$(if $(FETCH_RESULT),$(FETCH_RESULT),$(error revision fetching failed for "$1"!))
+
+article_revision = $(call fetch_revision,$1,articles)
+image_revision = $(call fetch_revision,$1,media)
 
 unescape = $(shell python3 $(MK)/unescape_make.py $1)
 resolve_revision = $(subst latest,$(call article_revision,$2),$1)

@@ -11,7 +11,7 @@ REV_FILE="$1"
 SECTION=$2
 
 # create lockfile if not present
-[ -f $REV_FILE ] || echo '{"articles": {}, "media": {}}' > $REV_FILE;
+[ -f $REV_FILE ] || echo '{"articles": {"articles": "dummy"}, "media": {}}' > $REV_FILE;
 
 HAS_KEY=$(flock $REV_FILE jq ".$SECTION | has(\"$NAME\")" $REV_FILE);
 

@@ -1,38 +1,4 @@
 
-# book dependency files of all supplied export goals.
-# use sort to remove duplicates
-BOOK_DEP_FILES := $(sort $(foreach P,$(filter $(EXPORT_DIR)/%,$(MAKECMDGOALS)),\
-	$(eval $(parse_bookpath_and_revision))\
-	$(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(TARGET)/$(SUBTARGET)/$(BOOK_REVISION).book.dep))
-
-# Generate / include book dependencies (articles it depends on) for every supplied goal
-$(BOOK_DEP_FILES): $(SITEMAP_SECONDARY)
-	$(eval $(parse_booktarget))
-	$(call create_directory,$(dir $@))
-	$(MK)/bin/sitemap_utils --input $< \
-		deps $(TARGET) $(SUBTARGET) \
-		--prefix $(dir $@) \
-		--book-target $(BOOK_DEP_INTERMEDIATE) \
-		--anchors-target $(BOOK_ANCHORS_INTERMEDIATE) \
-		> $@
-
-# build and include dependency files for books
--include $(BOOK_DEP_FILES)
-
-# concatenates individual anchors file to a whole
-# dependencies specified in generated book deps
-$(EXPORT_DIR)/%.book.anchors: 
-	$(info collecting anchors...)
-	$(shell cat $(filter %.anchors,$^) > $@)
-
-# extract article markers from sitemap and create its directory
-$(EXPORT_DIR)/%.markers: $(SITEMAP_SECONDARY)
-	$(eval $(parse_booktarget))
-	$(call create_directory,$(BOOK_ROOT)/$(ARTICLE))
-	$(eval UNQUOTED := $(call unescape,$(ARTICLE)))
-	$(MK)/bin/sitemap_utils --input $< \
-		markers "$(UNQUOTED)" $(TARGET) > $@
-
 # generate article dependencies 
 $(EXPORT_DIR)/%.section-dep: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers
 	$(eval $(parse_booktarget))
@@ -79,8 +45,8 @@ $(EXPORT_DIR)/%.anchors: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers $(EXPORT_DI
 # $(ALL_ANCHORS) must be defined before this file is loaded
 # and points to a file containing a list of all available anchors in the export.
 $(EXPORT_DIR)/%.stats.yml $(EXPORT_DIR)/%.tex $(EXPORT_DIR)/%.raw_html: \
-	$$(eval $$(parse_booktarget)) \
-	$(ORIGIN_SECONDARY) $$(BOOK_ANCHORS_INTERMEDIATE) $$(BOOK_DEP_FILE) \
+	$(PARSE_PATH_SECONDARY) \
+	$(ORIGIN_SECONDARY) $(ALL_ANCHORS_SECONDARY) $$(BOOK_DEP_FILE) \
 	$(EXPORT_DIR)/%.markers \
 	$(EXPORT_DIR)/%.media-dep \
 	$(EXPORT_DIR)/%.section-dep \

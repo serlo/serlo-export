@@ -25,13 +25,20 @@ BOOK_DEP_FILE = $(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(TARGET)/$(SUBTARGET)/$(
 
 BOOK_ROOT = $(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(TARGET)/$(SUBTARGET)
 
-# these describe intermediate targets for which dependencies are generated
-# These should never actually exist!
-# careful: These depend on the variables beeing defined. So when used in a 
+# This is a intermediate target for which book dependencies are generated.
+# This file should never actually exist!
+# careful: This depends on the variables beeing defined. So when used in a 
 # prerequisite list another prerquisite must have created them through secondary 
 # expansion (calling parse_booktarget)
 BOOK_DEP_INTERMEDIATE = $(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(TARGET)/$(SUBTARGET)/$(BOOK_REVISION).book.dependencies
-BOOK_ANCHORS_INTERMEDIATE = $(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(TARGET)/$(SUBTARGET)/$(BOOK_REVISION).book.anchors
+
+
+# expands to the book anchors file for normal books,
+# expands to to article's own anchors file for article export (dummy book)
+ALL_ANCHORS_SECONDARY := $$(if $$(findstring $(EXPORT_DIR)/$(ARTICLE_BOOK)/$(ARTICLE_BOOK_REVISION),$$@),$\
+	$$(dir $$@)$$(call filebase,$$@).anchors,$\
+	$(EXPORT_DIR)/$$(BOOK)/$$(BOOK_REVISION)/$$(TARGET)/$$(SUBTARGET)/$$(BOOK_REVISION).book.anchors$\
+)
 
 # compute the sitemap path from the target
 SITEMAP_SECONDARY := $$(call dirmerge,$$(wordlist 1,3,$$(call dirsplit,$$@)))/$$(word 3,$$(call dirsplit,$$@)).sitemap.yml
@@ -39,3 +46,8 @@ SITEMAP_PATH = $(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(BOOK_REVISION).sitemap.y
 
 # expands to IMPOSSIBLE if the book revision variable or the path suffix contains latest
 NO_LATEST_GUARD := $$(filter IMPOSSIBLE,$$(subst latest,IMPOSSIBLE,$$(BOOK_REVISION)) $$(subst latest,IMPOSSIBLE,$$(call filebase,$$@)))
+# does the opposite of NO_LATEST_GUARD
+HAS_LATEST_GUARD := $$(if $(NO_LATEST_GUARD),, IMPOSSIBLE)
+
+# splits the current target path and defines the according variables
+PARSE_PATH_SECONDARY := $$(eval $$(parse_booktarget))
