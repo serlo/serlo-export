@@ -24,7 +24,7 @@ BOOK_DEP_FILES := $(sort $(foreach P,$\
 	> $@
 
 # Generate the book dependencies for every supplied goal
-$(BOOK_DEP_FILES): $(SITEMAP_SECONDARY)
+$(EXPORT_DIR)/%.book.dep: $(SITEMAP_SECONDARY)
 	$(eval $(parse_booktarget))
 	$(call create_directory,$(dir $@))
 	$(eval ANCHORS_FILE = $(ALL_ANCHORS_SECONDARY))

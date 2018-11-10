@@ -30,7 +30,7 @@ fetch_revision = $(eval FETCH_RESULT := $(shell $(MK)/scripts/get_revision.sh $(
 article_revision = $(call fetch_revision,$1,articles)
 image_revision = $(call fetch_revision,$1,media)
 
-unescape = $(shell python3 $(MK)/scripts/unescape_make.py $1)
+unescape = $(subst ','\'',$(shell python3 $(MK)/scripts/unescape_make.py $1))
 resolve_revision = $(subst latest,$(call article_revision,$2),$1)
 
 parse_booktarget_and_revision = $(eval P:=$@)$(parse_bookpath_and_revision)
@@ -64,4 +64,4 @@ parse_section_target_and_revision = $(parse_section_target) \
 
 # Recipe lines for linking "latest" to the revision-resolved file (first prerquisite)
 LINK_BOOK_LATEST = ln -s -f -n $(BOOK_REVISION) $(EXPORT_DIR)/$(BOOK)/latest
-LINK_LATEST_TARGET = ln -s -f $(notdir $<) $(dir $<)latest.$(subst $(space),.,$(wordlist 2,1000,$(subst ., ,$(@))))
+LINK_LATEST_TARGET = ln -s -f -n $(notdir $<) $(dir $<)latest.$(subst $(space),.,$(wordlist 2,1000,$(subst ., ,$(@))))
