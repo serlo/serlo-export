@@ -12,17 +12,15 @@ $(EXPORT_DIR)/%.lints.yml: $(ORIGIN_SECONDARY)
 		--texvccheck-path $(MK)/bin/texvccheck \
 	< $< > $@
 
-# postprocess articles for article export (dummy book)
-$(EXPORT_DIR)/$(ARTICLE_BOOK)/%.html: $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.raw_html $(PARSE_PATH_SECONDARY) $(NO_LATEST_GUARD)
+# TODO: stats.html does not contain lint info.
+$(EXPORT_DIR)/%.stats.html: $(EXPORT_DIR)/%.stats.yml $(EXPORT_DIR)/%.lints.yml
 	$(eval $(parse_booktarget))
 	$(MK)/bin/handlebars-cli-rs \
-		--input 'templates/article.html' \
+		--input $(BASE)/templates/article_stats.html \
+		--data '$<' \
 		article '$(call unescape,$(ARTICLE))' \
-		subtarget '$(SUBTARGET)' \
-		target '$(TARGET)' \
-	< $(MK)/artifacts/dummy.yml \
+		revision $(ARTICLE_REVISION) \
 	> $@
-	sed -i -e '/<!-- @ARTICLE_CONTENT@ -->/{r $<' -e 'd' -e '}' $@
 
 $(EXPORT_DIR)/%.book.stats.yml: $(PARSE_PATH_SECONDARY) $$(BOOK_DEP_FILE) $$(BOOK_DEP_INTERMEDIATE) $(NO_LATEST_GUARD)
 	(cd $(dir $@) && python $(MK)/scripts/collect_stats.py > $(notdir $@))
