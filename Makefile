@@ -19,7 +19,6 @@ ARTICLE_BOOK_REVISION := dummy
 OUTPUT_DIRS := $(ARTICLE_DIR) $(MEDIA_DIR) $(SECTION_DIR) $(EXPORT_DIR) $(DOCS_DIR)
 TEMP_FILES := $(REVISION_LOCK_FILE)
 
-
 .SECONDEXPANSION:
 
 include $(MK)/utils.mk
@@ -33,6 +32,7 @@ include $(MK)/book.mk
 include $(MK)/targets/html.mk
 include $(MK)/targets/latex.mk
 include $(MK)/targets/pdf.mk
+include $(MK)/targets/stats.mk
 
 init:
 	$(call map,check_dependency,ocamlopt inkscape convert qrencode latex sed cmark jq curl sponge)

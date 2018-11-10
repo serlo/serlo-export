@@ -1,6 +1,5 @@
 """ Collects book stats from article stats."""
 
-import argparse
 from collections import defaultdict
 import sys
 import os
@@ -59,16 +58,16 @@ def process_article_stats(article, stats):
 
 
 if __name__ == "__main__":
-    arg_parser = argparse.ArgumentParser(description=__doc__)
-    arg_parser.add_argument("revision")
-    args = arg_parser.parse_args()
     yaml = YAML(typ="safe")
 
-    with open("{}.article_list".format(args.revision), "r") as f:
-        lint_index = [l for l in f.read().split() if len(l) > 0]
-
-    for article in lint_index:
-        article_stats = yaml.load(open(article))
-        process_article_stats(article, article_stats)
+    for root, dirs, files in os.walk("."):
+        pathlen = len(root.split(os.sep))
+        for f in files:
+            if f.endswith(".stats.yml") and pathlen > 1:
+                f = root + os.sep + f
+                f = f.strip("." + os.sep)
+                print (f, file=sys.stderr)
+                article_stats = yaml.load(open(f))
+                process_article_stats(f, article_stats)
 
     YAML(typ="rt").dump(book_stats, sys.stdout)
