@@ -5,6 +5,6 @@ $(ARTICLE_DIR)/%.yml: $(ARTICLE_DIR)/%.md
 	@$(MK)/bin/mwtoast < $< > $@
 
 $(ARTICLE_DIR)/%.md:
-	$(call create_directory,$(dir $@))
+	@$(call create_directory,$(dir $@))
 	$(info fetching source of '$*'...)
 	@python $(MK)/scripts/download_article.py $(word 2,$(call dirsplit,$@)) $(notdir $*) > $@

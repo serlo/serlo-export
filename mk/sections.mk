@@ -23,4 +23,4 @@ $(SECTION_DIR)/%.yml: $(PARSE_SECTION_TARGET) $(SECTION_NO_LATEST_GUARD) \
 		sections $(ARTICLE) < $< > /dev/null
 
 $(SECTION_DIR):
-	$(call create_directory,$(SECTION_DIR))
+	@$(call create_directory,$(SECTION_DIR))

@@ -1,3 +1,5 @@
+SHELL:=/bin/sh
+
 # Absolute path to the directory of this Makefile
 BASE := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 MK := $(BASE)/mk

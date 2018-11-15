@@ -67,4 +67,4 @@ $(MEDIA_DIR)/%.meta: | $(MEDIA_DIR)
 # create the media directory
 # use with | (order-only prerequisite) to ignore timestamp
 $(MEDIA_DIR):
-	$(call create_directory,$(MEDIA_DIR))
+	@$(call create_directory,$(MEDIA_DIR))

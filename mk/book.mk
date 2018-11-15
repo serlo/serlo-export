@@ -11,7 +11,7 @@ BOOK_DEP_FILES := $(sort $(foreach P,$\
 
 # parse the sitemap article and output a sitemap yaml
 %.sitemap.parsed.yml: $(PARSE_PATH_SECONDARY) $(ARTICLE_DIR)/$$(BOOK)/$$(BOOK_REVISION).yml
-	$(call create_directory,$(dir $@))
+	@$(call create_directory,$(dir $@))
 	$(info parsing sitemap for $(BOOK)...)
 	@$(MK)/bin/parse_bookmap \
 		--input $< \
@@ -41,7 +41,7 @@ $(EXPORT_DIR)/%.book.dep: $(SITEMAP_SECONDARY)
 # extract article markers from sitemap and create its directory
 $(EXPORT_DIR)/%.markers: $(SITEMAP_SECONDARY)
 	$(eval $(parse_booktarget))
-	$(call create_directory,$(BOOK_ROOT)/$(ARTICLE))
+	@$(call create_directory,$(BOOK_ROOT)/$(ARTICLE))
 	$(eval UNQUOTED := $(call unescape,$(ARTICLE)))
 	$(info extracting markers for '$(UNQUOTED)'...)
 	@$(MK)/bin/sitemap_utils --input $< \
