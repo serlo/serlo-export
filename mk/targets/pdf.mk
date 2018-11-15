@@ -13,17 +13,20 @@ LATEX := lualatex
 # path to the latex export of this book
 LATEX_BOOK := $(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/latex/$(SUBTARGET)/$(BOOK_REVISION).book.tex
 
+# write pdf options for books
 $(EXPORT_DIR)/%.pdfopts.yml:
 	
 	$(eval $(parse_booktarget))
-	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
+	$(info writing pdf options for book '$(BOOK)'...)
+	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
 		--title $(BOOK) \
 		--revision $(BOOK_REVISION) \
 	$(TARGET).$(SUBTARGET) < $(MK)/artifacts/dummy.yml > $@
 
 $(EXPORT_DIR)/%.book.pdf.tex: $(EXPORT_DIR)/%.pdfopts.yml $(PARSE_PATH_SECONDARY)  $$(LATEX_BOOK)
 	
-	$(MK)/bin/handlebars-cli-rs \
+	$(info writing compilable latex index for book '$(BOOK)'...)
+	@$(MK)/bin/handlebars-cli-rs \
 		--input 'templates/book_export.tex' \
 		--data $< \
 		content $(notdir $(word 2,$^)) \
@@ -35,9 +38,10 @@ $(EXPORT_DIR)/%.book.pdf.tex: $(EXPORT_DIR)/%.pdfopts.yml $(PARSE_PATH_SECONDARY
 $(EXPORT_DIR)/%.book.pdf: $(PARSE_PATH_SECONDARY) $(EXPORT_DIR)/%.book.pdf.tex $(NO_LATEST_GUARD)
 	
 	$(eval $(parse_booktarget))
-	ln -s -f -n $(BASE)/$(dir $(LATEX_BOOK)) $(dir $@)texfiles
-	ln -s -f -n $(BASE)/include $(dir $@)include
-	(cd $(BOOK_ROOT) && latexmk \
+	$(info building book '$(BOOK)' with $(LATEX)...)
+	@ln -s -f -n $(BASE)/$(dir $(LATEX_BOOK)) $(dir $@)texfiles
+	@ln -s -f -n $(BASE)/include $(dir $@)include
+	@(cd $(BOOK_ROOT) && latexmk \
 		-pdflatex="$(LATEX) %O %S \
 			-no-shell-escape" \
 		-pdf $(notdir $<) \
@@ -48,7 +52,8 @@ $(EXPORT_DIR)/%.book.pdf: $(PARSE_PATH_SECONDARY) $(EXPORT_DIR)/%.book.pdf.tex $
 
 $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.article.opts.yml: $(ORIGIN_SECONDARY)
 	$(eval $(parse_booktarget))
-	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
+	$(info writing export options for '$(ARTICLE)'...) 
+	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
 		--title $(ARTICLE) \
 		--revision $(ARTICLE_REVISION) \
 	$(TARGET).$(SUBTARGET) < $(MK)/artifacts/dummy.yml > $@
@@ -56,7 +61,8 @@ $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.article.opts.yml: $(ORIGIN_SECONDARY)
 $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.article.tex: $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.article.opts.yml $(PARSE_PATH_SECONDARY) $$(EXPORT_DIR)/$$(ARTICLE_BOOK)/$$(BOOK_REVISION)/latex/$$(SUBTARGET)/$$(ARTICLE)/$$(ARTICLE_REVISION).tex
 	
 	$(eval $(parse_booktarget))
-	$(MK)/bin/handlebars-cli-rs \
+	$(info rendering article '$(ARTICLE)'...)
+	@$(MK)/bin/handlebars-cli-rs \
 		--input templates/article.tex \
 		--data $< \
 		content '$(BASE)/$(word 2,$^)' \
@@ -70,7 +76,8 @@ $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.article.tex: $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.art
 $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.pdf: $(PARSE_PATH_SECONDARY) $(NO_LATEST_GUARD) $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.article.tex 
 	
 	$(eval $(parse_booktarget))
-	(cd $(BOOK_ROOT)/$(ARTICLE) && latexmk \
+	$(info building article '$(ARTICLE)' with $(LATEX)...)
+	@(cd $(BOOK_ROOT)/$(ARTICLE) && latexmk \
 		-pdflatex="$(LATEX) %O %S \
 			-no-shell-escape" \
 		-pdf $(notdir $<) \

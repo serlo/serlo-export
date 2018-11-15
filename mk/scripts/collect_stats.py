@@ -66,7 +66,6 @@ if __name__ == "__main__":
             if f.endswith(".stats.yml") and pathlen > 1:
                 f = root + os.sep + f
                 f = f.strip("." + os.sep)
-                print (f, file=sys.stderr)
                 article_stats = yaml.load(open(f))
                 process_article_stats(f, article_stats)
 

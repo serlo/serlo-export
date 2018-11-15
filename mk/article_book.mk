@@ -15,19 +15,23 @@ ARTICLE_BOOK_DEP_FILES := $(sort $(foreach P,$\
 # dummy sitemap
 $(EXPORT_DIR)/$(ARTICLE_BOOK)/$(ARTICLE_BOOK_REVISION)/%.sitemap.yml:
 	$(call create_directory,$(dir $@))
-	touch $@
+	$(info creating dummy sitemap...)
+	@touch $@
 
 $(EXPORT_DIR)/$(ARTICLE_BOOK)/$(ARTICLE_BOOK_REVISION)/%.book.dep:
 	$(call create_directory,$(dir $@))
-	touch $@
+	$(info generating dummy book dependencies...)
+	@touch $@
 
 $(EXPORT_DIR)/$(ARTICLE_BOOK)/$(ARTICLE_BOOK_REVISION)/%.book.anchors:
 	$(call create_directory,$(dir $@))
-	touch $@
+	$(info generating empty book anchors file...)
+	@touch $@
 
 $(EXPORT_DIR)/$(ARTICLE_BOOK)/$(ARTICLE_BOOK_REVISION)/%.markers:
 	$(call create_directory,$(dir $@))
-	cp $(MK)/artifacts/dummy.markers $@
+	$(info generating dummy markers...)
+	@cp $(MK)/artifacts/dummy.markers $@
 
 
 # build and include dependency files for books

@@ -2,7 +2,8 @@
 # generate article dependencies 
 $(EXPORT_DIR)/%.section-dep: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers
 	$(eval $(parse_booktarget))
-	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
+	$(info generating section dependencies for '$(ARTICLE)'...)
+	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
 		--title '$(ARTICLE)' \
 		--revision '$(ARTICLE_REVISION)' \
 		--markers '$(word 2,$^)' \
@@ -15,7 +16,8 @@ $(EXPORT_DIR)/%.section-dep: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers
 
 $(EXPORT_DIR)/%.media-dep: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers $(EXPORT_DIR)/%.sections
 	$(eval $(parse_booktarget))
-	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
+	$(info generating media dependencies for '$(ARTICLE)'...)
+	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
 		--title '$(ARTICLE)' \
 		--revision '$(ARTICLE_REVISION)' \
 		--markers '$(word 2,$^)' \
@@ -31,7 +33,8 @@ $(EXPORT_DIR)/%.media-dep: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers $(EXPORT_
 $(EXPORT_DIR)/%.anchors: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers $(EXPORT_DIR)/%.sections
 	$(eval $(parse_booktarget))
 	$(eval UNESCAPED := $(call unescape,$(ARTICLE)))
-	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
+	$(info generating reference anchors for '$(ARTICLE)'...)
+	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
 		--title '$(UNESCAPED)' \
 		--revision '$(ARTICLE_REVISION)' \
 		--markers '$(word 2,$^)' \
@@ -56,7 +59,8 @@ $(EXPORT_DIR)/%.stats.yml $(EXPORT_DIR)/%.tex $(EXPORT_DIR)/%.raw_html: \
 
 	$(eval $(parse_booktarget))
 	$(eval UNESCAPED := $(call unescape,$(ARTICLE)))
-	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
+	$(info exporting '$(ARTICLE)' as $(suffix $@)...)
+	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
 		--title '$(UNESCAPED)' \
 		--revision '$(ARTICLE_REVISION)' \
 		--markers '$(word 4,$^)' \

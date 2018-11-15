@@ -12,7 +12,8 @@ $(EXPORT_DIR)/%book.tex: $(TARGET_RESOLVED_REVISION) $(HAS_LATEST_GUARD)
 # only applies for resolved dependencies
 $(EXPORT_DIR)/%.book.tex: $(PARSE_PATH_SECONDARY) $$(BOOK_DEP_FILE) $$(BOOK_DEP_INTERMEDIATE) $(NO_LATEST_GUARD)
 	$(eval $(parse_booktarget))
-	$(MK)/bin/handlebars-cli-rs \
+	$(info rendering book index for '$(BOOK)'...)
+	@$(MK)/bin/handlebars-cli-rs \
 		--input $(BASE)/templates/book.tex \
 		subtarget $(SUBTARGET) \
 	< $(SITEMAP_PATH) \

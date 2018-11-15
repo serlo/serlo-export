@@ -12,23 +12,26 @@ BOOK_DEP_FILES := $(sort $(foreach P,$\
 # parse the sitemap article and output a sitemap yaml
 %.sitemap.parsed.yml: $(PARSE_PATH_SECONDARY) $(ARTICLE_DIR)/$$(BOOK)/$$(BOOK_REVISION).yml
 	$(call create_directory,$(dir $@))
-	$(MK)/bin/parse_bookmap \
+	$(info parsing sitemap for $(BOOK)...)
+	@$(MK)/bin/parse_bookmap \
 		--input $< \
 		--texvccheck-path $(MK)/bin/texvccheck \
 	> $@
 
 # in sitemap, replace references to latest with the latest revision
 %.sitemap.yml: %.sitemap.parsed.yml
-	python $(MK)/scripts/fill_sitemap_revisions.py \
+	$(info resolving sitemap revisions...)
+	@python $(MK)/scripts/fill_sitemap_revisions.py \
 		$< $(REVISION_LOCK_FILE) \
 	> $@
 
 # Generate the book dependencies for every supplied goal
 $(EXPORT_DIR)/%.book.dep: $(SITEMAP_SECONDARY)
 	$(eval $(parse_booktarget))
-	$(call create_directory,$(dir $@))
+	@$(call create_directory,$(dir $@))
 	$(eval ANCHORS_FILE = $(ALL_ANCHORS_SECONDARY))
-	$(MK)/bin/sitemap_utils --input $< \
+	$(info generating book dependency file...)
+	@$(MK)/bin/sitemap_utils --input $< \
 		deps $(TARGET) $(SUBTARGET) \
 		--prefix $(dir $@) \
 		--book-target $(BOOK_DEP_INTERMEDIATE) \
@@ -40,8 +43,9 @@ $(EXPORT_DIR)/%.markers: $(SITEMAP_SECONDARY)
 	$(eval $(parse_booktarget))
 	$(call create_directory,$(BOOK_ROOT)/$(ARTICLE))
 	$(eval UNQUOTED := $(call unescape,$(ARTICLE)))
-	$(MK)/bin/sitemap_utils --input $< \
-		markers "$(UNQUOTED)" $(TARGET) > $@
+	$(info extracting markers for '$(UNQUOTED)'...)
+	@$(MK)/bin/sitemap_utils --input $< \
+		markers '$(UNQUOTED)' '$(TARGET)' > $@
 
 # concatenate the supplied anchors of all articles
 # prerequisites for this target specified in the generated book dependencies

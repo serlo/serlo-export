@@ -2,7 +2,7 @@
 space :=
 space +=
 
-create_directory = mkdir -p '$(strip $1)'
+create_directory = @mkdir -p '$(strip $1)'
 
 remove_file = rm -rf '$(strip $1)'
 
@@ -63,5 +63,9 @@ parse_section_target_and_revision = $(parse_section_target) \
 	$(eval ARTICLE_REVISION := $(call article_revision,$(call unescape,$(ARTICLE))))
 
 # Recipe lines for linking "latest" to the revision-resolved file (first prerquisite)
-LINK_BOOK_LATEST = ln -s -f -n $(BOOK_REVISION) $(EXPORT_DIR)/$(BOOK)/latest
-LINK_LATEST_TARGET = ln -s -f -n $(notdir $<) $(dir $<)latest.$(subst $(space),.,$(wordlist 2,1000,$(subst ., ,$(@))))
+LINK_BOOK_LATEST = \
+	$(info linking latest version of '$(BOOK)'...) \
+	@ln -s -f -n $(BOOK_REVISION) $(EXPORT_DIR)/$(BOOK)/latest
+LINK_LATEST_TARGET = \
+	$(info linking latest revision of '$(notdir $<)'...) \
+	@ln -s -f -n $(notdir $<) $(dir $<)latest.$(subst $(space),.,$(wordlist 2,1000,$(subst ., ,$(@))))
