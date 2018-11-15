@@ -14,17 +14,18 @@ before_install:
   - sudo apt-get install python-virtualenv
   - sudo apt-get install moreutils
   - sudo apt-get install texlive-latex-base
-  - (git clone https://github.com/commonmark/cmark.git && cd cmark && mkdir build && cd build && cmake .. && sudo make install) 
 
 # Command for installing dependencies
 install: 
+  - (git clone https://github.com/commonmark/cmark.git && cd cmark && mkdir build && cd build && cmake .. && sudo make install) 
+  - (wget https://ftp.gnu.org/gnu/make/make-4.2.1.tar.gz && tar -xf make-4.2.1.tar.gz && cd make-4.2.1 && ./configure && make && sudo make install)
+  - make --version 
   - virtualenv -p python3 venv
   - source venv/bin/activate
   - make init
 
 # Commands for running the tests
 script:
-  - make --version
   - make exports/articles/latest/latex/print/Mathe_für_Nicht-Freaks@COLON@_Uneigentliches_Supremum_und_Infimum/839516.tex -j1
   - make exports/articles/latest/html/all/Mathe_für_Nicht-Freaks@COLON@_Epsilon-Delta-Kriterium_der_Stetigkeit/839108.html -j1
   - make exports/articles/latest/stats/all/Mathe_für_Nicht-Freaks@COLON@_Epsilon-Delta-Kriterium_der_Stetigkeit/839108.stats.html -j1
