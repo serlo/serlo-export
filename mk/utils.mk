@@ -51,7 +51,7 @@ parse_bookpath = \
 parse_bookpath_and_revision = \
 	$(parse_bookpath)\
 	$(eval BOOK_UNESCAPED := $(call unescape,$(BOOK)))\
-	$(eval BOOK_REVISION := $(call resolve_revision,$(BOOK_REVISION),$(BOOK_UNESCAPED)))\
+	$(eval BOOK_REVISION := $(subst latest,$(call resolve_revision,$(BOOK_REVISION),$(BOOK_UNESCAPED)),$(BOOK_REVISION)))\
 
 # splits the current target path as a section path and defines the according variables.
 parse_section_target = $(eval S := $(call dirsplit,$1)) \
