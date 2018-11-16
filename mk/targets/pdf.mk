@@ -35,7 +35,7 @@ $(EXPORT_DIR)/%.book.pdf.tex: $(EXPORT_DIR)/%.pdfopts.yml $(PARSE_PATH_SECONDARY
 		graphics_path "$(BASE)/" \
 	> $@
 
-$(EXPORT_DIR)/%.book.pdf: $(PARSE_PATH_SECONDARY) $(EXPORT_DIR)/%.book.pdf.tex $(NO_LATEST_GUARD)
+$(EXPORT_DIR)/%.book.pdf: $(EXPORT_DIR)/%.book.pdf.tex $(NO_LATEST_GUARD)
 	
 	$(eval $(parse_booktarget))
 	$(info building book '$(BOOK)' with $(LATEX)...)
@@ -73,7 +73,7 @@ $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.article.tex: $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.art
 	> $@
 
 # export articles of dummy book
-$(EXPORT_DIR)/$(ARTICLE_BOOK)/%.pdf: $(PARSE_PATH_SECONDARY) $(NO_LATEST_GUARD) $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.article.tex 
+$(EXPORT_DIR)/$(ARTICLE_BOOK)/%.pdf: $(NO_LATEST_GUARD) $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.article.tex 
 	
 	$(eval $(parse_booktarget))
 	$(info building article '$(ARTICLE)' with $(LATEX)...)

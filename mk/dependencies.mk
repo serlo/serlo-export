@@ -49,13 +49,13 @@ $(EXPORT_DIR)/%.anchors: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers $(EXPORT_DI
 # and points to a file containing a list of all available anchors in the export.
 $(EXPORT_DIR)/%.stats.yml $(EXPORT_DIR)/%.tex $(EXPORT_DIR)/%.raw_html: \
 	$(PARSE_PATH_SECONDARY) \
+	$(NO_LATEST_GUARD) \
 	$(ORIGIN_SECONDARY) $(ALL_ANCHORS_SECONDARY) $$(BOOK_DEP_FILE) \
 	$(EXPORT_DIR)/%.markers \
 	$(EXPORT_DIR)/%.media-dep \
 	$(EXPORT_DIR)/%.section-dep \
 	$(EXPORT_DIR)/%.sections \
 	$(EXPORT_DIR)/%.media \
-	$(NO_LATEST_GUARD) \
 
 	$(eval $(parse_booktarget))
 	$(eval UNESCAPED := $(call unescape,$(ARTICLE)))

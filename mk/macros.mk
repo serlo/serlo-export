@@ -44,10 +44,10 @@ ALL_ANCHORS_SECONDARY := $$(if $$(findstring $(EXPORT_DIR)/$(ARTICLE_BOOK)/$(ART
 SITEMAP_SECONDARY := $$(call dirmerge,$$(wordlist 1,3,$$(call dirsplit,$$@)))/$$(word 3,$$(call dirsplit,$$@)).sitemap.yml
 SITEMAP_PATH = $(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(BOOK_REVISION).sitemap.yml
 
-# expands to IMPOSSIBLE if the book revision variable or the path suffix contains latest
-NO_LATEST_GUARD := $$(filter IMPOSSIBLE,$$(subst latest,IMPOSSIBLE,$$(BOOK_REVISION)) $$(subst latest,IMPOSSIBLE,$$(call filebase,$$@)))
+# expands to IMPOSSIBLE if the book revision or the path suffix contains latest
+NO_LATEST_GUARD := $$(filter %.IMPOSSIBLE,$$(subst latest,$$*.IMPOSSIBLE,$$(word 3,$$(call dirsplit,$$@))) $$(subst latest,$$*.IMPOSSIBLE,$$(call filebase,$$@)))
 # does the opposite of NO_LATEST_GUARD
-HAS_LATEST_GUARD := $$(if $(NO_LATEST_GUARD),, IMPOSSIBLE)
+HAS_LATEST_GUARD := $$(if $(NO_LATEST_GUARD),, $$*.IMPOSSIBLE)
 
 # splits the current target path and defines the according variables
 PARSE_PATH_SECONDARY := $$(eval $$(parse_booktarget))
