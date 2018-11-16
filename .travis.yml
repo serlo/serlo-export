@@ -31,6 +31,6 @@ install:
 script:
   - make exports/articles/latest/latex/print/Mathe_für_Nicht-Freaks@COLON@_Uneigentliches_Supremum_und_Infimum/839516.tex -j1
   - make exports/articles/latest/html/all/Mathe_für_Nicht-Freaks@COLON@_Epsilon-Delta-Kriterium_der_Stetigkeit/839108.html -j1
-  - make exports/articles/latest/stats/all/Mathe_für_Nicht-Freaks@COLON@_Epsilon-Delta-Kriterium_der_Stetigkeit/839108.stats.html -j1
-  - make exports/Benutzer@COLON@Valentin_Roland@SLASH@Analysis_1/latest/html/all/latest.book.html -j1
-  - make exports/Benutzer@COLON@Valentin_Roland@SLASH@Analysis_1/latest/latex/print/latest.book.tex -j1
+  - make exports/articles/latest/stats/all/Mathe_für_Nicht-Freaks@COLON@_Epsilon-Delta-Kriterium_der_Stetigkeit/latest.stats.html -j10
+  - make exports/Benutzer@COLON@Valentin_Roland@SLASH@Analysis_1/latest/html/all/latest.book.html -j
+  - make exports/Benutzer@COLON@Valentin_Roland@SLASH@Analysis_1/latest/latex/print/latest.book.tex -j
