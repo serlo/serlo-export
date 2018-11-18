@@ -37,7 +37,7 @@ include $(MK)/targets/pdf.mk
 include $(MK)/targets/stats.mk
 
 init:
-	$(call map,check_dependency,ocamlopt inkscape convert qrencode latex sed cmark jq curl sponge)
+	$(call map,check_dependency,ocamlopt inkscape convert qrencode latex sed jq curl sponge)
 	pip install -r requirements.txt
 	$(call map,create_directory,$(TMP_BIN_DIR) $(MK)/bin)
 	$(call build_rust_dep,mediawiki-peg-rust, \
@@ -59,11 +59,12 @@ init:
 		&& cd texvccheck \
 		&& make && \
 		cp texvccheck $(MK)/bin)
+	cargo install -f mdbook
 
-mfnf-docs:
-	mkdir -p $(BASE)/$(DOCS)
-	$(MAKE) -C $(BASE)/$(DOCS) -f $(MK)/doc.mk $(@)
-
+doc:
+	(cd doc \
+		&& $(MK)/bin/mwlint --dump-docs > src/template_specification.md \
+		&& mdbook build)
 clean:
 	$(call map,remove_file,$(OUTPUT_DIRS))
 	$(call map,remove_file,$(TEMP_FILES))
@@ -71,6 +72,6 @@ clean:
 clean_all:
 	git clean -ffdx
 
-.PHONY: clean clean_all init mfnf-docs
+.PHONY: clean clean_all init doc
 .SECONDARY:
 .DELETE_ON_ERROR:

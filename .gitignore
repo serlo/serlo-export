@@ -14,5 +14,6 @@ __pycache__/
 /.build/
 /venv/
 /doc/book/
+/doc/book/src/template_specification.md
 /mk/bin/
 revisions.json

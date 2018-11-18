@@ -17,15 +17,16 @@ before_install:
   - sudo apt-get install python-virtualenv
   - sudo apt-get install moreutils
   - sudo apt-get install texlive-latex-base
+  - cargo install -f mdbook
 
 # Command for installing dependencies
 install: 
-  - (git clone https://github.com/commonmark/cmark.git && cd cmark && mkdir build && cd build && cmake .. && sudo make install) 
   - (wget https://ftp.gnu.org/gnu/make/make-4.2.1.tar.gz && tar -xf make-4.2.1.tar.gz && cd make-4.2.1 && ./configure && make && sudo make install)
   - make --version 
   - virtualenv -p python3 venv
   - source venv/bin/activate
   - make init
+  - make doc 
 
 # Commands for running the tests
 script:
@@ -34,3 +35,13 @@ script:
   - make exports/articles/latest/stats/all/Mathe_für_Nicht-Freaks@COLON@_Epsilon-Delta-Kriterium_der_Stetigkeit/latest.stats.html -j10
   - make exports/Benutzer@COLON@Valentin_Roland@SLASH@Analysis_1/latest/html/all/latest.book.html -j
   - make exports/Benutzer@COLON@Valentin_Roland@SLASH@Analysis_1/latest/latex/print/latest.book.tex -j
+
+# deploy documentation to pages
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  local-dir: doc/book/
+  keep-history: false
+  on:
+    branch: master
