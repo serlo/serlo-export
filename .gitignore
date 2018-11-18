@@ -13,5 +13,6 @@ __pycache__/
 /exports/
 /.build/
 /venv/
+/doc/book/
 /mk/bin/
 revisions.json

@@ -1,0 +1,42 @@
+digraph article_dependencies {
+    compound=true;
+    // enable new ranking algorithm
+    newrank=true;
+    ranksep=.4;
+    the_media [label="media files used in article\n(.svg, .webm, ...)"];
+    the_sections [label="fragments of other articles\n(.yml)"];
+    md [label="article source (.md)"];
+    yml [label="intermediate representation\n(.yml)"];
+    markers [label="article marker dummy\n(.markers)"]; 
+
+
+    subgraph cluster_int { 
+        sections [label="sections intermediate target\n(.sections)", fillcolor=grey, style=filled];
+        section_dep [label="section dependencies\n(.section-dep)", shape=box];
+        media [label="media intermediate target\n(.media)", fillcolor=grey, style=filled];
+        media_dep [label="media dependencies\n(.media-dep)", shape=box];
+
+        section_dep -> sections [label="defines", style=dotted];
+        sections -> media_dep;
+        media_dep -> media [label="defines", style=dotted];
+    }
+
+    subgraph cluster_build {
+        anchors [label="reference anchors\n(.anchors)"];
+        result [label="exported article\n(.tex, .raw_html, ...)"];
+
+        anchors -> result;
+        media -> result;
+    }
+
+    {rank=same; the_media -> media};
+    {rank=same; the_sections -> sections};
+
+    md -> yml;
+    yml -> section_dep [lhead=cluster_int];
+    markers -> section_dep [lhead=cluster_int];
+
+    yml -> anchors [lhead=cluster_build];
+    markers -> anchors [lhead=cluster_build];
+    sections -> anchors [lhead=cluster_build];
+}
