@@ -44,4 +44,4 @@ deploy:
   local-dir: doc/book/
   keep-history: false
   on:
-    branch: master
+      all_branches: true
