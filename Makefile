@@ -59,8 +59,6 @@ init:
 		&& cd texvccheck \
 		&& make && \
 		cp texvccheck $(MK)/bin)
-	cargo install -f mdbook
-
 doc:
 	(cd doc \
 		&& $(MK)/bin/mwlint --dump-docs > src/template_specification.md \

@@ -17,7 +17,9 @@ before_install:
   - sudo apt-get install python-virtualenv
   - sudo apt-get install moreutils
   - sudo apt-get install texlive-latex-base
-  - cargo install -f mdbook
+  - (test -x $HOME/.cargo/bin/cargo-install-update || cargo install cargo-update)
+  - (test -x $HOME/.cargo/bin/mdbook || cargo install mdbook)
+  - cargo install-update -a
 
 # Command for installing dependencies
 install: 
