@@ -1,0 +1,30 @@
+digraph build_process {
+    start [style=invis, shape=none];
+    parse_targets [label="Parse $(MAKECMDGOALS)"];
+    book_include [label="-include $(BOOK_DEP_FILES)"];
+    article_include [label="-include $(ARTICLE_BOOK_DEP_FILES)"];
+    
+    start -> parse_targets [label="make invocation"];
+    parse_targets -> book_include;
+    parse_targets -> article_include;
+
+    book_dependencies [label="rule for book\ndependencies (.book.dependencies)"];
+    book_include -> book_dependencies [label="defines", style=dotted];
+
+    article_media [label="article media\n(.media)"];
+    article_sections [label="article sections\n(.sections)"];
+
+    article_include -> article_media [label="defines", style=dotted];
+    article_include -> article_sections [label="defines", style=dotted];
+
+    book_result [label="book export result"];
+    book_dummy [style=invis, shape=none];
+    book_dependencies -> book_result [style=dotted, label="uses rule"];
+    {rank=same; book_dummy -> book_result [label="make builds"]};
+
+    article_result [label="article export result"];
+    article_dummy [style=invis, shape=none];
+    article_sections -> article_result [style=dotted, label="uses rule"];
+    article_media -> article_result [style=dotted, label="uses rule"];
+    {rank=same; article_dummy -> article_result [label="make builds"]};
+}

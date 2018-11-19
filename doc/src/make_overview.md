@@ -8,6 +8,8 @@ To understand the process of exporting articles of books, we must first understa
 * text-filled rectangles represent makefiles. These usually add dynamically generated dependencies. (see [Makefile Patterns](./make_patterns.md))
 * bigger rectangles group a set of files / targets with *common prerequisites*. An edge (arrow) pointing at the rectangle border means all files in this cluster / group depend on this file.
 
+Actual filenames always have their article or book revision id before their file extension
+
 Article Dependencies
 --------------------
 
@@ -15,7 +17,7 @@ The image blow shows the (simplified) dependency graph for a single article:
 
 ![Dependency graph for an article](img/article_deps.svg)
 
-Going forward, we should familiarize with the meaning of those files:
+Where:
 
 * __article source (`.md`)__: WikiText source code of the article.
 * __intermediate representation (`.yml`)__: Post-processed abstract syntax tree of the article.
