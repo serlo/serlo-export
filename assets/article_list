@@ -1,5 +1,0 @@
-{{#each parts~}}
-{{#each this.chapters~}}
-{{escape_make this.path}}/{{this.revision}}
-{{/each~}}
-{{/each~}}
