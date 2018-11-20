@@ -60,6 +60,8 @@ init:
 		&& cd texvccheck \
 		&& make && \
 		cp texvccheck $(MK)/bin)
+# font cache clearing might be necessary after font changes
+	(luaotfload-tool  --cache=erase || echo "could not clear LaTeX font cache!")
 doc:
 	(cd doc \
 		&& $(MK)/bin/mwlint --dump-docs > src/template_specification.md \

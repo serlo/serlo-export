@@ -31,7 +31,7 @@ $(EXPORT_DIR)/%.book.pdf.tex: $(EXPORT_DIR)/%.pdfopts.yml $(PARSE_PATH_SECONDARY
 		--base-templates './$(ASSET_DIR)/latex/preamble.tex' \
 		--data $< \
 		content $(notdir $(word 2,$^)) \
-		fontpath $(BASE)/karmilla/ttf/ \
+		fontpath $(BASE)/$(ASSET_DIR)/karmilla/ttf/ \
 		articlespath texfiles \
 		graphics_path "$(BASE)/" \
 	> $@
@@ -41,7 +41,7 @@ $(EXPORT_DIR)/%.book.pdf: $(EXPORT_DIR)/%.book.pdf.tex $(NO_LATEST_GUARD)
 	$(eval $(parse_booktarget))
 	$(info building book '$(BOOK)' with $(LATEX)...)
 	@ln -s -f -n $(BASE)/$(dir $(LATEX_BOOK)) $(dir $@)texfiles
-	@ln -s -f -n $(BASE)/include $(dir $@)include
+	@ln -s -f -n $(BASE)/$(ASSET_DIR)/include $(dir $@)include
 	@(cd $(BOOK_ROOT) && latexmk \
 		-pdflatex="$(LATEX) %O %S \
 			-no-shell-escape" \
@@ -70,7 +70,7 @@ $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.article.tex: $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.art
 		content '$(BASE)/$(word 2,$^)' \
 		article $(ARTICLE) \
 		revision $(ARTICLE_REVISION) \
-		fontpath $(BASE)/karmilla/ttf/ \
+		fontpath $(BASE)/$(ASSET_DIR)/karmilla/ttf/ \
 		graphics_path "$(BASE)/" \
 	> $@
 
