@@ -42,17 +42,29 @@ init:
 	pip install -r requirements.txt
 	$(call map,create_directory,$(TMP_BIN_DIR) $(MK)/bin)
 	$(call build_rust_dep,mediawiki-peg-rust, \
-		https://github.com/vroland/mediawiki-peg-rust,mwtoast)
+		https://github.com/vroland/mediawiki-peg-rust, \
+		f31fccf96b1aefef08853127ccad84e1352b191b, \
+		mwtoast)
 	$(call build_rust_dep,mfnf-export, \
-		https://github.com/vroland/mfnf-export,mfnf_ex)
+		https://github.com/vroland/mfnf-export, \
+		bf58779263f077c6374a7897063c51f95a92ce6f, \
+		mfnf_ex)
 	$(call build_rust_dep,handlebars-cli-rs, \
-		https://github.com/vroland/handlebars-cli-rs,handlebars-cli-rs,mediawiki,mfnf)
+		https://github.com/vroland/handlebars-cli-rs, \
+		87335348d504c14ecfa943e9ffcef0477e41a451, \
+		handlebars-cli-rs,mediawiki,mfnf)
 	$(call build_rust_dep,mfnf-sitemap-parser, \
-		https://github.com/vroland/mfnf-sitemap-parser,parse_bookmap)
+		https://github.com/vroland/mfnf-sitemap-parser, \
+		4e094e6fab6f71ae5d11000801ac48a0ee033fe0, \
+		parse_bookmap)
 	$(call build_rust_dep,mfnf-sitemap-parser, \
-		https://github.com/vroland/mfnf-sitemap-parser,sitemap_utils)
+		https://github.com/vroland/mfnf-sitemap-parser, \
+		4e094e6fab6f71ae5d11000801ac48a0ee033fe0, \
+		sitemap_utils)
 	$(call build_rust_dep,mwlint, \
-		https://github.com/vroland/mwlint,mwlint)
+		https://github.com/vroland/mwlint, \
+		6ffa2fde393a90a3fbcc84e156adb1e419d162fe, \
+		mwlint)
 	$(call git_clone,extension-math, \
 		https://phabricator.wikimedia.org/diffusion/EMAT/extension-math.git)
 	(cd $(TMP_BIN_DIR)/extension-math \

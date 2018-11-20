@@ -14,8 +14,10 @@ git_clone = [ -d '$(TMP_BIN_DIR)/$1' ] || \
 
 define build_rust_dep
 	$(call git_clone,$1,$2)
-	(cd $(TMP_BIN_DIR)/$1 && git pull && cargo build --release --features=$4,$5,$6,$7 && \
-		cp target/release/$3 $(MK)/bin)
+	(cd $(TMP_BIN_DIR)/$1 && git pull \
+		&& git reset --hard $(strip $3) \
+		&& cargo build --release --features=$5,$6,$7 \
+		&& cp target/release/$(strip $4) $(MK)/bin)
 endef
 
 map = $(foreach a,$(2),$(call $(1),$(a)) ;)
