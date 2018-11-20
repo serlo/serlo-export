@@ -13,27 +13,32 @@ $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.html: $(NO_LATEST_GUARD) $(EXPORT_DIR)/$(ARTICLE
 	$(eval $(parse_booktarget))
 	$(info rendering article '$(ARTICLE)'...)
 	@$(MK)/bin/handlebars-cli-rs \
-		--input 'templates/article.html' \
-		article '$(call unescape,$(ARTICLE))' \
-		subtarget '$(SUBTARGET)' \
-		target '$(TARGET)' \
+		--base-templates 'templates/html/article_nav.html' \
+		--input 'templates/html/base.html' \
+		title '$(call unescape,$(ARTICLE))' \
+		navigation 'article_nav.html' \
+		content '$<' \
+		base_path '.' \
 	< $(MK)/artifacts/dummy.yml \
 	> $@
-	@sed -i -e '/<!-- @ARTICLE_CONTENT@ -->/{r $<' -e 'd' -e '}' $@
 
 # postprocess html articles in books
 $(EXPORT_DIR)/%.html: $(NO_LATEST_GUARD) $(EXPORT_DIR)/%.raw_html $(SITEMAP_SECONDARY)
 	$(eval $(parse_booktarget))
 	$(info rendering article '$(ARTICLE)'...)
 	@$(MK)/bin/handlebars-cli-rs \
-		--input 'templates/book_article.html' \
+		--base-templates 'templates/html/book_nav.html' \
+		--input 'templates/html/base.html' \
+		title '$(call unescape,$(ARTICLE))' \
+		navigation 'book_nav.html' \
 		book '$(call unescape,$(BOOK))' \
 		article '$(call unescape,$(ARTICLE))' \
 		subtarget '$(SUBTARGET)' \
 		target '$(TARGET)' \
+		content '$<' \
+		base_path '../' \
 	< $(SITEMAP_PATH) \
 	> $@
-	@sed -i -e '/<!-- @ARTICLE_CONTENT@ -->/{r $<' -e 'd' -e '}' $@
 
 # final book index, depends dependency file which adds its dependencies
 # only applies for resolved dependencies
@@ -41,10 +46,15 @@ $(EXPORT_DIR)/%.book.html: $(PARSE_PATH_SECONDARY) $(NO_LATEST_GUARD) $$(BOOK_DE
 	$(eval $(parse_booktarget))
 	$(info rendering book index for '$(BOOK)' and linking resources...)
 	@$(MK)/bin/handlebars-cli-rs \
-		--input 'templates/book_index.html' \
+		--base-templates 'templates/html/book_nav.html' \
+		--input 'templates/html/base.html' \
+		title '$(call unescape,$(BOOK))' \
+		navigation 'book_nav.html' \
+		content 'templates/html/book_index_body.html' \
 		book '$(call unescape,$(BOOK))' \
 		subtarget '$(SITEMAP_PATH)' \
+		base_path '.' \
 	< $(SITEMAP_PATH) \
 	> $(basename $<).html
-	@ln -s -f -n $(BASE)/templates/html_book_assets $(BOOK_ROOT)/static
+	@ln -s -f -n $(BASE)/templates/html/html_book_assets $(BOOK_ROOT)/static
 	@ln -s -f -n $(BASE)/$(MEDIA_DIR)/ $(BOOK_ROOT)

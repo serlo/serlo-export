@@ -3,18 +3,18 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <base href="." target="_self">
+    <base href="{{base_path}}" target="_self">
     <link rel="stylesheet" href="static/serlo.css">
     <link rel="stylesheet" href="static/katex.min.css">
     <script defer src="static/katex.min.js"></script>
 
-    <title>{{article}}</title>
+    <title>{{title}}</title>
 </head>
 <body>
-<div id="content">
-<!-- @ARTICLE_CONTENT@ -->
-</div>
-
+    {{> (navigation)}}
+    <article id="content">
+        {{literal (content)}}
+    </article>
     <script defer type="text/javascript">
         // load KaTeX
         document.addEventListener("DOMContentLoaded", function() {
