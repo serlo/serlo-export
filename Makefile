@@ -60,6 +60,9 @@ init:
 		&& cd texvccheck \
 		&& make && \
 		cp texvccheck $(MK)/bin)
+	(cd .build/ && wget -q https://github.com/KaTeX/KaTeX/releases/download/v0.10.0/katex.tar.gz -O katex.tar.gz)
+	(cd $(ASSET_DIR)/html/html_book_assets && tar -xf $(BASE)/.build/katex.tar.gz)
+	
 # font cache clearing might be necessary after font changes
 	(luaotfload-tool  --cache=erase || echo "could not clear LaTeX font cache!")
 doc:

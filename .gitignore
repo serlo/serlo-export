@@ -16,4 +16,5 @@ __pycache__/
 /doc/book/
 /doc/book/src/template_specification.md
 /mk/bin/
+/assets/html/html_book_assets/katex/
 revisions.json
