@@ -1,54 +1,43 @@
+SHELL:=/bin/sh
+
 # Absolute path to the directory of this Makefile
 BASE := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
-
-# Define variables for different directories
 MK := $(BASE)/mk
-ARTICLES := articles
-MEDIA := media
-ARTICLE_EXPORTS := article_exports
-BOOK_EXPORTS := book_exports
-SECTIONS := sections
-DOCS := docs
+
+# define the concrete build directories
+EXPORT_DIR := exports
+ARTICLE_DIR := articles
+MEDIA_DIR := media
+SECTION_DIR := sections
+DOCS_DIR := docs
 TMP_BIN_DIR := .build
-REVISION_LOCK_FILE = $(BASE)/revisions.json
-OUTPUT_DIRS := $(ARTICLES) $(MEDIA) $(ARTICLE_EXPORTS) $(SECTIONS) $(BOOK_EXPORTS) $(DOCS) 
+REVISION_LOCK_FILE := revisions.json
+
+# name of the dummy book for article exports
+ARTICLE_BOOK := articles
+ARTICLE_BOOK_REVISION := dummy
+
+# files which might be created (for clean target)
+OUTPUT_DIRS := $(ARTICLE_DIR) $(MEDIA_DIR) $(SECTION_DIR) $(EXPORT_DIR) $(DOCS_DIR)
 TEMP_FILES := $(REVISION_LOCK_FILE)
 
-export BASE
-export MK
-export REVISION_LOCK_FILE
+.SECONDEXPANSION:
 
 include $(MK)/utils.mk
-
-.PHONY: clean clean_all init $(OUTPUT_DIRS)
-
-$(ARTICLES):
-	$(eval NEXTGOAL := $(MAKECMDGOALS:articles/%=%))
-	$(call create_directory,$@)
-	$(MAKE) -C $(ARTICLES) -f $(MK)/articles/article.mk $(NEXTGOAL)
-
-$(MEDIA):
-	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
-	$(call create_directory,$@)
-	$(MAKE) -C $@ -f $(MK)/media/media.mk $(NEXTGOAL)
-
-$(ARTICLE_EXPORTS):
-	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
-	$(call create_directory,$@)
-	$(MAKE) -C $@ -f $(MK)/article_exports/article.mk $(NEXTGOAL)
-
-$(BOOK_EXPORTS):
-	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
-	$(call create_directory,$@)
-	$(MAKE) -C $@ -f $(MK)/book_exports/book.mk $(NEXTGOAL)
-
-$(SECTIONS):
-	$(eval NEXTGOAL := $(MAKECMDGOALS:$@/%=%))
-	$(call create_directory,$@)
-	$(MAKE) -C $@ -f $(MK)/sections/sec_article.mk $(NEXTGOAL)
+include $(MK)/macros.mk
+include $(MK)/articles.mk
+include $(MK)/sections.mk
+include $(MK)/media.mk
+include $(MK)/dependencies.mk
+include $(MK)/article_book.mk
+include $(MK)/book.mk
+include $(MK)/targets/html.mk
+include $(MK)/targets/latex.mk
+include $(MK)/targets/pdf.mk
+include $(MK)/targets/stats.mk
 
 init:
-	$(call map,check_dependency,ocamlopt inkscape convert qrencode latex sed cmark jq curl sponge)
+	$(call map,check_dependency,ocamlopt inkscape convert qrencode latex sed jq curl sponge)
 	pip install -r requirements.txt
 	$(call map,create_directory,$(TMP_BIN_DIR) $(MK)/bin)
 	$(call build_rust_dep,mediawiki-peg-rust, \
@@ -70,30 +59,17 @@ init:
 		&& cd texvccheck \
 		&& make && \
 		cp texvccheck $(MK)/bin)
-
-mfnf-docs:
-	mkdir -p $(BASE)/$(DOCS)
-	$(MAKE) -C $(BASE)/$(DOCS) -f $(MK)/doc.mk $(@)
-
-
+doc:
+	(cd doc \
+		&& $(MK)/bin/mwlint --dump-docs > src/template_specification.md \
+		&& mdbook build)
 clean:
 	$(call map,remove_file,$(OUTPUT_DIRS))
 	$(call map,remove_file,$(TEMP_FILES))
 
-
 clean_all:
 	git clean -ffdx
 
-.SUFFIXES:
-
-Makefile : ;
-
-$(ARTICLES)/% :: $(ARTICLES) ;
-
-$(MEDIA)/% :: $(MEDIA) ;
-
-$(ARTICLE_EXPORTS)/% :: $(ARTICLE_EXPORTS) ;
-
-$(BOOK_EXPORTS)/% :: $(BOOK_EXPORTS) ;
-
-$(SECTIONS)/% :: $(SECTIONS) ;
+.PHONY: clean clean_all init doc
+.SECONDARY:
+.DELETE_ON_ERROR:

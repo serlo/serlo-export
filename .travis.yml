@@ -1,7 +1,10 @@
 language: rust
 rust:
   - stable
-cache: cargo
+cache: 
+ directories:
+  - $HOME/.cargo
+  - .build
 
 before_install:
   - sudo apt-get install qrencode
@@ -12,20 +15,35 @@ before_install:
   - sudo apt-get install build-essential
   - sudo apt-get install python3
   - sudo apt-get install python-virtualenv
-  - sudo apt-get install texlive
   - sudo apt-get install moreutils
-  - (git clone https://github.com/commonmark/cmark.git && cd cmark && mkdir build && cd build && cmake .. && sudo make install) 
+  - sudo apt-get install texlive-latex-base
+  - (test -x $HOME/.cargo/bin/cargo-install-update || cargo install cargo-update)
+  - (test -x $HOME/.cargo/bin/mdbook || cargo install mdbook)
+  - cargo install-update -a
 
 # Command for installing dependencies
 install: 
+  - (wget https://ftp.gnu.org/gnu/make/make-4.2.1.tar.gz && tar -xf make-4.2.1.tar.gz && cd make-4.2.1 && ./configure && make && sudo make install)
+  - make --version 
   - virtualenv -p python3 venv
   - source venv/bin/activate
   - make init
+  - make doc 
 
 # Commands for running the tests
 script:
-  - make article_exports/pdf/print/Mathe_für_Nicht-Freaks@COLON@_Uneigentliches_Supremum_und_Infimum/839516.tex
-  - make article_exports/html/all/Mathe_für_Nicht-Freaks@COLON@_Epsilon-Delta-Kriterium_der_Stetigkeit/839108.html
-  - make article_exports/stats/all/Mathe_für_Nicht-Freaks@COLON@_Epsilon-Delta-Kriterium_der_Stetigkeit/839108.stats.html
-  - make book_exports/Benutzer@COLON@Valentin_Roland@SLASH@Analysis_1/latest/html/all/latest.html
-  - make book_exports/Benutzer@COLON@Valentin_Roland@SLASH@Analysis_1/latest/pdf/print/latest.tex
+  - make exports/articles/latest/latex/print/Mathe_für_Nicht-Freaks@COLON@_Uneigentliches_Supremum_und_Infimum/839516.tex -j1
+  - make exports/articles/latest/html/all/Mathe_für_Nicht-Freaks@COLON@_Epsilon-Delta-Kriterium_der_Stetigkeit/839108.html -j1
+  - make exports/articles/latest/stats/all/Mathe_für_Nicht-Freaks@COLON@_Epsilon-Delta-Kriterium_der_Stetigkeit/latest.stats.html -j10
+  - make exports/Benutzer@COLON@Valentin_Roland@SLASH@Analysis_1/latest/html/all/latest.book.html -j
+  - make exports/Benutzer@COLON@Valentin_Roland@SLASH@Analysis_1/latest/latex/print/latest.book.tex -j
+
+# deploy documentation to pages
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  local-dir: doc/book/
+  keep-history: false
+  on:
+      all_branches: true

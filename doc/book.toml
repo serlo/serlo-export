@@ -1,0 +1,9 @@
+[book]
+authors = ["Valentin Roland"]
+multilingual = false
+src = "src"
+title = "MFNF Export - Technical Manual"
+description = "Technical documentation for the export project of Mathe für Nicht-Freaks (Serlo Hochschulmathematik)"
+
+[build]
+create-missing = false

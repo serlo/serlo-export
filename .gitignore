@@ -10,7 +10,10 @@ __pycache__/
 /books/
 /docs/
 /book_exports/
+/exports/
 /.build/
 /venv/
+/doc/book/
+/doc/book/src/template_specification.md
 /mk/bin/
 revisions.json

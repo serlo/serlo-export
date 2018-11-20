@@ -1,53 +1,45 @@
-include $(MK)/utils.mk
-
-# this will be expanded to the original article location,
-# circumventing make's filename manipulation
-ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 
 # generate article dependencies 
-.SECONDEXPANSION:
-%.section-dep: $(ORIGIN_SECONDARY) %.markers
-	$(eval ARTICLE:= $(call dir_head,$@))
-	$(eval REVISION := $(basename $(call dir_tail,$@)))
-	$(call create_directory,$(ARTICLE))
-	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
-		--title $(ARTICLE) \
-		--revision $(ARTICLE)/$(REVISION) \
-		--markers $(ARTICLE)/$(REVISION).markers \
-		--base-path $(BASE) \
+$(EXPORT_DIR)/%.section-dep: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers
+	$(eval $(parse_booktarget))
+	$(info generating section dependencies for '$(ARTICLE)'...)
+	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
+		--title '$(ARTICLE)' \
+		--revision '$(ARTICLE_REVISION)' \
+		--markers '$(word 2,$^)' \
+		--base-path '$(BOOK_ROOT)/$(ARTICLE)/' \
+		--section-path '$(SECTION_DIR)/' \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		section-deps $(TARGET).$(SUBTARGET) \
 		< $< \
 		> $@
 
-.SECONDEXPANSION:
-%.media-dep: $(ORIGIN_SECONDARY) %.markers %.sections
-	$(eval ARTICLE:= $(call dir_head,$@))
-	$(eval REVISION := $(basename $(call dir_tail,$@)))
-	$(call create_directory,$(ARTICLE))
-	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
-		--title $(ARTICLE) \
-		--revision $(ARTICLE)/$(REVISION) \
-		--markers $(ARTICLE)/$(REVISION).markers \
-		--base-path $(BASE) \
+$(EXPORT_DIR)/%.media-dep: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers $(EXPORT_DIR)/%.sections
+	$(eval $(parse_booktarget))
+	$(info generating media dependencies for '$(ARTICLE)'...)
+	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
+		--title '$(ARTICLE)' \
+		--revision '$(ARTICLE_REVISION)' \
+		--markers '$(word 2,$^)' \
+		--base-path '$(BOOK_ROOT)/$(ARTICLE)/' \
+		--section-path '$(SECTION_DIR)/' \
+		--media-path '$(MEDIA_DIR)' \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		media-deps $(TARGET).$(SUBTARGET) \
 		< $< \
 		> $@
 
 # extracts the reference anchors (link targets) provided by an article.
-.SECONDEXPANSION:
-%.anchors: $(ORIGIN_SECONDARY) %.markers %.sections
-	$(eval ARTICLE:= $(call dir_head,$@))
-	$(eval UNQUOTED:= $(call unescape,$(ARTICLE)))
-	$(eval REVISION := $(basename $(call dir_tail,$@)))
-	$(call create_directory,$(ARTICLE))
-	$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
-		--title "$(UNQUOTED)" \
-		--revision "$(REVISION)" \
-		--markers $(ARTICLE)/$(REVISION).markers \
+$(EXPORT_DIR)/%.anchors: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers $(EXPORT_DIR)/%.sections
+	$(eval $(parse_booktarget))
+	$(eval UNESCAPED := $(call unescape,$(ARTICLE)))
+	$(info generating reference anchors for '$(ARTICLE)'...)
+	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
+		--title '$(UNESCAPED)' \
+		--revision '$(ARTICLE_REVISION)' \
+		--markers '$(word 2,$^)' \
+		--section-path '$(SECTION_DIR)/' \
 		--texvccheck-path $(MK)/bin/texvccheck \
-		--base-path $(BASE) \
 		anchors $(TARGET).$(SUBTARGET) \
 		< $< \
 		> $@
@@ -55,33 +47,27 @@ ORIGIN_SECONDARY := $$(BASE)/articles/$$(call dir_head,$$@)/$$*.yml
 # generate files from article tree serialization 
 # $(ALL_ANCHORS) must be defined before this file is loaded
 # and points to a file containing a list of all available anchors in the export.
-.SECONDEXPANSION:
-%.stats.yml %.tex %.raw_html: $(ORIGIN_SECONDARY) $(ALL_ANCHORS) $(ALL_ARTICLES) %.media-dep %.section-dep %.markers %.sections %.media
-	$(eval ARTICLE:= $(call dir_head,$@))
-	$(eval UNQUOTED:= $(call unescape,$(ARTICLE)))
-	$(eval REVISION := $(call dir_tail,$*))
-	$(MK)/bin/mfnf_ex --config $(BASE)/config/mfnf.yml \
-		--title "$(UNQUOTED)" \
-		--revision $(REVISION) \
-		--markers $(ARTICLE)/$(REVISION).markers \
-		--base-path $(BASE) \
-		--available-anchors $(ALL_ANCHORS) \
+$(EXPORT_DIR)/%.stats.yml $(EXPORT_DIR)/%.tex $(EXPORT_DIR)/%.raw_html: \
+	$(PARSE_PATH_SECONDARY) \
+	$(NO_LATEST_GUARD) \
+	$(ORIGIN_SECONDARY) $(ALL_ANCHORS_SECONDARY) $$(BOOK_DEP_FILE) \
+	$(EXPORT_DIR)/%.markers \
+	$(EXPORT_DIR)/%.media-dep \
+	$(EXPORT_DIR)/%.section-dep \
+	$(EXPORT_DIR)/%.sections \
+	$(EXPORT_DIR)/%.media \
+
+	$(eval $(parse_booktarget))
+	$(eval UNESCAPED := $(call unescape,$(ARTICLE)))
+	$(info exporting '$(ARTICLE)' as $(suffix $@)...)
+	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
+		--title '$(UNESCAPED)' \
+		--revision '$(ARTICLE_REVISION)' \
+		--markers '$(word 4,$^)' \
+		--section-path '$(SECTION_DIR)/' \
+		--media-path '$(MEDIA_DIR)' \
+		--available-anchors '$(word 2,$^)' \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		$(TARGET).$(SUBTARGET) \
 		< $< \
 		> $@
-
-$(BASE)/articles/%.yml:
-	$(MAKE) -C $(BASE) articles/$*.yml
-
-# Build included artifacts 
-$(BASE)/media/%:
-	$(MAKE) -C $(BASE) media/$*
-
-$(BASE)/sections/%:
-	$(eval SECS := $(dir $*))
-	$(eval REVID := $(basename $(notdir $*)))
-	$(MAKE) -C $(BASE) sections/$(dir $(SECS:%/=%))$(REVID)
-
-.DELETE_ON_ERROR:
-.SECONDARY:
