@@ -14,7 +14,7 @@ $(EXPORT_DIR)/%.book.tex: $(PARSE_PATH_SECONDARY) $$(BOOK_DEP_FILE) $$(BOOK_DEP_
 	$(eval $(parse_booktarget))
 	$(info rendering book index for '$(BOOK)'...)
 	@$(MK)/bin/handlebars-cli-rs \
-		--input 'templates/latex/book.tex' \
+		--input '$(ASSET_DIR)/latex/book.tex' \
 		subtarget $(SUBTARGET) \
 	< $(SITEMAP_PATH) \
 	> $@

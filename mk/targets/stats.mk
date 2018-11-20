@@ -18,7 +18,7 @@ $(EXPORT_DIR)/%.stats.html: $(EXPORT_DIR)/%.stats.yml $(EXPORT_DIR)/%.lints.yml 
 	$(eval $(parse_booktarget))
 	$(info rendering article stats for '$(ARTICLE)'...)
 	@$(MK)/bin/handlebars-cli-rs \
-		--input $(BASE)/templates/article_stats.html \
+		--input $(BASE)/$(ASSET_DIR)/article_stats.html \
 		--data '$<' \
 		article '$(call unescape,$(ARTICLE))' \
 		revision $(ARTICLE_REVISION) \
@@ -34,7 +34,7 @@ $(EXPORT_DIR)/%.book.stats.html: $(EXPORT_DIR)/%.book.stats.yml $(NO_LATEST_GUAR
 	$(eval $(parse_booktarget))
 	$(info rendering stats for book '$(BOOK)'...)
 	@$(MK)/bin/handlebars-cli-rs \
-		--input templates/stats.html \
+		--input $(ASSET_DIR)/stats.html \
 		--data $< \
 		book '$(call unescape,$(BOOK))' \
 		book_revision $(BOOK_REVISION) \

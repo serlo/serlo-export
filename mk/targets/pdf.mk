@@ -27,8 +27,8 @@ $(EXPORT_DIR)/%.book.pdf.tex: $(EXPORT_DIR)/%.pdfopts.yml $(PARSE_PATH_SECONDARY
 	
 	$(info writing compilable latex index for book '$(BOOK)'...)
 	@$(MK)/bin/handlebars-cli-rs \
-		--input 'templates/latex/book_export.tex' \
-		--base-templates './templates/latex/preamble.tex' \
+		--input '$(ASSET_DIR)/latex/book_export.tex' \
+		--base-templates './$(ASSET_DIR)/latex/preamble.tex' \
 		--data $< \
 		content $(notdir $(word 2,$^)) \
 		fontpath $(BASE)/karmilla/ttf/ \
@@ -64,8 +64,8 @@ $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.article.tex: $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.art
 	$(eval $(parse_booktarget))
 	$(info rendering article '$(ARTICLE)'...)
 	@$(MK)/bin/handlebars-cli-rs \
-		--input templates/latex/article.tex \
-		--base-templates './templates/latex/preamble.tex' \
+		--input $(ASSET_DIR)/latex/article.tex \
+		--base-templates './$(ASSET_DIR)/latex/preamble.tex' \
 		--data $< \
 		content '$(BASE)/$(word 2,$^)' \
 		article $(ARTICLE) \

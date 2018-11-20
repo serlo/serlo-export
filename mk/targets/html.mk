@@ -13,8 +13,8 @@ $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.html: $(NO_LATEST_GUARD) $(EXPORT_DIR)/$(ARTICLE
 	$(eval $(parse_booktarget))
 	$(info rendering article '$(ARTICLE)'...)
 	@$(MK)/bin/handlebars-cli-rs \
-		--base-templates 'templates/html/article_nav.html' \
-		--input 'templates/html/base.html' \
+		--base-templates '$(ASSET_DIR)/html/article_nav.html' \
+		--input '$(ASSET_DIR)/html/base.html' \
 		title '$(call unescape,$(ARTICLE))' \
 		navigation 'article_nav.html' \
 		content '$<' \
@@ -27,8 +27,8 @@ $(EXPORT_DIR)/%.html: $(NO_LATEST_GUARD) $(EXPORT_DIR)/%.raw_html $(SITEMAP_SECO
 	$(eval $(parse_booktarget))
 	$(info rendering article '$(ARTICLE)'...)
 	@$(MK)/bin/handlebars-cli-rs \
-		--base-templates 'templates/html/book_nav.html' \
-		--input 'templates/html/base.html' \
+		--base-templates '$(ASSET_DIR)/html/book_nav.html' \
+		--input '$(ASSET_DIR)/html/base.html' \
 		title '$(call unescape,$(ARTICLE))' \
 		navigation 'book_nav.html' \
 		book '$(call unescape,$(BOOK))' \
@@ -46,15 +46,15 @@ $(EXPORT_DIR)/%.book.html: $(PARSE_PATH_SECONDARY) $(NO_LATEST_GUARD) $$(BOOK_DE
 	$(eval $(parse_booktarget))
 	$(info rendering book index for '$(BOOK)' and linking resources...)
 	@$(MK)/bin/handlebars-cli-rs \
-		--base-templates 'templates/html/book_nav.html' \
-		--input 'templates/html/base.html' \
+		--base-templates '$(ASSET_DIR)/html/book_nav.html' \
+		--input '$(ASSET_DIR)/html/base.html' \
 		title '$(call unescape,$(BOOK))' \
 		navigation 'book_nav.html' \
-		content 'templates/html/book_index_body.html' \
+		content '$(ASSET_DIR)/html/book_index_body.html' \
 		book '$(call unescape,$(BOOK))' \
 		subtarget '$(SITEMAP_PATH)' \
 		base_path '.' \
 	< $(SITEMAP_PATH) \
 	> $(basename $<).html
-	@ln -s -f -n $(BASE)/templates/html/html_book_assets $(BOOK_ROOT)/static
+	@ln -s -f -n $(BASE)/$(ASSET_DIR)/html/html_book_assets $(BOOK_ROOT)/static
 	@ln -s -f -n $(BASE)/$(MEDIA_DIR)/ $(BOOK_ROOT)

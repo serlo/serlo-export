@@ -4,8 +4,8 @@ Repository Structure
 Here is a high-level overview over the most important files and directories:
 * `mk`: Corresponds to the `src` directory of other projekcts. Holds makefiles and scripts of the build system, but also binaries of the helper tools.
 * `doc`: Documentation artifacts, including this book.
-* `include`: Static files which can be included in books from a *marker* in their sitemap.
-* `templates`: Various templates and static files used in export recipes.
+* `assets`: Various assets like templates or static files used in export recipes.
+* `assets/include`: Static files which can be included in books from a *marker* in their sitemap.
 * `config`: Configuration files for tools used in the build process. Includes `config/mfnf.yml` which defines the targets with their configuration (subtargets) for our rust helper tools.
 * `Makefile`: The main *Makefile* from which all functionality of this project can be accessed.
 

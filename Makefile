@@ -10,6 +10,7 @@ ARTICLE_DIR := articles
 MEDIA_DIR := media
 SECTION_DIR := sections
 DOCS_DIR := docs
+ASSET_DIR := assets
 TMP_BIN_DIR := .build
 REVISION_LOCK_FILE := revisions.json
 
