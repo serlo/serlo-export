@@ -6,4 +6,4 @@ The heart of this repository is a collection of Makefiles, which build the targe
 We try to use existing / standard tools where possible. Most of the helper programs we develop ourselves are written in [Rust](https://www.rust-lang.org)
 or [Python 3](https://www.python.org).
 
-Please refer to the documentation for user guide and developer documentation.
+For more information, please refer to the [documentation](https://lodifice.github.io/mfnf-pdf-export/).
