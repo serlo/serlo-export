@@ -13,6 +13,12 @@ targets:
   latex.minimal:
     Latex: {}
 
+  groff.all:
+    Groff: {}
+  groff.print:
+    Groff: {}
+
+
   pdf.verbose:
     PDF: 
       page_width: 210

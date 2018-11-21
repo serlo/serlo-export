@@ -34,6 +34,7 @@ include $(MK)/article_book.mk
 include $(MK)/book.mk
 include $(MK)/targets/html.mk
 include $(MK)/targets/latex.mk
+include $(MK)/targets/groff.mk
 include $(MK)/targets/pdf.mk
 include $(MK)/targets/stats.mk
 
