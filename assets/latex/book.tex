@@ -1,7 +1,7 @@
 %\title{ {{title}} }
 
 %\begin{document}
-\includepdf[pages=-]{include/mfnf_prelude-{{subtarget}}.pdf}
+\includepdf[pages=-]{include/pdf/mfnf_prelude-{{subtarget}}.pdf}
 {{#each parts}}
     {{~ #unless (part_excluded this ../subtarget)}}
         \part{ {{~ this.title ~}} }
@@ -10,12 +10,12 @@
                 \chapter{ {{~ this.title ~}} }
                 \input{\articlespath/{{escape_make this.path}}/{{this.revision ~}}}
                 {{#if this.markers.after ~}}
-                \includepdf[pages=-]{include/{{this.markers.after.path}}-{{../../subtarget}}.pdf}
+                \includepdf[pages=-]{include/pdf/{{this.markers.after.path}}-{{../../subtarget}}.pdf}
                 {{/if ~}}
             {{/unless ~}}
         {{~ /each ~}}
     {{~ /unless ~}}
 {{/each}}
 \listoffigures
-\includepdf[pages=-]{include/mfnf_epilogue-{{subtarget}}.pdf}
+\includepdf[pages=-]{include/pdf/mfnf_epilogue-{{subtarget}}.pdf}
 %\end{document}
