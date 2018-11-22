@@ -10,24 +10,34 @@ targets:
   latex.print:
     Latex:
       with_noprint: false
+  latex.print_wideprint:
+    Latex:
+      with_noprint: false
   latex.minimal:
     Latex: {}
 
   pdf.verbose:
     PDF: 
-      page_width: 210
-      page_height: 297
+      page_width: 148
+      page_height: 210
   pdf.all:
     PDF: 
-      page_width: 210
-      page_height: 297
+      page_width: 148
+      page_height: 210
   pdf.minimal:
      PDF: 
-      page_width: 210
-      page_height: 297   
+      page_width: 148
+      page_height: 210   
   pdf.print:
     PDF:
+      page_width: 148
+      page_height: 210
+  # like print, but in wideprint format
+  pdf.print_wideprint:
+    PDF:
       page_trim: 10
+      page_width: 155
+      page_height: 235
 
   html.verbose:
     HTML:
