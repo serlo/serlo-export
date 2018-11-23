@@ -43,7 +43,7 @@ init:
 	$(call map,create_directory,$(TMP_BIN_DIR) $(MK)/bin)
 	$(call build_rust_dep,mediawiki-peg-rust, \
 		https://github.com/vroland/mediawiki-peg-rust, \
-		f31fccf96b1aefef08853127ccad84e1352b191b, \
+		420492191b0d57f10782e2085d28993478378f9f, \
 		mwtoast)
 	$(call build_rust_dep,mfnf-export, \
 		https://github.com/vroland/mfnf-export, \
