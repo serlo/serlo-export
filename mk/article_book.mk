@@ -13,7 +13,7 @@ ARTICLE_BOOK_DEP_FILES := $(sort $(foreach P,$\
 ))
 
 # dummy sitemap
-$(EXPORT_DIR)/$(ARTICLE_BOOK)/$(ARTICLE_BOOK_REVISION)/%.sitemap.yml:
+$(EXPORT_DIR)/$(ARTICLE_BOOK)/$(ARTICLE_BOOK_REVISION)/%.sitemap.json:
 	@$(call create_directory,$(dir $@))
 	$(info creating dummy sitemap...)
 	@touch $@
