@@ -1,6 +1,6 @@
 # article paths always have the form $(ARTICLE_DIR)/<article name>/<revision>.yml
 
-$(ARTICLE_DIR)/%.yml $(ARTICLE_DIR)/%.json: $(ARTICLE_DIR)/%.md
+$(ARTICLE_DIR)/%.json: $(ARTICLE_DIR)/%.md
 	$(info parsing '$*'...)
 	@$(MK)/bin/mwtoast --json < $< > $@
 

@@ -4,7 +4,7 @@
 #
 
 # compute the article source path from an article export target
-ORIGIN_SECONDARY := $(ARTICLE_DIR)/$$(lastword $$(subst /,$(space),$$(dir $$@)))/$$(call filebase,$$@).yml
+ORIGIN_SECONDARY := $(ARTICLE_DIR)/$$(lastword $$(call dirsplit,$$(dir $$@)))/$$(call filebase,$$@).json
 
 # resolves revision numbers in book / article target paths
 TARGET_RESOLVED_REVISION := $$(eval $$(parse_booktarget_and_revision))$\

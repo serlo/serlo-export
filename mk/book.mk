@@ -10,7 +10,7 @@ BOOK_DEP_FILES := $(sort $(foreach P,$\
 ))
 
 # parse the sitemap article and output a sitemap yaml
-%.sitemap.parsed.yml: $(PARSE_PATH_SECONDARY) $(ARTICLE_DIR)/$$(BOOK)/$$(BOOK_REVISION).yml
+%.sitemap.parsed.yml: $(PARSE_PATH_SECONDARY) $(ARTICLE_DIR)/$$(BOOK)/$$(BOOK_REVISION).json
 	@$(call create_directory,$(dir $@))
 	$(info parsing sitemap for $(BOOK)...)
 	@$(MK)/bin/parse_bookmap \

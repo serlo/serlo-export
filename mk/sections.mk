@@ -11,7 +11,7 @@ $(SECTION_DIR)/%/latest.yml: $(PARSE_RESOLVED_SECTION_TARGET) \
 # lock input file to prevent overwriting of sections 
 # since make does not know this builds all sections...
 $(SECTION_DIR)/%.yml: $(PARSE_SECTION_TARGET) $(SECTION_NO_LATEST_GUARD) \
-	$$(ARTICLE_DIR)/$$(ARTICLE)/$$(ARTICLE_REVISION).yml | $(SECTION_DIR)
+	$$(ARTICLE_DIR)/$$(ARTICLE)/$$(ARTICLE_REVISION).json | $(SECTION_DIR)
 	
 	$(eval $(PARSE_SECTION_TARGET))
 	$(info extracting sections from $(ARTICLE)...)
