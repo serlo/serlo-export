@@ -55,11 +55,11 @@ init:
 		handlebars-cli-rs,mediawiki,mfnf)
 	$(call build_rust_dep,mfnf-sitemap-parser, \
 		https://github.com/vroland/mfnf-sitemap-parser, \
-		1c3bae67af17e8e224a5ce3bb76845723b00019e, \
+		505bf6f0f9e4684a6c11d6b948140fc7a34e2924, \
 		parse_bookmap)
 	$(call build_rust_dep,mfnf-sitemap-parser, \
 		https://github.com/vroland/mfnf-sitemap-parser, \
-		1c3bae67af17e8e224a5ce3bb76845723b00019e, \
+		505bf6f0f9e4684a6c11d6b948140fc7a34e2924, \
 		sitemap_utils)
 	$(call build_rust_dep,mwlint, \
 		https://github.com/vroland/mwlint, \

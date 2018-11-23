@@ -9,21 +9,18 @@ BOOK_DEP_FILES := $(sort $(foreach P,$\
 	$(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(TARGET)/$(SUBTARGET)/$(BOOK_REVISION).book.dep\
 ))
 
-# parse the sitemap article and output a sitemap yaml
-%.sitemap.parsed.yml: $(PARSE_PATH_SECONDARY) $(ARTICLE_DIR)/$$(BOOK)/$$(BOOK_REVISION).json
+# parse the sitemap and replace references to latest with the latest revision
+%.sitemap.json: $(PARSE_PATH_SECONDARY) $(ARTICLE_DIR)/$$(BOOK)/$$(BOOK_REVISION).json
 	@$(call create_directory,$(dir $@))
-	$(info parsing sitemap for $(BOOK)...)
+	$(info parsing sitemap and resolving revisions for $(BOOK)...)
 	@$(MK)/bin/parse_bookmap \
 		--input $< \
 		--texvccheck-path $(MK)/bin/texvccheck \
 	> $@
-
-# in sitemap, replace references to latest with the latest revision
-%.sitemap.yml: %.sitemap.parsed.yml
-	$(info resolving sitemap revisions...)
-	@python $(MK)/scripts/fill_sitemap_revisions.py \
-		$< $(REVISION_LOCK_FILE) \
-	> $@
+	@sponge < $@ \
+		| jq '.parts[] | .chapters[] | .path' \
+		| xargs -n1 --max-procs=0 -I {} \
+			$(MK)/scripts/update_chapter_revision.sh $@ 'revisions.json' '{}'
 
 # Generate the book dependencies for every supplied goal
 $(EXPORT_DIR)/%.book.dep: $(SITEMAP_SECONDARY)
