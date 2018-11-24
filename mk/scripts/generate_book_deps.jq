@@ -12,4 +12,5 @@ $book_anchors_target + ": " + . + ".anchors",
 "-include " + . + ".media-dep",
 if $target=="html" then $book_dep_target + ": " + . + ".html" else empty end,
 if $target=="stats" then $book_dep_target + ": " + . + ".stats.yml" else empty end,
+if $target=="stats" then $book_dep_target + ": " + . + ".lints.yml" else empty end,
 if $target=="latex" then $book_dep_target + ": " + . + ".tex" else empty end
