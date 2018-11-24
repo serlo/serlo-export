@@ -15,13 +15,12 @@ LATEX_BOOK := $(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/latex/$(SUBTARGET)/$(BOOK_R
 
 # write pdf options for books
 $(EXPORT_DIR)/%.pdfopts.yml:
-	
 	$(eval $(parse_booktarget))
 	$(info writing pdf options for book '$(BOOK)'...)
 	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
 		--title $(BOOK) \
 		--revision $(BOOK_REVISION) \
-	$(TARGET).$(SUBTARGET) < $(MK)/artifacts/dummy.yml > $@
+	$(TARGET).$(SUBTARGET) < $(MK)/artifacts/dummy.json > $@
 
 $(EXPORT_DIR)/%.book.pdf.tex: $(EXPORT_DIR)/%.pdfopts.yml $(PARSE_PATH_SECONDARY)  $$(LATEX_BOOK)
 	

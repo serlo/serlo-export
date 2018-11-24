@@ -16,11 +16,12 @@ $(EXPORT_DIR)/%.lints.yml: $(ORIGIN_SECONDARY) $(NO_LATEST_GUARD)
 # TODO: stats.html does not contain lint info.
 $(EXPORT_DIR)/%.stats.html: $(EXPORT_DIR)/%.stats.yml $(NO_LATEST_GUARD)
 	$(eval $(parse_booktarget))
-	$(info rendering article stats for '$(ARTICLE)'...)
+	$(eval UNESCAPED := $(call unescape,$(ARTICLE)))
+	$(info rendering article stats for $(UNESCAPED)...)
 	@$(MK)/bin/handlebars-cli-rs \
 		--input $(ASSET_DIR)/stats/article_stats.html \
 		--data '$<' \
-		article '$(call unescape,$(ARTICLE))' \
+		article $(UNESCAPED) \
 		revision $(ARTICLE_REVISION) \
 	> $@
 
@@ -32,10 +33,11 @@ $(EXPORT_DIR)/%.book.stats.yml: $(PARSE_PATH_SECONDARY) $$(BOOK_DEP_FILE) $$(BOO
 # only applies for resolved dependencies
 $(EXPORT_DIR)/%.book.stats.html: $(EXPORT_DIR)/%.book.stats.yml $(NO_LATEST_GUARD)
 	$(eval $(parse_booktarget))
-	$(info rendering stats for book '$(BOOK)'...)
+	$(eval UNESCAPED := $(call unescape,$(BOOK)))
+	$(info rendering stats for book $(UNESCAPED)...)
 	@$(MK)/bin/handlebars-cli-rs \
 		--input $(ASSET_DIR)/stats/stats.html \
 		--data $< \
-		book '$(call unescape,$(BOOK))' \
+		book $(UNESCAPED) \
 		book_revision $(BOOK_REVISION) \
 	> $@

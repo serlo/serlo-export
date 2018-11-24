@@ -11,11 +11,12 @@ $(EXPORT_DIR)/%book.html: $(HAS_LATEST_GUARD) $(TARGET_RESOLVED_REVISION)
 # postprocess articles for article export (dummy book)
 $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.html: $(NO_LATEST_GUARD) $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.raw_html 
 	$(eval $(parse_booktarget))
-	$(info rendering article '$(ARTICLE)'...)
+	$(eval ARTICLE_UNESCAPED := $(call unescape,$(ARTICLE)))
+	$(info rendering article $(ARTICLE_UNESCAPED)...)
 	@$(MK)/bin/handlebars-cli-rs \
 		--base-templates '$(ASSET_DIR)/html/article_nav.html' \
 		--input '$(ASSET_DIR)/html/base.html' \
-		title '$(call unescape,$(ARTICLE))' \
+		title $(ARTICLE_UNESCAPED) \
 		navigation 'article_nav.html' \
 		content '$<' \
 		base_path '.' \
@@ -25,14 +26,16 @@ $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.html: $(NO_LATEST_GUARD) $(EXPORT_DIR)/$(ARTICLE
 # postprocess html articles in books
 $(EXPORT_DIR)/%.html: $(NO_LATEST_GUARD) $(EXPORT_DIR)/%.raw_html $(SITEMAP_SECONDARY)
 	$(eval $(parse_booktarget))
-	$(info rendering article '$(ARTICLE)'...)
+	$(eval ARTICLE_UNESCAPED := $(call unescape,$(ARTICLE)))
+	$(eval BOOK_UNESCAPED := $(call unescape,$(BOOK)))
+	$(info rendering article $(ARTICLE_UNESCAPED)...)
 	@$(MK)/bin/handlebars-cli-rs \
 		--base-templates '$(ASSET_DIR)/html/book_nav.html' \
 		--input '$(ASSET_DIR)/html/base.html' \
-		title '$(call unescape,$(ARTICLE))' \
+		title $(ARTICLE_UNESCAPED) \
 		navigation 'book_nav.html' \
-		book '$(call unescape,$(BOOK))' \
-		article '$(call unescape,$(ARTICLE))' \
+		book $(BOOK_UNESCAPED) \
+		article $(ARTICLE_UNESCAPED) \
 		subtarget '$(SUBTARGET)' \
 		target '$(TARGET)' \
 		content '$<' \
@@ -44,14 +47,15 @@ $(EXPORT_DIR)/%.html: $(NO_LATEST_GUARD) $(EXPORT_DIR)/%.raw_html $(SITEMAP_SECO
 # only applies for resolved dependencies
 $(EXPORT_DIR)/%.book.html: $(PARSE_PATH_SECONDARY) $(NO_LATEST_GUARD) $$(BOOK_DEP_FILE) $$(BOOK_DEP_INTERMEDIATE) 
 	$(eval $(parse_booktarget))
-	$(info rendering book index for '$(BOOK)' and linking resources...)
+	$(eval BOOK_UNESCAPED := $(call unescape,$(BOOK)))
+	$(info rendering book index for $(BOOK_UNESCAPED) and linking resources...)
 	@$(MK)/bin/handlebars-cli-rs \
 		--base-templates '$(ASSET_DIR)/html/book_nav.html' \
 		--input '$(ASSET_DIR)/html/base.html' \
-		title '$(call unescape,$(BOOK))' \
+		title $(BOOK_UNESCAPED) \
 		navigation 'book_nav.html' \
 		content '$(ASSET_DIR)/html/book_index_body.html' \
-		book '$(call unescape,$(BOOK))' \
+		book $(BOOK_UNESCAPED) \
 		subtarget '$(SITEMAP_PATH)' \
 		base_path '.' \
 	< $(SITEMAP_PATH) \

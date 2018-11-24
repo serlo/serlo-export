@@ -33,9 +33,9 @@ $(EXPORT_DIR)/%.media-dep: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers $(EXPORT_
 $(EXPORT_DIR)/%.anchors: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers $(EXPORT_DIR)/%.sections
 	$(eval $(parse_booktarget))
 	$(eval UNESCAPED := $(call unescape,$(ARTICLE)))
-	$(info generating reference anchors for '$(ARTICLE)'...)
+	$(info generating reference anchors for $(UNESCAPED)...)
 	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
-		--title '$(UNESCAPED)' \
+		--title $(UNESCAPED) \
 		--revision '$(ARTICLE_REVISION)' \
 		--markers '$(word 2,$^)' \
 		--section-path '$(SECTION_DIR)/' \
@@ -59,9 +59,9 @@ $(EXPORT_DIR)/%.stats.yml $(EXPORT_DIR)/%.tex $(EXPORT_DIR)/%.raw_html: \
 
 	$(eval $(parse_booktarget))
 	$(eval UNESCAPED := $(call unescape,$(ARTICLE)))
-	$(info exporting '$(ARTICLE)' as $(suffix $@)...)
+	$(info exporting $(UNESCAPED) as $(suffix $@)...)
 	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
-		--title '$(UNESCAPED)' \
+		--title $(UNESCAPED) \
 		--revision '$(ARTICLE_REVISION)' \
 		--markers '$(word 4,$^)' \
 		--section-path '$(SECTION_DIR)/' \

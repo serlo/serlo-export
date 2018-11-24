@@ -46,8 +46,8 @@ $(EXPORT_DIR)/%.markers: $(SITEMAP_SECONDARY)
 	$(eval $(parse_booktarget))
 	@$(call create_directory,$(BOOK_ROOT)/$(ARTICLE))
 	$(eval UNQUOTED := $(call unescape,$(ARTICLE)))
-	$(info extracting markers for '$(UNQUOTED)'...)
-	@jq '.parts[] | .chapters[] | select(.path=="$(UNQUOTED)") | .markers'\
+	$(info extracting markers for $(UNQUOTED)...)
+	@jq '.parts[] | .chapters[] | select(.path=="'$(UNQUOTED)'") | .markers'\
 	'| (.exclude.subtargets[] | .name) |= ("$(TARGET)." + .)'\
 	'| (.include.subtargets[] | .name) |= ("$(TARGET)." + .)' $< > $@
 
