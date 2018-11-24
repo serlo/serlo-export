@@ -2,15 +2,15 @@
 
 
 # create "latest" from concrete revision
-$(SECTION_DIR)/%/latest.yml: $(PARSE_RESOLVED_SECTION_TARGET) \
-	$$(SECTION_DIR)/$$(ARTICLE)/$$(SECTION)/$$(ARTICLE_REVISION).yml
+$(SECTION_DIR)/%/latest.json: $(PARSE_RESOLVED_SECTION_TARGET) \
+	$$(SECTION_DIR)/$$(ARTICLE)/$$(SECTION)/$$(ARTICLE_REVISION).json
 	
 	$(info linking latest section for '$(ARTICLE)'...)
 	@ln -n -s -f $(notdir $<) $@
 
 # lock input file to prevent overwriting of sections 
 # since make does not know this builds all sections...
-$(SECTION_DIR)/%.yml: $(PARSE_SECTION_TARGET) $(SECTION_NO_LATEST_GUARD) \
+$(SECTION_DIR)/%.json: $(PARSE_SECTION_TARGET) $(SECTION_NO_LATEST_GUARD) \
 	$$(ARTICLE_DIR)/$$(ARTICLE)/$$(ARTICLE_REVISION).json | $(SECTION_DIR)
 	
 	$(eval $(PARSE_SECTION_TARGET))

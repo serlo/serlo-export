@@ -34,7 +34,7 @@ $(EXPORT_DIR)/%.book.dep: $(SITEMAP_SECONDARY)
 	@$(call create_directory,$(dir $@))
 	$(eval ANCHORS_FILE = $(ALL_ANCHORS_SECONDARY))
 	$(info generating book dependency file...)
-	jq -r -f $(MK)/scripts/generate_book_deps.jq \
+	@jq -r -f $(MK)/scripts/generate_book_deps.jq \
 		--arg book_dep_target $(BOOK_DEP_INTERMEDIATE) \
 		--arg book_anchors_target $(ANCHORS_FILE) \
 		--arg target $(TARGET) \
