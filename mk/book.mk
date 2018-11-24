@@ -9,7 +9,10 @@ BOOK_DEP_FILES := $(sort $(foreach P,$\
 	$(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(TARGET)/$(SUBTARGET)/$(BOOK_REVISION).book.dep\
 ))
 
-# parse the sitemap and replace references to latest with the latest revision
+# parse the sitemap and replace references to latest with the latest revision.
+# this is done by first querying the revisions of all articles, to make sure
+# they are present in $(REVISION_LOCK_FILE). Then replace latest with the current
+# revision using jq.
 %.sitemap.json: $(PARSE_PATH_SECONDARY) $(ARTICLE_DIR)/$$(BOOK)/$$(BOOK_REVISION).json
 	@$(call create_directory,$(dir $@))
 	$(info parsing sitemap and resolving revisions for $(BOOK)...)
@@ -17,10 +20,21 @@ BOOK_DEP_FILES := $(sort $(foreach P,$\
 		--input $< \
 		--texvccheck-path $(MK)/bin/texvccheck \
 	> $@
-	@sponge < $@ \
-		| jq '.parts[] | .chapters[] | .path' \
+	jq '.parts[] | .chapters[] | .path' $@ \
 		| xargs -n1 --max-procs=0 -I {} \
-			$(MK)/scripts/update_chapter_revision.sh $@ 'revisions.json' '{}'
+		$(MK)/scripts/get_revision.sh $(REVISION_LOCK_FILE) 'articles' '{}'
+	jq '.parts[] | .chapters[] | .path' $@ | wc -l
+	jq '.articles[]' $(REVISION_LOCK_FILE) | wc -l
+	which flock
+	which sh
+	xargs --version
+	cat $(REVISION_LOCK_FILE)
+	
+	@flock $(REVISION_LOCK_FILE) -c ' \
+		jq -c "(.parts[] | .chapters[] | select(.revision==\"latest\")) \
+			|= (.revision=\$$revisions.articles[(.path | gsub(\" \";\"_\"))])" \
+		--argfile revisions $(REVISION_LOCK_FILE) $@ | sponge $@'
+	cat $@
 
 # Generate the book dependencies for every supplied goal
 $(EXPORT_DIR)/%.book.dep: $(SITEMAP_SECONDARY)
