@@ -20,21 +20,13 @@ BOOK_DEP_FILES := $(sort $(foreach P,$\
 		--input $< \
 		--texvccheck-path $(MK)/bin/texvccheck \
 	> $@
-	jq '.parts[] | .chapters[] | .path' $@ \
-		| xargs -n1 --max-procs=0 -I {} \
-		$(MK)/scripts/get_revision.sh $(REVISION_LOCK_FILE) 'articles' '{}'
-	jq '.parts[] | .chapters[] | .path' $@ | wc -l
-	jq '.articles[]' $(REVISION_LOCK_FILE) | wc -l
-	which flock
-	which sh
-	xargs --version
-	cat $(REVISION_LOCK_FILE)
-	
+	@jq '.parts[] | .chapters[] | .path' $@ \
+		| xargs -n1 --max-procs=1 -I {} \
+		$(MK)/scripts/get_revision.sh $(REVISION_LOCK_FILE) 'articles' '{}'	> /dev/null
 	@flock $(REVISION_LOCK_FILE) -c ' \
 		jq -c "(.parts[] | .chapters[] | select(.revision==\"latest\")) \
 			|= (.revision=\$$revisions.articles[(.path | gsub(\" \";\"_\"))])" \
 		--argfile revisions $(REVISION_LOCK_FILE) $@ | sponge $@'
-	cat $@
 
 # Generate the book dependencies for every supplied goal
 $(EXPORT_DIR)/%.book.dep: $(SITEMAP_SECONDARY)
@@ -55,8 +47,9 @@ $(EXPORT_DIR)/%.markers: $(SITEMAP_SECONDARY)
 	@$(call create_directory,$(BOOK_ROOT)/$(ARTICLE))
 	$(eval UNQUOTED := $(call unescape,$(ARTICLE)))
 	$(info extracting markers for '$(UNQUOTED)'...)
-	@$(MK)/bin/sitemap_utils --input $< \
-		markers '$(UNQUOTED)' '$(TARGET)' > $@
+	@jq '.parts[] | .chapters[] | select(.path=="$(UNQUOTED)") | .markers'\
+	'| (.exclude.subtargets[] | .name) |= ("$(TARGET)." + .)'\
+	'| (.include.subtargets[] | .name) |= ("$(TARGET)." + .)' $< > $@
 
 # concatenate the supplied anchors of all articles
 # prerequisites for this target specified in the generated book dependencies
