@@ -9,21 +9,24 @@ BOOK_DEP_FILES := $(sort $(foreach P,$\
 	$(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(TARGET)/$(SUBTARGET)/$(BOOK_REVISION).book.dep\
 ))
 
-# parse the sitemap article and output a sitemap yaml
-%.sitemap.parsed.yml: $(PARSE_PATH_SECONDARY) $(ARTICLE_DIR)/$$(BOOK)/$$(BOOK_REVISION).yml
+# parse the sitemap and replace references to latest with the latest revision.
+# this is done by first querying the revisions of all articles, to make sure
+# they are present in $(REVISION_LOCK_FILE). Then replace latest with the current
+# revision using jq.
+%.sitemap.json: $(PARSE_PATH_SECONDARY) $(ARTICLE_DIR)/$$(BOOK)/$$(BOOK_REVISION).json
 	@$(call create_directory,$(dir $@))
-	$(info parsing sitemap for $(BOOK)...)
+	$(info parsing sitemap and resolving revisions for $(BOOK)...)
 	@$(MK)/bin/parse_bookmap \
 		--input $< \
 		--texvccheck-path $(MK)/bin/texvccheck \
 	> $@
-
-# in sitemap, replace references to latest with the latest revision
-%.sitemap.yml: %.sitemap.parsed.yml
-	$(info resolving sitemap revisions...)
-	@python $(MK)/scripts/fill_sitemap_revisions.py \
-		$< $(REVISION_LOCK_FILE) \
-	> $@
+	@jq '.parts[] | .chapters[] | .path' $@ \
+		| xargs -n1 --max-procs=1 -I {} \
+		$(MK)/scripts/get_revision.sh $(REVISION_LOCK_FILE) 'articles' '{}'	> /dev/null
+	@flock $(REVISION_LOCK_FILE) -c ' \
+		jq -c "(.parts[] | .chapters[] | select(.revision==\"latest\")) \
+			|= (.revision=\$$revisions.articles[(.path | gsub(\" \";\"_\"))])" \
+		--argfile revisions $(REVISION_LOCK_FILE) $@ | sponge $@'
 
 # Generate the book dependencies for every supplied goal
 $(EXPORT_DIR)/%.book.dep: $(SITEMAP_SECONDARY)
@@ -31,12 +34,12 @@ $(EXPORT_DIR)/%.book.dep: $(SITEMAP_SECONDARY)
 	@$(call create_directory,$(dir $@))
 	$(eval ANCHORS_FILE = $(ALL_ANCHORS_SECONDARY))
 	$(info generating book dependency file...)
-	@$(MK)/bin/sitemap_utils --input $< \
-		deps $(TARGET) $(SUBTARGET) \
-		--prefix $(dir $@) \
-		--book-target $(BOOK_DEP_INTERMEDIATE) \
-		--anchors-target $(ANCHORS_FILE) \
-		> $@
+	@jq -r -f $(MK)/scripts/generate_book_deps.jq \
+		--arg book_dep_target $(BOOK_DEP_INTERMEDIATE) \
+		--arg book_anchors_target $(ANCHORS_FILE) \
+		--arg target $(TARGET) \
+		--arg prefix $(dir $@) \
+	< $< > $@
 
 # extract article markers from sitemap and create its directory
 $(EXPORT_DIR)/%.markers: $(SITEMAP_SECONDARY)
@@ -44,8 +47,9 @@ $(EXPORT_DIR)/%.markers: $(SITEMAP_SECONDARY)
 	@$(call create_directory,$(BOOK_ROOT)/$(ARTICLE))
 	$(eval UNQUOTED := $(call unescape,$(ARTICLE)))
 	$(info extracting markers for '$(UNQUOTED)'...)
-	@$(MK)/bin/sitemap_utils --input $< \
-		markers '$(UNQUOTED)' '$(TARGET)' > $@
+	@jq '.parts[] | .chapters[] | select(.path=="$(UNQUOTED)") | .markers'\
+	'| (.exclude.subtargets[] | .name) |= ("$(TARGET)." + .)'\
+	'| (.include.subtargets[] | .name) |= ("$(TARGET)." + .)' $< > $@
 
 # concatenate the supplied anchors of all articles
 # prerequisites for this target specified in the generated book dependencies

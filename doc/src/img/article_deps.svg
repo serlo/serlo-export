@@ -42,7 +42,7 @@
 <title>the_sections</title>
 <ellipse fill="none" stroke="#000000" cx="115.9655" cy="-313.0904" rx="115.931" ry="26.7407"/>
 <text text-anchor="middle" x="115.9655" y="-316.8904" font-family="Times,serif" font-size="14.00" fill="#000000">fragments of other articles</text>
-<text text-anchor="middle" x="115.9655" y="-301.8904" font-family="Times,serif" font-size="14.00" fill="#000000">(.yml)</text>
+<text text-anchor="middle" x="115.9655" y="-301.8904" font-family="Times,serif" font-size="14.00" fill="#000000">(.json)</text>
 </g>
 <!-- sections -->
 <g id="node6" class="node">
@@ -63,16 +63,16 @@
 <ellipse fill="none" stroke="#000000" cx="620.9655" cy="-557.7006" rx="81.7856" ry="18"/>
 <text text-anchor="middle" x="620.9655" y="-554.0006" font-family="Times,serif" font-size="14.00" fill="#000000">article source (.md)</text>
 </g>
-<!-- yml -->
+<!-- json -->
 <g id="node4" class="node">
-<title>yml</title>
+<title>json</title>
 <ellipse fill="none" stroke="#000000" cx="620.9655" cy="-481.8305" rx="120.4167" ry="26.7407"/>
 <text text-anchor="middle" x="620.9655" y="-485.6305" font-family="Times,serif" font-size="14.00" fill="#000000">intermediate representation</text>
-<text text-anchor="middle" x="620.9655" y="-470.6305" font-family="Times,serif" font-size="14.00" fill="#000000">(.yml)</text>
+<text text-anchor="middle" x="620.9655" y="-470.6305" font-family="Times,serif" font-size="14.00" fill="#000000">(.json)</text>
 </g>
-<!-- md&#45;&gt;yml -->
+<!-- md&#45;&gt;json -->
 <g id="edge8" class="edge">
-<title>md&#45;&gt;yml</title>
+<title>md&#45;&gt;json</title>
 <path fill="none" stroke="#000000" d="M620.9655,-539.3346C620.9655,-533.2058 620.9655,-526.1385 620.9655,-519.1018"/>
 <polygon fill="#000000" stroke="#000000" points="624.4656,-518.9267 620.9655,-508.9268 617.4656,-518.9268 624.4656,-518.9267"/>
 </g>
@@ -83,9 +83,9 @@
 <text text-anchor="middle" x="387.9655" y="-407.7605" font-family="Times,serif" font-size="14.00" fill="#000000">section dependencies</text>
 <text text-anchor="middle" x="387.9655" y="-392.7605" font-family="Times,serif" font-size="14.00" fill="#000000">(.section&#45;dep)</text>
 </g>
-<!-- yml&#45;&gt;section_dep -->
+<!-- json&#45;&gt;section_dep -->
 <g id="edge9" class="edge">
-<title>yml&#45;&gt;section_dep</title>
+<title>json&#45;&gt;section_dep</title>
 <path fill="none" stroke="#000000" d="M553.8849,-459.4117C530.3207,-451.5365 503.4454,-442.5546 478.2875,-434.1466"/>
 <polygon fill="#000000" stroke="#000000" points="479.3339,-430.8061 468.7401,-430.9558 477.115,-437.4452 479.3339,-430.8061"/>
 </g>
@@ -96,9 +96,9 @@
 <text text-anchor="middle" x="618.9655" y="-231.1503" font-family="Times,serif" font-size="14.00" fill="#000000">reference anchors</text>
 <text text-anchor="middle" x="618.9655" y="-216.1503" font-family="Times,serif" font-size="14.00" fill="#000000">(.anchors)</text>
 </g>
-<!-- yml&#45;&gt;anchors -->
+<!-- json&#45;&gt;anchors -->
 <g id="edge11" class="edge">
-<title>yml&#45;&gt;anchors</title>
+<title>json&#45;&gt;anchors</title>
 <path fill="none" stroke="#000000" d="M620.7515,-454.5967C620.3913,-408.7733 619.6638,-316.2027 619.2572,-264.4703"/>
 <polygon fill="#000000" stroke="#000000" points="623.0282,-272.0908 619.178,-262.2203 616.0326,-272.3375 623.0282,-272.0908"/>
 </g>

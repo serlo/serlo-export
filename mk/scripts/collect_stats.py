@@ -4,6 +4,7 @@ from collections import defaultdict
 import sys
 import os
 from ruamel.yaml import YAML
+import json
 # find the lib package
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 from lib.utils import unquote_filename
@@ -36,8 +37,9 @@ def add_dict(target, stats):
 def add_article_stats(target, stats):
     add_dict(target, stats)
 
-def process_article_stats(article, stats):
+def process_article_stats(article):
 
+    yaml = YAML(typ="safe")
     article_stats = yaml.load(open(article))
 
     article = article.rstrip(".stats.yml")
@@ -58,7 +60,6 @@ def process_article_stats(article, stats):
 
 
 if __name__ == "__main__":
-    yaml = YAML(typ="safe")
 
     for root, dirs, files in os.walk("."):
         pathlen = len(root.split(os.sep))
@@ -66,7 +67,6 @@ if __name__ == "__main__":
             if f.endswith(".stats.yml") and pathlen > 1:
                 f = root + os.sep + f
                 f = f.strip("." + os.sep)
-                article_stats = yaml.load(open(f))
-                process_article_stats(f, article_stats)
+                process_article_stats(f)
 
-    YAML(typ="rt").dump(book_stats, sys.stdout)
+    json.dump(book_stats, sys.stdout)

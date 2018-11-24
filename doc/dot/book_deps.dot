@@ -5,9 +5,8 @@ digraph book_dependencies {
     ranksep=.4;
 
     sitemap_article [label="sitemap article\nsource (.md)"];
-    sitemap_intermediate [label="sitemap intermediate\nrepresentation (.yml)"];
-    sitemap_parsed [label="machine readable\nsitemap (.sitemap.parsed.yml)"];
-    sitemap [label="sitemap (.sitemap.yml)"];
+    sitemap_intermediate [label="sitemap intermediate\nrepresentation (.json)"];
+    sitemap [label="sitemap (.sitemap.json)"];
     book_deps [label="book dependency file (.book.dep)", shape=box];
     book_dependencies [label="book dependencies (.book.dependencies)"];
     book_anchors [label="book anchors (.anchors)"];
@@ -15,7 +14,7 @@ digraph book_dependencies {
     article_deps [label="other article dependencies\n(article source, sections, media, ...)"];
     result [label="book export result\n(.book.tex, .book.html, ...)"];
 
-    sitemap_article -> sitemap_intermediate -> sitemap_parsed -> sitemap; 
+    sitemap_article -> sitemap_intermediate -> sitemap; 
     sitemap -> book_deps;
     book_deps -> book_dependencies [label="defines", style=dotted];
     the_articles -> book_dependencies;

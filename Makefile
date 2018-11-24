@@ -43,11 +43,11 @@ init:
 	$(call map,create_directory,$(TMP_BIN_DIR) $(MK)/bin)
 	$(call build_rust_dep,mediawiki-peg-rust, \
 		https://github.com/vroland/mediawiki-peg-rust, \
-		f31fccf96b1aefef08853127ccad84e1352b191b, \
+		420492191b0d57f10782e2085d28993478378f9f, \
 		mwtoast)
 	$(call build_rust_dep,mfnf-export, \
 		https://github.com/vroland/mfnf-export, \
-		bf58779263f077c6374a7897063c51f95a92ce6f, \
+		9ea82cb864eb40917418a1d605e6dd16a9fc5916, \
 		mfnf_ex)
 	$(call build_rust_dep,handlebars-cli-rs, \
 		https://github.com/vroland/handlebars-cli-rs, \
@@ -55,12 +55,8 @@ init:
 		handlebars-cli-rs,mediawiki,mfnf)
 	$(call build_rust_dep,mfnf-sitemap-parser, \
 		https://github.com/vroland/mfnf-sitemap-parser, \
-		1c3bae67af17e8e224a5ce3bb76845723b00019e, \
+		505bf6f0f9e4684a6c11d6b948140fc7a34e2924, \
 		parse_bookmap)
-	$(call build_rust_dep,mfnf-sitemap-parser, \
-		https://github.com/vroland/mfnf-sitemap-parser, \
-		1c3bae67af17e8e224a5ce3bb76845723b00019e, \
-		sitemap_utils)
 	$(call build_rust_dep,mwlint, \
 		https://github.com/vroland/mwlint, \
 		6ffa2fde393a90a3fbcc84e156adb1e419d162fe, \

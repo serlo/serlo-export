@@ -13,7 +13,7 @@ SECTION=$2
 # create lockfile if not present
 [ -f $REV_FILE ] || echo '{"articles": {"articles": "dummy"}, "media": {}}' > $REV_FILE;
 
-HAS_KEY=$(flock $REV_FILE jq ".$SECTION | has(\"$NAME\")" $REV_FILE);
+HAS_KEY=$(flock -s $REV_FILE jq ".$SECTION | has(\"$NAME\")" $REV_FILE);
 
 if [ $HAS_KEY != true ]; then 
     URL_ENC=$(echo $NAME | jq -r -R @uri)
@@ -32,9 +32,9 @@ if [ $HAS_KEY != true ]; then
     [ $REVISION != error ] || (>&2 echo "revision fetching failed for $NAME"! && exit 1);
     # use sponge here to keep the file at the same inode, 
     # avoiding issues with parallel access
-    flock $REV_FILE -c "jq \".$SECTION += {\\\"$NAME\\\": \\\"$REVISION\\\"}\" $REV_FILE | sponge $REV_FILE"
+    flock -x $REV_FILE -c "jq \".$SECTION += {\\\"$NAME\\\": \\\"$REVISION\\\"}\" $REV_FILE | sponge $REV_FILE"
 else
-    REVISION=$(flock $REV_FILE jq -r ".$SECTION.\"$NAME\"" $REV_FILE)
+    REVISION=$(flock -s $REV_FILE jq -r ".$SECTION.\"$NAME\"" $REV_FILE)
 fi
 
 echo $REVISION

@@ -1,7 +1,12 @@
----
-include:
-  subtargets: []
-exclude:
-  subtargets: []
-todo: ~
-after: ~
+{
+    "include": 
+        {
+            "subtargets": []
+        },
+    "exclude":
+        {
+            "subtargets": []
+        },
+    "todo": null,
+    "after": null
+}

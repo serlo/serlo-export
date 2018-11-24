@@ -14,7 +14,7 @@ $(EXPORT_DIR)/%.lints.yml: $(ORIGIN_SECONDARY) $(NO_LATEST_GUARD)
 	< $< > $@ 2>/dev/null
 
 # TODO: stats.html does not contain lint info.
-$(EXPORT_DIR)/%.stats.html: $(EXPORT_DIR)/%.stats.yml $(EXPORT_DIR)/%.lints.yml $(NO_LATEST_GUARD)
+$(EXPORT_DIR)/%.stats.html: $(EXPORT_DIR)/%.stats.yml $(NO_LATEST_GUARD)
 	$(eval $(parse_booktarget))
 	$(info rendering article stats for '$(ARTICLE)'...)
 	@$(MK)/bin/handlebars-cli-rs \

@@ -4,7 +4,7 @@
 #
 
 # compute the article source path from an article export target
-ORIGIN_SECONDARY := $(ARTICLE_DIR)/$$(lastword $$(subst /,$(space),$$(dir $$@)))/$$(call filebase,$$@).yml
+ORIGIN_SECONDARY := $(ARTICLE_DIR)/$$(lastword $$(call dirsplit,$$(dir $$@)))/$$(call filebase,$$@).json
 
 # resolves revision numbers in book / article target paths
 TARGET_RESOLVED_REVISION := $$(eval $$(parse_booktarget_and_revision))$\
@@ -41,8 +41,8 @@ ALL_ANCHORS_SECONDARY := $$(if $$(findstring $(EXPORT_DIR)/$(ARTICLE_BOOK)/$(ART
 )
 
 # compute the sitemap path from the target
-SITEMAP_SECONDARY := $$(call dirmerge,$$(wordlist 1,3,$$(call dirsplit,$$@)))/$$(word 3,$$(call dirsplit,$$@)).sitemap.yml
-SITEMAP_PATH = $(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(BOOK_REVISION).sitemap.yml
+SITEMAP_SECONDARY := $$(call dirmerge,$$(wordlist 1,3,$$(call dirsplit,$$@)))/$$(word 3,$$(call dirsplit,$$@)).sitemap.json
+SITEMAP_PATH = $(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(BOOK_REVISION).sitemap.json
 
 # expands to IMPOSSIBLE if the book revision or the path suffix contains latest
 NO_LATEST_GUARD := $$(filter %.IMPOSSIBLE,$$(subst latest,$$*.IMPOSSIBLE,$$(word 3,$$(call dirsplit,$$@))) $$(subst latest,$$*.IMPOSSIBLE,$$(call filebase,$$@)))

@@ -4,9 +4,9 @@ digraph article_dependencies {
     newrank=true;
     ranksep=.4;
     the_media [label="media files used in article\n(.svg, .webm, ...)"];
-    the_sections [label="fragments of other articles\n(.yml)"];
+    the_sections [label="fragments of other articles\n(.json)"];
     md [label="article source (.md)"];
-    yml [label="intermediate representation\n(.yml)"];
+    json [label="intermediate representation\n(.json)"];
     markers [label="article marker dummy\n(.markers)"]; 
 
 
@@ -32,11 +32,11 @@ digraph article_dependencies {
     {rank=same; the_media -> media};
     {rank=same; the_sections -> sections};
 
-    md -> yml;
-    yml -> section_dep [lhead=cluster_int];
+    md -> json;
+    json -> section_dep [lhead=cluster_int];
     markers -> section_dep [lhead=cluster_int];
 
-    yml -> anchors [lhead=cluster_build];
+    json -> anchors [lhead=cluster_build];
     markers -> anchors [lhead=cluster_build];
     sections -> anchors [lhead=cluster_build];
 }
