@@ -57,10 +57,6 @@ init:
 		https://github.com/vroland/mfnf-sitemap-parser, \
 		505bf6f0f9e4684a6c11d6b948140fc7a34e2924, \
 		parse_bookmap)
-	$(call build_rust_dep,mfnf-sitemap-parser, \
-		https://github.com/vroland/mfnf-sitemap-parser, \
-		505bf6f0f9e4684a6c11d6b948140fc7a34e2924, \
-		sitemap_utils)
 	$(call build_rust_dep,mwlint, \
 		https://github.com/vroland/mwlint, \
 		6ffa2fde393a90a3fbcc84e156adb1e419d162fe, \

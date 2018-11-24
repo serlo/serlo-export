@@ -34,12 +34,12 @@ $(EXPORT_DIR)/%.book.dep: $(SITEMAP_SECONDARY)
 	@$(call create_directory,$(dir $@))
 	$(eval ANCHORS_FILE = $(ALL_ANCHORS_SECONDARY))
 	$(info generating book dependency file...)
-	@$(MK)/bin/sitemap_utils --input $< \
-		deps $(TARGET) $(SUBTARGET) \
-		--prefix $(dir $@) \
-		--book-target $(BOOK_DEP_INTERMEDIATE) \
-		--anchors-target $(ANCHORS_FILE) \
-		> $@
+	jq -r -f $(MK)/scripts/generate_book_deps.jq \
+		--arg book_dep_target $(BOOK_DEP_INTERMEDIATE) \
+		--arg book_anchors_target $(ANCHORS_FILE) \
+		--arg target $(TARGET) \
+		--arg prefix $(dir $@) \
+	< $< > $@
 
 # extract article markers from sitemap and create its directory
 $(EXPORT_DIR)/%.markers: $(SITEMAP_SECONDARY)
