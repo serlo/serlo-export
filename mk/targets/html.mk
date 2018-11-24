@@ -20,7 +20,7 @@ $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.html: $(NO_LATEST_GUARD) $(EXPORT_DIR)/$(ARTICLE
 		navigation 'article_nav.html' \
 		content '$<' \
 		base_path '.' \
-	< $(MK)/artifacts/dummy.yml \
+	< $(MK)/artifacts/dummy.json \
 	> $@
 
 # postprocess html articles in books

@@ -56,7 +56,7 @@ $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.article.opts.yml: $(ORIGIN_SECONDARY)
 	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
 		--title $(ARTICLE) \
 		--revision $(ARTICLE_REVISION) \
-	$(TARGET).$(SUBTARGET) < $(MK)/artifacts/dummy.yml > $@
+	$(TARGET).$(SUBTARGET) < $(MK)/artifacts/dummy.json > $@
 	
 $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.article.tex: $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.article.opts.yml $(PARSE_PATH_SECONDARY) $$(EXPORT_DIR)/$$(ARTICLE_BOOK)/$$(BOOK_REVISION)/latex/$$(SUBTARGET)/$$(ARTICLE)/$$(ARTICLE_REVISION).tex
 	
