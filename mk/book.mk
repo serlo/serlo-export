@@ -46,7 +46,7 @@ $(EXPORT_DIR)/%.markers: $(SITEMAP_SECONDARY)
 	$(eval $(parse_booktarget))
 	@$(call create_directory,$(BOOK_ROOT)/$(ARTICLE))
 	$(info extracting markers for $(ARTICLE)...)
-	@jq 'import "mk/scripts/lib" as lib; lib::article_markers' \
+	@jq 'import "mk/scripts/lib" as lib; lib::article_markers' -c \
 		--arg target '$(TARGET)' \
 		--arg article '$(ARTICLE)' $< > $@
 
