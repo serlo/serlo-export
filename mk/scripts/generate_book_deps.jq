@@ -1,8 +1,11 @@
 import "mk/scripts/escape_make" as em;
+
 # check if the given target is known
 if (["html", "latex", "pdf", "stats"] | contains([$target]) | not) then error("unknown target: " + $target) else . end |
 # pdf needs and empty dep file, since it does not really export anything
 if $target=="pdf" then empty else . end |
+# delete excluded chapters
+del(.parts[] | .chapters[] | select([.markers.exclude.subtargets[] | .name==$subtarget and .parameters==[]] | any == true)) |
 # produce target-independent dependencies
 (.parts[] | .chapters[] | $prefix + (.path | em::escape_make) + "/" + .revision) |
 $book_dep_target + ": " + . + ".section-dep",

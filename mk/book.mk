@@ -38,6 +38,7 @@ $(EXPORT_DIR)/%.book.dep: $(SITEMAP_SECONDARY)
 		--arg book_dep_target $(BOOK_DEP_INTERMEDIATE) \
 		--arg book_anchors_target $(ANCHORS_FILE) \
 		--arg target $(TARGET) \
+		--arg subtarget $(SUBTARGET) \
 		--arg prefix $(dir $@) \
 	< $< > $@
 
