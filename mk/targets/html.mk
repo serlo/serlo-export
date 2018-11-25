@@ -56,7 +56,7 @@ $(EXPORT_DIR)/%.book.html: $(PARSE_PATH_SECONDARY) $(NO_LATEST_GUARD) $$(BOOK_DE
 		navigation 'book_nav.html' \
 		content '$(ASSET_DIR)/html/book_index_body.html' \
 		book $(BOOK_UNESCAPED) \
-		subtarget '$(SITEMAP_PATH)' \
+		subtarget '$(SUBTARGET)' \
 		base_path '.' \
 	< $(SITEMAP_PATH) \
 	> $(basename $<).html
