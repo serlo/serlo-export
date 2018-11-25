@@ -24,8 +24,7 @@ BOOK_DEP_FILES := $(sort $(foreach P,$\
 		| xargs -n1 --max-procs=1 -I {} \
 		$(MK)/scripts/get_revision.sh $(REVISION_LOCK_FILE) 'articles' '{}'	> /dev/null
 	@flock $(REVISION_LOCK_FILE) -c ' \
-		jq -c "(.parts[] | .chapters[] | select(.revision==\"latest\")) \
-			|= (.revision=\$$revisions.articles[(.path | gsub(\" \";\"_\"))])" \
+		jq -c "import \"mk/scripts/lib\" as lib; lib::fill_sitemap_revisions" \
 		--argfile revisions $(REVISION_LOCK_FILE) $@ | sponge $@'
 
 # Generate the book dependencies for every supplied goal
@@ -34,7 +33,7 @@ $(EXPORT_DIR)/%.book.dep: $(SITEMAP_SECONDARY)
 	@$(call create_directory,$(dir $@))
 	$(eval ANCHORS_FILE = $(ALL_ANCHORS_SECONDARY))
 	$(info generating book dependency file...)
-	@jq -r -f $(MK)/scripts/generate_book_deps.jq \
+	@jq -r 'import "mk/scripts/lib" as lib; lib::generate_book_deps' \
 		--arg book_dep_target $(BOOK_DEP_INTERMEDIATE) \
 		--arg book_anchors_target $(ANCHORS_FILE) \
 		--arg target $(TARGET) \
@@ -46,11 +45,10 @@ $(EXPORT_DIR)/%.book.dep: $(SITEMAP_SECONDARY)
 $(EXPORT_DIR)/%.markers: $(SITEMAP_SECONDARY)
 	$(eval $(parse_booktarget))
 	@$(call create_directory,$(BOOK_ROOT)/$(ARTICLE))
-	$(eval UNQUOTED := $(call unescape,$(ARTICLE)))
-	$(info extracting markers for $(UNQUOTED)...)
-	@jq '.parts[] | .chapters[] | select(.path=="'$(UNQUOTED)'") | .markers'\
-	'| (.exclude.subtargets[] | .name) |= ("$(TARGET)." + .)'\
-	'| (.include.subtargets[] | .name) |= ("$(TARGET)." + .)' $< > $@
+	$(info extracting markers for $(ARTICLE)...)
+	@jq 'import "mk/scripts/lib" as lib; lib::article_markers' \
+		--arg target '$(TARGET)' \
+		--arg article '$(ARTICLE)' $< > $@
 
 # concatenate the supplied anchors of all articles
 # prerequisites for this target specified in the generated book dependencies

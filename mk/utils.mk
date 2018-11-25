@@ -32,7 +32,7 @@ fetch_revision = $(eval FETCH_RESULT := $(shell $(MK)/scripts/get_revision.sh $(
 article_revision = $(call fetch_revision,$1,articles)
 image_revision = $(call fetch_revision,$1,media)
 
-unescape = $(shell jq 'import "mk/scripts/escape_make" as em; "$1" | em::unescape_make | @sh' -n -r)
+unescape = $(shell jq 'import "mk/scripts/lib" as lib; "$1" | lib::unescape_make | @sh' -n -r)
 resolve_revision = $(subst latest,$(call article_revision,$2),$1)
 
 parse_booktarget_and_revision = $(eval P:=$@)$(parse_bookpath_and_revision)
