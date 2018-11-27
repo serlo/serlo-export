@@ -47,7 +47,7 @@ init:
 		mwtoast)
 	$(call build_rust_dep,mfnf-export, \
 		https://github.com/vroland/mfnf-export, \
-		9ea82cb864eb40917418a1d605e6dd16a9fc5916, \
+		f2d55a4c012b1c4f57c532cbf5a56ed14764d987, \
 		mfnf_ex)
 	$(call build_rust_dep,handlebars-cli-rs, \
 		https://github.com/vroland/handlebars-cli-rs, \
