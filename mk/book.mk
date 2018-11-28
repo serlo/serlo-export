@@ -29,7 +29,7 @@ BOOK_DEP_FILES := $(sort $(foreach P,$\
 
 # the subtargetmap is like the sitemap, but with exclusions
 # for a specific subtarget applied.
-$(EXPORT_DIR)/%.subtargetmap.json: $(SITEMAP_SECONDARY)
+$(EXPORT_DIR)/%.subtargetmap.json: $(BOOKMAP_SECONDARY)
 	$(eval $(parse_booktarget))
 	@$(call create_directory,$(dir $@))
 	$(info generating subtarget map for $(BOOK)...)
@@ -50,7 +50,7 @@ $(EXPORT_DIR)/%.book.dep: $(EXPORT_DIR)/%.subtargetmap.json
 	< $< > $@
 
 # extract article markers from sitemap and create its directory
-$(EXPORT_DIR)/%.markers: $(SITEMAP_SECONDARY)
+$(EXPORT_DIR)/%.markers: $(SUBTARGETMAP_SECONDARY)
 	$(eval $(parse_booktarget))
 	@$(call create_directory,$(BOOK_ROOT)/$(ARTICLE))
 	$(info extracting markers for $(ARTICLE)...)

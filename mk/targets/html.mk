@@ -24,7 +24,7 @@ $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.html: $(NO_LATEST_GUARD) $(EXPORT_DIR)/$(ARTICLE
 	> $@
 
 # postprocess html articles in books
-$(EXPORT_DIR)/%.html: $(NO_LATEST_GUARD) $(EXPORT_DIR)/%.raw_html $(SITEMAP_SECONDARY)
+$(EXPORT_DIR)/%.html: $(NO_LATEST_GUARD) $(EXPORT_DIR)/%.raw_html $(SUBTARGETMAP_SECONDARY)
 	$(eval $(parse_booktarget))
 	$(eval ARTICLE_UNESCAPED := $(call unescape,$(ARTICLE)))
 	$(eval BOOK_UNESCAPED := $(call unescape,$(BOOK)))
@@ -40,12 +40,12 @@ $(EXPORT_DIR)/%.html: $(NO_LATEST_GUARD) $(EXPORT_DIR)/%.raw_html $(SITEMAP_SECO
 		target '$(TARGET)' \
 		content '$<' \
 		base_path '../' \
-	< $(SITEMAP_PATH) \
+	< $(word 2,$^) \
 	> $@
 
 # final book index, depends dependency file which adds its dependencies
 # only applies for resolved dependencies
-$(EXPORT_DIR)/%.book.html: $(PARSE_PATH_SECONDARY) $(NO_LATEST_GUARD) $$(BOOK_DEP_FILE) $$(BOOK_DEP_INTERMEDIATE) 
+$(EXPORT_DIR)/%.book.html: $(NO_LATEST_GUARD) $(PARSE_PATH_SECONDARY) $(SUBTARGETMAP_SECONDARY) $$(BOOK_DEP_FILE) $$(BOOK_DEP_INTERMEDIATE) 
 	$(eval $(parse_booktarget))
 	$(eval BOOK_UNESCAPED := $(call unescape,$(BOOK)))
 	$(info rendering book index for $(BOOK_UNESCAPED) and linking resources...)
@@ -58,7 +58,6 @@ $(EXPORT_DIR)/%.book.html: $(PARSE_PATH_SECONDARY) $(NO_LATEST_GUARD) $$(BOOK_DE
 		book $(BOOK_UNESCAPED) \
 		subtarget '$(SUBTARGET)' \
 		base_path '.' \
-	< $(SITEMAP_PATH) \
-	> $(basename $<).html
+	< $< > $@
 	@ln -s -f -n $(BASE)/$(ASSET_DIR)/html/html_book_assets $(BOOK_ROOT)/static
 	@ln -s -f -n $(BASE)/$(MEDIA_DIR)/ $(BOOK_ROOT)
