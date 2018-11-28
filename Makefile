@@ -51,8 +51,8 @@ init:
 		mfnf_ex)
 	$(call build_rust_dep,handlebars-cli-rs, \
 		https://github.com/vroland/handlebars-cli-rs, \
-		87335348d504c14ecfa943e9ffcef0477e41a451, \
-		handlebars-cli-rs,mediawiki,mfnf)
+		52fd6dbb01ddf67747c37f4d7d17cfc70e2548bd, \
+		handlebars-cli-rs,mediawiki)
 	$(call build_rust_dep,mfnf-sitemap-parser, \
 		https://github.com/vroland/mfnf-sitemap-parser, \
 		505bf6f0f9e4684a6c11d6b948140fc7a34e2924, \
