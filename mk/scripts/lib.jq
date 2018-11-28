@@ -38,6 +38,7 @@ def exclude_chapters:
     del(.parts[] | select(.chapters == []));
 
 # generate a makefile specifying the dependencies for a book
+# from the sutarget map
 def generate_book_deps:
     # check if the given target is known
     if (targets | index($target) == null) then 
@@ -45,8 +46,6 @@ def generate_book_deps:
     else . end |
     # output empty dependencies for no-dependency targets
     if (no_dep_targets | index($target) != null) then empty else . end |
-    # delete excluded chapters
-    exclude_chapters |
     # produce target-independent dependencies
     (.parts[] | .chapters[] | $prefix + (.path | escape_make) + "/" + .revision) |
     $book_dep_target + ": " + . + ".section-dep",
