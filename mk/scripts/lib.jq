@@ -56,11 +56,13 @@ def generate_book_deps:
     $book_dep_target + ": " + . + (target_extensions[$target][] | . );
 
 # extract article markers from the sitemap for an article,
-# substituting the subtarget name by "target.subtarget".
+# substituting the subtarget name by "current".
 def article_markers:
     .parts[] | .chapters[] | select(.path==($article | unescape_make)) | .markers
-	| (.exclude.subtargets[] | .name) |= ($target + "." + .)
-	| (.include.subtargets[] | .name) |= ($target + "." + .);
+    | del(.exclude.subtargets[] | select(.name != $subtarget)) 
+    | del(.include.subtargets[] | select(.name != $subtarget)) 
+	| (.exclude.subtargets[] | .name) |= "current"
+	| (.include.subtargets[] | .name) |= "current";
 
 # replace "latest" in chapter revision with the current revision,
 # revisions are given by $revisions

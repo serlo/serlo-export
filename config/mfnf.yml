@@ -63,7 +63,14 @@ targets:
   # extracts anchors (link targets) from articles
   anchors:
     Anchors: {}
-       
+
+  # normalize articles
+  normalize:
+    Normalize: {}
+
+  # compose articles
+  compose:
+    Compose: {}
 
   # stats targets for lints and more
   stats.verbose:

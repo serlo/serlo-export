@@ -22,6 +22,8 @@ ARTICLE_BOOK_REVISION := dummy
 OUTPUT_DIRS := $(ARTICLE_DIR) $(MEDIA_DIR) $(SECTION_DIR) $(EXPORT_DIR) $(DOCS_DIR)
 TEMP_FILES := $(REVISION_LOCK_FILE)
 
+.SECONDARY:
+.DELETE_ON_ERROR:
 .SECONDEXPANSION:
 
 include $(MK)/utils.mk
@@ -47,7 +49,7 @@ init:
 		mwtoast)
 	$(call build_rust_dep,mfnf-export, \
 		https://github.com/vroland/mfnf-export, \
-		f2d55a4c012b1c4f57c532cbf5a56ed14764d987, \
+		1775f70f87e40a7b26c6d923beae4d9cabeb4922, \
 		mfnf_ex)
 	$(call build_rust_dep,handlebars-cli-rs, \
 		https://github.com/vroland/handlebars-cli-rs, \
@@ -55,7 +57,7 @@ init:
 		handlebars-cli-rs,mediawiki)
 	$(call build_rust_dep,mfnf-sitemap-parser, \
 		https://github.com/vroland/mfnf-sitemap-parser, \
-		505bf6f0f9e4684a6c11d6b948140fc7a34e2924, \
+		4d8002c6d9d7e1addda2bee3ea9514d19271ce6d, \
 		parse_bookmap)
 	$(call build_rust_dep,mwlint, \
 		https://github.com/vroland/mwlint, \
@@ -85,5 +87,3 @@ clean_all:
 	git clean -ffdx
 
 .PHONY: clean clean_all init doc
-.SECONDARY:
-.DELETE_ON_ERROR:

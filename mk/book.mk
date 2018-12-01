@@ -18,7 +18,6 @@ BOOK_DEP_FILES := $(sort $(foreach P,$\
 	$(info parsing sitemap and resolving revisions for $(BOOK)...)
 	@$(MK)/bin/parse_bookmap \
 		--input $< \
-		--texvccheck-path $(MK)/bin/texvccheck \
 	> $@
 	@jq '.parts[] | .chapters[] | .path' $@ \
 		| xargs -n1 --max-procs=1 -I {} \
@@ -56,6 +55,7 @@ $(EXPORT_DIR)/%.markers: $(SUBTARGETMAP_SECONDARY)
 	$(info extracting markers for $(ARTICLE)...)
 	@jq 'import "mk/scripts/lib" as lib; lib::article_markers' -c \
 		--arg target '$(TARGET)' \
+		--arg subtarget '$(SUBTARGET)' \
 		--arg article '$(ARTICLE)' $< > $@
 
 # concatenate the supplied anchors of all articles

@@ -4,45 +4,45 @@ $(EXPORT_DIR)/%.section-dep: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers
 	$(eval $(parse_booktarget))
 	$(info generating section dependencies for '$(ARTICLE)'...)
 	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
-		--title '$(ARTICLE)' \
-		--revision '$(ARTICLE_REVISION)' \
+		section-deps \
+		-- \
 		--markers '$(word 2,$^)' \
-		--base-path '$(BOOK_ROOT)/$(ARTICLE)/' \
+		--base-file '$(EXPORT_DIR)/$*.sections' \
 		--section-path '$(SECTION_DIR)/' \
-		--texvccheck-path $(MK)/bin/texvccheck \
-		section-deps $(TARGET).$(SUBTARGET) \
-		< $< \
-		> $@
+		< $< > $@
 
-$(EXPORT_DIR)/%.media-dep: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers $(EXPORT_DIR)/%.sections
+# generate the final article source tree (with included sections and excluded headings)
+$(EXPORT_DIR)/%.composed.json: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers $(EXPORT_DIR)/%.sections
+	$(eval $(parse_booktarget))
+	$(info composing '$(ARTICLE)'...)
+	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
+		compose \
+		-- \
+		--markers '$(word 2,$^)' \
+		--section-path '$(SECTION_DIR)/' \
+		< $< > $@
+
+$(EXPORT_DIR)/%.media-dep: $(EXPORT_DIR)/%.composed.json 
 	$(eval $(parse_booktarget))
 	$(info generating media dependencies for '$(ARTICLE)'...)
 	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
-		--title '$(ARTICLE)' \
-		--revision '$(ARTICLE_REVISION)' \
-		--markers '$(word 2,$^)' \
-		--base-path '$(BOOK_ROOT)/$(ARTICLE)/' \
-		--section-path '$(SECTION_DIR)/' \
 		--media-path '$(MEDIA_DIR)' \
-		--texvccheck-path $(MK)/bin/texvccheck \
-		media-deps $(TARGET).$(SUBTARGET) \
-		< $< \
-		> $@
+		media-deps \
+		-- \
+		$(TARGET).$(SUBTARGET) \
+		--base-file '$(EXPORT_DIR)/$*.media' \
+		< $< > $@
 
 # extracts the reference anchors (link targets) provided by an article.
-$(EXPORT_DIR)/%.anchors: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers $(EXPORT_DIR)/%.sections
+$(EXPORT_DIR)/%.anchors: $(EXPORT_DIR)/%.composed.json 
 	$(eval $(parse_booktarget))
 	$(eval UNESCAPED := $(call unescape,$(ARTICLE)))
 	$(info generating reference anchors for $(UNESCAPED)...)
 	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
 		--title $(UNESCAPED) \
 		--revision '$(ARTICLE_REVISION)' \
-		--markers '$(word 2,$^)' \
-		--section-path '$(SECTION_DIR)/' \
-		--texvccheck-path $(MK)/bin/texvccheck \
 		anchors $(TARGET).$(SUBTARGET) \
-		< $< \
-		> $@
+		< $< > $@
 	
 # generate files from article tree serialization 
 # $(ALL_ANCHORS) must be defined before this file is loaded
@@ -50,11 +50,10 @@ $(EXPORT_DIR)/%.anchors: $(ORIGIN_SECONDARY) $(EXPORT_DIR)/%.markers $(EXPORT_DI
 $(EXPORT_DIR)/%.stats.yml $(EXPORT_DIR)/%.tex $(EXPORT_DIR)/%.raw_html: \
 	$(PARSE_PATH_SECONDARY) \
 	$(NO_LATEST_GUARD) \
-	$(ORIGIN_SECONDARY) $(ALL_ANCHORS_SECONDARY) $$(BOOK_DEP_FILE) \
-	$(EXPORT_DIR)/%.markers \
+	$(EXPORT_DIR)/%.composed.json \
+   	$(ALL_ANCHORS_SECONDARY) $$(BOOK_DEP_FILE) \
 	$(EXPORT_DIR)/%.media-dep \
 	$(EXPORT_DIR)/%.section-dep \
-	$(EXPORT_DIR)/%.sections \
 	$(EXPORT_DIR)/%.media \
 
 	$(eval $(parse_booktarget))
@@ -63,11 +62,7 @@ $(EXPORT_DIR)/%.stats.yml $(EXPORT_DIR)/%.tex $(EXPORT_DIR)/%.raw_html: \
 	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
 		--title $(UNESCAPED) \
 		--revision '$(ARTICLE_REVISION)' \
-		--markers '$(word 4,$^)' \
-		--section-path '$(SECTION_DIR)/' \
 		--media-path '$(MEDIA_DIR)' \
 		--available-anchors '$(word 2,$^)' \
-		--texvccheck-path $(MK)/bin/texvccheck \
 		$(TARGET).$(SUBTARGET) \
-		< $< \
-		> $@
+		< $< > $@
