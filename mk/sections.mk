@@ -14,14 +14,13 @@ $(SECTION_DIR)/%.json: $(PARSE_SECTION_TARGET) $(SECTION_NO_LATEST_GUARD) \
 	$$(ARTICLE_DIR)/$$(ARTICLE)/$$(ARTICLE_REVISION).json | $(SECTION_DIR)
 	
 	$(eval $(PARSE_SECTION_TARGET))
-	$(info extracting sections from $(ARTICLE)...)
+	$(eval SECTION_UNESCAPED := $(call unescape,$(SECTION)))
+	$(info extracting section $(SECTION_UNESCAPED) from $(ARTICLE)...)
 	@$(call create_directory,$(SECTION_DIR)/$(ARTICLE)/$(SECTION))
 	@$(MK)/bin/mfnf_ex --config $(BASE)/config/mfnf.yml \
 		sections \
 		-- \
-		$(ARTICLE) \
-		$(call unescape,$(SECTION)) \
-		$(ARTICLE_REVISION) \
+		$(SECTION_UNESCAPED) \
 		< $< > $@
 
 $(SECTION_DIR):
