@@ -39,9 +39,9 @@ $(EXPORT_DIR)/%.anchors: $(EXPORT_DIR)/%.composed.json
 	$(eval UNESCAPED := $(call unescape,$(ARTICLE)))
 	$(info generating reference anchors for $(UNESCAPED)...)
 	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
-		--title $(UNESCAPED) \
-		--revision '$(ARTICLE_REVISION)' \
-		anchors $(TARGET).$(SUBTARGET) \
+		anchors \
+		-- \
+		$(UNESCAPED) \
 		< $< > $@
 	
 # generate files from article tree serialization 
