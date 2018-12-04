@@ -7,8 +7,7 @@ $(ARTICLE_DIR)/%.raw.json: $(ARTICLE_DIR)/%.md
 $(ARTICLE_DIR)/%.json: $(ARTICLE_DIR)/%.raw.json
 	$(info normalizing $(word 2,$(call dirsplit,$@)))
 	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
-		normalize \
-		-- \
+		default normalize \
 		--texvccheck-path $(MK)/bin/texvccheck \
 		< $< > $@
 

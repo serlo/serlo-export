@@ -17,9 +17,8 @@ $(SECTION_DIR)/%.json: $(PARSE_SECTION_TARGET) $(SECTION_NO_LATEST_GUARD) \
 	$(eval SECTION_UNESCAPED := $(call unescape,$(SECTION)))
 	$(info extracting section $(SECTION_UNESCAPED) from $(ARTICLE)...)
 	@$(call create_directory,$(SECTION_DIR)/$(ARTICLE)/$(SECTION))
-	@$(MK)/bin/mfnf_ex --config $(BASE)/config/mfnf.yml \
-		sections \
-		-- \
+	@$(MK)/bin/mfnf_ex --config-file $(BASE)/config/mfnf.yml \
+		default sections \
 		$(SECTION_UNESCAPED) \
 		< $< > $@
 

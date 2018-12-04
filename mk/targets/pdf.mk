@@ -18,9 +18,8 @@ $(EXPORT_DIR)/%.pdfopts.json:
 	$(eval $(parse_booktarget))
 	$(info writing pdf options for book '$(BOOK)'...)
 	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
-		--title $(BOOK) \
-		--revision $(BOOK_REVISION) \
-	$(TARGET).$(SUBTARGET) < $(MK)/artifacts/dummy.json > $@
+		$(SUBTARGET) pdf $(BOOK) $(BOOK_REVISION) \
+	< $(MK)/artifacts/dummy.json > $@
 
 $(EXPORT_DIR)/%.book.pdf.tex: $(EXPORT_DIR)/%.pdfopts.json $(PARSE_PATH_SECONDARY)  $$(LATEX_BOOK)
 	
@@ -54,9 +53,8 @@ $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.article.opts.json:
 	$(eval $(parse_booktarget))
 	$(info writing export options for '$(ARTICLE)'...) 
 	@$(MK)/bin/mfnf_ex -c $(BASE)/config/mfnf.yml \
-		--title $(ARTICLE) \
-		--revision $(ARTICLE_REVISION) \
-	$(TARGET).$(SUBTARGET) < $(MK)/artifacts/dummy.json > $@
+		$(SUBTARGET) pdf $(ARTICLE) $(ARTICLE_REVISION) \
+	< $(MK)/artifacts/dummy.json > $@
 	
 $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.article.tex: $(EXPORT_DIR)/$(ARTICLE_BOOK)/%.article.opts.json $(PARSE_PATH_SECONDARY) $$(EXPORT_DIR)/$$(ARTICLE_BOOK)/$$(BOOK_REVISION)/latex/$$(SUBTARGET)/$$(ARTICLE)/$$(ARTICLE_REVISION).tex
 	
