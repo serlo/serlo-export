@@ -20,7 +20,8 @@ The image blow shows the (simplified) dependency graph for a single article:
 Where:
 
 * __article source (`.md`)__: WikiText source code of the article.
-* __intermediate representation (`.json`)__: Post-processed abstract syntax tree of the article.
+* __parsed article (`.raw.json`)__: Raw parser result of the article.
+* __intermediate representation (`.json`)__: Post-processed (normalized) abstract syntax tree of the article.
 * __article markers (`.markers`)__: Describes the article in the context of a book (see [Concepts](./concepts.md)). When exporting only a single article, this is just a dummy. But for a whole book, some parts of the article could be excluded, which may change which sections or images are included. Thus, the whole subsequent export is dependent on this file.
 * __section dependencies (`section_dep`)__: A makefile defining the intermediate `.sections` target, which has all sections included in this article as prerequisites.
 * __media dependencies (`media_dep`)__: Like `.section_dep`, but for included media files. Since included sections may in turn include new media files, this depends on `.sections`. Defines the intermediate target `.media`.

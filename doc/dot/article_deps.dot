@@ -1,42 +1,58 @@
 digraph article_dependencies {
-    compound=true;
     // enable new ranking algorithm
     newrank=true;
     ranksep=.4;
+ 
+    pre_media [style=invis];
     the_media [label="media files used in article\n(.svg, .webm, ...)"];
-    the_sections [label="fragments of other articles\n(.json)"];
-    md [label="article source (.md)"];
-    json [label="intermediate representation\n(.json)"];
+
+    pre_markers [style=invis];
     markers [label="article marker dummy\n(.markers)"]; 
 
+    pre_sections [style=invis];
+    sections [label="sections intermediate target\n(.sections)", fillcolor=grey, style=filled];
+    section_dep [label="section dependencies\n(.section-dep)", shape=box];
+    the_sections [label="fragments of other articles\n(.json)"];
 
-    subgraph cluster_int { 
-        sections [label="sections intermediate target\n(.sections)", fillcolor=grey, style=filled];
-        section_dep [label="section dependencies\n(.section-dep)", shape=box];
-        media [label="media intermediate target\n(.media)", fillcolor=grey, style=filled];
-        media_dep [label="media dependencies\n(.media-dep)", shape=box];
+    md [label="article source (.md)"];
+    raw_json [label="parsed article\n(.raw.json)"];
+    json [label="intermediate representation\n(.json)"];
+    composed [label="intermediate representation\nfor complete article (.composed.json)"] 
 
-        section_dep -> sections [label="defines", style=dotted];
-        sections -> media_dep;
-        media_dep -> media [label="defines", style=dotted];
-    }
+    pre_markers -> markers [label="extract from sitemap"];
 
-    subgraph cluster_build {
-        anchors [label="reference anchors\n(.anchors)"];
-        result [label="exported article\n(.tex, .raw_html, ...)"];
+    section_dep -> sections [label="defines", style=dotted];
+    json -> section_dep;
+    markers -> section_dep;
+    json -> composed;
+    sections -> composed;
+    markers -> composed;
+    
+    media [label="media intermediate target\n(.media)", fillcolor=grey, style=filled];
+    media_dep [label="media dependencies\n(.media-dep)", shape=box];
 
-        anchors -> result;
-        media -> result;
-    }
+    composed -> media_dep;
+    media_dep -> media [label="defines", style=dotted];
 
+    anchors [label="reference anchors\n(.anchors)"];
+    result [label="exported article\n(.tex, .raw_html, ...)"];
+
+
+    composed -> result;
+    composed -> anchors;
+    anchors -> result;
+    media -> result;
+
+    pre_media -> the_media [label="download"];
+    pre_sections -> the_sections [label="extract from\nother articles"];
     {rank=same; the_media -> media};
-    {rank=same; the_sections -> sections};
+    {rank=same; sections -> the_sections [dir=back]} ;
 
-    md -> json;
-    json -> section_dep [lhead=cluster_int];
-    markers -> section_dep [lhead=cluster_int];
+    md -> raw_json [label="parse"];
+    raw_json -> json [label="normalize"];
+    
 
-    json -> anchors [lhead=cluster_build];
-    markers -> anchors [lhead=cluster_build];
-    sections -> anchors [lhead=cluster_build];
+    //json -> anchors;
+    //markers -> anchors;
+    //sections -> anchors;
 }

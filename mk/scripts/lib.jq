@@ -1,6 +1,13 @@
 
 # list of known targets
 def targets: ["html", "latex", "pdf", "stats"];
+# extensions of the result files for each target
+def target_extensions: {
+    "html": [".html"],
+    "stats": [".stats.yml", ".lints.yml"],
+    "latex": [".tex"]
+};
+
 # list of targets which do not have book dependencies
 def no_dep_targets: ["pdf"];
 
@@ -17,13 +24,6 @@ def make_substitutions: {
     "$": "@DOLLAR@",
     "#": "@SHARP@",
     "%": "@PERC@"
-};
-
-# extensions of the result files for each target
-def target_extensions: {
-    "html": [".html"],
-    "stats": [".stats.yml", ".lints.yml"],
-    "latex": [".tex"]
 };
 
 # escape / unescape file paths for make
