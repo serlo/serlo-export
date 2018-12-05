@@ -8,6 +8,7 @@ digraph book_dependencies {
     sitemap_parsed [label="parsed sitemap\narticle (.raw.json)"];
     sitemap_intermediate [label="sitemap intermediate\nrepresentation (.json)"];
     sitemap [label="sitemap (.sitemap.json)"];
+    subtargetmap [label="subtargetmap (.subtargetmap.json)"];
     book_deps [label="book dependency file (.book.dep)", shape=box];
     book_dependencies [label="book dependencies (.book.dependencies)"];
     book_anchors [label="book anchors (.anchors)"];
@@ -15,13 +16,12 @@ digraph book_dependencies {
     article_deps [label="other article dependencies\n(article source, sections, media, ...)"];
     result [label="book export result\n(.book.tex, .book.html, ...)"];
 
-    sitemap_article -> sitemap_parsed -> sitemap_intermediate -> sitemap; 
-    sitemap -> book_deps;
+    sitemap_article -> sitemap_parsed -> sitemap_intermediate -> sitemap -> subtargetmap; 
+    subtargetmap -> book_deps;
     book_deps -> book_dependencies [label="defines", style=dotted];
     the_articles -> book_dependencies;
     the_anchors -> book_anchors -> the_articles;
-    sitemap -> book_anchors;
-    sitemap -> the_markers;
+    subtargetmap -> the_markers;
     the_markers -> omitted [lhead=cluster_articles];
     article_deps -> omitted [lhead=cluster_articles];
     book_dependencies -> result;
