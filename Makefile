@@ -49,7 +49,7 @@ init:
 		mwtoast)
 	$(call build_rust_dep,mfnf-export, \
 		https://github.com/vroland/mfnf-export, \
-		916ab674795ad28e82e1e60d3e658fc739f82f24, \
+		c4a905eb16233e9ede5dac62ae79de19335a6570, \
 		mfnf_ex)
 	$(call build_rust_dep,handlebars-cli-rs, \
 		https://github.com/vroland/handlebars-cli-rs, \
@@ -61,7 +61,7 @@ init:
 		parse_bookmap)
 	$(call build_rust_dep,mwlint, \
 		https://github.com/vroland/mwlint, \
-		6ffa2fde393a90a3fbcc84e156adb1e419d162fe, \
+		bc21869b4ce9550a8a709b395c4a8fba66406e4c, \
 		mwlint)
 	$(call git_clone,extension-math, \
 		https://phabricator.wikimedia.org/diffusion/EMAT/extension-math.git)

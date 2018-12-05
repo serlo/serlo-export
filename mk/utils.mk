@@ -2,6 +2,8 @@
 space :=
 space +=
 
+colon := :
+
 create_directory = mkdir -p '$(strip $1)'
 
 remove_file = rm -rf '$(strip $1)'

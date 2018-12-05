@@ -4,7 +4,7 @@ def targets: ["html", "latex", "pdf", "stats"];
 # extensions of the result files for each target
 def target_extensions: {
     "html": [".html"],
-    "stats": [".stats.yml", ".lints.yml"],
+    "stats": [".stats.json"],
     "latex": [".tex"]
 };
 
@@ -69,3 +69,24 @@ def article_markers:
 def fill_sitemap_revisions:
     (.parts[] | .chapters[] | select(.revision=="latest"))
         |= (.revision=$revisions.articles[(.path | gsub(" ";"_"))]);
+
+# extract some stats from the linter output of an article.
+def lint_stats:
+    reduce .[] as $item ({"kind": {}, "severity": {}, "lints_total": 0}; 
+        (.kind[$item.kind] += 1)
+        | (.severity[$item.severity] += 1)
+        | (.lints_total += 1)
+    );
+
+def walk(f):
+    . as $in
+    | if type == "object" then
+        reduce keys[] as $key
+        ( {}; . + { ($key):  ($in[$key] | walk(f)) } ) | f
+    elif type == "array" then map( walk(f) ) | f
+    else f
+    end;
+
+def addmerge(o):
+    reduce (o | paths(type != "object" and type != "string")) as $path (.;
+        getpath($path) += (o | getpath($path)));

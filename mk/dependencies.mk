@@ -43,7 +43,7 @@ $(EXPORT_DIR)/%.anchors: $(EXPORT_DIR)/%.composed.json
 # generate files from article tree serialization 
 # $(ALL_ANCHORS) must be defined before this file is loaded
 # and points to a file containing a list of all available anchors in the export.
-$(EXPORT_DIR)/%.stats.yml $(EXPORT_DIR)/%.tex $(EXPORT_DIR)/%.raw_html: \
+$(EXPORT_DIR)/%.rawstats.json $(EXPORT_DIR)/%.tex $(EXPORT_DIR)/%.raw_html: \
 	$(PARSE_PATH_SECONDARY) \
 	$(NO_LATEST_GUARD) \
 	$(EXPORT_DIR)/%.composed.json \
