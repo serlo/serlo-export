@@ -19,11 +19,13 @@ $(EXPORT_DIR)/%.stats.html: $(EXPORT_DIR)/%.stats.json $(NO_LATEST_GUARD)
 	$(eval UNESCAPED := $(call unescape,$(ARTICLE)))
 	$(info rendering article stats for $(UNESCAPED)...)
 	@$(MK)/bin/handlebars-cli-rs \
-		--input $(ASSET_DIR)/stats/article_stats.html \
-		--data '$<' \
+		--base-templates '$(ASSET_DIR)/stats/article.html' '$(ASSET_DIR)/stats/stat_table.hbs' \
+		--input $(ASSET_DIR)/stats/base.html \
 		article $(UNESCAPED) \
+		document $(UNESCAPED) \
 		revision $(ARTICLE_REVISION) \
-	> $@
+		content 'article.html' \
+	< $< > $@
 
 $(EXPORT_DIR)/%.book.stats.json: $(EXPORT_DIR)/%.subtargetmap.json $(PARSE_PATH_SECONDARY) $$(BOOK_DEP_FILE) $$(BOOK_DEP_INTERMEDIATE) $(NO_LATEST_GUARD)
 	$(info collecting stats for book '$(BOOK)' from articles...)
@@ -40,11 +42,13 @@ $(EXPORT_DIR)/%.book.stats.html: $(EXPORT_DIR)/%.book.stats.json $(NO_LATEST_GUA
 	$(eval UNESCAPED := $(call unescape,$(BOOK)))
 	$(info rendering stats for book $(UNESCAPED)...)
 	@$(MK)/bin/handlebars-cli-rs \
-		--input $(ASSET_DIR)/stats/stats.html \
-		--data $< \
+		--base-templates '$(ASSET_DIR)/stats/book.html' '$(ASSET_DIR)/stats/stat_table.hbs' \
+		--input $(ASSET_DIR)/stats/base.html \
 		book $(UNESCAPED) \
+		document $(UNESCAPED) \
 		book_revision $(BOOK_REVISION) \
-	> $@
+		content 'book.html' \
+	< $< > $@
 
 # combine lint stats and article stats
 $(EXPORT_DIR)/%.stats.json: $(NO_LATEST_GUARD) $(EXPORT_DIR)/%.rawstats.json $(EXPORT_DIR)/%.lints.json
