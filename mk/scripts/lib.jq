@@ -88,5 +88,4 @@ def walk(f):
     end;
 
 def addmerge(o):
-    reduce (o | paths(type != "object" and type != "string")) as $path (.;
-        getpath($path) += (o | getpath($path)));
+    reduce (o | paths(type != "object" and type != "string")) as $i (.;setpath($i; getpath($i) + (o | getpath($i))));
