@@ -1,76 +1,61 @@
 ---
 targets:
-  latex.verbose:
-    Latex:
-      centered_image_captions: true
-      with_todo: true
-      environment_numbers: true
-  latex.all:
-    Latex: {}
-  latex.print:
-    Latex:
-      with_noprint: false
-  latex.print_wideprint:
-    Latex:
-      with_noprint: false
-  latex.minimal:
-    Latex: {}
+  # export everything, including information like todo and verbose captions
+  verbose:
+    - Latex:
+        centered_image_captions: true
+        with_todo: true
+        environment_numbers: true
+    - PDF: 
+        page_width: 148
+        page_height: 210
+    - HTML:
+        with_todo: true
+    - Stats: {}
 
-  pdf.verbose:
-    PDF: 
-      page_width: 148
-      page_height: 210
-  pdf.all:
-    PDF: 
-      page_width: 148
-      page_height: 210
-  pdf.minimal:
-     PDF: 
-      page_width: 148
-      page_height: 210   
-  pdf.print:
-    PDF:
-      page_width: 148
-      page_height: 210
+  # include everything
+  all:
+    - Latex: {}
+    - PDF: 
+        page_width: 148
+        page_height: 210 
+    - HTML: {}
+    - Stats: {}
+
+  # suitable for print, excluding some exercises or illustratory examples
+  print:
+    - Latex:
+        with_noprint: false
+    - PDF:
+        page_width: 148
+        page_height: 210
+    - HTML:
+        hoist_thumbnails: true
+    - Stats: {}
+ 
   # like print, but in wideprint format
-  pdf.print_wideprint:
-    PDF:
-      page_trim: 10
-      page_width: 155
-      page_height: 235
+  print_wideprint:
+    - Latex:
+        with_noprint: false
+    - PDF:
+        page_trim: 10
+        page_width: 155
+        page_height: 235
+ 
+  # a minimal book 
+  minimal:
+    - Latex: {}
+    - PDF: 
+        page_width: 148
+        page_height: 210
+    - HTML: {}
+    - Stats: {}
 
-  html.verbose:
-    HTML:
-      with_todo: true
-  html.all:
-    HTML: {}
-  html.print:
-    HTML:
-      hoist_thumbnails: true
-  html.minimal:
-    HTML: {}
-
-  # generates dependencies for articles
-  section-deps:
-    SectionDeps: {}
-  media-deps:
-    MediaDeps: {}
-
-  # extracts <section>s from articles
-  sections:
-    Sections: {}
-
-  # extracts anchors (link targets) from articles
-  anchors:
-    Anchors: {}
-       
-
-  # stats targets for lints and more
-  stats.verbose:
-    Stats: {}
-  stats.all:
-    Stats: {}
-  stats.print:
-    Stats: {}
-  stats.minimal:
-    Stats: {}
+  # targets which do not deviate from the default
+  default:
+    - SectionDeps: {}
+    - MediaDeps: {}
+    - Sections: {}
+    - Anchors: {}
+    - Normalize: {}
+    - Compose: {}

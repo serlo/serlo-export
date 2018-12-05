@@ -1,0 +1,17 @@
+
+<article>
+    <h1>Stats for {{book}} (<a href="https://de.wikibooks.org/w/index.php?title={{book}}&oldid={{book_revision}}">{{book_revision}}</a>)</h1>
+    <section>
+        <h2>Total:</h2>
+        {{> stat_table.hbs}}
+    </section>
+    <section>
+        <h2>By Article:</h2>
+        {{#each articles}}
+        <section>
+            <h3>{{name}} (<a href="https://de.wikibooks.org/w/index.php?title={{name}}&oldid={{revision}}">{{revision}}</a>)</h3>
+                {{> stat_table.hbs}}
+        </section>
+        {{/each}}
+    </section>
+</article>

@@ -1,6 +1,13 @@
 
 # list of known targets
 def targets: ["html", "latex", "pdf", "stats"];
+# extensions of the result files for each target
+def target_extensions: {
+    "html": [".html"],
+    "stats": [".stats.json"],
+    "latex": [".tex"]
+};
+
 # list of targets which do not have book dependencies
 def no_dep_targets: ["pdf"];
 
@@ -19,13 +26,6 @@ def make_substitutions: {
     "%": "@PERC@"
 };
 
-# extensions of the result files for each target
-def target_extensions: {
-    "html": [".html"],
-    "stats": [".stats.yml", ".lints.yml"],
-    "latex": [".tex"]
-};
-
 # escape / unescape file paths for make
 def escape_make: 
     reduce (make_substitutions | keys | .[]) as $item (.; . = (. | gsub("[" + $item + "]";make_substitutions[$item])));
@@ -38,6 +38,7 @@ def exclude_chapters:
     del(.parts[] | select(.chapters == []));
 
 # generate a makefile specifying the dependencies for a book
+# from the sutarget map
 def generate_book_deps:
     # check if the given target is known
     if (targets | index($target) == null) then 
@@ -45,8 +46,6 @@ def generate_book_deps:
     else . end |
     # output empty dependencies for no-dependency targets
     if (no_dep_targets | index($target) != null) then empty else . end |
-    # delete excluded chapters
-    exclude_chapters |
     # produce target-independent dependencies
     (.parts[] | .chapters[] | $prefix + (.path | escape_make) + "/" + .revision) |
     $book_dep_target + ": " + . + ".section-dep",
@@ -57,14 +56,37 @@ def generate_book_deps:
     $book_dep_target + ": " + . + (target_extensions[$target][] | . );
 
 # extract article markers from the sitemap for an article,
-# substituting the subtarget name by "target.subtarget".
+# substituting the subtarget name by "current".
 def article_markers:
     .parts[] | .chapters[] | select(.path==($article | unescape_make)) | .markers
-	| (.exclude.subtargets[] | .name) |= ($target + "." + .)
-	| (.include.subtargets[] | .name) |= ($target + "." + .);
+    | del(.exclude.subtargets[] | select(.name != $subtarget)) 
+    | del(.include.subtargets[] | select(.name != $subtarget)) 
+	| (.exclude.subtargets[] | .name) |= "current"
+	| (.include.subtargets[] | .name) |= "current";
 
 # replace "latest" in chapter revision with the current revision,
 # revisions are given by $revisions
 def fill_sitemap_revisions:
     (.parts[] | .chapters[] | select(.revision=="latest"))
         |= (.revision=$revisions.articles[(.path | gsub(" ";"_"))]);
+
+# extract some stats from the linter output of an article.
+def lint_stats:
+    reduce .[] as $item ({"kind": {}, "severity": {}, "lints_total": 0}; 
+        (.kind[$item.kind] += 1)
+        | (.severity[$item.severity] += 1)
+        | (.lints_total += 1)
+    );
+
+def walk(f):
+    . as $in
+    | if type == "object" then
+        reduce keys[] as $key
+        ( {}; . + { ($key):  ($in[$key] | walk(f)) } ) | f
+    elif type == "array" then map( walk(f) ) | f
+    else f
+    end;
+
+def addmerge(o):
+    reduce (o | paths(type != "object" and type != "string")) as $path (.;
+        getpath($path) += (o | getpath($path)));

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    table.stat-table {
+        background-color: #FFFFFF;
+        width: 100%;
+        text-align: left;
+        border-collapse: collapse;
+    }
+    table.stat-table td, table.stat-table th {
+        border: 1px solid #AAAAAA;
+    }
+    table.stat-table tr:nth-child(even) {
+        background: #E0E0E0;
+    }
+    article {
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+  </style>
+
+  <title>Stats for {{document}}</title>
+</head>
+
+<body>
+    {{> (content)}}
+</body>
+
+</html>

@@ -22,6 +22,8 @@ ARTICLE_BOOK_REVISION := dummy
 OUTPUT_DIRS := $(ARTICLE_DIR) $(MEDIA_DIR) $(SECTION_DIR) $(EXPORT_DIR) $(DOCS_DIR)
 TEMP_FILES := $(REVISION_LOCK_FILE)
 
+.SECONDARY:
+.DELETE_ON_ERROR:
 .SECONDEXPANSION:
 
 include $(MK)/utils.mk
@@ -47,19 +49,19 @@ init:
 		mwtoast)
 	$(call build_rust_dep,mfnf-export, \
 		https://github.com/vroland/mfnf-export, \
-		f2d55a4c012b1c4f57c532cbf5a56ed14764d987, \
+		c4a905eb16233e9ede5dac62ae79de19335a6570, \
 		mfnf_ex)
 	$(call build_rust_dep,handlebars-cli-rs, \
 		https://github.com/vroland/handlebars-cli-rs, \
-		87335348d504c14ecfa943e9ffcef0477e41a451, \
-		handlebars-cli-rs,mediawiki,mfnf)
+		52fd6dbb01ddf67747c37f4d7d17cfc70e2548bd, \
+		handlebars-cli-rs,mediawiki)
 	$(call build_rust_dep,mfnf-sitemap-parser, \
 		https://github.com/vroland/mfnf-sitemap-parser, \
-		505bf6f0f9e4684a6c11d6b948140fc7a34e2924, \
+		4d8002c6d9d7e1addda2bee3ea9514d19271ce6d, \
 		parse_bookmap)
 	$(call build_rust_dep,mwlint, \
 		https://github.com/vroland/mwlint, \
-		6ffa2fde393a90a3fbcc84e156adb1e419d162fe, \
+		bc21869b4ce9550a8a709b395c4a8fba66406e4c, \
 		mwlint)
 	$(call git_clone,extension-math, \
 		https://phabricator.wikimedia.org/diffusion/EMAT/extension-math.git)
@@ -85,5 +87,3 @@ clean_all:
 	git clean -ffdx
 
 .PHONY: clean clean_all init doc
-.SECONDARY:
-.DELETE_ON_ERROR:

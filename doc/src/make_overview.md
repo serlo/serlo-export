@@ -20,8 +20,9 @@ The image blow shows the (simplified) dependency graph for a single article:
 Where:
 
 * __article source (`.md`)__: WikiText source code of the article.
-* __intermediate representation (`.json`)__: Post-processed abstract syntax tree of the article.
-* __article markers (`.markers`)__: Describes the article in the context of a book (see [Concepts](./concepts.md)). When exporting only a single article, this is just a dummy. But for a whole book, some parts of the article could be excluded, which may change which sections or images are included. Thus, the whole subsequent export is dependent on this file.
+* __parsed article (`.raw.json`)__: Raw parser result of the article.
+* __intermediate representation (`.json`)__: Post-processed (normalized) abstract syntax tree of the article.
+* __article markers (`.markers`)__: Describes the article in the context of a book (see [Concepts](./concepts.md)). When exporting only a single article, this is just a dummy. But for a whole book, some parts of the article could be excluded, which may change which sections or images are included. Thus, the whole subsequent export is dependent on this file. This part is extracted from the sitemap (specifically subtargetmap), with the current subtarget renamed to `current`.
 * __section dependencies (`section_dep`)__: A makefile defining the intermediate `.sections` target, which has all sections included in this article as prerequisites.
 * __media dependencies (`media_dep`)__: Like `.section_dep`, but for included media files. Since included sections may in turn include new media files, this depends on `.sections`. Defines the intermediate target `.media`.
 * __fragments of other articles (`.json`)__: The article fragments included as sections. These, of course depend on the intermediate representation of their origin articles, which is ommited here for clarity. The `.sections`-Target depends on all included sections (article fragments).
@@ -48,6 +49,7 @@ Where:
 * __sitemap article source (`.md`)__: WikiText source code of the sitemap article.
 * __sitemap intermediate representation (`.json`)__: Abstract sytax tree of the sitemap. Until now the sitemap is treated just like any normal article.
 * __sitemap (`.sitemap.json`)__: Special sitemap data structure.
+* __subtargetmap (`.subtargetmap.json`)__: Sitemap with only the information relevant for the current subtarget. 
 * __book dependency file (`.book.dep`)__: A makefile defining the intermediate `.book.dependencies` target, which has all exported articles as prerequisites. 
 * __book anchors (`.anchors`)__: A list of all link targets the book provides. It is build from the `.anchors`-files of the individual articles.
 * __book export results (`.book.tex, .book.html, ...`)__: The final output of the book export.

@@ -40,9 +40,11 @@ ALL_ANCHORS_SECONDARY := $$(if $$(findstring $(EXPORT_DIR)/$(ARTICLE_BOOK)/$(ART
 	$(EXPORT_DIR)/$$(BOOK)/$$(BOOK_REVISION)/$$(TARGET)/$$(SUBTARGET)/$$(BOOK_REVISION).book.anchors$\
 )
 
-# compute the sitemap path from the target
-SITEMAP_SECONDARY := $$(call dirmerge,$$(wordlist 1,3,$$(call dirsplit,$$@)))/$$(word 3,$$(call dirsplit,$$@)).sitemap.json
-SITEMAP_PATH = $(EXPORT_DIR)/$(BOOK)/$(BOOK_REVISION)/$(BOOK_REVISION).sitemap.json
+# compute the bookmap path from the target
+BOOKMAP_SECONDARY := $$(call dirmerge,$$(wordlist 1,3,$$(call dirsplit,$$@)))/$$(word 3,$$(call dirsplit,$$@)).sitemap.json
+
+# compute the subtargetmap path from the target 
+SUBTARGETMAP_SECONDARY := $$(call dirmerge,$$(wordlist 1,5,$$(call dirsplit,$$@)))/$$(word 3,$$(call dirsplit,$$@)).subtargetmap.json
 
 # expands to IMPOSSIBLE if the book revision or the path suffix contains latest
 NO_LATEST_GUARD := $$(filter %.IMPOSSIBLE,$$(subst latest,$$*.IMPOSSIBLE,$$(word 3,$$(call dirsplit,$$@))) $$(subst latest,$$*.IMPOSSIBLE,$$(call filebase,$$@)))

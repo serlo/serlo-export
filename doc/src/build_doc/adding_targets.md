@@ -3,6 +3,8 @@ Adding a new Target
 
 A checklist of things to do when adding a new target format:
 
+
+* Add your target to `targets` and `target_extensions` in `mk/scripts/lib.jq`.
 * Add a new `mk/targets/<target>.mk` makefile. This file should be the entry point when for building books and articles in the new format. Make sure to have a rule for
     1. building a concrete book revision (`$(NO_LATEST_GUARD)`). The resulting file of a book export is named `<revision>.book.<extension>`.
     2. building a book where some revision is `latest` (`$(HAS_LATEST_GUARD)`), you can use `$(TARGET_RESOLVED_REVISION)` to add the concrete latest revision as prerequisite.
@@ -12,4 +14,3 @@ A checklist of things to do when adding a new target format:
 * Add a pattern for your new format (`%.<extension>`) to the appropriate rule in `mk/dependencies.mk`.
 * Add the target to `mfnf_ex` (the mfnf-export tool).
 * Instantiate your target for every subtarget in `config/mfnf.yml`.
-* Add your target to `sitemap_utils` (the mfnf-sitemap-utils tool) for book dependency generation (this may change).

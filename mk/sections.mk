@@ -14,13 +14,13 @@ $(SECTION_DIR)/%.json: $(PARSE_SECTION_TARGET) $(SECTION_NO_LATEST_GUARD) \
 	$$(ARTICLE_DIR)/$$(ARTICLE)/$$(ARTICLE_REVISION).json | $(SECTION_DIR)
 	
 	$(eval $(PARSE_SECTION_TARGET))
-	$(info extracting sections from $(ARTICLE)...)
-	@flock $< $(MK)/bin/mfnf_ex --config $(BASE)/config/mfnf.yml \
-		--title $(ARTICLE) \
-		--revision $(ARTICLE_REVISION) \
-		--section-path $(SECTION_DIR)/$(ARTICLE) \
-		--texvccheck-path $(MK)/bin/texvccheck \
-		sections $(ARTICLE) < $< > /dev/null
+	$(eval SECTION_UNESCAPED := $(call unescape,$(SECTION)))
+	$(info extracting section $(SECTION_UNESCAPED) from $(ARTICLE)...)
+	@$(call create_directory,$(SECTION_DIR)/$(ARTICLE)/$(SECTION))
+	@$(MK)/bin/mfnf_ex --config-file $(BASE)/config/mfnf.yml \
+		default sections \
+		$(SECTION_UNESCAPED) \
+		< $< > $@
 
 $(SECTION_DIR):
 	@$(call create_directory,$(SECTION_DIR))
