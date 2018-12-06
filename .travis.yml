@@ -17,13 +17,15 @@ before_install:
   - sudo apt-get install python3
   - sudo apt-get install python-virtualenv
   - sudo apt-get install moreutils
-  - sudo apt-get install texlive-latex-base
+  - sudo apt-get install texlive-base texlive-lang-german texlive-lang-english texlive-luatex latexmk texlive-latex-recommended texlive-font-utils texlive-fonts-recommended cm-super t1utils texlive-latex-extra texlive-generic-recommended fonts-lmodern texlive-xetex
   - (test -x $HOME/.cargo/bin/cargo-install-update || cargo install cargo-update)
   - (test -x $HOME/.cargo/bin/mdbook || cargo install mdbook)
   - cargo install-update -a
 
 # Command for installing dependencies
-install: 
+install:
+  - curl https://raw.githubusercontent.com/ImageMagick/ImageMagick/b92c2698747fc132ee35ff00e3aab46f4715ca6e/config/policy.xml > policy.xml
+  - sudo mv policy.xml /etc/ImageMagick-6/policy.xml
   - (wget https://ftp.gnu.org/gnu/make/make-4.2.1.tar.gz && tar -xf make-4.2.1.tar.gz && cd make-4.2.1 && ./configure && make && sudo make install)
   - make --version 
   - virtualenv -p python3 venv
@@ -34,10 +36,12 @@ install:
 # Commands for running the tests
 script:
   - make exports/articles/latest/latex/print/Mathe_für_Nicht-Freaks@COLON@_Uneigentliches_Supremum_und_Infimum/839516.tex -j1
+  - make exports/articles/latest/pdf/verbose/Mathe_für_Nicht-Freaks@COLON@_Uneigentliches_Supremum_und_Infimum/839516.pdf -j1
   - make exports/articles/latest/html/all/Mathe_für_Nicht-Freaks@COLON@_Epsilon-Delta-Kriterium_der_Stetigkeit/839108.html -j1
   - make exports/articles/latest/stats/all/Mathe_für_Nicht-Freaks@COLON@_Epsilon-Delta-Kriterium_der_Stetigkeit/latest.stats.html -j10
   - make exports/Benutzer@COLON@Valentin_Roland@SLASH@Analysis_1/latest/html/all/latest.book.html -j
   - make exports/Benutzer@COLON@Valentin_Roland@SLASH@Analysis_1/latest/latex/print/latest.book.tex -j
+  - make exports/Benutzer@COLON@Valentin_Roland@SLASH@Analysis_1/latest/pdf/minimal/latest.book.pdf -j
 
 # deploy documentation to pages
 deploy:
