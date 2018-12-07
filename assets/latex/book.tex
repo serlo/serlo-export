@@ -2,6 +2,8 @@
 
 %\begin{document}
 \includepdf[pages=-]{include/pdf/mfnf_prelude-{{subtarget}}.pdf}
+\ColoredTOC
+\newpage
 {{#each parts}}
     \part{ {{~ this.title ~}} }
     {{~ #each this.chapters ~}}
@@ -12,6 +14,7 @@
         {{/if ~}}
     {{~ /each ~}}
 {{/each}}
-\listoffigures
+\clearpage
+\ColoredLOF
 \includepdf[pages=-]{include/pdf/mfnf_epilogue-{{subtarget}}.pdf}
 %\end{document}
