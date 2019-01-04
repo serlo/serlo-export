@@ -77,7 +77,7 @@ $(MEDIA_DIR)/%.meta: | $(MEDIA_DIR)
 	$(eval IMG_UNESCAPED := $(call unescape,$*))
 	$(eval IMAGE_REVISION := $(call image_revision,$(IMG_UNESCAPED)))
 	$(info fetching metadata of $(IMG_UNESCAPED) ($(IMAGE_REVISION))...)
-	@python $(MK)/scripts/get_image_license.py '$*' '$(IMAGE_REVISION)' > $@
+	@$(MK)/scripts/get_image_license.sh $(IMG_UNESCAPED) '$(IMAGE_REVISION)' > $@
 
 # create the media directory
 # use with | (order-only prerequisite) to ignore timestamp
