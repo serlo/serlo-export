@@ -9,8 +9,6 @@ Installation
 This tool is only tested on linux so far, so these instructions are for linux only. 
 Make sure you have the following software installed:
 
-* python3
-* python3-virtualenv
 * cargo ([rust package manager](https://www.rust-lang.org/en-US/install.html))
 * inkscape
 * qrencode
@@ -21,15 +19,7 @@ Make sure you have the following software installed:
 * convert (by image magick)
 * sed
 
-In the root of this repository, create a new python virtual environment:
-``` sh
-virtualenv -p python3.6 venv
-```
-Source the virtual environment:
-``` sh
-source venv/bin/activate
-```
-Now run the init script. This will install some python libraries in your virtual environments and build some tools needed for article parsing / export. 
+Run the init script. This will build some tools needed for article parsing / export.
 ``` sh
 make init
 ```

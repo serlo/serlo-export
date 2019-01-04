@@ -41,7 +41,6 @@ include $(MK)/targets/stats.mk
 
 init:
 	$(call map,check_dependency,ocamlopt inkscape convert qrencode latex sed jq curl sponge)
-	pip install -r requirements.txt
 	$(call map,create_directory,$(TMP_BIN_DIR) $(MK)/bin)
 	$(call build_rust_dep,mediawiki-peg-rust, \
 		https://github.com/vroland/mediawiki-peg-rust, \

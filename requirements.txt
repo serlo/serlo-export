@@ -1,4 +1,0 @@
-# Requirements for using this project
-requests == 2.18.1
-ruamel.yaml >= 0.15
-
