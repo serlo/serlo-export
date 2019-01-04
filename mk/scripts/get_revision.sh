@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # get the revision of the article from a revision lock file.
 # if it is not currently known, it the latest revision will be fetched 

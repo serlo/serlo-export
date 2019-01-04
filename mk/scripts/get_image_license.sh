@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Download the license of an image from Wikimedia and do some necessary post-processing
 # Arguments:
