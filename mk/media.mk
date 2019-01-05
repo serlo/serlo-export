@@ -69,7 +69,6 @@ $(MEDIA_DIR)/%.svg $(MEDIA_DIR)/%.SVG $(MEDIA_DIR)/%.png \
 
 	$(eval FILENAME := $(notdir $@))
 	$(eval IMG_UNESCAPED := $(call unescape,$(FILENAME)))
-	echo $(IMG_UNESCAPED)
 	$(eval IMAGE_REVISION := $(call image_revision,$(IMG_UNESCAPED)))
 	$(info fetching image $(IMG_UNESCAPED) ($(IMAGE_REVISION))...)
 	$(call DOWNLOAD_IMG,$(IMG_UNESCAPED),$(IMAGE_REVISION)) > $@
