@@ -25,6 +25,7 @@ install:
   - curl https://raw.githubusercontent.com/ImageMagick/ImageMagick/b92c2698747fc132ee35ff00e3aab46f4715ca6e/config/policy.xml > policy.xml
   - sudo mv policy.xml /etc/ImageMagick-6/policy.xml
   - (wget https://ftp.gnu.org/gnu/make/make-4.2.1.tar.gz && tar -xf make-4.2.1.tar.gz && cd make-4.2.1 && ./configure && make && sudo make install)
+  - wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 && sudo mv jq-linux64 /usr/local/bin/jq && chmod +x /usr/local/bin/jq
   - make --version 
   - make init
   - make doc 
