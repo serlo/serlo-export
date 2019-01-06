@@ -14,8 +14,6 @@ before_install:
   - sudo apt-get install imagemagick
   - sudo apt-get install cmake
   - sudo apt-get install build-essential
-  - sudo apt-get install python3
-  - sudo apt-get install python-virtualenv
   - sudo apt-get install moreutils
   - sudo apt-get install texlive-base texlive-lang-german texlive-lang-english texlive-luatex latexmk texlive-latex-recommended texlive-font-utils texlive-fonts-recommended cm-super t1utils texlive-latex-extra texlive-generic-recommended fonts-lmodern texlive-xetex
   - (test -x $HOME/.cargo/bin/cargo-install-update || cargo install cargo-update)
@@ -27,9 +25,8 @@ install:
   - curl https://raw.githubusercontent.com/ImageMagick/ImageMagick/b92c2698747fc132ee35ff00e3aab46f4715ca6e/config/policy.xml > policy.xml
   - sudo mv policy.xml /etc/ImageMagick-6/policy.xml
   - (wget https://ftp.gnu.org/gnu/make/make-4.2.1.tar.gz && tar -xf make-4.2.1.tar.gz && cd make-4.2.1 && ./configure && make && sudo make install)
+  - wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 && sudo mv jq-linux64 /usr/local/bin/jq && chmod +x /usr/local/bin/jq
   - make --version 
-  - virtualenv -p python3 venv
-  - source venv/bin/activate
   - make init
   - make doc 
 
