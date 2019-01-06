@@ -1,0 +1,244 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Export Dependency Structure - MFNF Export - Technical Manual</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Technical documentation for the export project of Mathe für Nicht-Freaks (Serlo Hochschulmathematik)">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li><a href="concepts.html"><strong aria-hidden="true">1.</strong> Concepts</a></li><li><a href="guide.html"><strong aria-hidden="true">2.</strong> Guide</a></li><li><ol class="section"><li><a href="sitemap_structure.html"><strong aria-hidden="true">2.1.</strong> Sitemap Structure</a></li></ol></li><li><a href="template_specification.html"><strong aria-hidden="true">3.</strong> Template Specification</a></li><li><a href="developers.html"><strong aria-hidden="true">4.</strong> Developer Documentation</a></li><li><ol class="section"><li><a href="tools.html"><strong aria-hidden="true">4.1.</strong> Tools Overview</a></li><li><a href="make_overview.html" class="active"><strong aria-hidden="true">4.2.</strong> Export Dependency Structure</a></li><li><a href="repository_structure.html"><strong aria-hidden="true">4.3.</strong> Repository Structure</a></li><li><a href="build_doc/intro.html"><strong aria-hidden="true">4.4.</strong> Build System Documentation</a></li><li><ol class="section"><li><a href="build_doc/make_basics.html"><strong aria-hidden="true">4.4.1.</strong> Makfile Basics</a></li><li><a href="build_doc/unify_articles_books.html"><strong aria-hidden="true">4.4.2.</strong> Unifying Articles and Books</a></li><li><a href="build_doc/dependency_generation.html"><strong aria-hidden="true">4.4.3.</strong> Dynamic Dependency Generation</a></li><li><a href="build_doc/revision_management.html"><strong aria-hidden="true">4.4.4.</strong> Revision Management</a></li><li><a href="build_doc/adding_targets.html"><strong aria-hidden="true">4.4.5.</strong> Adding a new Target</a></li></ol></li></ol></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">MFNF Export - Technical Manual</h1> 
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="#export-dependency-structure" id="export-dependency-structure"><h1>Export Dependency Structure</h1></a>
+<p>To understand the process of exporting articles of books, we must first understand which inputs the final output depends on. We will use the follwing notation for dependency graphs:</p>
+<ul>
+<li>ellipses with white background represent a file</li>
+<li>ellipses with with gray background represent an <em>intermediate target</em>, which is not created as a file but is used to <em>group dependencies</em> together (as the prerequisites of this target)</li>
+<li>text-filled rectangles represent makefiles. These usually add dynamically generated dependencies. (see <a href="./make_patterns.html">Makefile Patterns</a>)</li>
+<li>bigger rectangles group a set of files / targets with <em>common prerequisites</em>. An edge (arrow) pointing at the rectangle border means all files in this cluster / group depend on this file.</li>
+</ul>
+<p>Actual filenames always have their article or book revision id before their file extension</p>
+<a class="header" href="#article-dependencies" id="article-dependencies"><h2>Article Dependencies</h2></a>
+<p>The image blow shows the (simplified) dependency graph for a single article:</p>
+<p><img src="img/article_deps.svg" alt="Dependency graph for an article" /></p>
+<p>Where:</p>
+<ul>
+<li><strong>article source (<code>.md</code>)</strong>: WikiText source code of the article.</li>
+<li><strong>parsed article (<code>.raw.json</code>)</strong>: Raw parser result of the article.</li>
+<li><strong>intermediate representation (<code>.json</code>)</strong>: Post-processed (normalized) abstract syntax tree of the article.</li>
+<li><strong>article markers (<code>.markers</code>)</strong>: Describes the article in the context of a book (see <a href="./concepts.html">Concepts</a>). When exporting only a single article, this is just a dummy. But for a whole book, some parts of the article could be excluded, which may change which sections or images are included. Thus, the whole subsequent export is dependent on this file. This part is extracted from the sitemap (specifically subtargetmap), with the current subtarget renamed to <code>current</code>.</li>
+<li><strong>section dependencies (<code>section_dep</code>)</strong>: A makefile defining the intermediate <code>.sections</code> target, which has all sections included in this article as prerequisites.</li>
+<li><strong>media dependencies (<code>media_dep</code>)</strong>: Like <code>.section_dep</code>, but for included media files. Since included sections may in turn include new media files, this depends on <code>.sections</code>. Defines the intermediate target <code>.media</code>.</li>
+<li><strong>fragments of other articles (<code>.json</code>)</strong>: The article fragments included as sections. These, of course depend on the intermediate representation of their origin articles, which is ommited here for clarity. The <code>.sections</code>-Target depends on all included sections (article fragments).</li>
+<li><strong>media files used in the article (<code>.svg, .png, .webm, ...</code>)</strong>: All media files the article uses as prerequisites of the <code>.media</code> intermediate target.</li>
+<li><strong>reference anchors (<code>.anchors</code>)</strong>: A list of all link targets this article provides. This is used to differentiate between internal and external link targets (e.g. jump to the corresponding page for a present link target, but link to the Website if the target is not included in the export). <br />
+When only a single article is exported, only anchors defined in this article are relevant. If a whole book is exported, this simplification does not hold any more. Then, every article output depends on the list of all anchors defined in the book, which in turn depends on the individual <code>.anchors</code>-files of the articles.</li>
+<li><strong>exported article (<code>.tex, .raw_html, ...</code>)</strong>: Export of the article in a target format.</li>
+<li><strong>target configuration file (<code>.yml</code>)</strong>: Last but not least, most of the export steps depend on the main configuration file, which contains the configuration for every export target (aka <em>subtarget</em> or <em>target configuration</em>).</li>
+</ul>
+<a class="header" href="#book-dependencies" id="book-dependencies"><h2>Book Dependencies</h2></a>
+<p>Now we know the dependency structure of a single article. But what about a book? In the context of a book, article export is similar, but with some important differences:</p>
+<ul>
+<li>The article markers are no longer empty, but are specified in the sitemap.</li>
+<li>The exported article depends on a book-wide <code>.anchors</code> while, which contains the combined reference anchors for the whole book.</li>
+</ul>
+<p>As a graph:</p>
+<p><img src="img/book_deps.svg" alt="Dependency graph for a book" /></p>
+<p>Where:</p>
+<ul>
+<li><strong>sitemap article source (<code>.md</code>)</strong>: WikiText source code of the sitemap article.</li>
+<li><strong>sitemap intermediate representation (<code>.json</code>)</strong>: Abstract sytax tree of the sitemap. Until now the sitemap is treated just like any normal article.</li>
+<li><strong>sitemap (<code>.sitemap.json</code>)</strong>: Special sitemap data structure.</li>
+<li><strong>subtargetmap (<code>.subtargetmap.json</code>)</strong>: Sitemap with only the information relevant for the current subtarget.</li>
+<li><strong>book dependency file (<code>.book.dep</code>)</strong>: A makefile defining the intermediate <code>.book.dependencies</code> target, which has all exported articles as prerequisites.</li>
+<li><strong>book anchors (<code>.anchors</code>)</strong>: A list of all link targets the book provides. It is build from the <code>.anchors</code>-files of the individual articles.</li>
+<li><strong>book export results (<code>.book.tex, .book.html, ...</code>)</strong>: The final output of the book export.</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="tools.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="repository_structure.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="tools.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="repository_structure.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

@@ -1,0 +1,731 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Template Specification - MFNF Export - Technical Manual</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Technical documentation for the export project of Mathe für Nicht-Freaks (Serlo Hochschulmathematik)">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li><a href="concepts.html"><strong aria-hidden="true">1.</strong> Concepts</a></li><li><a href="guide.html"><strong aria-hidden="true">2.</strong> Guide</a></li><li><ol class="section"><li><a href="sitemap_structure.html"><strong aria-hidden="true">2.1.</strong> Sitemap Structure</a></li></ol></li><li><a href="template_specification.html" class="active"><strong aria-hidden="true">3.</strong> Template Specification</a></li><li><a href="developers.html"><strong aria-hidden="true">4.</strong> Developer Documentation</a></li><li><ol class="section"><li><a href="tools.html"><strong aria-hidden="true">4.1.</strong> Tools Overview</a></li><li><a href="make_overview.html"><strong aria-hidden="true">4.2.</strong> Export Dependency Structure</a></li><li><a href="repository_structure.html"><strong aria-hidden="true">4.3.</strong> Repository Structure</a></li><li><a href="build_doc/intro.html"><strong aria-hidden="true">4.4.</strong> Build System Documentation</a></li><li><ol class="section"><li><a href="build_doc/make_basics.html"><strong aria-hidden="true">4.4.1.</strong> Makfile Basics</a></li><li><a href="build_doc/unify_articles_books.html"><strong aria-hidden="true">4.4.2.</strong> Unifying Articles and Books</a></li><li><a href="build_doc/dependency_generation.html"><strong aria-hidden="true">4.4.3.</strong> Dynamic Dependency Generation</a></li><li><a href="build_doc/revision_management.html"><strong aria-hidden="true">4.4.4.</strong> Revision Management</a></li><li><a href="build_doc/adding_targets.html"><strong aria-hidden="true">4.4.5.</strong> Adding a new Target</a></li></ol></li></ol></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">MFNF Export - Technical Manual</h1> 
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="#template-documentation" id="template-documentation"><h1>Template Documentation</h1></a>
+<a class="header" href="#documentation-for-formel-inline" id="documentation-for-formel-inline"><h2>Documentation for <code>formel</code> [inline]</h2></a>
+<p>Other names: <em>formel</em></p>
+<p>A math environment for formulas to distinct them from the surrounding
+text.</p>
+<p>The content of this template must always be <em>one and only one</em> math tag!</p>
+<a class="header" href="#template-attributes" id="template-attributes"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>1</code> <em>(formel)</em> [<strong>required</strong>][<strong>is_math_tag</strong>]:</p>
+<p>The formula defined in this environment.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-anker-inline" id="documentation-for-anker-inline"><h2>Documentation for <code>anker</code> [inline]</h2></a>
+<p>Other names: <em>anker</em></p>
+<p>Anchors mark reference points in headings.</p>
+<p>The argument this anchor is given should be the same as used for
+the reference later.</p>
+<a class="header" href="#template-attributes-1" id="template-attributes-1"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>1</code> [<strong>required</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The label of this reference.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagehauptartikel-inline" id="documentation-for-mathe-für-nicht-freaks-vorlagehauptartikel-inline"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:hauptartikel</code> [inline]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:hauptartikel</em></p>
+<p>Link to an article covering this section more deeply.</p>
+<a class="header" href="#template-attributes-2" id="template-attributes-2"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>1</code> [<strong>required</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The name of the article which covers more deeply the current content.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-todo-block" id="documentation-for-todo-block"><h2>Documentation for <code>todo</code> [block]</h2></a>
+<p>Other names: <em>todo</em></p>
+<p>A remark for a task which need to be done in an article.</p>
+<a class="header" href="#template-attributes-3" id="template-attributes-3"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>1</code> [<strong>required</strong>][<strong>everything_is_allowed</strong>]:</p>
+<p>The content of the todo remark.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-noprint-box" id="documentation-for-noprint-box"><h2>Documentation for <code>noprint</code> [box]</h2></a>
+<p>Other names: <em>noprint</em></p>
+<p>A section which shall not be printed in a PDF export.</p>
+<a class="header" href="#template-attributes-4" id="template-attributes-4"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>1</code> [<strong>required</strong>][<strong>everything_is_allowed</strong>]:</p>
+<p>The content which shall not be printed.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-important-block" id="documentation-for-important-block"><h2>Documentation for <code>important</code> [block]</h2></a>
+<p>Other names: <em>important, -</em></p>
+<p>Environment for highlighting an important block of text.</p>
+<a class="header" href="#template-attributes-5" id="template-attributes-5"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>1</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The important content.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagedefinition-box" id="documentation-for-mathe-für-nicht-freaks-vorlagedefinition-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:definition</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:definition</em></p>
+<p>A definition which defines a mathematical concept given by <code>title</code>.</p>
+<a class="header" href="#template-attributes-6" id="template-attributes-6"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>titel</code> [<strong>optional</strong>][<strong>is_inline_only</strong>]:</p>
+<p>Name of the mathematical concept which is defined.</p>
+</li>
+<li>
+<p><code>definition</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The definition of the mathematical content.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagefrage-box" id="documentation-for-mathe-für-nicht-freaks-vorlagefrage-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:frage</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:frage</em></p>
+<p>A question with an answer. <code>kind</code> defines the type of the question and
+<code>indent_mode</code> specifies whether the answer shall be indented (default mode)
+or not.</p>
+<a class="header" href="#template-attributes-7" id="template-attributes-7"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>frage</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The question.</p>
+</li>
+<li>
+<p><code>antwort</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The answer of the question.</p>
+</li>
+<li>
+<p><code>hinweis</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>A hint for the question.</p>
+</li>
+<li>
+<p><code>typ</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The kind of the question.</p>
+</li>
+<li>
+<p><code>einrückung</code> [<strong>optional</strong>][<strong>is_negative_switch</strong>]:</p>
+<p>Defines whether the answer shall be indented.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagesatz-box" id="documentation-for-mathe-für-nicht-freaks-vorlagesatz-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:satz</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:satz</em></p>
+<p>A mathematical theorem.</p>
+<a class="header" href="#template-attributes-8" id="template-attributes-8"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>titel</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>Name of the mathematcial theorem.</p>
+</li>
+<li>
+<p><code>satz</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The content of the theorem.</p>
+</li>
+<li>
+<p><code>erklärung</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>An explanation for the mathematical theorem.</p>
+</li>
+<li>
+<p><code>beispiel</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>An example for an application of the theorem.</p>
+</li>
+<li>
+<p><code>lösungsweg</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The thought process how to find the proof of this theorem.</p>
+</li>
+<li>
+<p><code>zusammenfassung</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>A summary for the proof of this theorem.</p>
+</li>
+<li>
+<p><code>beweis</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof for this theorem.</p>
+</li>
+<li>
+<p><code>beweis2</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>An alternative proof for this theorem.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagebeispiel-box" id="documentation-for-mathe-für-nicht-freaks-vorlagebeispiel-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:beispiel</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:beispiel</em></p>
+<p>A mathematical example.</p>
+<a class="header" href="#template-attributes-9" id="template-attributes-9"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>titel</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>A name for this example.</p>
+</li>
+<li>
+<p><code>beispiel</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The content for this example.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlageaufgabe-box" id="documentation-for-mathe-für-nicht-freaks-vorlageaufgabe-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:aufgabe</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:aufgabe</em></p>
+<p>An exercise.</p>
+<a class="header" href="#template-attributes-10" id="template-attributes-10"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>titel</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>A name for this excersise.</p>
+</li>
+<li>
+<p><code>aufgabe</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The content for this exercise.</p>
+</li>
+<li>
+<p><code>erklärung</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>An additional explanation for this exercise.</p>
+</li>
+<li>
+<p><code>zusammenfassung</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>A summary for the proof or the solution for this exercise.</p>
+</li>
+<li>
+<p><code>lösungsweg</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The thought process for finding the proof or the solution of this
+exercise.</p>
+</li>
+</ul>
+<ul>
+<li>
+<p><code>lösung</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The solution for this exercise.</p>
+</li>
+<li>
+<p><code>beweis</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof for this exercise.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagegruppenaufgabe-box" id="documentation-for-mathe-für-nicht-freaks-vorlagegruppenaufgabe-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:gruppenaufgabe</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:gruppenaufgabe</em></p>
+<p>An exercise with a set of subexercises.</p>
+<p>If your exercise has subtasks which can be solved individually,
+you should use this template.</p>
+<a class="header" href="#template-attributes-11" id="template-attributes-11"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>titel</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>A name for this group of excersise.</p>
+</li>
+<li>
+<p><code>aufgabe</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The content for this exercise.</p>
+</li>
+<li>
+<p><code>erklärung</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>An explanation for the exercise.</p>
+<p>This should be general information about the problem which
+applies for all subtasks.</p>
+</li>
+</ul>
+<ul>
+<li>
+<p><code>teilaufgabe1</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Subtask number 1.</p>
+</li>
+<li>
+<p><code>teilaufgabe2</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Subtask number 2.</p>
+</li>
+<li>
+<p><code>teilaufgabe3</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Subtask number 3.</p>
+</li>
+<li>
+<p><code>teilaufgabe4</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Subtask number 4.</p>
+</li>
+<li>
+<p><code>teilaufgabe5</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Subtask number 5.</p>
+</li>
+<li>
+<p><code>teilaufgabe6</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Subtask number 6.</p>
+</li>
+<li>
+<p><code>teilaufgabe1-lösung</code> <em>(teilaufgabe1-solution)</em> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Solution for subtask number 1.</p>
+</li>
+<li>
+<p><code>teilaufgabe2-lösung</code> <em>(teilaufgabe2-solution)</em> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Solution for subtask number 2.</p>
+</li>
+<li>
+<p><code>teilaufgabe3-lösung</code> <em>(teilaufgabe3-solution)</em> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Solution for subtask number 3.</p>
+</li>
+<li>
+<p><code>teilaufgabe4-lösung</code> <em>(teilaufgabe4-solution)</em> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Solution for subtask number 4.</p>
+</li>
+<li>
+<p><code>teilaufgabe5-lösung</code> <em>(teilaufgabe5-solution)</em> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Solution for subtask number 5.</p>
+</li>
+<li>
+<p><code>teilaufgabe6-lösung</code> <em>(teilaufgabe6-solution)</em> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Solution for subtask number 6.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagehinweis-box" id="documentation-for-mathe-für-nicht-freaks-vorlagehinweis-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:hinweis</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:hinweis, hinweis</em></p>
+<p>A hint for the reader.</p>
+<a class="header" href="#template-attributes-12" id="template-attributes-12"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>1</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The content of this hint.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagewarnung-box" id="documentation-for-mathe-für-nicht-freaks-vorlagewarnung-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:warnung</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:warnung, warnung</em></p>
+<p>A warning for the reader.</p>
+<a class="header" href="#template-attributes-13" id="template-attributes-13"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>1</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The content of this warning.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagebeweis-box" id="documentation-for-mathe-für-nicht-freaks-vorlagebeweis-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:beweis</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:beweis</em></p>
+<p>A proof for a theorem.</p>
+<a class="header" href="#template-attributes-14" id="template-attributes-14"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>titel</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The name of the theorem which will be proved.</p>
+</li>
+<li>
+<p><code>beweis</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The content of the proof.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagelösungsweg-box" id="documentation-for-mathe-für-nicht-freaks-vorlagelösungsweg-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:lösungsweg</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:lösungsweg</em></p>
+<p>It shows the way how a solution or a proof for an exercise can be found.</p>
+<a class="header" href="#template-attributes-15" id="template-attributes-15"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>titel</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The title of the theorem or exercise which is going to be proved.</p>
+</li>
+</ul>
+<ul>
+<li>
+<p><code>lösungsweg</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The thought process for finding the solution.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagealternativer-beweis-box" id="documentation-for-mathe-für-nicht-freaks-vorlagealternativer-beweis-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:alternativer beweis</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:alternativer beweis</em></p>
+<p>An alternative proof for a theorem.</p>
+<a class="header" href="#template-attributes-16" id="template-attributes-16"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>titel</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The name of the proof which is going to be proved.</p>
+</li>
+<li>
+<p><code>beweis</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The content of the proof.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagebeweiszusammenfassung-box" id="documentation-for-mathe-für-nicht-freaks-vorlagebeweiszusammenfassung-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:beweiszusammenfassung</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:beweiszusammenfassung</em></p>
+<p>A summary of a proof which explains how it works.</p>
+<a class="header" href="#template-attributes-17" id="template-attributes-17"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>titel</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The name of the theorem which is proved.</p>
+</li>
+<li>
+<p><code>zusammenfassung</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The content of the proof summary.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagelösung-box" id="documentation-for-mathe-für-nicht-freaks-vorlagelösung-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:lösung</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:lösung</em></p>
+<p>A solution (for example for an exercise).</p>
+<a class="header" href="#template-attributes-18" id="template-attributes-18"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>titel</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The title of the exercise this solution has.</p>
+</li>
+<li>
+<p><code>lösung</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The content of the solution.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagebeweisschritt-block" id="documentation-for-mathe-für-nicht-freaks-vorlagebeweisschritt-block"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:beweisschritt</code> [block]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:beweisschritt</em></p>
+<p>One step of a proof.</p>
+<a class="header" href="#template-attributes-19" id="template-attributes-19"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>name</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The name of the proof step.</p>
+</li>
+<li>
+<p><code>ziel</code> [<strong>required</strong>][<strong>is_inline_only</strong>]:</p>
+<p>The goal for this proof step.</p>
+</li>
+<li>
+<p><code>beweisschritt</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof for the specified goal.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagevollständige-induktion-block" id="documentation-for-mathe-für-nicht-freaks-vorlagevollständige-induktion-block"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:vollständige induktion</code> [block]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:vollständige induktion, :aufgabensammlung: vorlage:vollständige induktion</em></p>
+<p>A proof by induction.</p>
+<a class="header" href="#template-attributes-20" id="template-attributes-20"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>erfuellungsmenge</code> [<strong>optional</strong>][<strong>is_inline_only</strong>]:</p>
+<p>The set of all objects for which a statement shall be proved by
+induction.</p>
+</li>
+</ul>
+<ul>
+<li>
+<p><code>aussageform</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The statement which shall be proved by induction.</p>
+</li>
+<li>
+<p><code>induktionsanfang</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof of the base case for the induction.</p>
+</li>
+<li>
+<p><code>induktionsvoraussetzung</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The hypothesis of the step case.</p>
+</li>
+<li>
+<p><code>induktionsbehauptung</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The goal of the step case.</p>
+</li>
+<li>
+<p><code>beweis_induktionsschritt</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof of the step case.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagefallunterscheidung-block" id="documentation-for-mathe-für-nicht-freaks-vorlagefallunterscheidung-block"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:fallunterscheidung</code> [block]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:fallunterscheidung</em></p>
+<p>A proof by cases.</p>
+<a class="header" href="#template-attributes-21" id="template-attributes-21"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>fall1</code> [<strong>required</strong>][<strong>is_inline_only</strong>]:</p>
+<p>The goal of the 1st case.</p>
+</li>
+<li>
+<p><code>beweis1</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof of the 1st case.</p>
+</li>
+<li>
+<p><code>fall2</code> [<strong>required</strong>][<strong>is_inline_only</strong>]:</p>
+<p>The proof of the 2nd case.</p>
+</li>
+<li>
+<p><code>beweis2</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof of the 2nd case.</p>
+</li>
+<li>
+<p><code>fall3</code> [<strong>optional</strong>][<strong>is_inline_only</strong>]:</p>
+<p>The proof of the 3rd case.</p>
+</li>
+<li>
+<p><code>beweis3</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof of the 3rd case.</p>
+</li>
+<li>
+<p><code>fall4</code> [<strong>optional</strong>][<strong>is_inline_only</strong>]:</p>
+<p>The proof of the 4th case.</p>
+</li>
+<li>
+<p><code>beweis4</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof of the 4th case.</p>
+</li>
+<li>
+<p><code>fall5</code> [<strong>optional</strong>][<strong>is_inline_only</strong>]:</p>
+<p>The proof of the 5th case.</p>
+</li>
+<li>
+<p><code>beweis5</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof of the 5th case.</p>
+</li>
+<li>
+<p><code>fall6</code> [<strong>optional</strong>][<strong>is_inline_only</strong>]:</p>
+<p>The proof of the 6th case.</p>
+</li>
+<li>
+<p><code>beweis6</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof of the 6th case.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-invokemathe-für-nicht-freaksseite-block" id="documentation-for-invokemathe-für-nicht-freaksseite-block"><h2>Documentation for <code>#invoke:mathe für nicht-freaks/seite</code> [block]</h2></a>
+<p>Other names: <em>#invoke:mathe für nicht-freaks/seite</em></p>
+<p>Template for including a navigation element (a header or a footer) in an article.</p>
+<a class="header" href="#template-attributes-22" id="template-attributes-22"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>1</code> [<strong>required</strong>][<strong>is_navigation_spec</strong>]:</p>
+<p>The kind of the navigational element. &quot;oben&quot; for the header and &quot;unten&quot;
+for the footer.</p>
+</li>
+</ul>
+<ul>
+<li>
+<p><code>überprüft</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>List of reviewers. (only in footer)</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-smiley-inline" id="documentation-for-smiley-inline"><h2>Documentation for <code>smiley</code> [inline]</h2></a>
+<p>Other names: <em>smiley</em></p>
+<p>Insert a smiley. Please only use the text description for consistency.</p>
+<a class="header" href="#template-attributes-23" id="template-attributes-23"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>1</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The smiley name like &quot;smile&quot;, &quot;wink&quot;, &quot;cool&quot;, ...</p>
+</li>
+</ul>
+<ul>
+<li>
+<p><code>2</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The smiley size in pixels.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-literatur-inline" id="documentation-for-literatur-inline"><h2>Documentation for <code>literatur</code> [inline]</h2></a>
+<p>Other names: <em>literatur, literature</em></p>
+<p>Refers to some information from a work of literature.</p>
+<a class="header" href="#template-attributes-24" id="template-attributes-24"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>autor</code> <em>(author)</em> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>Full author's names. (Name, Surname, Name, Surname, ...)</p>
+</li>
+<li>
+<p><code>titel</code> <em>(title)</em> [<strong>required</strong>][<strong>is_plain_text</strong>]:</p>
+<p>Full title.</p>
+</li>
+<li>
+<p><code>verlag</code> <em>(publisher)</em> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>Name of the publishing company.</p>
+</li>
+<li>
+<p><code>jahr</code> <em>(year)</em> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>Year of publication.</p>
+</li>
+<li>
+<p><code>ort</code> <em>(address)</em> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>Place or adress of publisher.</p>
+</li>
+<li>
+<p><code>isbn</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>ISBN of the work if applicable.</p>
+</li>
+<li>
+<p><code>seiten</code> <em>(pages)</em> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>Pages cited.</p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="sitemap_structure.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="developers.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="sitemap_structure.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="developers.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

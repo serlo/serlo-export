@@ -1,0 +1,323 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Sitemap Structure - MFNF Export - Technical Manual</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Technical documentation for the export project of Mathe für Nicht-Freaks (Serlo Hochschulmathematik)">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li><a href="concepts.html"><strong aria-hidden="true">1.</strong> Concepts</a></li><li><a href="guide.html"><strong aria-hidden="true">2.</strong> Guide</a></li><li><ol class="section"><li><a href="sitemap_structure.html" class="active"><strong aria-hidden="true">2.1.</strong> Sitemap Structure</a></li></ol></li><li><a href="template_specification.html"><strong aria-hidden="true">3.</strong> Template Specification</a></li><li><a href="developers.html"><strong aria-hidden="true">4.</strong> Developer Documentation</a></li><li><ol class="section"><li><a href="tools.html"><strong aria-hidden="true">4.1.</strong> Tools Overview</a></li><li><a href="make_overview.html"><strong aria-hidden="true">4.2.</strong> Export Dependency Structure</a></li><li><a href="repository_structure.html"><strong aria-hidden="true">4.3.</strong> Repository Structure</a></li><li><a href="build_doc/intro.html"><strong aria-hidden="true">4.4.</strong> Build System Documentation</a></li><li><ol class="section"><li><a href="build_doc/make_basics.html"><strong aria-hidden="true">4.4.1.</strong> Makfile Basics</a></li><li><a href="build_doc/unify_articles_books.html"><strong aria-hidden="true">4.4.2.</strong> Unifying Articles and Books</a></li><li><a href="build_doc/dependency_generation.html"><strong aria-hidden="true">4.4.3.</strong> Dynamic Dependency Generation</a></li><li><a href="build_doc/revision_management.html"><strong aria-hidden="true">4.4.4.</strong> Revision Management</a></li><li><a href="build_doc/adding_targets.html"><strong aria-hidden="true">4.4.5.</strong> Adding a new Target</a></li></ol></li></ol></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">MFNF Export - Technical Manual</h1> 
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="#sitemap-structure" id="sitemap-structure"><h1>Sitemap Structure</h1></a>
+<p>As explained in <a href="./concepts.html">Concepts</a>, the structure of a book is described in a special article, called the <em>sitemap</em>. A book is structured in <em>parts</em>, which each contain a list of articles, called <em>chapters</em> in this context.</p>
+<p>A sitemap article always starts with a <em>first-level heading</em>:</p>
+<pre><code class="language-markdown">= Book Title =
+</code></pre>
+<p>Followed by multiple <em>second-level headings</em>, which marke books <em>parts</em>:</p>
+<pre><code class="language-markdown">= Book Title =
+
+== Part 1 ==
+
+== Part 2 ==
+</code></pre>
+<p>Finally, every part contains a list of internal references to articles, which will appear as <em>chapters</em> in the book:</p>
+<pre><code class="language-markdown">= My little Book =
+== Introduction ==
+
+* [[Article 1|The first Chapter]]
+* [[Article 2|Chapter Two]]
+</code></pre>
+<p>The resulting book will be called <code>My little Book</code>, have one part called <code>Introduction</code>, which has two chapters called <code>The first Chapter</code> and <code>Chapter Two</code>. Keep in mind that the chapter list must be <strong>one coherent list</strong>! If you break it into multiple lists, only the first one will be considered when looking for chapters.</p>
+<p><strong>Mind the Gap</strong> between the article list and the part heading. The gap is a visual hint to separate <em>part markers</em> from the article list!</p>
+<p><em>Hint:</em> Any text after the internal references is currently ignored, but it might become relevant in the future.</p>
+<a class="header" href="#sitemap-markers" id="sitemap-markers"><h2>Sitemap Markers</h2></a>
+<p>The structure described above is nice and simple, but it can't express any additional information about the parts and articles. We might want to include or exclude parts of the article depending on the <em>target configuration</em> (or <em>subtarget</em>), add some files which are not articles and so on. This is where <em>markers</em> come in! These are the currently allowed markers:</p>
+<ul>
+<li><strong>todo</strong>: Add a todo message to a book, a part or a chapter. It will not be exported.</li>
+<li><strong>after</strong>: When available for the export target, include a file after this chapter. This marker is currently ignored on the book root and parts.</li>
+<li><strong>include</strong>: Include some parts of an article exclusively. For more details, see <a href="#include-and-exclude">include and exclude</a>.</li>
+<li><strong>exclude</strong>: Exclude some parts of an article and include everything else. For more details, see <a href="#include-and-exclude">include and exclude</a>.</li>
+<li><strong>alias</strong>: Define an alias for a subtarget for this book, part or chapter. You can use this to avoid duplication for very similar subtargets, e.g. when the subtarget only changes paper size, but should have the same content.</li>
+</ul>
+<p>In the sitemap article, markers are added as a <em>list immediately after</em> the book title or part heading, or as a <em>sublist</em> of a chapter:</p>
+<pre><code class="language-markdown">= My little Book =
+* todo: write more content
+
+== Introduction ==
+* todo: say hello! 
+
+* [[Article 1|The first Chapter]]
+* [[Article 2|Chapter Two]]
+** todo: add an image
+** after: part_footer
+</code></pre>
+<p>The example above adds todo notes to the whole book and the introduction chapter. It also adds a todo note to <em>Chapter Two</em> and includes the file <code>part_footer</code> after <em>Chapter Two</em>.
+These simple markers only influence the specific thing they're marking. They are always written like <code>&lt;todo|after|...&gt;: Some freeform text on one line</code>.<br />
+<code>include</code>, <code>exclude</code> and <code>alias</code> have a more complex behaviour though.</p>
+<a class="header" href="#include-and-exclude" id="include-and-exclude"><h2>Include and Exclude</h2></a>
+<p>The <code>include</code> and <code>exclude</code> markers are arguably the most important ones. They allow omitting or including parts of a chapter (article) on a per-heading basis. But first, let's see how we can include or exclude whole articles:</p>
+<pre><code class="language-markdown">* [[Article|Chapter Name]]
+** exclude:
+*** minimal
+** include:
+*** all
+*** print
+</code></pre>
+<p>This article is <em>excluded</em> for the <code>minimal</code> subtarget, but included for <code>all</code> and <code>print</code>.</p>
+<p>By default, every article (chapter) is wholly included in the export for every subtarget. This is equivalent to adding every subtarget to an <code>include</code> marker (without supplied headings).</p>
+<p>Keep in mind that a subtarget can never be included and excluded at the same time!</p>
+<a class="header" href="#include--exclude-inheritance" id="include--exclude-inheritance"><h3>Include / Exclude Inheritance</h3></a>
+<p>Nice, we now can include or exclude articles depending on the subtarget. But excluding nearly every article manually for a target like <code>minimal</code> seems very tideous. Instead, we can use the fact that includes and excludes are <em>inherited</em> from parts and the book root:</p>
+<pre><code class="language-markdown">= My little Book =
+* exclude:
+** minimal
+
+== Introduction ==
+
+* [[Article 1|The first Chapter]]
+* [[Article 2|Chapter Two]]
+* [[Article 3|Something Important]]
+** include:
+*** minimal
+</code></pre>
+<p>Adding <code>minimal</code> to the exclude marker of the whole book makes excluding <code>minimal</code> the <em>default</em>. Articles will always be excluded in <code>minimal</code>, except they are explicitly <code>included</code> at a lower level.</p>
+<p>You can think of this inheritance as setting the default for a subtarget, where more specific markers override more general ones: chapter overrides part, which overrides book root. Another example:</p>
+<pre><code class="language-markdown">= My little Book =
+* exclude:
+** minimal
+
+== Introduction ==
+* include:
+** minimal
+
+* [[Article 1|The first Chapter]]
+* [[Article 2|Chapter Two]]
+** exclude:
+*** minimal
+* [[Article 3|Something Important]]
+== Main ==
+
+* [[Article 4|Some Content]]
+</code></pre>
+<p>For this sitemap, the <code>minimal</code> subtarget will only export <code>Article 1</code> and <code>Article 3</code>: At the book level, exclude is set as the default for <code>minimal</code>. This is why everything in <code>Main</code> is excluded. <code>Introduction</code> on the other hand overrides this setting and makes <code>minimal</code> included by default. Only <code>Article 2</code> is left out, because it is excluded by its chapter marker.</p>
+<a class="header" href="#including--excluding-headings" id="including--excluding-headings"><h3>Including / Excluding Headings</h3></a>
+<p>In addition to excluding or including whole articles, it is also possible to specifiy that only certain parts should be included or left out. This is done by supplying the include or exclude marker <em>of a chapter</em> an additional list of arguments for the subtarget:</p>
+<pre><code class="language-markdown">* [[Article Name|Article Caption]]
+** exclude:
+*** print:
+**** Alternative Proof
+**** Exercises
+*** minimal
+</code></pre>
+<p>This means: In <code>print</code>, we <strong>include everything but</strong> the headings <code>Alternative Proof</code> and <code>Exercises</code>. Note that although the subtarget is listed under exclude, we still include most of the article! In this case, the exclude only applies to the list of headings written as a sublist of <code>print</code>.</p>
+<p><code>minimal</code>, on the other hand, has no special parameters. This means the whole chapter <code>Article Name</code> is excluded.</p>
+<p>The same applies to the include marker: given an additional list of headings, it will <strong>exclude everything but</strong> the headings listed!</p>
+<table><thead><tr><th> marker </th><th> arguments </th><th> semantics </th></tr></thead><tbody>
+<tr><td> <code>include</code> </td><td> <code>subtarget</code> </td><td> include whole article </td></tr>
+<tr><td> <code>include</code> </td><td> <code>subtarget</code> + headings </td><td> exclude everything but the headings </td></tr>
+<tr><td> <code>exclude</code> </td><td> <code>subtarget</code> </td><td> exclude whole article </td></tr>
+<tr><td> <code>exclude</code> </td><td> <code>subtarget</code> + headings </td><td> include everything but the headings </td></tr>
+</tbody></table>
+<a class="header" href="#subtarget-aliases" id="subtarget-aliases"><h2>Subtarget Aliases</h2></a>
+<p>Sometimes, subtargets are very similar in their semantics and use the same or nearly the same sitemap markers (mainly includes / excludes). To avoid copying these, you can use the <em>alias marker</em> to specify that <code>alias</code> should behave the same as <code>subtarget</code> for this part of the document:</p>
+<pre><code class="language-markdown">= Book =
+* include:
+** print
+* alias:
+** letterpaper_print: print
+
+== Introduction ==
+...
+</code></pre>
+<p><code>letterpaper_print</code> will now behave exactly the same as <code>print</code> for the purposes of the sitemap!</p>
+<p>Note that you can add an alias on parts or chapters as well, meaning that the alias should only be valid for this part or chapter. You could, for example, just declare an alias on a chapter instead of typing out a long list of excluded headings twice.</p>
+<p>Unlike include and exclude markers though, <em>alias markers cannot be overridden!</em>. This means: if you add an alias marker at a part, you cannot define specific includes or excludes for that alias on its chapters. Making aliases not overridable makes it easier to reason about them, since once you declare an alias you can be sure there are to exceptions to these subtargets beeing equal (in the scope of the alias, of course).</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="guide.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="template_specification.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="guide.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="template_specification.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

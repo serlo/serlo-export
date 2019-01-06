@@ -1,0 +1,1180 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>MFNF Export - Technical Manual</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Technical documentation for the export project of Mathe für Nicht-Freaks (Serlo Hochschulmathematik)">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li><a href="concepts.html"><strong aria-hidden="true">1.</strong> Concepts</a></li><li><a href="guide.html"><strong aria-hidden="true">2.</strong> Guide</a></li><li><ol class="section"><li><a href="sitemap_structure.html"><strong aria-hidden="true">2.1.</strong> Sitemap Structure</a></li></ol></li><li><a href="template_specification.html"><strong aria-hidden="true">3.</strong> Template Specification</a></li><li><a href="developers.html"><strong aria-hidden="true">4.</strong> Developer Documentation</a></li><li><ol class="section"><li><a href="tools.html"><strong aria-hidden="true">4.1.</strong> Tools Overview</a></li><li><a href="make_overview.html"><strong aria-hidden="true">4.2.</strong> Export Dependency Structure</a></li><li><a href="repository_structure.html"><strong aria-hidden="true">4.3.</strong> Repository Structure</a></li><li><a href="build_doc/intro.html"><strong aria-hidden="true">4.4.</strong> Build System Documentation</a></li><li><ol class="section"><li><a href="build_doc/make_basics.html"><strong aria-hidden="true">4.4.1.</strong> Makfile Basics</a></li><li><a href="build_doc/unify_articles_books.html"><strong aria-hidden="true">4.4.2.</strong> Unifying Articles and Books</a></li><li><a href="build_doc/dependency_generation.html"><strong aria-hidden="true">4.4.3.</strong> Dynamic Dependency Generation</a></li><li><a href="build_doc/revision_management.html"><strong aria-hidden="true">4.4.4.</strong> Revision Management</a></li><li><a href="build_doc/adding_targets.html"><strong aria-hidden="true">4.4.5.</strong> Adding a new Target</a></li></ol></li></ol></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">MFNF Export - Technical Manual</h1> 
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="#concepts" id="concepts"><h1>Concepts</h1></a>
+<p>The export software operates on books and articles created for <em>Serlo Hochschulmathematik (Mathe für Nicht-Freaks)</em> and transforms them into various output formats.</p>
+<p>This page explains some terms and concepts we refer to in the <a href="./guide.html">user guide</a> , the source code or <a href="./make.html">other documentation</a>.</p>
+<p>The first set of terms are general concepts not specific to the export toolchain:</p>
+<ul>
+<li><strong>Article</strong>: Currently, an article is a <em>monothematic text document</em>, enriched with semantic information, regardless of the format. Usually, the article exists as <a href="https://de.wikibooks.org/w/index.php?title=Mathe_f%C3%BCr_Nicht-Freaks:_Folgerungen_der_Anordnungsaxiome&amp;action=edit">WikiText</a> first. Even after beeing exported to a different format we still refer to it as <em>this article</em>.</li>
+<li><strong>Book</strong>: A <em>collection of articles</em> covering a a more general topic. E.g. <a href="https://de.wikibooks.org/wiki/Mathe_f%C3%BCr_Nicht-Freaks:_Analysis_1">Analysis 1</a> is made up of the articles <a href="https://de.wikibooks.org/wiki/Mathe_f%C3%BCr_Nicht-Freaks:_Was_ist_Analysis%3F">Was ist Analysis</a>, <a href="https://de.wikibooks.org/wiki/Mathe_f%C3%BCr_Nicht-Freaks:_K%C3%B6rperaxiome">Körperaxiome</a>, <a href="https://de.wikibooks.org/wiki/Mathe_f%C3%BCr_Nicht-Freaks:_Grenzwert:_Konvergenz_und_Divergenz">Definition Grenzwert</a> and many more. Note that one article may appear in many <em>books</em>. Which articles make up a book and how is specified in a <em>sitemap article</em>.</li>
+<li><strong>Section</strong>: Sections are text snippets extracted from an article. They do <em>not</em> have to correspond to headings or semantic elements! This means of reusing article content is not based on semantics and we discurage its use, but for the forseeable future we need compatibility with the <a href="https://www.mediawiki.org/wiki/Extension:Labeled_Section_Transclusion">Labeled Section Transclusion MediaWiki plugin</a>.</li>
+</ul>
+<p>Now to some export-related concepts:</p>
+<ul>
+<li><strong>Sitemap</strong>: (or <strong>Bookmap</strong>) A <em>special article</em> specifying which articles belong to a <em>book</em>. Additionally, it defines the <em>structure of the book</em>, dividing articles into <em>parts</em> and annotating them with <em>markers</em>.</li>
+<li><strong>Target</strong>: (or <strong>Target Format</strong>) Refers to an output format like <em>LaTeX</em>, <em>PDF</em> or <em>HTML</em>. Note that the target is <em>othorgonal to the subtarget</em>!</li>
+<li><strong>Subtarget</strong>: (or <strong>Target Configuration</strong>) Although &quot;target configuration&quot; is probably a lot more descriptive, &quot;subtarget&quot; is widely used throughout the code base. <br />
+Usually, a subtarget is treated like a <em>class of export configurations</em>, like <em>minimal</em>, <em>print</em> or <em>verbose</em>. This is because every <em>subtarget class</em> should be defined <em>for every target</em>, though this is not enforced.<br />
+As a convention, we refer to a concrete target configuration as <code>&lt;target&gt;.&lt;subtarget&gt;</code> (e.g. <code>latex.print, html.print</code>), while the semantic class of similar configurations is just called <code>&lt;subtarget&gt;</code> (<code>print</code>).<br />
+For example: <code>latex.print</code> is a <em>configuration of the latex target</em>, and <code>html.print</code> is a <em>configuration of the html target</em>. Programmatically, have nothing todo with each other, since they configure different targets. But they are <em>semantically similar</em>, since they both generate an output that is less verbose and suitable for printing. This is why they are often collectively referred to as the <code>print</code>-subtarget.</li>
+<li><strong>Marker</strong>: An annotation in the sitemap of a book, which allows to include or exclude parts of an article, add metadata or include additional files. See <a href="./sitemap_structure.html">Sitemap Structure</a> for details.</li>
+</ul>
+<a class="header" href="#user-guide" id="user-guide"><h1>User Guide</h1></a>
+<p>This document tries to present the basic usage of this tool. Do not expect a detailed guide of every feature and intricacy. I assume some some technical knowledge and the familiarity with the purpose of this software.</p>
+<a class="header" href="#installation" id="installation"><h2>Installation</h2></a>
+<p>This tool is only tested on linux so far, so these instructions are for linux only.
+Make sure you have the following software installed:</p>
+<ul>
+<li>cargo (<a href="https://www.rust-lang.org/en-US/install.html">rust package manager</a>)</li>
+<li>inkscape</li>
+<li>qrencode</li>
+<li>jq</li>
+<li>cmark</li>
+<li>lualatex (e.g. via texlive-full)</li>
+<li>ocaml</li>
+<li>convert (by image magick)</li>
+<li>sed</li>
+</ul>
+<p>Run the init script. This will build some tools needed for article parsing / export.</p>
+<pre><code class="language-sh">make init
+</code></pre>
+<p>If you want to build the documentation for yourself, install <code>mdbook</code> as well:</p>
+<pre><code class="language-sh">cargo install mdbook
+make doc
+</code></pre>
+<p>Done!</p>
+<a class="header" href="#basic-usage" id="basic-usage"><h2>Basic Usage</h2></a>
+<p>Note that whenever an article name or path is passed to <code>make</code>, it must be escaped:</p>
+<table><thead><tr><th> original </th><th> escaped   </th></tr></thead><tbody>
+<tr><td> (space) </td><td>  <code>_</code> </td></tr>
+<tr><td> <code>:</code> </td><td>  <code>@COLON@</code> </td></tr>
+<tr><td> <code>(</code> </td><td>  <code>@LBR@</code> </td></tr>
+<tr><td> <code>)</code> </td><td>  <code>@RBR@</code> </td></tr>
+<tr><td> <code>/</code> </td><td>  <code>@SLASH@</code> </td></tr>
+<tr><td> <code>'</code> </td><td>  <code>@SQUOTE@</code> </td></tr>
+<tr><td> <code>&quot;</code> </td><td>  <code>@DQUOTE@</code> </td></tr>
+<tr><td> <code>*</code> </td><td>  <code>@STAR@</code> </td></tr>
+<tr><td> <code>=</code> </td><td>  <code>@EQ@</code> </td></tr>
+<tr><td> <code>$</code> </td><td>  <code>@DOLLAR@</code> </td></tr>
+<tr><td> <code>#</code> </td><td>  <code>@SHARP@</code> </td></tr>
+<tr><td> <code>%</code> </td><td>  <code>@PERC@</code> </td></tr>
+</tbody></table>
+<a class="header" href="#book-export" id="book-export"><h3>Book export</h3></a>
+<p>To build a file with make, simply supply the path to the target file and let make do its magic. The directory structure of book exports is as follows:</p>
+<pre><code class="language-sh">make exports/&lt;sitemap&gt;/&lt;sitemap revision&gt;/&lt;target&gt;/&lt;subtarget&gt;/&lt;sitemap revision&gt;.book.&lt;extension&gt;
+</code></pre>
+<p>where</p>
+<ul>
+<li><code>&lt;sitemap&gt;</code>: Name of the sitemap article. (escaped as described above)</li>
+<li><code>&lt;sitemap revision&gt;</code>: Revision of the sitemap article to use. Can be <em>latest</em>.</li>
+<li><code>&lt;target&gt;</code>: (latex, pdf, ...) The target format format. Targets and subtargets are defined in <code>config/mfnf.yml</code>.</li>
+<li><code>&lt;subtarget&gt;</code>: (all, print, ...) The subtarget. Configuration see <code>&lt;target&gt;</code></li>
+<li><code>&lt;extension&gt;</code>: File extension of your target format. (e.g. <code>pdf</code> for PDF, <code>tex</code> for LaTeX, <code>html</code> for HTML, <code>stats.html</code> or <code>stats.yml</code> for stats)</li>
+</ul>
+<p>This looks complicated, but actually looks quite beatiful when running <code>tree</code> on it ;)</p>
+<a class="header" href="#article-export" id="article-export"><h3>Article export</h3></a>
+<p>Exporting only a specific article works similarly, but the export of an article normally depends on its context in the book (e.g. for link targets). When we export a single article, we usually want it exported as if it was its own book. To force this behaviour, we have to export articles in the context of a &quot;dummy book&quot;, called <em>articles</em>:</p>
+<pre><code class="language-sh">make exports/articles/latest/&lt;target&gt;/&lt;subtarget&gt;/&lt;article name&gt;/&lt;article revision&gt;.&lt;extension&gt;
+</code></pre>
+<ul>
+<li><code>&lt;article name&gt;</code>: Article names can be extracted from the article url: <code>https://de.wikibooks.org/wiki/Mathe_für_Nicht-Freaks:_Beispielkapitel:_Grundlegende_Formatierungen -&gt; Mathe_für_Nicht-Freaks@COLON@_Beispielkapitel@COLON@_Grundlegende_Formatierungen</code>.</li>
+<li><code>&lt;article revision&gt;</code>: Revision IDs of an article can be found on its history page. (or use <em>latest</em>)</li>
+<li>see <a href="#book-export">Book export</a></li>
+</ul>
+<a class="header" href="#example" id="example"><h3>Example</h3></a>
+<p>To build the example article we have to tell <code>make</code> to build the file:</p>
+<pre><code class="language-sh">make exports/articles/latest/html/all/Mathe_für_Nicht-Freaks@COLON@_Beispielkapitel@COLON@_Grundlegende_Formatierungen/latest.html
+</code></pre>
+<p>Make will fetch the latest article revisions and media files included in the article and will continue to export it to HTML.</p>
+<p>Now we can use <code>tree exports</code> to print the directory structure:</p>
+<pre><code>exports
+└── articles
+    ├── dummy
+    │   └── html
+    │       └── all
+    │           ├── dummy.book.dep
+    │           └── Mathe_für_Nicht-Freaks@COLON@_Beispielkapitel@COLON@_Grundlegende_Formatierungen
+    │               ├── 848617.anchors
+    │               ├── 848617.html
+    │               ├── 848617.markers
+    │               ├── 848617.media-dep
+    │               ├── 848617.raw_html
+    │               ├── 848617.section-dep
+    │               └── latest.html -&gt; 848617.html
+    └── latest -&gt; dummy
+</code></pre>
+<a class="header" href="#sitemap-structure" id="sitemap-structure"><h1>Sitemap Structure</h1></a>
+<p>As explained in <a href="./concepts.html">Concepts</a>, the structure of a book is described in a special article, called the <em>sitemap</em>. A book is structured in <em>parts</em>, which each contain a list of articles, called <em>chapters</em> in this context.</p>
+<p>A sitemap article always starts with a <em>first-level heading</em>:</p>
+<pre><code class="language-markdown">= Book Title =
+</code></pre>
+<p>Followed by multiple <em>second-level headings</em>, which marke books <em>parts</em>:</p>
+<pre><code class="language-markdown">= Book Title =
+
+== Part 1 ==
+
+== Part 2 ==
+</code></pre>
+<p>Finally, every part contains a list of internal references to articles, which will appear as <em>chapters</em> in the book:</p>
+<pre><code class="language-markdown">= My little Book =
+== Introduction ==
+
+* [[Article 1|The first Chapter]]
+* [[Article 2|Chapter Two]]
+</code></pre>
+<p>The resulting book will be called <code>My little Book</code>, have one part called <code>Introduction</code>, which has two chapters called <code>The first Chapter</code> and <code>Chapter Two</code>. Keep in mind that the chapter list must be <strong>one coherent list</strong>! If you break it into multiple lists, only the first one will be considered when looking for chapters.</p>
+<p><strong>Mind the Gap</strong> between the article list and the part heading. The gap is a visual hint to separate <em>part markers</em> from the article list!</p>
+<p><em>Hint:</em> Any text after the internal references is currently ignored, but it might become relevant in the future.</p>
+<a class="header" href="#sitemap-markers" id="sitemap-markers"><h2>Sitemap Markers</h2></a>
+<p>The structure described above is nice and simple, but it can't express any additional information about the parts and articles. We might want to include or exclude parts of the article depending on the <em>target configuration</em> (or <em>subtarget</em>), add some files which are not articles and so on. This is where <em>markers</em> come in! These are the currently allowed markers:</p>
+<ul>
+<li><strong>todo</strong>: Add a todo message to a book, a part or a chapter. It will not be exported.</li>
+<li><strong>after</strong>: When available for the export target, include a file after this chapter. This marker is currently ignored on the book root and parts.</li>
+<li><strong>include</strong>: Include some parts of an article exclusively. For more details, see <a href="#include-and-exclude">include and exclude</a>.</li>
+<li><strong>exclude</strong>: Exclude some parts of an article and include everything else. For more details, see <a href="#include-and-exclude">include and exclude</a>.</li>
+<li><strong>alias</strong>: Define an alias for a subtarget for this book, part or chapter. You can use this to avoid duplication for very similar subtargets, e.g. when the subtarget only changes paper size, but should have the same content.</li>
+</ul>
+<p>In the sitemap article, markers are added as a <em>list immediately after</em> the book title or part heading, or as a <em>sublist</em> of a chapter:</p>
+<pre><code class="language-markdown">= My little Book =
+* todo: write more content
+
+== Introduction ==
+* todo: say hello! 
+
+* [[Article 1|The first Chapter]]
+* [[Article 2|Chapter Two]]
+** todo: add an image
+** after: part_footer
+</code></pre>
+<p>The example above adds todo notes to the whole book and the introduction chapter. It also adds a todo note to <em>Chapter Two</em> and includes the file <code>part_footer</code> after <em>Chapter Two</em>.
+These simple markers only influence the specific thing they're marking. They are always written like <code>&lt;todo|after|...&gt;: Some freeform text on one line</code>.<br />
+<code>include</code>, <code>exclude</code> and <code>alias</code> have a more complex behaviour though.</p>
+<a class="header" href="#include-and-exclude" id="include-and-exclude"><h2>Include and Exclude</h2></a>
+<p>The <code>include</code> and <code>exclude</code> markers are arguably the most important ones. They allow omitting or including parts of a chapter (article) on a per-heading basis. But first, let's see how we can include or exclude whole articles:</p>
+<pre><code class="language-markdown">* [[Article|Chapter Name]]
+** exclude:
+*** minimal
+** include:
+*** all
+*** print
+</code></pre>
+<p>This article is <em>excluded</em> for the <code>minimal</code> subtarget, but included for <code>all</code> and <code>print</code>.</p>
+<p>By default, every article (chapter) is wholly included in the export for every subtarget. This is equivalent to adding every subtarget to an <code>include</code> marker (without supplied headings).</p>
+<p>Keep in mind that a subtarget can never be included and excluded at the same time!</p>
+<a class="header" href="#include--exclude-inheritance" id="include--exclude-inheritance"><h3>Include / Exclude Inheritance</h3></a>
+<p>Nice, we now can include or exclude articles depending on the subtarget. But excluding nearly every article manually for a target like <code>minimal</code> seems very tideous. Instead, we can use the fact that includes and excludes are <em>inherited</em> from parts and the book root:</p>
+<pre><code class="language-markdown">= My little Book =
+* exclude:
+** minimal
+
+== Introduction ==
+
+* [[Article 1|The first Chapter]]
+* [[Article 2|Chapter Two]]
+* [[Article 3|Something Important]]
+** include:
+*** minimal
+</code></pre>
+<p>Adding <code>minimal</code> to the exclude marker of the whole book makes excluding <code>minimal</code> the <em>default</em>. Articles will always be excluded in <code>minimal</code>, except they are explicitly <code>included</code> at a lower level.</p>
+<p>You can think of this inheritance as setting the default for a subtarget, where more specific markers override more general ones: chapter overrides part, which overrides book root. Another example:</p>
+<pre><code class="language-markdown">= My little Book =
+* exclude:
+** minimal
+
+== Introduction ==
+* include:
+** minimal
+
+* [[Article 1|The first Chapter]]
+* [[Article 2|Chapter Two]]
+** exclude:
+*** minimal
+* [[Article 3|Something Important]]
+== Main ==
+
+* [[Article 4|Some Content]]
+</code></pre>
+<p>For this sitemap, the <code>minimal</code> subtarget will only export <code>Article 1</code> and <code>Article 3</code>: At the book level, exclude is set as the default for <code>minimal</code>. This is why everything in <code>Main</code> is excluded. <code>Introduction</code> on the other hand overrides this setting and makes <code>minimal</code> included by default. Only <code>Article 2</code> is left out, because it is excluded by its chapter marker.</p>
+<a class="header" href="#including--excluding-headings" id="including--excluding-headings"><h3>Including / Excluding Headings</h3></a>
+<p>In addition to excluding or including whole articles, it is also possible to specifiy that only certain parts should be included or left out. This is done by supplying the include or exclude marker <em>of a chapter</em> an additional list of arguments for the subtarget:</p>
+<pre><code class="language-markdown">* [[Article Name|Article Caption]]
+** exclude:
+*** print:
+**** Alternative Proof
+**** Exercises
+*** minimal
+</code></pre>
+<p>This means: In <code>print</code>, we <strong>include everything but</strong> the headings <code>Alternative Proof</code> and <code>Exercises</code>. Note that although the subtarget is listed under exclude, we still include most of the article! In this case, the exclude only applies to the list of headings written as a sublist of <code>print</code>.</p>
+<p><code>minimal</code>, on the other hand, has no special parameters. This means the whole chapter <code>Article Name</code> is excluded.</p>
+<p>The same applies to the include marker: given an additional list of headings, it will <strong>exclude everything but</strong> the headings listed!</p>
+<table><thead><tr><th> marker </th><th> arguments </th><th> semantics </th></tr></thead><tbody>
+<tr><td> <code>include</code> </td><td> <code>subtarget</code> </td><td> include whole article </td></tr>
+<tr><td> <code>include</code> </td><td> <code>subtarget</code> + headings </td><td> exclude everything but the headings </td></tr>
+<tr><td> <code>exclude</code> </td><td> <code>subtarget</code> </td><td> exclude whole article </td></tr>
+<tr><td> <code>exclude</code> </td><td> <code>subtarget</code> + headings </td><td> include everything but the headings </td></tr>
+</tbody></table>
+<a class="header" href="#subtarget-aliases" id="subtarget-aliases"><h2>Subtarget Aliases</h2></a>
+<p>Sometimes, subtargets are very similar in their semantics and use the same or nearly the same sitemap markers (mainly includes / excludes). To avoid copying these, you can use the <em>alias marker</em> to specify that <code>alias</code> should behave the same as <code>subtarget</code> for this part of the document:</p>
+<pre><code class="language-markdown">= Book =
+* include:
+** print
+* alias:
+** letterpaper_print: print
+
+== Introduction ==
+...
+</code></pre>
+<p><code>letterpaper_print</code> will now behave exactly the same as <code>print</code> for the purposes of the sitemap!</p>
+<p>Note that you can add an alias on parts or chapters as well, meaning that the alias should only be valid for this part or chapter. You could, for example, just declare an alias on a chapter instead of typing out a long list of excluded headings twice.</p>
+<p>Unlike include and exclude markers though, <em>alias markers cannot be overridden!</em>. This means: if you add an alias marker at a part, you cannot define specific includes or excludes for that alias on its chapters. Making aliases not overridable makes it easier to reason about them, since once you declare an alias you can be sure there are to exceptions to these subtargets beeing equal (in the scope of the alias, of course).</p>
+<a class="header" href="#template-documentation" id="template-documentation"><h1>Template Documentation</h1></a>
+<a class="header" href="#documentation-for-formel-inline" id="documentation-for-formel-inline"><h2>Documentation for <code>formel</code> [inline]</h2></a>
+<p>Other names: <em>formel</em></p>
+<p>A math environment for formulas to distinct them from the surrounding
+text.</p>
+<p>The content of this template must always be <em>one and only one</em> math tag!</p>
+<a class="header" href="#template-attributes" id="template-attributes"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>1</code> <em>(formel)</em> [<strong>required</strong>][<strong>is_math_tag</strong>]:</p>
+<p>The formula defined in this environment.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-anker-inline" id="documentation-for-anker-inline"><h2>Documentation for <code>anker</code> [inline]</h2></a>
+<p>Other names: <em>anker</em></p>
+<p>Anchors mark reference points in headings.</p>
+<p>The argument this anchor is given should be the same as used for
+the reference later.</p>
+<a class="header" href="#template-attributes-1" id="template-attributes-1"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>1</code> [<strong>required</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The label of this reference.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagehauptartikel-inline" id="documentation-for-mathe-für-nicht-freaks-vorlagehauptartikel-inline"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:hauptartikel</code> [inline]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:hauptartikel</em></p>
+<p>Link to an article covering this section more deeply.</p>
+<a class="header" href="#template-attributes-2" id="template-attributes-2"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>1</code> [<strong>required</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The name of the article which covers more deeply the current content.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-todo-block" id="documentation-for-todo-block"><h2>Documentation for <code>todo</code> [block]</h2></a>
+<p>Other names: <em>todo</em></p>
+<p>A remark for a task which need to be done in an article.</p>
+<a class="header" href="#template-attributes-3" id="template-attributes-3"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>1</code> [<strong>required</strong>][<strong>everything_is_allowed</strong>]:</p>
+<p>The content of the todo remark.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-noprint-box" id="documentation-for-noprint-box"><h2>Documentation for <code>noprint</code> [box]</h2></a>
+<p>Other names: <em>noprint</em></p>
+<p>A section which shall not be printed in a PDF export.</p>
+<a class="header" href="#template-attributes-4" id="template-attributes-4"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>1</code> [<strong>required</strong>][<strong>everything_is_allowed</strong>]:</p>
+<p>The content which shall not be printed.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-important-block" id="documentation-for-important-block"><h2>Documentation for <code>important</code> [block]</h2></a>
+<p>Other names: <em>important, -</em></p>
+<p>Environment for highlighting an important block of text.</p>
+<a class="header" href="#template-attributes-5" id="template-attributes-5"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>1</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The important content.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagedefinition-box" id="documentation-for-mathe-für-nicht-freaks-vorlagedefinition-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:definition</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:definition</em></p>
+<p>A definition which defines a mathematical concept given by <code>title</code>.</p>
+<a class="header" href="#template-attributes-6" id="template-attributes-6"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>titel</code> [<strong>optional</strong>][<strong>is_inline_only</strong>]:</p>
+<p>Name of the mathematical concept which is defined.</p>
+</li>
+<li>
+<p><code>definition</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The definition of the mathematical content.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagefrage-box" id="documentation-for-mathe-für-nicht-freaks-vorlagefrage-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:frage</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:frage</em></p>
+<p>A question with an answer. <code>kind</code> defines the type of the question and
+<code>indent_mode</code> specifies whether the answer shall be indented (default mode)
+or not.</p>
+<a class="header" href="#template-attributes-7" id="template-attributes-7"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>frage</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The question.</p>
+</li>
+<li>
+<p><code>antwort</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The answer of the question.</p>
+</li>
+<li>
+<p><code>hinweis</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>A hint for the question.</p>
+</li>
+<li>
+<p><code>typ</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The kind of the question.</p>
+</li>
+<li>
+<p><code>einrückung</code> [<strong>optional</strong>][<strong>is_negative_switch</strong>]:</p>
+<p>Defines whether the answer shall be indented.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagesatz-box" id="documentation-for-mathe-für-nicht-freaks-vorlagesatz-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:satz</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:satz</em></p>
+<p>A mathematical theorem.</p>
+<a class="header" href="#template-attributes-8" id="template-attributes-8"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>titel</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>Name of the mathematcial theorem.</p>
+</li>
+<li>
+<p><code>satz</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The content of the theorem.</p>
+</li>
+<li>
+<p><code>erklärung</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>An explanation for the mathematical theorem.</p>
+</li>
+<li>
+<p><code>beispiel</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>An example for an application of the theorem.</p>
+</li>
+<li>
+<p><code>lösungsweg</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The thought process how to find the proof of this theorem.</p>
+</li>
+<li>
+<p><code>zusammenfassung</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>A summary for the proof of this theorem.</p>
+</li>
+<li>
+<p><code>beweis</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof for this theorem.</p>
+</li>
+<li>
+<p><code>beweis2</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>An alternative proof for this theorem.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagebeispiel-box" id="documentation-for-mathe-für-nicht-freaks-vorlagebeispiel-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:beispiel</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:beispiel</em></p>
+<p>A mathematical example.</p>
+<a class="header" href="#template-attributes-9" id="template-attributes-9"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>titel</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>A name for this example.</p>
+</li>
+<li>
+<p><code>beispiel</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The content for this example.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlageaufgabe-box" id="documentation-for-mathe-für-nicht-freaks-vorlageaufgabe-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:aufgabe</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:aufgabe</em></p>
+<p>An exercise.</p>
+<a class="header" href="#template-attributes-10" id="template-attributes-10"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>titel</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>A name for this excersise.</p>
+</li>
+<li>
+<p><code>aufgabe</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The content for this exercise.</p>
+</li>
+<li>
+<p><code>erklärung</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>An additional explanation for this exercise.</p>
+</li>
+<li>
+<p><code>zusammenfassung</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>A summary for the proof or the solution for this exercise.</p>
+</li>
+<li>
+<p><code>lösungsweg</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The thought process for finding the proof or the solution of this
+exercise.</p>
+</li>
+</ul>
+<ul>
+<li>
+<p><code>lösung</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The solution for this exercise.</p>
+</li>
+<li>
+<p><code>beweis</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof for this exercise.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagegruppenaufgabe-box" id="documentation-for-mathe-für-nicht-freaks-vorlagegruppenaufgabe-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:gruppenaufgabe</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:gruppenaufgabe</em></p>
+<p>An exercise with a set of subexercises.</p>
+<p>If your exercise has subtasks which can be solved individually,
+you should use this template.</p>
+<a class="header" href="#template-attributes-11" id="template-attributes-11"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>titel</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>A name for this group of excersise.</p>
+</li>
+<li>
+<p><code>aufgabe</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The content for this exercise.</p>
+</li>
+<li>
+<p><code>erklärung</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>An explanation for the exercise.</p>
+<p>This should be general information about the problem which
+applies for all subtasks.</p>
+</li>
+</ul>
+<ul>
+<li>
+<p><code>teilaufgabe1</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Subtask number 1.</p>
+</li>
+<li>
+<p><code>teilaufgabe2</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Subtask number 2.</p>
+</li>
+<li>
+<p><code>teilaufgabe3</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Subtask number 3.</p>
+</li>
+<li>
+<p><code>teilaufgabe4</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Subtask number 4.</p>
+</li>
+<li>
+<p><code>teilaufgabe5</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Subtask number 5.</p>
+</li>
+<li>
+<p><code>teilaufgabe6</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Subtask number 6.</p>
+</li>
+<li>
+<p><code>teilaufgabe1-lösung</code> <em>(teilaufgabe1-solution)</em> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Solution for subtask number 1.</p>
+</li>
+<li>
+<p><code>teilaufgabe2-lösung</code> <em>(teilaufgabe2-solution)</em> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Solution for subtask number 2.</p>
+</li>
+<li>
+<p><code>teilaufgabe3-lösung</code> <em>(teilaufgabe3-solution)</em> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Solution for subtask number 3.</p>
+</li>
+<li>
+<p><code>teilaufgabe4-lösung</code> <em>(teilaufgabe4-solution)</em> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Solution for subtask number 4.</p>
+</li>
+<li>
+<p><code>teilaufgabe5-lösung</code> <em>(teilaufgabe5-solution)</em> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Solution for subtask number 5.</p>
+</li>
+<li>
+<p><code>teilaufgabe6-lösung</code> <em>(teilaufgabe6-solution)</em> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>Solution for subtask number 6.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagehinweis-box" id="documentation-for-mathe-für-nicht-freaks-vorlagehinweis-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:hinweis</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:hinweis, hinweis</em></p>
+<p>A hint for the reader.</p>
+<a class="header" href="#template-attributes-12" id="template-attributes-12"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>1</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The content of this hint.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagewarnung-box" id="documentation-for-mathe-für-nicht-freaks-vorlagewarnung-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:warnung</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:warnung, warnung</em></p>
+<p>A warning for the reader.</p>
+<a class="header" href="#template-attributes-13" id="template-attributes-13"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>1</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The content of this warning.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagebeweis-box" id="documentation-for-mathe-für-nicht-freaks-vorlagebeweis-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:beweis</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:beweis</em></p>
+<p>A proof for a theorem.</p>
+<a class="header" href="#template-attributes-14" id="template-attributes-14"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>titel</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The name of the theorem which will be proved.</p>
+</li>
+<li>
+<p><code>beweis</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The content of the proof.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagelösungsweg-box" id="documentation-for-mathe-für-nicht-freaks-vorlagelösungsweg-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:lösungsweg</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:lösungsweg</em></p>
+<p>It shows the way how a solution or a proof for an exercise can be found.</p>
+<a class="header" href="#template-attributes-15" id="template-attributes-15"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>titel</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The title of the theorem or exercise which is going to be proved.</p>
+</li>
+</ul>
+<ul>
+<li>
+<p><code>lösungsweg</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The thought process for finding the solution.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagealternativer-beweis-box" id="documentation-for-mathe-für-nicht-freaks-vorlagealternativer-beweis-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:alternativer beweis</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:alternativer beweis</em></p>
+<p>An alternative proof for a theorem.</p>
+<a class="header" href="#template-attributes-16" id="template-attributes-16"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>titel</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The name of the proof which is going to be proved.</p>
+</li>
+<li>
+<p><code>beweis</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The content of the proof.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagebeweiszusammenfassung-box" id="documentation-for-mathe-für-nicht-freaks-vorlagebeweiszusammenfassung-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:beweiszusammenfassung</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:beweiszusammenfassung</em></p>
+<p>A summary of a proof which explains how it works.</p>
+<a class="header" href="#template-attributes-17" id="template-attributes-17"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>titel</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The name of the theorem which is proved.</p>
+</li>
+<li>
+<p><code>zusammenfassung</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The content of the proof summary.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagelösung-box" id="documentation-for-mathe-für-nicht-freaks-vorlagelösung-box"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:lösung</code> [box]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:lösung</em></p>
+<p>A solution (for example for an exercise).</p>
+<a class="header" href="#template-attributes-18" id="template-attributes-18"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>titel</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The title of the exercise this solution has.</p>
+</li>
+<li>
+<p><code>lösung</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The content of the solution.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagebeweisschritt-block" id="documentation-for-mathe-für-nicht-freaks-vorlagebeweisschritt-block"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:beweisschritt</code> [block]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:beweisschritt</em></p>
+<p>One step of a proof.</p>
+<a class="header" href="#template-attributes-19" id="template-attributes-19"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>name</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The name of the proof step.</p>
+</li>
+<li>
+<p><code>ziel</code> [<strong>required</strong>][<strong>is_inline_only</strong>]:</p>
+<p>The goal for this proof step.</p>
+</li>
+<li>
+<p><code>beweisschritt</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof for the specified goal.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagevollständige-induktion-block" id="documentation-for-mathe-für-nicht-freaks-vorlagevollständige-induktion-block"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:vollständige induktion</code> [block]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:vollständige induktion, :aufgabensammlung: vorlage:vollständige induktion</em></p>
+<p>A proof by induction.</p>
+<a class="header" href="#template-attributes-20" id="template-attributes-20"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>erfuellungsmenge</code> [<strong>optional</strong>][<strong>is_inline_only</strong>]:</p>
+<p>The set of all objects for which a statement shall be proved by
+induction.</p>
+</li>
+</ul>
+<ul>
+<li>
+<p><code>aussageform</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The statement which shall be proved by induction.</p>
+</li>
+<li>
+<p><code>induktionsanfang</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof of the base case for the induction.</p>
+</li>
+<li>
+<p><code>induktionsvoraussetzung</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The hypothesis of the step case.</p>
+</li>
+<li>
+<p><code>induktionsbehauptung</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The goal of the step case.</p>
+</li>
+<li>
+<p><code>beweis_induktionsschritt</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof of the step case.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-mathe-für-nicht-freaks-vorlagefallunterscheidung-block" id="documentation-for-mathe-für-nicht-freaks-vorlagefallunterscheidung-block"><h2>Documentation for <code>:mathe für nicht-freaks: vorlage:fallunterscheidung</code> [block]</h2></a>
+<p>Other names: <em>:mathe für nicht-freaks: vorlage:fallunterscheidung</em></p>
+<p>A proof by cases.</p>
+<a class="header" href="#template-attributes-21" id="template-attributes-21"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>fall1</code> [<strong>required</strong>][<strong>is_inline_only</strong>]:</p>
+<p>The goal of the 1st case.</p>
+</li>
+<li>
+<p><code>beweis1</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof of the 1st case.</p>
+</li>
+<li>
+<p><code>fall2</code> [<strong>required</strong>][<strong>is_inline_only</strong>]:</p>
+<p>The proof of the 2nd case.</p>
+</li>
+<li>
+<p><code>beweis2</code> [<strong>required</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof of the 2nd case.</p>
+</li>
+<li>
+<p><code>fall3</code> [<strong>optional</strong>][<strong>is_inline_only</strong>]:</p>
+<p>The proof of the 3rd case.</p>
+</li>
+<li>
+<p><code>beweis3</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof of the 3rd case.</p>
+</li>
+<li>
+<p><code>fall4</code> [<strong>optional</strong>][<strong>is_inline_only</strong>]:</p>
+<p>The proof of the 4th case.</p>
+</li>
+<li>
+<p><code>beweis4</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof of the 4th case.</p>
+</li>
+<li>
+<p><code>fall5</code> [<strong>optional</strong>][<strong>is_inline_only</strong>]:</p>
+<p>The proof of the 5th case.</p>
+</li>
+<li>
+<p><code>beweis5</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof of the 5th case.</p>
+</li>
+<li>
+<p><code>fall6</code> [<strong>optional</strong>][<strong>is_inline_only</strong>]:</p>
+<p>The proof of the 6th case.</p>
+</li>
+<li>
+<p><code>beweis6</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>The proof of the 6th case.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-invokemathe-für-nicht-freaksseite-block" id="documentation-for-invokemathe-für-nicht-freaksseite-block"><h2>Documentation for <code>#invoke:mathe für nicht-freaks/seite</code> [block]</h2></a>
+<p>Other names: <em>#invoke:mathe für nicht-freaks/seite</em></p>
+<p>Template for including a navigation element (a header or a footer) in an article.</p>
+<a class="header" href="#template-attributes-22" id="template-attributes-22"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>1</code> [<strong>required</strong>][<strong>is_navigation_spec</strong>]:</p>
+<p>The kind of the navigational element. &quot;oben&quot; for the header and &quot;unten&quot;
+for the footer.</p>
+</li>
+</ul>
+<ul>
+<li>
+<p><code>überprüft</code> [<strong>optional</strong>][<strong>block_or_inline</strong>]:</p>
+<p>List of reviewers. (only in footer)</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-smiley-inline" id="documentation-for-smiley-inline"><h2>Documentation for <code>smiley</code> [inline]</h2></a>
+<p>Other names: <em>smiley</em></p>
+<p>Insert a smiley. Please only use the text description for consistency.</p>
+<a class="header" href="#template-attributes-23" id="template-attributes-23"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>1</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The smiley name like &quot;smile&quot;, &quot;wink&quot;, &quot;cool&quot;, ...</p>
+</li>
+</ul>
+<ul>
+<li>
+<p><code>2</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>The smiley size in pixels.</p>
+</li>
+</ul>
+<a class="header" href="#documentation-for-literatur-inline" id="documentation-for-literatur-inline"><h2>Documentation for <code>literatur</code> [inline]</h2></a>
+<p>Other names: <em>literatur, literature</em></p>
+<p>Refers to some information from a work of literature.</p>
+<a class="header" href="#template-attributes-24" id="template-attributes-24"><h3>Template Attributes:</h3></a>
+<ul>
+<li>
+<p><code>autor</code> <em>(author)</em> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>Full author's names. (Name, Surname, Name, Surname, ...)</p>
+</li>
+<li>
+<p><code>titel</code> <em>(title)</em> [<strong>required</strong>][<strong>is_plain_text</strong>]:</p>
+<p>Full title.</p>
+</li>
+<li>
+<p><code>verlag</code> <em>(publisher)</em> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>Name of the publishing company.</p>
+</li>
+<li>
+<p><code>jahr</code> <em>(year)</em> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>Year of publication.</p>
+</li>
+<li>
+<p><code>ort</code> <em>(address)</em> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>Place or adress of publisher.</p>
+</li>
+<li>
+<p><code>isbn</code> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>ISBN of the work if applicable.</p>
+</li>
+<li>
+<p><code>seiten</code> <em>(pages)</em> [<strong>optional</strong>][<strong>is_plain_text</strong>]:</p>
+<p>Pages cited.</p>
+</li>
+</ul>
+<a class="header" href="#makefile-developer-documentation" id="makefile-developer-documentation"><h1>Makefile Developer Documentation</h1></a>
+<p>Building on the exeriences of previous interations and prototypes, this build systems for MediaWiki exports is designed to be more <em>modular</em>, use <em>standard tools</em> where possible and <em>communicate errors</em> as soon as possible. Less dependency on the environment (including network connection) is desirable as well.</p>
+<p>The heart of the system is a <em>Makefile</em>, which glues standard and custom tools together to allow building books, articles and documentation.</p>
+<a class="header" href="#tools-overview" id="tools-overview"><h1>Tools Overview</h1></a>
+<p>The core <em>Makefile</em> depends on various standard tools and software not written by us include:</p>
+<ul>
+<li><strong>Python 3</strong>: Mainly for helper scripts with some kind of network access, mostly MediaWiki API calls.</li>
+<li><strong>texvccheck</strong>: A helper tool from the MediaWiki math extension for inline LaTeX sanitization, written in OCaml.</li>
+<li><strong>jq</strong>: Command line processor for json, allows shell scripts (and <code>make</code>) to access and manipulate json data.</li>
+<li><strong>sed, sponge, ...</strong>: Miscellaneous helpers.</li>
+<li><strong>lualatex</strong>: For PDF target.</li>
+<li><strong>Inkscape</strong>: Conversion of SVG to PDF, mainly for LaTeX.</li>
+<li><strong>Image Magick</strong>: Conversion of various image formats, e.g. for LaTeX.</li>
+<li><strong>qrencode</strong>: Encode links to interactive media for print.</li>
+<li><strong>make</strong>: Obviously. We rely on some <em>GNU Make</em>-specific extensions.</li>
+</ul>
+<p>Some of the most important tools are custom made, though. These are mainly concerned with the actual processing and conversion of our articles. The tools below are written in <a href="https://www.rust-lang.org">Rust</a>, but there are no hard restrictions on the choice of language here.</p>
+<ul>
+<li><strong>Mediawiki Parser (<code>mwtoast</code>)</strong>: <a href="https://github.com/vroland/mediawiki-parser">Repository</a> | A parser for WikiText, generated using a formal grammar. This approach is not optimal for parsing WikiText in general. But since we only want to allow a well-formed subset for our articles, this makes writing such a parser much easier and faster. Outputs an <em>abstract syntax tree</em> of the article, which we sometimes call the <em>intermediate representation</em>.</li>
+<li><strong>MFNF Export (<code>mfnf_ex</code>)</strong>: <a href="https://github.com/vroland/mfnf-export">Repository</a> | Serializes the <em>intermediate representation</em> to target formats, such as <em>LaTeX</em>, <em>HTML</em>, etc. <br />
+Additionally, some targets extract information from an article, rather than serializing the whole thing. <code>section-deps</code> and <code>media-deps</code>, for example, just extract dependency information from the article and output a makefile, which is subsequently used in the build process. <br />
+This is the reason why this tool will be invoked a number of times even if only a single article is exported.</li>
+<li><strong>MFNF Linter (<code>mwlint</code>)</strong>: <a href="https://github.com/vroland/mwlint">Repository</a> | A linter for MFNF-specific WikiText markup. Helps authors to adhere to the project guidelines by giving a number of hints and checking the <a href="./template_specification.html">template specification</a>. <br />
+The linter can also be compiled to WebAssembly and run in the browser, showing lints immediately when editing an article using the textual editor on <a href="https://de.wikibooks.org/wiki/Mathe_f%C3%BCr_Nicht-Freaks">WikiBooks</a>.</li>
+<li><strong>MFNF Sitemap Parser (<code>parse_bookmap</code> and <code>sitemap_utils</code>)</strong>: <a href="https://github.com/vroland/mfnf-sitemap-parser">Repository</a> <code>parse_bookmap</code> creates a sitemap from the intermediate representation of a <a href="./sitemap_structure.html">sitemap article</a>, which is a more strict and machine-readable version of the sitemap. <br />
+<code>sitemap_utils</code> can subsequently be used to generate a <em>dependency file</em> from the sitemap, which is used by make to determine which articles it needs to build for a book. <br />
+The latter tool has a second subcommand for extracting the <em>markers</em> (see <a href="./concepts.html">Concepts</a> of an article for the use with other tools like <code>mfnf_ex</code>, which will read information like <em>included and excluded headings</em> from them.</li>
+<li><strong>Handlebars CLI (<code>handlebars-cli-rs</code>)</strong>: <a href="https://github.com/vroland/handlebars-cli-rs">Repository</a> | Command line template rendering tool using the Handlebars Template Language. Frequently used in various makefile recipes.</li>
+</ul>
+<a class="header" href="#export-dependency-structure" id="export-dependency-structure"><h1>Export Dependency Structure</h1></a>
+<p>To understand the process of exporting articles of books, we must first understand which inputs the final output depends on. We will use the follwing notation for dependency graphs:</p>
+<ul>
+<li>ellipses with white background represent a file</li>
+<li>ellipses with with gray background represent an <em>intermediate target</em>, which is not created as a file but is used to <em>group dependencies</em> together (as the prerequisites of this target)</li>
+<li>text-filled rectangles represent makefiles. These usually add dynamically generated dependencies. (see <a href="./make_patterns.html">Makefile Patterns</a>)</li>
+<li>bigger rectangles group a set of files / targets with <em>common prerequisites</em>. An edge (arrow) pointing at the rectangle border means all files in this cluster / group depend on this file.</li>
+</ul>
+<p>Actual filenames always have their article or book revision id before their file extension</p>
+<a class="header" href="#article-dependencies" id="article-dependencies"><h2>Article Dependencies</h2></a>
+<p>The image blow shows the (simplified) dependency graph for a single article:</p>
+<p><img src="img/article_deps.svg" alt="Dependency graph for an article" /></p>
+<p>Where:</p>
+<ul>
+<li><strong>article source (<code>.md</code>)</strong>: WikiText source code of the article.</li>
+<li><strong>parsed article (<code>.raw.json</code>)</strong>: Raw parser result of the article.</li>
+<li><strong>intermediate representation (<code>.json</code>)</strong>: Post-processed (normalized) abstract syntax tree of the article.</li>
+<li><strong>article markers (<code>.markers</code>)</strong>: Describes the article in the context of a book (see <a href="./concepts.html">Concepts</a>). When exporting only a single article, this is just a dummy. But for a whole book, some parts of the article could be excluded, which may change which sections or images are included. Thus, the whole subsequent export is dependent on this file. This part is extracted from the sitemap (specifically subtargetmap), with the current subtarget renamed to <code>current</code>.</li>
+<li><strong>section dependencies (<code>section_dep</code>)</strong>: A makefile defining the intermediate <code>.sections</code> target, which has all sections included in this article as prerequisites.</li>
+<li><strong>media dependencies (<code>media_dep</code>)</strong>: Like <code>.section_dep</code>, but for included media files. Since included sections may in turn include new media files, this depends on <code>.sections</code>. Defines the intermediate target <code>.media</code>.</li>
+<li><strong>fragments of other articles (<code>.json</code>)</strong>: The article fragments included as sections. These, of course depend on the intermediate representation of their origin articles, which is ommited here for clarity. The <code>.sections</code>-Target depends on all included sections (article fragments).</li>
+<li><strong>media files used in the article (<code>.svg, .png, .webm, ...</code>)</strong>: All media files the article uses as prerequisites of the <code>.media</code> intermediate target.</li>
+<li><strong>reference anchors (<code>.anchors</code>)</strong>: A list of all link targets this article provides. This is used to differentiate between internal and external link targets (e.g. jump to the corresponding page for a present link target, but link to the Website if the target is not included in the export). <br />
+When only a single article is exported, only anchors defined in this article are relevant. If a whole book is exported, this simplification does not hold any more. Then, every article output depends on the list of all anchors defined in the book, which in turn depends on the individual <code>.anchors</code>-files of the articles.</li>
+<li><strong>exported article (<code>.tex, .raw_html, ...</code>)</strong>: Export of the article in a target format.</li>
+<li><strong>target configuration file (<code>.yml</code>)</strong>: Last but not least, most of the export steps depend on the main configuration file, which contains the configuration for every export target (aka <em>subtarget</em> or <em>target configuration</em>).</li>
+</ul>
+<a class="header" href="#book-dependencies" id="book-dependencies"><h2>Book Dependencies</h2></a>
+<p>Now we know the dependency structure of a single article. But what about a book? In the context of a book, article export is similar, but with some important differences:</p>
+<ul>
+<li>The article markers are no longer empty, but are specified in the sitemap.</li>
+<li>The exported article depends on a book-wide <code>.anchors</code> while, which contains the combined reference anchors for the whole book.</li>
+</ul>
+<p>As a graph:</p>
+<p><img src="img/book_deps.svg" alt="Dependency graph for a book" /></p>
+<p>Where:</p>
+<ul>
+<li><strong>sitemap article source (<code>.md</code>)</strong>: WikiText source code of the sitemap article.</li>
+<li><strong>sitemap intermediate representation (<code>.json</code>)</strong>: Abstract sytax tree of the sitemap. Until now the sitemap is treated just like any normal article.</li>
+<li><strong>sitemap (<code>.sitemap.json</code>)</strong>: Special sitemap data structure.</li>
+<li><strong>subtargetmap (<code>.subtargetmap.json</code>)</strong>: Sitemap with only the information relevant for the current subtarget.</li>
+<li><strong>book dependency file (<code>.book.dep</code>)</strong>: A makefile defining the intermediate <code>.book.dependencies</code> target, which has all exported articles as prerequisites.</li>
+<li><strong>book anchors (<code>.anchors</code>)</strong>: A list of all link targets the book provides. It is build from the <code>.anchors</code>-files of the individual articles.</li>
+<li><strong>book export results (<code>.book.tex, .book.html, ...</code>)</strong>: The final output of the book export.</li>
+</ul>
+<a class="header" href="#repository-structure" id="repository-structure"><h1>Repository Structure</h1></a>
+<p>Here is a high-level overview over the most important files and directories:</p>
+<ul>
+<li><code>mk</code>: Corresponds to the <code>src</code> directory of other projekcts. Holds makefiles and scripts of the build system, but also binaries of the helper tools.</li>
+<li><code>doc</code>: Documentation artifacts, including this book.</li>
+<li><code>assets</code>: Various assets like templates or static files used in export recipes.</li>
+<li><code>assets/include</code>: Static files which can be included in books from a <em>marker</em> in their sitemap.</li>
+<li><code>config</code>: Configuration files for tools used in the build process. Includes <code>config/mfnf.yml</code> which defines the targets with their configuration (subtargets) for our rust helper tools.</li>
+<li><code>Makefile</code>: The main <em>Makefile</em> from which all functionality of this project can be accessed.</li>
+</ul>
+<p>Additionally, some directories may be created at run time:</p>
+<ul>
+<li><code>exports</code>: The directory structure for exported books and articles (see <a href="./guide.html">User Guide</a>).</li>
+<li><code>articles</code>: Downloaded articles and their intermediate representation.</li>
+<li><code>sections</code>: Sections of downloaded articles in intermediate representation.</li>
+<li><code>media</code>: Downladed media files and metadata, as well as converted versions.</li>
+<li><code>revisions.json</code>: Global revision lock file. Whenever the latest revision of an article, book, section or media file is requested, the revision is taken from this file.<br />
+If the latest revision is not yet known, it will immediately be recorded in this file after it was queried.</li>
+</ul>
+<a class="header" href="#the-mk-directory" id="the-mk-directory"><h2>The <code>mk</code> Directory</h2></a>
+<p>The <code>mk</code> directory can be considered as the structured body of the <code>Makefile</code>: All <code>*.mk</code> files present in <code>mk</code> are included by <code>Makefile</code>. Additionally <code>mk</code> contains the scripts and custom tools necessary for <code>Makefile</code> to operate.</p>
+<pre><code>mk
+├── article_book.mk
+├── articles.mk
+├── artifacts           // various artifacts like dummy files
+│   ├── ...
+├── bin                 // binaries of some tools build via &quot;make init&quot;
+│   ├── ...
+├── book.mk
+├── dependencies.mk
+├── doc.mk
+├── macros.mk
+├── media.mk
+├── scripts             // helper scripts
+│   ├── collect_stats.py
+│   ├── download_article.py
+│   ├── download_image.py
+│   ├── fill_sitemap_revisions.py
+│   ├── get_image_license.py
+│   ├── get_image_revision.py
+│   ├── get_revision.sh // resolves revisions and maintains `revisions.json`
+│   ├── lib
+│   │   ├── api.py
+│   │   └── utils.py
+│   └── unescape_make.py
+├── sections.mk
+├── targets             // target-specific makefiles
+│   ├── html.mk
+│   ├── latex.mk
+│   ├── pdf.mk
+│   └── stats.mk
+└── utils.mk
+</code></pre>
+<a class="header" href="#makefile-development" id="makefile-development"><h1>Makefile Development</h1></a>
+<blockquote>
+<p>These words shall enlighten those who seek the true meaning of the script that is the Makefile, for that it maketh books of great wisdom. Do not fear what some may call wicked black magic, but embrace its glory.</p>
+</blockquote>
+<a class="header" href="#makefile-basics" id="makefile-basics"><h1>Makefile Basics</h1></a>
+<p>This section describes some of the basic concepts a developer should know in order to understand in detail how the build system works.</p>
+<a class="header" href="#building-makefiles" id="building-makefiles"><h2>Building Makefiles</h2></a>
+<p>One of the most important patterns used in this makefile is dynamic generation and inclusion of makefiles. This allows generating dependencies at run time without using <a href="http://lcgapp.cern.ch/project/architecture/recursive_make.pdf">recursive make</a>. The build system relies havily on GNU Make trying to build makefiles included with <code>-include</code> before loading them. More information regarding this pattern can be found <a href="http://make.mad-scientist.net/constructed-include-files/">here</a>.</p>
+<a class="header" href="#secondary-expansion" id="secondary-expansion"><h2>Secondary Expansion</h2></a>
+<p>Not all dependency information is generated in the form of a makefile and then included. In many cases, prerequisites are generated from the current target via <a href="https://www.gnu.org/software/make/manual/html_node/Secondary-Expansion.html">secondary expansion</a>. With secondary expansion, prerequisite list are expanded twice every time a rule is tried by make. This also allows calling make functions and defining variables every time the second expansion happens.</p>
+<a class="header" href="#target-specific-variable-values" id="target-specific-variable-values"><h2>Target-specific Variable Values</h2></a>
+<p>Make allows variable values to be <a href="https://www.gnu.org/software/make/manual/html_node/Target_002dspecific.html">specific to a target</a> (and its prerequisites, recusively). Combining secondary expansion and the eval function we can conveniently store some calculation results in variables and use them to construct a prerequisite path:</p>
+<pre><code class="language-makefile">root/%/somefile: $$(eval HEAD := $$(word 2,$$(subst /, ,$$@))) root/$$(HEAD).index
+    do --fun-stuff-in-the-shell
+</code></pre>
+<p>Note that <code>$(HEAD)</code> is specific to this target and its prerequisites and will also be available in the recipe, it not changed by the expansion or recipe of a prerequisite.</p>
+<p>Since our target paths hold valuable information, this pattern is fairly common in our code base. Using recursively expanded (<code>=</code>-assigned) variables, we can make path parsing look almost sane:</p>
+<pre><code class="language-makefile">root/%/somefile: $(PARSE_PATH) path/to/$$(HEAD)/$$(FOO)/$$(SOMEFILE)
+    fun stuff...
+</code></pre>
+<p><code>$(PARSE_PATH)</code> expands to the parsing expression in the first expansion, which is evaluated in the second expansion (as is the prerequisite path).</p>
+<p>Note that macro expansion in make can to pretty much anything, thanks to <code>$(eval ....)</code> and <code>$(shell ...)</code>.</p>
+<a class="header" href="#using-secondary-expansion-to-restrict-rules" id="using-secondary-expansion-to-restrict-rules"><h2>Using Secondary Expansion to restrict Rules</h2></a>
+<p>Since we can generate prerequisites every time a rule is considerered by make, we can impose restrictions on wether make can use this rule right now. Normally, pattern rules match if the target pattern matches.</p>
+<p>If the rule should only apply in a subset of those cases, we can use the secondary expansion to generate an impossible prerequisite, effectively blocking make from using the rule:</p>
+<pre><code class="language-makefile">%: $$(if $$(subst pdf,,$$(suffix $$@)),,IMPOSSIBLE)
+    do things...
+</code></pre>
+<p>The above example ony allows make to use this rule if the target file ends with <code>pdf</code>. Of course, this would be used with more complex requirements, which cannot be expressed trough make's pattern rules.</p>
+<a class="header" href="#unifying-articles-and-books" id="unifying-articles-and-books"><h1>Unifying Articles and Books</h1></a>
+<p>In the past, we had separate build systems for exporting articles and books. And indeed, exporting a single article is different from exporting books for the following reasons:</p>
+<ul>
+<li>Post-processing is different: For books, the exported article must work in the context of a collection (e.g. as includes in the <code>.book.tex</code> file), while single articles must work on their own (e.g. full LaTeX file with preamble)</li>
+<li>A book can manipulate its articles, e.g. through <em>markers</em>.</li>
+<li>In the context of a book, an article depends on every other article through the book-wide anchor list (<code>.anchors</code>).</li>
+</ul>
+<p>In the current build system, we try to unify these targets to reduce duplication and reduce maintainance work. The issues above are now adressed by:</p>
+<ul>
+<li>Having a dummy book. The file <code>article_book.mk</code> overrides some book rules for the special <code>$(ARTICLE_BOOK)</code>. <br />
+There are no book dependencies and the book anchor list macro <code>$(ALL_ANCHORS_SECONDARY)</code> expands to the article's <code>.anchors</code> file instead of the book's <code>.anchors</code> file. <br />
+Markers are created from a dummy file, which defindes no inclusions, exclusions or other special markers.</li>
+<li>Having separate rules for articles in the target files.<br />
+Every target makefile (<code>mk/target/&lt;target&gt;.mk</code>) must contain rules for building a book as well as standalone articles. Since we know the name of the dummy book (<code>$(ARTICLE_BOOK)</code>), we can simply exploit the precedence of rules with shorter stems to separate article and book rules in the makefile.</li>
+</ul>
+<a class="header" href="#how-dependencies-are-generated" id="how-dependencies-are-generated"><h2>How Dependencies are Generated</h2></a>
+<p>As shown in the <a href="../make_overview.html">dependency structure section</a>, the final result depends on some dynamically generated makefiles, which define intermediate targets with the dependencies needed.</p>
+<p>While this is accurate in terms of a dependency model, it is not how <code>make</code> builds an export target! Instead, we split the build in two phases:</p>
+<ol>
+<li>Parse <code>$(MAKECMDGOALS)</code> and generate a list of all dependency files which need to be generated. These are <code>$(BOOK_DEP_FILES)</code> for books, (<code>book.mk</code>) and <code>$(ARTICLE_BOOK_DEP_FILES)</code> for articles (<code>article_book.mk</code>). They contain a list of <code>.book.dep</code> or <code>.section-dep</code> and <code>.media-dep</code> files, respectively. <br />
+This list is then included with <code>-include</code>, which will tell GNU Make to immediately try to build them. So <code>make</code> goes ahead and builds the sitemap and dependency files, without working on the actual target, yet. <br />
+This is why some errors, like <code>no rule to make target</code> if a wrong target path is given, may only occur after the dependency files have already been built.</li>
+<li>After the dependency files have been built, make includes them and only now considers makefile loading complete.<br />
+It will now proceed to build the actual target file, using the rules and dependency information generated in the previous phase.</li>
+</ol>
+<p><img src="../img/build_process.svg" alt="Visualization of the build process" /></p>
+<a class="header" href="#revision-management" id="revision-management"><h1>Revision Management</h1></a>
+<p>Since most input data we use currently comes in the form of WikiBooks articles, we need a way to keep track which version of the article we are using. MediaWiki uses numeric revision IDs vor this.</p>
+<p>But most references to articles, like internal links or even sitemaps do not specify a specific article revision. Instead, they implicitly point to the <code>latest</code> revision of an article.</p>
+<p>If we would just use the currently latest revision available on the server, we risk introducing inconsistencies: If we export the same book to different output formats, an article might change in the middle of the process and we end up with the content beeing different in HTML and PDF. Or even worse, a definition included from another article differs from the actual article, because it changed after section extraction. Yes, these cases are rare, but there is another important reason:</p>
+<p><em>Reproducible builds</em>. We want to be able to build a book exactly as it was three weeks ago, even if the articles and included media files have been changed since then. This is primarily useful to be able to fall back on a known good state if some change in an article breaks the build. But it also helps with tracking down errors or tracking the evolution of the book content.</p>
+<a class="header" href="#implementation" id="implementation"><h2>Implementation</h2></a>
+<p>The revision of an article or media file which is currently considered <code>latest</code> is stored in a <em>revision lock file</em> (<code>$(REVISION_LOCK_FILE)</code>), when it is first queried. By default, this file is called <code>revisions.json</code>.</p>
+<p>Every subseqent reference to <code>latest</code> for an article or media file is then resolved through this file, which effectively locks the article to this revision for every subsequent export, until <code>revisions.json</code> is updated or deleted.</p>
+<p>This functionality is implemented in <code>mk/scripts/get_revisions.sh</code>. However, when a revision needs to be resolved in the build process, you should use the <code>article_revision</code> or <code>media_revision</code> functions defined in <code>utils.mk</code>, since they make sure to use the revision lock file properly.</p>
+<p>Article revisions are a string of numbers (<code>812312</code>), while media revisions are timestamps (<code>2017-04-02T09:54:57Z</code>).</p>
+<a class="header" href="#handling-build-targets-with-latest" id="handling-build-targets-with-latest"><h2>Handling Build Targets with <code>latest</code></h2></a>
+<p>For most targets, the build system allows to specify <code>latest</code> instead of a static article or book revision (like <code>812312</code>). These are resolved as early as possible in both phases described above:</p>
+<ul>
+<li>During dependency generation phase, revision resolving happens during the parsing of <code>$(MAKECMDGOALS)</code> in <code>book.mk</code> or <code>article_book.mk</code>.</li>
+<li>When a target is to be built, we need to make sure <code>make</code> cannot just assume <code>latest</code> as the correct revision. This is why every target makefile (<code>mk/targets/&lt;target&gt;.mk</code>) has a rule to catch these and has the same target with the actual revision ID as prerequisite.</li>
+</ul>
+<p>The first phase is (straight forward) functional make programming. The second measure is a bit more tricky to achieve:</p>
+<pre><code class="language-makefile">$(EXPORT_DIR)/%book.tex: $(TARGET_RESOLVED_REVISION) $(HAS_LATEST_GUARD)
+    $(LINK_BOOK_LATEST)
+    $(LINK_LATEST_TARGET)
+
+$(EXPORT_DIR)/%.book.tex: $(PARSE_PATH_SECONDARY) $(NO_LATEST_GUARD) $$(BOOK_DEP_FILE) $$(BOOK_DEP_INTERMEDIATE) 
+    ...
+</code></pre>
+<p>Through this pattern, we force <code>make</code> to use the first rule if the book revision (or article revision for article exports) is <code>latest</code>. Only if no revision in the target path is <code>latest</code>, the latter rule may be used.</p>
+<p>The most important macros here are:</p>
+<ul>
+<li><code>$(NO_LATEST_GUARD)</code>: Expands to an impossible prerequisite if there is any revision in the target path is <code>latest</code>, otherwise expands to nothing.</li>
+<li><code>$(HAS_LATEST_GUARD)</code>: The logical opposite (there needs to be at least one <code>latest</code> revision).</li>
+<li><code>$(TARGET_RESOLVED_REVISION)</code>: Expands to the the target path, but with every reference to <code>latest</code> revision resolved.</li>
+</ul>
+<a class="header" href="#adding-a-new-target" id="adding-a-new-target"><h1>Adding a new Target</h1></a>
+<p>A checklist of things to do when adding a new target format:</p>
+<ul>
+<li>Add your target to <code>targets</code> and <code>target_extensions</code> in <code>mk/scripts/lib.jq</code>.</li>
+<li>Add a new <code>mk/targets/&lt;target&gt;.mk</code> makefile. This file should be the entry point when for building books and articles in the new format. Make sure to have a rule for
+<ol>
+<li>building a concrete book revision (<code>$(NO_LATEST_GUARD)</code>). The resulting file of a book export is named <code>&lt;revision&gt;.book.&lt;extension&gt;</code>.</li>
+<li>building a book where some revision is <code>latest</code> (<code>$(HAS_LATEST_GUARD)</code>), you can use <code>$(TARGET_RESOLVED_REVISION)</code> to add the concrete latest revision as prerequisite.</li>
+<li>building a concrete an article revision (<code>$(NO_LATEST_GUARD)</code>). Exported standalone article files are named <code>&lt;revision&gt;.&lt;extension&gt;</code>. You can make this rule take precedence over the book rule by making the pattern stem <code>%</code> shorter (<code>$(EXPORT_DIR)/$(ARTICLE_BOOK)/%...</code> instead of <code>$(EXPORT_DIR)/%...</code>)</li>
+<li>building an article with either article or book revision beeing <code>latest</code>. See 2.</li>
+</ol>
+</li>
+<li>Include this makefile in <code>Makefile</code>.</li>
+<li>Add a pattern for your new format (<code>%.&lt;extension&gt;</code>) to the appropriate rule in <code>mk/dependencies.mk</code>.</li>
+<li>Add the target to <code>mfnf_ex</code> (the mfnf-export tool).</li>
+<li>Instantiate your target for every subtarget in <code>config/mfnf.yml</code>.</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+        
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+        
+        
+
+    </body>
+</html>
