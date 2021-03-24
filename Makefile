@@ -60,7 +60,7 @@ init:
 		parse_bookmap)
 	$(call build_rust_dep,mwlint, \
 		https://github.com/vroland/mwlint, \
-		bc21869b4ce9550a8a709b395c4a8fba66406e4c, \
+		69a4252, \
 		mwlint)
 	$(call git_clone,extension-math, \
 		https://phabricator.wikimedia.org/diffusion/EMAT/extension-math.git)
