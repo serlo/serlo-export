@@ -48,15 +48,15 @@ init:
 		mwtoast)
 	$(call build_rust_dep,mfnf-export, \
 		https://github.com/vroland/mfnf-export, \
-		c4a905eb16233e9ede5dac62ae79de19335a6570, \
+		e5a2b1e, \
 		mfnf_ex)
 	$(call build_rust_dep,handlebars-cli-rs, \
 		https://github.com/vroland/handlebars-cli-rs, \
-		52fd6dbb01ddf67747c37f4d7d17cfc70e2548bd, \
+		9f79b96, \
 		handlebars-cli-rs,mediawiki)
 	$(call build_rust_dep,mfnf-sitemap-parser, \
 		https://github.com/vroland/mfnf-sitemap-parser, \
-		4d8002c6d9d7e1addda2bee3ea9514d19271ce6d, \
+		75c551d, \
 		parse_bookmap)
 	$(call build_rust_dep,mwlint, \
 		https://github.com/vroland/mwlint, \
