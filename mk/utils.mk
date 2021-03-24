@@ -1,6 +1,6 @@
 # Utility functions
-space :=
-space +=
+null :=
+space := $(null) $(null)
 
 colon := :
 
